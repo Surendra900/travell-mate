@@ -1,0 +1,18 @@
+{
+  "id": "/",
+  "name": "TravelMate",
+  "short_name": "TravelMate",
+  "description": "Emergency-first travel planning with offline safety guidance and encrypted local documents.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#020617",
+  "theme_color": "#06b6d4",
+  "categories": ["travel", "utilities", "safety"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
