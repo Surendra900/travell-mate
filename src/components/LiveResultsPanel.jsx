@@ -108,6 +108,16 @@ export default function LiveResultsPanel({
     }
   }, [open, onClose])
 
+  const multimodalRoutes = useMemo(() => {
+    if (!open) return []
+    return generateMultimodalRoutes({
+      from: plan?.from,
+      to: plan?.to,
+      date: plan?.date,
+      passengers: plan?.passengers || 1
+    })
+  }, [open, plan?.from, plan?.to, plan?.date, plan?.passengers])
+
   if (!open) return null
 
   const transport = plan.transportMode || 'Train'
@@ -119,15 +129,6 @@ export default function LiveResultsPanel({
     : status.mode === 'invalid' || status.mode === 'error'
       ? 'border-red-400/30 bg-red-500/10 text-red-100'
       : 'border-yellow-300/25 bg-yellow-300/10 text-yellow-100'
-
-  const multimodalRoutes = useMemo(() => {
-    return generateMultimodalRoutes({
-      from: plan?.from,
-      to: plan?.to,
-      date: plan?.date,
-      passengers: plan?.passengers || 1
-    })
-  }, [plan?.from, plan?.to, plan?.date, plan?.passengers])
 
   return (
     <div className="live-results-backdrop" role="dialog" aria-modal="true" aria-labelledby="live-results-title">
