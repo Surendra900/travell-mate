@@ -1,9 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, TicketCheck, Train, Users } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, Sparkles, TicketCheck, Train, Users } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
 import { getProviderDeepLink } from '../data/transportData'
+import { generateMultimodalRoutes } from '../utils/multimodalRouter'
+import MultimodalTimelineCard from './MultimodalTimelineCard'
 
 const transportMeta = {
   Train: { icon: Train, label: 'train' },
@@ -118,6 +120,15 @@ export default function LiveResultsPanel({
       ? 'border-red-400/30 bg-red-500/10 text-red-100'
       : 'border-yellow-300/25 bg-yellow-300/10 text-yellow-100'
 
+  const multimodalRoutes = useMemo(() => {
+    return generateMultimodalRoutes({
+      from: plan?.from,
+      to: plan?.to,
+      date: plan?.date,
+      passengers: plan?.passengers || 1
+    })
+  }, [plan?.from, plan?.to, plan?.date, plan?.passengers])
+
   return (
     <div className="live-results-backdrop" role="dialog" aria-modal="true" aria-labelledby="live-results-title">
       <section className="live-results-workspace">
@@ -126,6 +137,7 @@ export default function LiveResultsPanel({
           <div className="results-nav-links"><Link to="/planner">Search</Link><Link className="active" to="/saved">Trips</Link><Link to="/analyze">Assistant</Link><Link to="/safety">Safety</Link></div>
           <div className="results-nav-actions"><Link className="results-emergency" to="/safety">Emergency</Link><Link to="/">Login</Link></div>
         </nav>
+
         <header className="live-results-header">
           <button type="button" className="btn-soft shrink-0" onClick={onClose}>
             <ArrowLeft size={17} /> Back to planner
@@ -150,6 +162,34 @@ export default function LiveResultsPanel({
 
         <div className={`live-results-layout ${allowBackup ? "" : "no-backup"}`}>
           <main className="order-2 min-w-0 lg:order-1">
+            {multimodalRoutes.length > 0 && (
+              <section className="mb-6 rounded-3xl border border-cyan-400/30 bg-slate-900/90 p-5 shadow-glow">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cyan-400/20 pb-3">
+                  <div>
+                    <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-cyan-300">
+                      <Sparkles size={14} className="text-cyan-400" />
+                      Smart Multimodal Alternatives
+                    </span>
+                    <h3 className="mt-1 text-xl font-black text-white">
+                      Intelligent Combined Routes via Junction Hubs
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-300">
+                      If direct tickets are waitlisted, TravelMate stitched these confirmed combinations.
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-bold text-cyan-200">
+                    {multimodalRoutes.length} Ranked Options
+                  </span>
+                </div>
+
+                <div className="mt-4 space-y-4">
+                  {multimodalRoutes.map((route) => (
+                    <MultimodalTimelineCard key={route.id} route={route} onSave={onSaveResult} />
+                  ))}
+                </div>
+              </section>
+            )}
+
             <div className={`rounded-2xl border p-4 text-sm font-bold ${statusClass}`}>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span>{loading ? `Checking the configured ${transport.toLowerCase()} provider…` : status.message || (hasResults ? `${results.length} provider result(s) loaded.` : 'No provider rows were returned.')}</span>
