@@ -178,6 +178,92 @@ export function findTransportPlace(value) {
   }) || null
 }
 
+export function getStationCode(cityName = '') {
+  const clean = String(cityName || '').trim()
+  const codeMatch = clean.match(/\(([A-Z0-9]{2,5})\)/)
+  if (codeMatch) return codeMatch[1].toUpperCase()
+
+  const place = findTransportPlace(clean)
+  if (place?.train) {
+    const match = place.train.match(/\(([A-Z0-9]{2,5})\)/)
+    if (match) return match[1].toUpperCase()
+  }
+  const bare = clean.toUpperCase()
+  if (/^[A-Z0-9]{2,5}$/.test(bare)) return bare
+  return ''
+}
+
+export function getAirportIata(cityName = '') {
+  const clean = String(cityName || '').trim()
+  const codeMatch = clean.match(/\(([A-Z]{3})\)/)
+  if (codeMatch) return codeMatch[1].toUpperCase()
+
+  const place = findTransportPlace(clean)
+  if (place?.airport) {
+    const match = place.airport.match(/\(([A-Z]{3})\)/)
+    if (match) return match[1].toUpperCase()
+  }
+  const bare = clean.toUpperCase()
+  if (/^[A-Z]{3}$/.test(bare)) return bare
+  return ''
+}
+
+export function getProviderDeepLink({
+  transport = 'Train',
+  from = '',
+  to = '',
+  date = '',
+  serviceCode = '',
+  serviceName = '',
+  pnr = ''
+} = {}) {
+  const mode = String(transport || '').toLowerCase()
+
+  if (pnr) {
+    return `https://www.confirmtkt.com/pnr-status/${encodeURIComponent(pnr)}`
+  }
+
+  const cleanFrom = String(from || '').trim()
+  const cleanTo = String(to || '').trim()
+
+  if (mode === 'bus') {
+    const fromCity = cleanFrom.split(/\s+|,|\(/)[0].toLowerCase()
+    const toCity = cleanTo.split(/\s+|,|\(/)[0].toLowerCase()
+    if (fromCity && toCity) {
+      const dateParam = date ? `?date=${encodeURIComponent(date)}` : ''
+      return `https://www.redbus.in/bus-tickets/${encodeURIComponent(fromCity)}-to-${encodeURIComponent(toCity)}${dateParam}`
+    }
+    return officialPortals.Bus
+  }
+
+  if (mode === 'flight') {
+    const fromIata = getAirportIata(cleanFrom) || cleanFrom
+    const toIata = getAirportIata(cleanTo) || cleanTo
+    if (fromIata && toIata) {
+      const q = date ? `flights from ${fromIata} to ${toIata} on ${date}` : `flights from ${fromIata} to ${toIata}`
+      return `https://www.google.com/travel/flights?q=${encodeURIComponent(q)}`
+    }
+    return officialPortals.Flight
+  }
+
+  // Train:
+  const fromCode = getStationCode(cleanFrom) || cleanFrom
+  const toCode = getStationCode(cleanTo) || cleanTo
+  const trainNo = String(serviceCode || '').trim()
+
+  if (trainNo && /^\d{4,5}$/.test(trainNo)) {
+    return `https://www.confirmtkt.com/train-running-status/${encodeURIComponent(trainNo)}`
+  }
+
+  if (fromCode && toCode && fromCode.toLowerCase() !== toCode.toLowerCase()) {
+    const dateParam = date ? `?date=${encodeURIComponent(date)}` : ''
+    return `https://www.confirmtkt.com/trains/${encodeURIComponent(fromCode)}-to-${encodeURIComponent(toCode)}${dateParam}`
+  }
+
+  return officialPortals.Train
+}
+
+
 export const routeCombos = [
   { label: 'Train only', sequence: ['Train'], speed: 65, cost: 88, reliability: 82, emergencyFit: 78, note: 'Best when budget matters and route is direct.' },
   { label: 'Flight only', sequence: ['Flight'], speed: 94, cost: 45, reliability: 76, emergencyFit: 86, note: 'Fastest for long distance, but baggage and ID rules matter.' },

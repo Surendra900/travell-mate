@@ -29,12 +29,12 @@ export default function Home() {
     <main className="tm-page sketch-home">
       <section className="sketch-shell">
         <div className="sketch-intro">
-          <span><Sparkles size={16} /> Intelligent Serenity</span>
-          <h1>Your Journey,<br /><span style={{ background: 'linear-gradient(90deg,#630ed4,#00687a)', WebkitBackgroundClip: 'text', color: 'transparent' }}>Redefined by AI</span></h1>
-          <p>Intelligent route planning, real-time safety, and seamless travel at your fingertips. Discover the world with a companion that understands your every move.</p>
+          <span><Sparkles size={16} /> Smart Indian Travel Companion</span>
+          <h1>Never Get Stranded.<br /><span style={{ background: 'linear-gradient(90deg,#06b6d4,#3b82f6)', WebkitBackgroundClip: 'text', color: 'transparent' }}>Confirmed Routes by AI</span></h1>
+          <p>Direct train waitlisted? TravelMate automatically finds confirmed alternative journeys across trains, buses and flights so you always reach your destination.</p>
           <div className="sketch-actions">
-            <button className="sketch-primary" onClick={() => navigate('/planner')}>Plan a Trip <ArrowRight size={17} /></button>
-            <button className="sketch-secondary" onClick={() => document.getElementById('safety-hub')?.scrollIntoView({ behavior: 'smooth' })}>How it works</button>
+            <button className="sketch-primary" onClick={() => navigate('/planner')}>Find Routes Now <ArrowRight size={17} /></button>
+            <button className="sketch-secondary" onClick={() => document.getElementById('safety-hub')?.scrollIntoView({ behavior: 'smooth' })}>Safety & Emergency Tools</button>
           </div>
         </div>
 

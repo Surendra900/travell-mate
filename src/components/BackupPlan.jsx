@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-import { ShieldCheck, TicketCheck, Trophy } from 'lucide-react'
+import { ExternalLink, ShieldCheck, TicketCheck, Trophy } from 'lucide-react'
 import { calculateRouteComboScore } from '../utils/scoring'
-import { buildComboLegs, routeCombos, servicesForMode } from '../data/transportData'
+import { buildComboLegs, getProviderDeepLink, routeCombos, servicesForMode } from '../data/transportData'
 
 function serviceLooksBlocked(service) {
   const text = `${service?.availability || ''} ${service?.status || ''} ${service?.code || ''}`.toLowerCase()
@@ -66,14 +66,35 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
           </div>
           <p className="mt-2 text-sm text-yellow-100/90">{best.note}</p>
           <div className="mt-3 space-y-2">
-            {buildComboLegs(best, plan).map((leg) => (
-              <div key={`${best.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300">
-                <p><b className="text-cyan-100">Leg {leg.leg} · {leg.mode}:</b> {leg.service} ({leg.code}) · {leg.depart} → {leg.arrive} · ₹{leg.fare}</p>
-                <button className="mt-2 rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-xs font-black text-cyan-100 hover:bg-cyan-400/20" onClick={() => bookLeg(best, leg)}>
-                  <TicketCheck className="mr-1 inline" size={14} /> {legBookLabel(leg.mode)}
-                </button>
-              </div>
-            ))}
+            {buildComboLegs(best, plan).map((leg) => {
+              const legLink = getProviderDeepLink({
+                transport: leg.mode,
+                from: leg.from || plan.from,
+                to: leg.to || plan.to,
+                date: plan.date,
+                serviceCode: leg.code,
+                serviceName: leg.service
+              })
+              const providerName = leg.mode === 'Bus' ? 'RedBus' : leg.mode === 'Flight' ? 'Google Flights' : 'ConfirmTkt'
+              return (
+                <div key={`${best.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300">
+                  <p><b className="text-cyan-100">Leg {leg.leg} · {leg.mode}:</b> {leg.service} ({leg.code}) · {leg.depart} → {leg.arrive} · ₹{leg.fare}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-xs font-black text-cyan-100 hover:bg-cyan-400/20" onClick={() => bookLeg(best, leg)}>
+                      <TicketCheck className="mr-1 inline" size={14} /> {legBookLabel(leg.mode)}
+                    </button>
+                    <a
+                      href={legLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-xs font-black text-emerald-100 hover:bg-emerald-400/20"
+                    >
+                      <ExternalLink size={13} /> Book on {providerName} ↗
+                    </a>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </article>
       )}

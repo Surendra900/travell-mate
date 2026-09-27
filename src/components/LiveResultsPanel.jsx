@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowLeft, Bus, CalendarDays, Plane, RefreshCw, Route, Save, TicketCheck, Train, Users } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, TicketCheck, Train, Users } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
+import { getProviderDeepLink } from '../data/transportData'
 
 const transportMeta = {
   Train: { icon: Train, label: 'train' },
@@ -15,11 +16,20 @@ function displayValue(value, fallback = 'Check provider') {
   return value
 }
 
-function ResultCard({ item, transport, onBook, onSave }) {
+function ResultCard({ item, transport, plan, onBook, onSave }) {
   const name = item.serviceName || item.service || item.trainName || item.flightNumber || item.operator || `${transport} option`
   const code = item.code || item.trainNo || item.trainNumber || item.flightNumber || item.serviceNumber || 'Provider code unavailable'
   const fare = item.price || item.fare || item.amount
   const source = item.sourceBadge || 'Live API result'
+
+  const directLink = getProviderDeepLink({
+    transport,
+    from: item.from || plan?.from,
+    to: item.to || plan?.to,
+    date: plan?.date,
+    serviceCode: code,
+    serviceName: name
+  })
 
   return (
     <article className="live-result-card">
@@ -50,12 +60,20 @@ function ResultCard({ item, transport, onBook, onSave }) {
         {item.verification || 'This is a provider information row. Fare, seat availability, payment, PNR and ticket issue must be confirmed on an authorized portal.'}
       </p>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <button type="button" className="btn-primary mobile-full" onClick={() => onBook(item)}>
           <TicketCheck size={16} /> Start demo booking
         </button>
+        <a
+          href={directLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-soft mobile-full inline-flex items-center justify-center gap-2 font-bold text-cyan-200 hover:text-white"
+        >
+          <ExternalLink size={16} /> Book on {transport === 'Bus' ? 'RedBus' : transport === 'Flight' ? 'Google Flights' : 'ConfirmTkt'} ↗
+        </a>
         <button type="button" className="btn-soft mobile-full" onClick={() => onSave?.(item)}>
-          <Save size={16} /> Select & save this {transport.toLowerCase()}
+          <Save size={16} /> Save plan
         </button>
       </div>
     </article>
@@ -146,7 +164,7 @@ export default function LiveResultsPanel({
             ) : hasResults ? (
               <div className="mt-5 grid gap-4 xl:grid-cols-2">
                 {results.map((item, index) => (
-                  <ResultCard key={item.id || item.code || index} item={item} transport={transport} onBook={onBookResult} onSave={onSaveResult} />
+                  <ResultCard key={item.id || item.code || index} item={item} transport={transport} plan={plan} onBook={onBookResult} onSave={onSaveResult} />
                 ))}
               </div>
             ) : (

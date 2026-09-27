@@ -14,7 +14,7 @@ import {
   UsersRound,
   X
 } from 'lucide-react'
-import { officialPortals } from '../data/transportData'
+import { getProviderDeepLink, officialPortals } from '../data/transportData'
 import SourceBadge from './SourceBadge'
 
 const paymentOptions = [
@@ -93,8 +93,18 @@ function numericFare(service, plan) {
 
 export default function BookingModal({ open, onClose, plan = {}, mode = 'normal', onSaved }) {
   const transport = plan.transportMode || 'Train'
-  const portal = officialPortals[transport] || officialPortals.Train
   const service = plan.selectedService || null
+  const deepLink = useMemo(() => {
+    return getProviderDeepLink({
+      transport,
+      from: plan.from,
+      to: plan.to,
+      date: plan.date,
+      serviceCode: selectedServiceCode(service),
+      serviceName: selectedServiceLabel(service, transport)
+    })
+  }, [transport, plan.from, plan.to, plan.date, service])
+  const portal = deepLink || officialPortals[transport] || officialPortals.Train
   const sourceBadge = service?.sourceBadge || plan.sourceBadge || 'Planning result'
   const passengerCount = Math.max(1, Math.min(6, Number(plan.passengers || 1)))
   const farePerPassenger = numericFare(service, plan)
@@ -432,7 +442,12 @@ export default function BookingModal({ open, onClose, plan = {}, mode = 'normal'
               </div>
             </div>
 
-            <div className="mx-auto mt-5 max-w-3xl rounded-2xl border border-orange-300/30 bg-orange-300/10 p-4 text-sm font-bold text-orange-50">
+            <div className="mx-auto mt-4 max-w-3xl rounded-2xl border border-cyan-400/30 bg-cyan-400/10 p-4 text-left text-sm font-bold text-cyan-100">
+              <ExternalLink className="mr-2 inline" size={16} />
+              Instant Pre-filled Link: Clicking the button below opens <strong>{transport === 'Bus' ? 'RedBus' : transport === 'Flight' ? 'Google Flights' : 'ConfirmTkt'}</strong> with your route ({plan.from} → {plan.to}) and date ({plan.date || 'selected date'}) pre-loaded!
+            </div>
+
+            <div className="mx-auto mt-4 max-w-3xl rounded-2xl border border-orange-300/30 bg-orange-300/10 p-4 text-sm font-bold text-orange-50">
               This reference is not a PNR or ticket number. Direct booking requires commercial licences, provider authorization, secure payment processing, settlement, cancellation/refund handling, and customer support. That integration is coming soon.
             </div>
 
