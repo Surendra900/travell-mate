@@ -92,6 +92,7 @@ export function generateMultimodalRoutes({
       totalFare,
       fareFormatted: `₹${totalFare}`,
       totalDuration: formatHoursMinutes(totalDurationMin),
+      totalDurationMin,
       hubCity: primaryHub.city,
       transferBuffer: '1h 45m safe daylight transfer',
       whyPicked: `Saves up to ₹3,500 vs. flight. Splits into two confirmed train quotas via ${primaryHub.city}.`,
@@ -154,6 +155,7 @@ export function generateMultimodalRoutes({
       totalFare,
       fareFormatted: `₹${totalFare}`,
       totalDuration: formatHoursMinutes(totalDurationMin),
+      totalDurationMin,
       hubCity: primaryHub.city,
       transferBuffer: '2h 00m buffer between Rail & Bus Station',
       whyPicked: `Confirmed AC sleeper travel. Fast daytime train to ${primaryHub.city}, then overnight AC bus.`,
@@ -216,6 +218,7 @@ export function generateMultimodalRoutes({
       totalFare,
       fareFormatted: `₹${totalFare}`,
       totalDuration: formatHoursMinutes(totalDurationMin),
+      totalDurationMin,
       hubCity: airportHub.city,
       transferBuffer: '3h 30m safe station-to-airport transit buffer',
       whyPicked: `Fastest possible route for urgent travel. Reach ${airportHub.city} by rail/road, then fly direct.`,
@@ -258,3 +261,42 @@ export function generateMultimodalRoutes({
 
   return routes
 }
+
+/**
+ * Formats a clean, readable text summary of a multimodal route for WhatsApp sharing
+ */
+export function formatWhatsAppShareText(route) {
+  if (!route) return ''
+  const l1 = route.leg1
+  const l2 = route.leg2
+
+  return [
+    `🚆 *TravelMate Confirmed Journey*`,
+    `📍 *Route:* ${l1?.from} ➔ ${l2?.to}`,
+    `🏷 *Plan:* ${route.tierLabel || route.tier} (${route.tierBadge})`,
+    `💰 *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
+    ``,
+    `1️⃣ *Step 1:* ${l1?.service || `${l1?.mode} to ${l1?.to}`}`,
+    `   🕒 Depart ${l1?.depart} (${l1?.from}) ➔ Arrive ${l1?.arrive} (${l1?.to}) · ₹${l1?.fare}`,
+    ``,
+    `🔄 *Transfer at ${route.hubCity}:*`,
+    `   ⏳ ${route.transferBuffer}`,
+    ``,
+    `2️⃣ *Step 2:* ${l2?.service || `${l2?.mode} to ${l2?.to}`}`,
+    `   🕒 Depart ${l2?.depart} (${l2?.from}) ➔ Arrive ${l2?.arrive} (${l2?.to}) · ₹${l2?.fare}`,
+    ``,
+    `💡 *Why this route:* ${route.whyPicked}`,
+    ``,
+    `🔗 Stitched automatically by TravelMate AI:`,
+    `https://travelmate-ai-flowzint.vercel.app/planner?from=${encodeURIComponent(l1?.from || '')}&to=${encodeURIComponent(l2?.to || '')}`
+  ].join('\n')
+}
+
+/**
+ * Returns a direct WhatsApp URL pre-filled with the route summary
+ */
+export function getWhatsAppShareUrl(route) {
+  const text = formatWhatsAppShareText(route)
+  return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`
+}
+

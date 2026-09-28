@@ -2,16 +2,20 @@ import { useState } from 'react'
 import {
   ArrowRight,
   Bus,
+  Check,
   CheckCircle2,
   Clock,
+  Copy,
   ExternalLink,
   MapPin,
   Plane,
   Save,
+  Share2,
   ShieldCheck,
   Sparkles,
   Train
 } from 'lucide-react'
+import { formatWhatsAppShareText, getWhatsAppShareUrl } from '../utils/multimodalRouter'
 
 const modeIcons = {
   Train: Train,
@@ -21,6 +25,7 @@ const modeIcons = {
 
 export default function MultimodalTimelineCard({ route, onSave }) {
   const [saved, setSaved] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   if (!route) return null
 
@@ -55,11 +60,21 @@ export default function MultimodalTimelineCard({ route, onSave }) {
     setTimeout(() => setSaved(false), 3000)
   }
 
+  function handleCopy() {
+    const text = formatWhatsAppShareText(route)
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2500)
+      }).catch(() => {})
+    }
+  }
+
   return (
     <article className={`rounded-3xl border ${tierColors.border} bg-slate-950/80 p-5 shadow-lg backdrop-blur transition hover:border-cyan-400/50`}>
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-4">
-        <div>
+        <div className="max-w-xl">
           <div className="flex flex-wrap items-center gap-2">
             <span className={`rounded-full border px-3 py-1 text-xs font-black tracking-wide ${tierColors.badge}`}>
               {route.tierLabel}
@@ -68,10 +83,19 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               {route.tierBadge}
             </span>
           </div>
-          <p className="mt-2 text-xs text-cyan-200/90 font-medium">
-            <Sparkles size={13} className="mr-1 inline text-cyan-300" />
-            {route.whyPicked}
-          </p>
+
+          {/* AI Reason Box */}
+          <div className="multimodal-ai-reason mt-3 flex items-start gap-2.5 rounded-2xl p-3 shadow-inner">
+            <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-cyan-400/20 text-cyan-300">
+              <Sparkles size={12} />
+            </div>
+            <div className="min-w-0">
+              <span className="ai-kicker text-[10px] font-black uppercase tracking-wider">Why TravelMate Picked This</span>
+              <p className="mt-0.5 text-xs font-semibold leading-relaxed">
+                {route.whyPicked}
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="text-right">
@@ -85,7 +109,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
       {/* Visual Timeline */}
       <div className="mt-4 space-y-3">
         {/* Leg 1 */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+        <div className="multimodal-timeline-leg rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="flex items-center gap-2 text-sm font-black text-white">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/20 text-cyan-300">
@@ -121,7 +145,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
         </div>
 
         {/* Leg 2 */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+        <div className="multimodal-timeline-leg rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="flex items-center gap-2 text-sm font-black text-white">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/20 text-blue-300">
@@ -158,14 +182,40 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           Direct booking with pre-filled route on provider portal
         </span>
 
-        <button
-          type="button"
-          onClick={handleSave}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-300 transition hover:border-slate-600 hover:text-white"
-        >
-          {saved ? <CheckCircle2 size={14} className="text-emerald-400" /> : <Save size={14} />}
-          {saved ? 'Saved to My Trips' : 'Save Plan'}
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* 1-Tap WhatsApp Share */}
+          <a
+            href={getWhatsAppShareUrl(route)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-600/20 px-3 py-1.5 text-xs font-black text-emerald-300 transition hover:bg-emerald-600/30 hover:border-emerald-400"
+            title="Share confirmed itinerary on WhatsApp"
+          >
+            <Share2 size={13} />
+            Share on WhatsApp
+          </a>
+
+          {/* Copy Itinerary */}
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-300 transition hover:border-slate-600 hover:text-white"
+            title="Copy itinerary summary"
+          >
+            {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+
+          {/* Save to My Trips */}
+          <button
+            type="button"
+            onClick={handleSave}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-300 transition hover:border-slate-600 hover:text-white"
+          >
+            {saved ? <CheckCircle2 size={13} className="text-emerald-400" /> : <Save size={13} />}
+            {saved ? 'Saved' : 'Save Plan'}
+          </button>
+        </div>
       </div>
     </article>
   )

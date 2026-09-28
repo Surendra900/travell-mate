@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, Sparkles, TicketCheck, Train, Users } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, SlidersHorizontal, Sparkles, TicketCheck, Train, Users } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
 import { getProviderDeepLink } from '../data/transportData'
@@ -82,6 +82,13 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
   )
 }
 
+const filterOptions = [
+  { id: 'all', label: 'All Options' },
+  { id: 'budget', label: '🟢 Under ₹1,000 (Paisa Vasool)' },
+  { id: 'balanced', label: '🔵 Sub-₹2,000 (Balanced)' },
+  { id: 'fastest', label: '⚡ Fastest (< 12h)' }
+]
+
 export default function LiveResultsPanel({
   open,
   onClose,
@@ -94,6 +101,8 @@ export default function LiveResultsPanel({
   onBookBackup,
   allowBackup = true
 }) {
+  const [activeFilter, setActiveFilter] = useState('all')
+
   useEffect(() => {
     if (!open) return undefined
     const oldOverflow = document.body.style.overflow
@@ -117,6 +126,20 @@ export default function LiveResultsPanel({
       passengers: plan?.passengers || 1
     })
   }, [open, plan?.from, plan?.to, plan?.date, plan?.passengers])
+
+  const displayedMultimodalRoutes = useMemo(() => {
+    if (!multimodalRoutes || multimodalRoutes.length === 0) return []
+    if (activeFilter === 'budget') {
+      return multimodalRoutes.filter(r => r.totalFare <= 1000)
+    }
+    if (activeFilter === 'balanced') {
+      return multimodalRoutes.filter(r => r.totalFare <= 2000)
+    }
+    if (activeFilter === 'fastest') {
+      return multimodalRoutes.filter(r => r.tier === 'emergency-express' || (r.totalDurationMin && r.totalDurationMin <= 720))
+    }
+    return multimodalRoutes
+  }, [multimodalRoutes, activeFilter])
 
   if (!open) return null
 
@@ -164,29 +187,69 @@ export default function LiveResultsPanel({
         <div className={`live-results-layout ${allowBackup ? "" : "no-backup"}`}>
           <main className="order-2 min-w-0 lg:order-1">
             {multimodalRoutes.length > 0 && (
-              <section className="mb-6 rounded-3xl border border-cyan-400/30 bg-slate-900/90 p-5 shadow-glow">
+              <section className="multimodal-container mb-6 rounded-3xl border border-cyan-400/30 bg-slate-900/95 p-5 shadow-glow">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cyan-400/20 pb-3">
                   <div>
-                    <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-cyan-300">
-                      <Sparkles size={14} className="text-cyan-400" />
+                    <span style={{ color: '#22d3ee' }} className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider">
+                      <Sparkles size={14} />
                       Smart Multimodal Alternatives
                     </span>
-                    <h3 className="mt-1 text-xl font-black text-white">
+                    <h3 style={{ color: '#ffffff' }} className="mt-1 text-xl font-black">
                       Intelligent Combined Routes via Junction Hubs
                     </h3>
-                    <p className="mt-1 text-xs text-slate-300">
+                    <p style={{ color: '#94a3b8' }} className="mt-1 text-xs">
                       If direct tickets are waitlisted, TravelMate stitched these confirmed combinations.
                     </p>
                   </div>
                   <span className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-bold text-cyan-200">
-                    {multimodalRoutes.length} Ranked Options
+                    {displayedMultimodalRoutes.length} of {multimodalRoutes.length} Ranked Options
                   </span>
                 </div>
 
+                {/* Filter Pills */}
+                <div className="mt-3.5 flex flex-wrap items-center gap-2 border-t border-cyan-400/10 pt-3">
+                  <span className="flex items-center gap-1 text-xs font-bold text-slate-400">
+                    <SlidersHorizontal size={13} className="text-cyan-400" />
+                    Filter:
+                  </span>
+                  {filterOptions.map((filter) => {
+                    const isSelected = activeFilter === filter.id
+                    return (
+                      <button
+                        key={filter.id}
+                        type="button"
+                        onClick={() => setActiveFilter(filter.id)}
+                        className={`rounded-full px-3 py-1 text-xs font-bold transition ${
+                          isSelected
+                            ? 'bg-cyan-400 text-slate-950 shadow-md font-black'
+                            : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/60'
+                        }`}
+                      >
+                        {filter.label}
+                      </button>
+                    )
+                  })}
+                </div>
+
                 <div className="mt-4 space-y-4">
-                  {multimodalRoutes.map((route) => (
-                    <MultimodalTimelineCard key={route.id} route={route} onSave={onSaveResult} />
-                  ))}
+                  {displayedMultimodalRoutes.length > 0 ? (
+                    displayedMultimodalRoutes.map((route) => (
+                      <MultimodalTimelineCard key={route.id} route={route} onSave={onSaveResult} />
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/60 p-6 text-center">
+                      <p className="text-sm font-bold text-slate-300">
+                        No routes match the "{filterOptions.find(f => f.id === activeFilter)?.label}" filter for this journey.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setActiveFilter('all')}
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-cyan-500/20 px-4 py-1.5 text-xs font-black text-cyan-300 hover:bg-cyan-500/30"
+                      >
+                        Show All Available Routes
+                      </button>
+                    </div>
+                  )}
                 </div>
               </section>
             )}
