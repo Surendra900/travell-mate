@@ -6,6 +6,9 @@ import SourceBadge from './SourceBadge'
 import { getProviderDeepLink } from '../data/transportData'
 import { generateMultimodalRoutes } from '../utils/multimodalRouter'
 import MultimodalTimelineCard from './MultimodalTimelineCard'
+import StationHopperCard from './StationHopperCard'
+import { generateStationHopperHacks } from '../utils/stationHopper'
+import PnrPredictorModal from './PnrPredictorModal'
 
 const transportMeta = {
   Train: { icon: Train, label: 'train' },
@@ -102,6 +105,7 @@ export default function LiveResultsPanel({
   allowBackup = true
 }) {
   const [activeFilter, setActiveFilter] = useState('all')
+  const [showPnrModal, setShowPnrModal] = useState(false)
 
   useEffect(() => {
     if (!open) return undefined
@@ -140,6 +144,15 @@ export default function LiveResultsPanel({
     }
     return multimodalRoutes
   }, [multimodalRoutes, activeFilter])
+
+  const stationHopperHacks = useMemo(() => {
+    if (!open || plan?.transportMode !== 'Train') return []
+    return generateStationHopperHacks({
+      from: plan?.from,
+      to: plan?.to,
+      date: plan?.date
+    })
+  }, [open, plan?.from, plan?.to, plan?.date, plan?.transportMode])
 
   if (!open) return null
 
@@ -182,6 +195,14 @@ export default function LiveResultsPanel({
           <span className="status-chip"><Route size={15} /> {plan.from || 'Origin'} → {plan.to || 'Destination'}</span>
           <span className="status-chip"><CalendarDays size={15} /> {plan.date || 'Date not selected'}</span>
           <span className="status-chip"><Users size={15} /> {plan.passengers || 1} passenger(s)</span>
+          <button
+            type="button"
+            onClick={() => setShowPnrModal(true)}
+            className="status-chip cursor-pointer border border-cyan-400/40 bg-cyan-500/15 font-bold text-cyan-200 transition hover:bg-cyan-500/25"
+            title="Predict confirmation odds for any IRCTC waitlist or PNR"
+          >
+            <Sparkles size={14} className="text-cyan-400" /> Waitlist / PNR Predictor
+          </button>
         </div>
 
         <div className={`live-results-layout ${allowBackup ? "" : "no-backup"}`}>
@@ -254,6 +275,16 @@ export default function LiveResultsPanel({
               </section>
             )}
 
+            {stationHopperHacks.length > 0 && (
+              <div className="mb-6">
+                <StationHopperCard
+                  hacks={stationHopperHacks}
+                  from={plan?.from}
+                  to={plan?.to}
+                />
+              </div>
+            )}
+
             <div className={`rounded-2xl border p-4 text-sm font-bold ${statusClass}`}>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span>{loading ? `Checking the configured ${transport.toLowerCase()} provider…` : status.message || (hasResults ? `${results.length} provider result(s) loaded.` : 'No provider rows were returned.')}</span>
@@ -297,6 +328,11 @@ export default function LiveResultsPanel({
           )}
         </div>
       </section>
+
+      <PnrPredictorModal
+        open={showPnrModal}
+        onClose={() => setShowPnrModal(false)}
+      />
     </div>
   )
 }

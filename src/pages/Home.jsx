@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, BusFront, CalendarDays, ChevronRight, Info, MapPin, MessageCircle, Plane, ShieldCheck, Sparkles, TrainFront, Users } from 'lucide-react'
 import { useState } from 'react'
 import { localDateIso } from '../utils/date'
+import PnrPredictorModal from '../components/PnrPredictorModal'
 
 const recommendations = [
   ['Goa', 'Beach escape', 'From ₹1,250'],
@@ -22,6 +23,7 @@ export default function Home() {
   const [date, setDate] = useState(localDateIso())
   const [transportMode, setTransportMode] = useState('Train')
   const [travellers, setTravellers] = useState('1')
+  const [showPnrModal, setShowPnrModal] = useState(false)
 
   const search = () => navigate(`/planner?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}&transportMode=${encodeURIComponent(transportMode)}`)
 
@@ -34,7 +36,9 @@ export default function Home() {
           <p>Direct train waitlisted? TravelMate automatically finds confirmed alternative journeys across trains, buses and flights so you always reach your destination.</p>
           <div className="sketch-actions">
             <button className="sketch-primary" onClick={() => navigate('/planner')}>Find Routes Now <ArrowRight size={17} /></button>
-            <button className="sketch-secondary" onClick={() => document.getElementById('safety-hub')?.scrollIntoView({ behavior: 'smooth' })}>Safety & Emergency Tools</button>
+            <button id="open-pnr-modal-btn" className="sketch-secondary" onClick={() => setShowPnrModal(true)}>
+              <Sparkles size={16} className="text-cyan-400" /> Check PNR & Waitlist Odds
+            </button>
           </div>
         </div>
 
@@ -72,6 +76,26 @@ export default function Home() {
 
           <button className="sketch-search" onClick={search}>Search Routes <ArrowRight size={18} /></button>
         </section>
+
+        {/* Quick PNR & Waitlist Predictor Strip */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-cyan-400/30 bg-slate-900/80 p-4 backdrop-blur-sm shadow-md">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-400/20 text-cyan-300">
+              <Sparkles size={20} />
+            </span>
+            <div>
+              <span className="text-[11px] font-black uppercase tracking-wider text-cyan-400">IRCTC Waitlist Anxious?</span>
+              <h3 className="text-sm font-black text-white">AI Confirmation Probability & Alternate Station Hacks</h3>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowPnrModal(true)}
+            className="inline-flex items-center gap-1.5 rounded-xl bg-cyan-400 px-4 py-2 text-xs font-black text-slate-950 transition hover:bg-cyan-300"
+          >
+            Predict PNR Confirmation ➔
+          </button>
+        </div>
       </section>
 
       <section id="safety-hub" className="home-safety-section">
@@ -110,6 +134,11 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <PnrPredictorModal
+        open={showPnrModal}
+        onClose={() => setShowPnrModal(false)}
+      />
     </main>
   )
 }

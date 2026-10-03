@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Activity, ArrowRight, Bookmark, CalendarDays, CheckCircle2, DownloadCloud, Hotel, Plane, RotateCw, Ticket, Trash2, TrainFront, BusFront } from 'lucide-react'
+import { Activity, ArrowRight, Bookmark, CalendarDays, CheckCircle2, DownloadCloud, Hotel, Plane, RotateCw, Sparkles, Ticket, Trash2, TrainFront, BusFront } from 'lucide-react'
 import BookingModal from '../components/BookingModal'
+import PnrPredictorModal from '../components/PnrPredictorModal'
 import { attachPnrStatus, deletePlan, getOfflinePack, getSavedPlans, saveOfflinePack, setLoadedPlan, updateSavedPlan } from '../utils/storage'
 import { calculatePlanQualityScore, planVerdict, scoreBreakdown } from '../utils/scoring'
 import { getPNRStatus } from '../services/LiveTransportApi'
@@ -17,6 +18,8 @@ export default function SavedPlans({ toast }) {
   const [bookingPlan, setBookingPlan] = useState(null)
   const [offline, setOffline] = useState(null)
   const [pnrLoading, setPnrLoading] = useState({})
+  const [showPnrModal, setShowPnrModal] = useState(false)
+  const [targetPnr, setTargetPnr] = useState('')
   const autoPnrStarted = useRef(false)
   const navigate = useNavigate()
 
@@ -132,13 +135,34 @@ export default function SavedPlans({ toast }) {
           const score = plan.planQualityScore || calculatePlanQualityScore(plan); const service = plan.selectedService || {}; const pnr = plan.pnrNumber || ''; const checking = Boolean(pnrLoading[plan.id]); const ModeIcon = iconFor(plan.transportMode)
           return <article key={plan.id} className="saved-detail-card">
             <div className="saved-detail-main"><div className="saved-detail-icon"><ModeIcon size={22} /></div><div><span className="saved-kicker">{plan.mode || 'normal'} · {plan.transportMode || 'Train'}</span><h3>{serviceValue(service, 'serviceName', 'service', 'trainName', 'name', 'operator') || 'Route-only draft'}</h3><p>{plan.from} → {plan.to} · {plan.date}</p><small>{planVerdict(score)} · Quality {score}/100</small></div></div>
-            <div className="saved-detail-pnr"><span>Automatic PNR status</span><span>PNR</span><strong>{pnr || 'Waiting for authorized provider'}</strong>{pnr && <button className="btn-soft" onClick={() => refreshPnr(plan)} disabled={checking}><Activity size={15} />{checking ? 'Refreshing…' : 'Refresh status'}</button>}</div>
+            <div className="saved-detail-pnr">
+              <span>Automatic PNR status</span>
+              <span>PNR</span>
+              <strong>{pnr || 'Waiting for authorized provider'}</strong>
+              {pnr && <button className="btn-soft" onClick={() => refreshPnr(plan)} disabled={checking}><Activity size={15} />{checking ? 'Refreshing…' : 'Refresh status'}</button>}
+              <button
+                type="button"
+                className="btn-soft font-bold text-cyan-200 border border-cyan-400/30 hover:bg-cyan-400/10"
+                onClick={() => {
+                  setTargetPnr(pnr || '4523819204')
+                  setShowPnrModal(true)
+                }}
+              >
+                <Sparkles size={14} className="text-cyan-400" /> AI Confirmation Odds
+              </button>
+            </div>
             <div className="saved-detail-actions"><button className="btn-soft" onClick={() => openPlan(plan)}>Open Plan</button><button className="btn-low" disabled={!service || !Object.keys(service).length} onClick={() => { setLoadedPlan({ ...plan, mode: 'low-network' }); navigate('/planner') }}>Use Offline</button><button className="btn-primary" disabled={!service || !Object.keys(service).length} onClick={() => setBookingPlan(plan)}><Ticket size={15} /> Booking Options</button><button className="btn-danger" onClick={() => remove(plan.id)}><Trash2 size={15} /> Delete</button></div>
           </article>
         })}
       </section>}
 
       <BookingModal open={Boolean(bookingPlan)} onClose={() => setBookingPlan(null)} plan={bookingPlan || {}} mode={bookingPlan?.mode || 'normal'} onSaved={handleBookingSaved} />
+
+      <PnrPredictorModal
+        open={showPnrModal}
+        onClose={() => setShowPnrModal(false)}
+        initialPnr={targetPnr}
+      />
     </main>
   )
 }
