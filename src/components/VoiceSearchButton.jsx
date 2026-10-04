@@ -366,7 +366,7 @@ export default function VoiceSearchButton({ onSearch, language = 'en' }) {
               onKeyDown={(event) => event.key === 'Enter' && submit(typedSearch)}
               placeholder="Example: tickets from Hyderabad to Delhi by train"
             />
-            <button type="button" className="btn-primary" onClick={() => submit(typedSearch)}>Search</button>
+            <button type="button" className="btn-primary" data-testid="voice-search-submit" onClick={() => submit(typedSearch)}>Search</button>
           </div>
 
           <div className="mt-3 grid gap-2 text-xs">
@@ -388,7 +388,8 @@ export default function VoiceSearchButton({ onSearch, language = 'en' }) {
       {!open && (
         <button
           type="button"
-          className="voice-launcher"
+          className="voice-launcher floating-voice-action"
+          data-testid="voice-search-launcher"
           onClick={startListening}
           disabled={transcribing}
           aria-label={transcribing ? 'Processing voice search' : 'Start voice search'}

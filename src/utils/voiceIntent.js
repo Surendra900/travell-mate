@@ -1,3 +1,21 @@
+const CITY_ALIASES = {
+  dilli: 'Delhi',
+  bombay: 'Mumbai',
+  bangalore: 'Bengaluru',
+  blr: 'Bengaluru',
+  calcutta: 'Kolkata',
+  madras: 'Chennai',
+  hydrabad: 'Hyderabad',
+  banaras: 'Varanasi',
+  kashi: 'Varanasi',
+  cochin: 'Kochi',
+  trivandrum: 'Thiruvananthapuram',
+  vizag: 'Visakhapatnam',
+  poona: 'Pune',
+  amdavad: 'Ahmedabad',
+  bbsr: 'Bhubaneswar'
+}
+
 function cleanText(value = '') {
   return String(value)
     .replace(/[–—→➡➜]/g, ' to ')
@@ -20,6 +38,11 @@ function titleCase(value = '') {
     .split(/\s+/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ')
+}
+
+function resolveCityAlias(name = '') {
+  const clean = name.trim().toLowerCase()
+  return CITY_ALIASES[clean] || titleCase(name)
 }
 
 function trimLocation(value = '') {
@@ -62,7 +85,7 @@ function routePair(fromValue, toValue) {
   const to = trimDestination(toValue)
   if (!from || !to || from.length < 2 || to.length < 2) return null
   if (from.toLowerCase() === to.toLowerCase()) return null
-  return { from: titleCase(from), to: titleCase(to) }
+  return { from: resolveCityAlias(from), to: resolveCityAlias(to) }
 }
 
 function detectRoute(text) {
@@ -97,6 +120,78 @@ function transportPatch(transportMode) {
   return {}
 }
 
+export function extractVoiceDate(text = '', baseDate = new Date()) {
+  const lower = String(text).toLowerCase()
+  const d = new Date(baseDate)
+
+  if (/\b(?:today|tonight)\b/i.test(lower)) {
+    return {
+      date: d.toISOString().split('T')[0],
+      label: 'today',
+      timeOfDay: /\btonight\b/i.test(lower) ? 'night' : 'anytime'
+    }
+  }
+
+  if (/\bday\s+after\s+tomorrow\b/i.test(lower)) {
+    d.setDate(d.getDate() + 2)
+    return {
+      date: d.toISOString().split('T')[0],
+      label: 'day after tomorrow',
+      timeOfDay: /\bmorning\b/i.test(lower) ? 'morning' : /\bnight\b/i.test(lower) ? 'night' : 'anytime'
+    }
+  }
+
+  if (/\btomorrow\b/i.test(lower)) {
+    d.setDate(d.getDate() + 1)
+    return {
+      date: d.toISOString().split('T')[0],
+      label: 'tomorrow',
+      timeOfDay: /\bmorning\b/i.test(lower) ? 'morning' : /\bevening\b/i.test(lower) ? 'evening' : /\bnight\b/i.test(lower) ? 'night' : 'anytime'
+    }
+  }
+
+  const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+  for (let i = 0; i < daysOfWeek.length; i++) {
+    const dayName = daysOfWeek[i]
+    if (new RegExp(`\\b(?:next\\s+)?${dayName}\\b`, 'i').test(lower)) {
+      const currentDay = d.getDay()
+      let diff = i - currentDay
+      if (diff <= 0) diff += 7
+      d.setDate(d.getDate() + diff)
+      return {
+        date: d.toISOString().split('T')[0],
+        label: `next ${dayName}`,
+        timeOfDay: 'anytime'
+      }
+    }
+  }
+
+  return null
+}
+
+export function speakRouteConfirmation(parsedIntent, options = {}) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return null
+
+  const { plan } = parsedIntent || {}
+  if (!plan?.from || !plan?.to) return null
+
+  const mode = plan.transportMode || 'multimodal transport'
+  const dateStr = plan.dateLabel ? ` for ${plan.dateLabel}` : ''
+  const spokenText = `Routing from ${plan.from} to ${plan.to} by ${mode}${dateStr}. Reviewing options.`
+
+  try {
+    window.speechSynthesis.cancel()
+    const utterance = new SpeechSynthesisUtterance(spokenText)
+    utterance.lang = options.lang || 'en-IN'
+    utterance.rate = 1.0
+    utterance.pitch = 1.0
+    window.speechSynthesis.speak(utterance)
+    return spokenText
+  } catch {
+    return null
+  }
+}
+
 export function parseVoiceIntent(rawCommand = '') {
   const normalized = cleanText(rawCommand)
   const lower = normalized.toLowerCase()
@@ -120,6 +215,14 @@ export function parseVoiceIntent(rawCommand = '') {
   const transportMode = detectTransport(normalized)
   const plan = { ...transportPatch(transportMode) }
   if (route) Object.assign(plan, route)
+
+  // Extract date if present
+  const dateInfo = extractVoiceDate(rawCommand)
+  if (dateInfo) {
+    plan.date = dateInfo.date
+    plan.dateLabel = dateInfo.label
+    plan.timeOfDay = dateInfo.timeOfDay
+  }
 
   const budgetMatch = lower.match(/(?:under|budget|below)\s*(?:rs|rupees)?\s*(\d+)/)
   const passengerMatch = lower.match(/(\d+)\s*(?:passenger|passengers|people|person)/)

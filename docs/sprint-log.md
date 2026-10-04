@@ -161,11 +161,40 @@
 **Goal:** Voice Route Parser & Spoken Audio Confirmation Engine  
 
 ### Day 12 Task List
-- [ ] Task 12.1: Capture BEFORE screenshots of route planner and voice input triggers.
-- [ ] Task 12.2: Upgrade `voiceIntent.js` and `VoiceSearchButton.jsx` with enhanced natural language parsing, Indian station phonetic matching, typo tolerance, and date extraction ("tomorrow morning", "next Friday").
-- [ ] Task 12.3: Implement spoken audio confirmation engine (`speakRouteConfirmation`) using Web Speech Synthesis to read out parsed origin, destination, and selected mode.
-- [ ] Task 12.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 12.5: Run Day 12 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 12.6: Commit, tag `day-12`, deploy preview, and record status.
+- [x] Task 12.1: Capture BEFORE screenshots of route planner and voice input triggers.
+- [x] Task 12.2: Upgrade `voiceIntent.js` and `VoiceSearchButton.jsx` with enhanced natural language parsing, Indian station phonetic matching, typo tolerance, and date extraction ("tomorrow morning", "next Friday").
+- [x] Task 12.3: Implement spoken audio confirmation engine (`speakRouteConfirmation`) using Web Speech Synthesis to read out parsed origin, destination, and selected mode.
+- [x] Task 12.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 12.5: Run Day 12 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 12.6: Commit, tag `day-12`, deploy preview, and record status.
+
+### Day 12 Verification Evidence
+1. **Phonetic & City Alias Resolution:** Upgraded `voiceIntent.js` with canonical mappings for major Indian hubs (Dilli -> Delhi, Bombay -> Mumbai, Bangalore/BLR -> Bengaluru, Calcutta -> Kolkata, Madras -> Chennai, Banaras/Kashi -> Varanasi, Cochin -> Kochi, etc.).
+2. **Relative Date & Time Extraction:** Implemented `extractVoiceDate()` supporting "today", "tonight", "tomorrow", "day after tomorrow", and specific relative days ("next Friday"), populating ISO date strings and `timeOfDay` periods in the planner automatically.
+3. **Spoken Route Confirmation Engine:** Implemented `speakRouteConfirmation()` via HTML5 `window.speechSynthesis` and wired into `handleVoiceSearch` in `App.jsx`, speaking acoustic route confirmations aloud for travelers and visually impaired users.
+4. **Automated Verification:**
+   - Unit tests: 88/88 passed (`tests/day12_voice_parser.test.mjs` + regression).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day12_voice_parser.spec.mjs`).
+   - Full regression suite across Days 6-12: 100% passed with 0 errors.
+5. **Screenshots:**
+   - BEFORE: `docs/screenshots/day-12/before/desktop_planner_before_voice_engine.png`, `mobile_planner_before_voice_engine.png`
+   - AFTER: `docs/screenshots/day-12/after/desktop_planner_phonetic_filled.png`, `desktop_voice_dialog_input.png`, `mobile_voice_dialog.png`
+
+**DAY 12 COMPLETE. Verification passed (5/5). Moving to DAY 13.**
+
+---
+
+## Sprint Entry: Day 13
+**Date:** October 2026  
+**Goal:** Agentic Voice Tool-Use & Spoken Route Tier Playback  
+
+### Day 13 Task List
+- [ ] Task 13.1: Capture BEFORE screenshots of journey route results and tier cards.
+- [ ] Task 13.2: Implement agentic speech-driven filter commands ("cheapest route", "fastest flight", "prefer train", "show backup options") in `voiceIntent.js` and `NormalPlanner.jsx`.
+- [ ] Task 13.3: Implement audible spoken summary playback of multimodal route tiers (Tier 1 Fastest, Tier 2 Balanced, Tier 3 Budget) via Web Speech Synthesis.
+- [ ] Task 13.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 13.5: Run Day 13 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 13.6: Commit, tag `day-13`, deploy preview, and record status.
+
 
 

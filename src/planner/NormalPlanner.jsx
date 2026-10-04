@@ -50,13 +50,13 @@ export default function NormalPlanner({ plan, update, onBook, onFindTicket, onOp
 
           <datalist id="city-list">{cityOptions.map((city) => <option key={city} value={city} />)}</datalist>
           <div className="booking-route-grid">
-            <Field label={routeLabels.from}><input list="city-list" className="input" value={plan.from} placeholder={routeLabels.fromPlaceholder} onChange={(e) => update({ from: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })} /></Field>
+            <Field label={routeLabels.from}><input list="city-list" className="input" data-testid="planner-from-input" value={plan.from} placeholder={routeLabels.fromPlaceholder} onChange={(e) => update({ from: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })} /></Field>
             <button className="booking-swap" type="button" onClick={() => update({ from: plan.to, to: plan.from })} aria-label="Swap route">⇄</button>
-            <Field label={routeLabels.to}><input list="city-list" className="input" value={plan.to} placeholder={routeLabels.toPlaceholder} onChange={(e) => update({ to: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })} /></Field>
+            <Field label={routeLabels.to}><input list="city-list" className="input" data-testid="planner-to-input" value={plan.to} placeholder={routeLabels.toPlaceholder} onChange={(e) => update({ to: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })} /></Field>
           </div>
 
           <div className="booking-meta-grid">
-            <Field label="Departure"><div className="booking-input-icon"><CalendarDays size={17}/><input className="input" type="date" value={plan.date} onChange={(e) => update({ date: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })} /></div></Field>
+            <Field label="Departure"><div className="booking-input-icon"><CalendarDays size={17}/><input className="input" type="date" data-testid="planner-date-input" value={plan.date} onChange={(e) => update({ date: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })} /></div></Field>
             <Field label="Passengers"><div className="booking-input-icon"><Users size={17}/><select className="input" value={Number(plan.passengers || 1)} onChange={(e) => update({ passengers: Number(e.target.value) })}>{[1,2,3,4,5,6].map((count)=><option key={count} value={count}>{count} traveller{count>1?'s':''}</option>)}</select></div></Field>
             <Field label={plan.transportMode === 'Train' ? 'Class' : 'Cabin'}><select className="input" value={plan.classType} onChange={(e) => update({ classType: e.target.value })}>{classOptions(plan.transportMode).map((item)=><option key={item}>{item}</option>)}</select></Field>
             {plan.transportMode === 'Flight' && <Field label="Airline"><select className="input" value={plan.airline || 'All'} onChange={(e) => update({ airline: e.target.value, selectedService: null, selectedServiceName: '', selectedServiceCode: '' })}>{airlineOptions.map((item)=><option key={item.value} value={item.value}>{item.label}</option>)}</select></Field>}

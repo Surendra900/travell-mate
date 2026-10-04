@@ -16,7 +16,7 @@ import { languages } from './data/languageData'
 import { useDeviceStatus } from './utils/deviceStatus'
 import { warmOfflineCache } from './utils/offlineMode'
 import { saveOfflinePack } from './utils/storage'
-import { parseVoiceIntent } from './utils/voiceIntent'
+import { parseVoiceIntent, speakRouteConfirmation } from './utils/voiceIntent'
 
 const Home = lazy(() => import('./pages/Home'))
 const SafetyMode = lazy(() => import('./pages/SafetyMode'))
@@ -91,6 +91,9 @@ export default function App({ authEnabled = false }) {
       source: 'voice'
     }
 
+    // Audible confirmation readout
+    speakRouteConfirmation(voice, { lang: languages[language]?.bcp47 || 'en-IN' })
+
     if (location.pathname === '/planner') {
       window.dispatchEvent(new CustomEvent('travelmate:voice-planner', { detail }))
     } else {
@@ -100,7 +103,7 @@ export default function App({ authEnabled = false }) {
 
     toast(voice.message)
     return { ok: true, message: voice.message }
-  }, [location.pathname, navigate, toast])
+  }, [location.pathname, navigate, toast, language])
 
   const appShell = (
     <div className="min-h-screen pb-24 sm:pb-0">
