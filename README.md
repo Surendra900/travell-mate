@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TravelMate AI
 
 ## Hackathon project brief
@@ -182,6 +181,3 @@ Choose the existing Vercel project when prompted. Environment-variable updates a
 - Emergency messages are prepared for WhatsApp/SMS; the user must manually tap Send.
 - The local document vault uses browser-side encryption, but judges should use sample documents only.
 - Public production deployments should add durable rate limiting and provider-specific monitoring.
-=======
-# travell-mate
->>>>>>> origin/main
