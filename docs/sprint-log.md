@@ -221,12 +221,41 @@
 **Goal:** Voice Emergency Trigger ("Help" / "SOS") & Hands-Free Safety Dispatch  
 
 ### Day 14 Task List
-- [ ] Task 14.1: Capture BEFORE screenshots of emergency mode and voice input triggers.
-- [ ] Task 14.2: Implement hands-free spoken emergency trigger keywords ("help", "sos", "save me", "accident", "danger", "police") in `voiceIntent.js` and `BlindVoiceGate.jsx`.
-- [ ] Task 14.3: Implement voice-guided safety response engine with acoustic emergency confirmation and hands-free hotline dialers.
-- [ ] Task 14.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 14.5: Run Day 14 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 14.6: Commit, tag `day-14`, deploy preview, and record status.
+- [x] Task 14.1: Capture BEFORE screenshots of emergency mode and voice input triggers.
+- [x] Task 14.2: Implement hands-free spoken emergency trigger keywords ("help", "sos", "save me", "accident", "danger", "police") in `voiceIntent.js`, `BlindVoiceGate.jsx`, and `App.jsx`.
+- [x] Task 14.3: Implement voice-guided safety response engine with acoustic emergency confirmation and hands-free hotline dialers.
+- [x] Task 14.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 14.5: Run Day 14 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 14.6: Commit, tag `day-14`, deploy preview, and record status.
+
+### Day 14 Verification Evidence
+1. **Hands-Free Spoken Distress Keyword Detection:** Extended `parseVoiceIntent()` in `voiceIntent.js` to recognize spoken distress phrases ("help", "help me", "sos", "save me", "call police", "ambulance", "railway emergency", "women safety", "accident", "robbery"), classifying intent into specific emergency types (`police`, `medical`, `railway`, `women`, `general`) and linking corresponding national transit hotlines (112, 108, 139, 1090).
+2. **Blind Gate Distress Interceptor:** Added emergency distress recognition to `BlindVoiceGate.jsx` so blind travelers in immediate crisis speaking "help" or "sos" are immediately directed to `/safety` with emergency mode engaged.
+3. **Acoustic Emergency Confirmation Engine:** Implemented `speakEmergencyConfirmation()` and `speakProtocolGuidance()` via HTML5 `window.speechSynthesis`, providing audible spoken confirmations and hands-free audio instruction readouts for verified transit protocols.
+4. **Interactive Spoken Crisis Protocol Controls:** Added `data-testid="speak-protocol-header-[id]"` and `data-testid="speak-protocol-[id]"` to all Incident Protocols in `EmergencyToolkit.jsx`, allowing travelers in low-visibility or crisis conditions to listen to procedures step-by-step.
+5. **Automated Verification:**
+   - Unit tests: 96/96 passed (`tests/day14_voice_emergency.test.mjs` + regression).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day14_voice_emergency.spec.mjs`).
+   - Full regression suite across Days 6-14: 100% passed with 0 errors.
+6. **Screenshots:**
+   - BEFORE: `docs/screenshots/day-14/before/desktop_safety_mode_before.png`, `mobile_safety_mode_before.png`
+   - AFTER: `docs/screenshots/day-14/after/desktop_emergency_voice_active.png`, `desktop_protocol_audio_playing.png`, `mobile_emergency_voice_active.png`, `mobile_protocol_audio_playing.png`
+
+**DAY 14 COMPLETE. Verification passed (5/5). Moving to DAY 15.**
+
+---
+
+## Sprint Entry: Day 15
+**Date:** October 2026  
+**Goal:** Voice A11y & Screen-Reader Gate (WCAG 2.1 AA Compliance & Full 1-15 Regression)  
+
+### Day 15 Task List
+- [ ] Task 15.1: Capture BEFORE screenshots across core app surfaces.
+- [ ] Task 15.2: Conduct WCAG 2.1 AA screen-reader audit, keyboard focus trapping, and ARIA role hardening on all voice and emergency components.
+- [ ] Task 15.3: Run full automated Axe accessibility gate with 0 critical or serious violations.
+- [ ] Task 15.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 15.5: Run Day 15 Milestone Gate (full regression across Days 1-15).
+- [ ] Task 15.6: Commit, tag `day-15`, deploy preview, and record status.
 
 
 

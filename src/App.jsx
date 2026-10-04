@@ -16,7 +16,7 @@ import { languages } from './data/languageData'
 import { useDeviceStatus } from './utils/deviceStatus'
 import { warmOfflineCache } from './utils/offlineMode'
 import { saveOfflinePack } from './utils/storage'
-import { parseVoiceIntent, speakRouteConfirmation } from './utils/voiceIntent'
+import { parseVoiceIntent, speakRouteConfirmation, speakEmergencyConfirmation } from './utils/voiceIntent'
 
 const Home = lazy(() => import('./pages/Home'))
 const SafetyMode = lazy(() => import('./pages/SafetyMode'))
@@ -63,9 +63,13 @@ export default function App({ authEnabled = false }) {
   const handleVoiceSearch = useCallback((rawCommand = '') => {
     const voice = parseVoiceIntent(rawCommand)
 
-    if (voice.action === 'open-safety') {
+    if (voice.action === 'open-safety' || voice.intent === 'safety') {
+      speakEmergencyConfirmation(voice.emergencyType, { lang: languages[language]?.bcp47 || 'en-IN' })
       navigate('/safety')
-      toast('Opened Safety Mode from voice search.')
+      toast(voice.message || 'Opened Safety Mode from voice search.')
+      if (voice.hotline) {
+        window.dispatchEvent(new CustomEvent('travelmate:voice-dial', { detail: { hotline: voice.hotline, type: voice.emergencyType } }))
+      }
       return { ok: true, message: voice.message }
     }
     if (voice.action === 'open-saved') {

@@ -76,7 +76,11 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
         const text = String(event.results[0]?.[0]?.transcript || '').trim().toLowerCase()
         setTranscript(text)
 
-        if (/yes|yeah|yep|haan|blind|enable|voice|audio/i.test(text)) {
+        if (/help|sos|save\s+me|emergency|police|ambulance|danger|accident/i.test(text)) {
+          disableBlindMode('voice')
+          window.location.href = '/safety'
+          return
+        } else if (/yes|yeah|yep|haan|blind|enable|voice|audio/i.test(text)) {
           enableBlindMode('voice')
         } else if (/no|nah|nope|nahi|disable|cancel|standard|visual/i.test(text)) {
           disableBlindMode('voice')

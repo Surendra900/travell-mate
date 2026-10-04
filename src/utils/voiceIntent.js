@@ -226,6 +226,57 @@ export function speakRouteTier(route, options = {}) {
   }
 }
 
+export function speakEmergencyConfirmation(emergencyType = 'general', options = {}) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return null
+
+  const texts = {
+    police: 'Emergency alert. Connecting to Police 112. Stay calm, sharing your GPS location.',
+    ambulance: 'Medical alert. Connecting to Ambulance 108. Stay calm.',
+    medical: 'Medical alert. Connecting to Ambulance 108. Stay calm.',
+    railway: 'Railway emergency alert. Connecting to Railway Helpline 139.',
+    women: 'Emergency alert. Connecting to Women Safety Helpline 1090.',
+    general: 'Emergency Mode Activated. National emergency hotlines 112, 139, and 108 are ready.'
+  }
+
+  const spokenText = texts[emergencyType] || texts.general
+
+  try {
+    window.speechSynthesis.cancel()
+    const utterance = new SpeechSynthesisUtterance(spokenText)
+    utterance.lang = options.lang || 'en-IN'
+    utterance.rate = 1.05
+    utterance.pitch = 1.0
+    window.speechSynthesis.speak(utterance)
+    return spokenText
+  } catch {
+    return null
+  }
+}
+
+export function speakProtocolGuidance(protocol, options = {}) {
+  if (typeof window === 'undefined' || !window.speechSynthesis || !protocol) return null
+
+  const steps = Array.isArray(protocol.steps)
+    ? protocol.steps.map((s, i) => `Step ${i + 1}: ${s}`).join('. ')
+    : ''
+  const spokenText = `${protocol.title}. ${steps}. Standard helpline is ${protocol.hotlineLabel || protocol.hotline}.`.trim()
+
+  try {
+    window.speechSynthesis.cancel()
+    const utterance = new SpeechSynthesisUtterance(spokenText)
+    utterance.lang = options.lang || 'en-IN'
+    utterance.rate = 1.0
+    utterance.pitch = 1.0
+    if (options.onStart) utterance.onstart = options.onStart
+    if (options.onEnd) utterance.onend = options.onEnd
+    if (options.onError) utterance.onError = options.onError
+    window.speechSynthesis.speak(utterance)
+    return spokenText
+  } catch {
+    return null
+  }
+}
+
 export function stopSpeaking() {
   if (typeof window !== 'undefined' && window.speechSynthesis) {
     try {
@@ -241,10 +292,41 @@ export function parseVoiceIntent(rawCommand = '') {
 
   const hasTatkal = /\b(?:tatkal|emergency\s+(?:ticket|train|booking))\b/i.test(lower)
   const hasTravelWords = /\b(?:planner|ticket|tickets|route|train|flight|bus|travel|trip|journey|book|booking|tatkal)\b/i.test(lower)
-  const explicitSafety = /\b(?:open\s+)?safety(?:\s+mode)?\b|\bsos\b|\bambulance\b|\bpolice\b|\brobbery\b|\baccident\b|\bmedical\s+emergency\b/i.test(lower)
+  const explicitSafety = /\b(?:help|help\s+me|save\s+me|emergency|safety(?:\s+mode)?|sos|police|ambulance|danger|accident|robbery|theft|harassment|trapped|attack|stranded|medical\s+emergency)\b/i.test(lower)
 
-  if (explicitSafety || (lower === 'emergency' && !hasTravelWords)) {
-    return { intent: 'safety', action: 'open-safety', plan: {}, mode: null, routeDetected: false, message: 'Opened Safety Mode.' }
+  if (explicitSafety && !hasTravelWords && !detectRoute(normalized)) {
+    let emergencyType = 'general'
+    let hotline = '112'
+    let message = 'Opened Emergency Mode: Emergency SOS active.'
+
+    if (/\b(?:police|robbery|theft|attack|danger|harassment)\b/i.test(lower)) {
+      emergencyType = 'police'
+      hotline = '112'
+      message = 'Emergency Mode: Police Helpline 112 ready.'
+    } else if (/\b(?:ambulance|medical|doctor|hospital|injury)\b/i.test(lower)) {
+      emergencyType = 'medical'
+      hotline = '108'
+      message = 'Emergency Mode: Medical Ambulance 108 ready.'
+    } else if (/\b(?:railway|train\s+emergency|rpf)\b/i.test(lower)) {
+      emergencyType = 'railway'
+      hotline = '139'
+      message = 'Emergency Mode: Indian Railway 139 ready.'
+    } else if (/\b(?:women|eve\s+teasing)\b/i.test(lower)) {
+      emergencyType = 'women'
+      hotline = '1090'
+      message = 'Emergency Mode: Women Helpline 1090 ready.'
+    }
+
+    return {
+      intent: 'safety',
+      action: 'open-safety',
+      emergencyType,
+      hotline,
+      plan: {},
+      mode: null,
+      routeDetected: false,
+      message
+    }
   }
   if (/\b(?:open\s+)?saved(?:\s+plans?)?\b/i.test(lower)) {
     return { intent: 'saved', action: 'open-saved', plan: {}, mode: null, routeDetected: false, message: 'Opened Saved Plans.' }

@@ -18,10 +18,13 @@ import {
   Radio,
   Navigation,
   Compass,
-  CheckCircle2
+  CheckCircle2,
+  Volume2,
+  VolumeX
 } from 'lucide-react'
 import { saveOfflinePack, getOfflinePack } from '../utils/storage'
 import { warmOfflineCache } from '../utils/offlineMode'
+import { speakProtocolGuidance, stopSpeaking } from '../utils/voiceIntent'
 import {
   buildEmergencyAlert,
   formatEmergencyLocation,
@@ -78,6 +81,24 @@ export default function EmergencyToolkit({ toast, compact = false }) {
   const [emergencyType, setEmergencyType] = useState('General emergency')
   const [offlinePack, setOfflinePack] = useState(() => getOfflinePack())
   const [expandedProtocol, setExpandedProtocol] = useState('coach-medical')
+  const [speakingProtocolId, setSpeakingProtocolId] = useState(null)
+
+  useEffect(() => {
+    return () => {
+      stopSpeaking()
+    }
+  }, [])
+
+  useEffect(() => {
+    function handleVoiceDial(e) {
+      const hotline = e.detail?.hotline
+      if (hotline) {
+        toast?.(`Voice Trigger: Emergency Hotline ${hotline} ready. Tap Call to connect.`)
+      }
+    }
+    window.addEventListener('travelmate:voice-dial', handleVoiceDial)
+    return () => window.removeEventListener('travelmate:voice-dial', handleVoiceDial)
+  }, [toast])
 
   useEffect(() => {
     let active = true
@@ -345,6 +366,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
                 </div>
                 <button
                   type="button"
+                  data-testid={`hotline-call-${hotline.id}`}
                   onClick={() => handleHotlineCall(hotline)}
                   className={`mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-black shadow transition-all ${hotline.btnColor}`}
                   aria-label={`Call ${hotline.title} on ${hotline.number}`}
@@ -642,14 +664,43 @@ export default function EmergencyToolkit({ toast, compact = false }) {
                     </span>
                     <h4 className="mt-1 text-base font-black text-white">{protocol.title}</h4>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setExpandedProtocol(isExpanded ? null : protocol.id)}
-                    className="rounded-lg p-1 text-slate-400 hover:text-white"
-                    aria-label={isExpanded ? `Collapse ${protocol.title}` : `Expand ${protocol.title}`}
-                  >
-                    {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (speakingProtocolId === protocol.id) {
+                          stopSpeaking()
+                          setSpeakingProtocolId(null)
+                        } else {
+                          setSpeakingProtocolId(protocol.id)
+                          speakProtocolGuidance(protocol, {
+                            onEnd: () => setSpeakingProtocolId(null),
+                            onError: () => setSpeakingProtocolId(null)
+                          })
+                        }
+                      }}
+                      data-testid={`speak-protocol-header-${protocol.id}`}
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold transition ${
+                        speakingProtocolId === protocol.id
+                          ? 'border border-amber-400 bg-amber-400/20 text-amber-300 animate-pulse'
+                          : 'border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20'
+                      }`}
+                      aria-label={`Listen audio for ${protocol.id}`}
+                      title="Listen to crisis protocol steps aloud"
+                    >
+                      {speakingProtocolId === protocol.id ? <VolumeX size={11} className="text-amber-300" /> : <Volume2 size={11} />}
+                      <span>{speakingProtocolId === protocol.id ? 'Stop' : 'Listen'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedProtocol(isExpanded ? null : protocol.id)}
+                      className="rounded-lg p-1 text-slate-400 hover:text-white"
+                      aria-label={isExpanded ? `Collapse ${protocol.title}` : `Expand ${protocol.title}`}
+                    >
+                      {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </button>
+                  </div>
                 </div>
 
                 {isExpanded && (
@@ -664,8 +715,32 @@ export default function EmergencyToolkit({ toast, compact = false }) {
                         </li>
                       ))}
                     </ol>
-                    <div className="mt-3 flex items-center justify-between border-t border-slate-800/60 pt-2.5">
-                      <span className="text-[11px] text-slate-400 font-medium">Standard Helpline:</span>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-800/60 pt-2.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (speakingProtocolId === protocol.id) {
+                            stopSpeaking()
+                            setSpeakingProtocolId(null)
+                          } else {
+                            setSpeakingProtocolId(protocol.id)
+                            speakProtocolGuidance(protocol, {
+                              onEnd: () => setSpeakingProtocolId(null),
+                              onError: () => setSpeakingProtocolId(null)
+                            })
+                          }
+                        }}
+                        data-testid={`speak-protocol-${protocol.id}`}
+                        className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+                          speakingProtocolId === protocol.id
+                            ? 'border border-amber-400 bg-amber-400/20 text-amber-300 animate-pulse'
+                            : 'border border-cyan-400/30 bg-cyan-500/15 text-cyan-200 hover:bg-cyan-500/25'
+                        }`}
+                        aria-label={`Listen to ${protocol.title} instructions aloud`}
+                      >
+                        {speakingProtocolId === protocol.id ? <VolumeX size={12} className="text-amber-300" /> : <Volume2 size={12} />}
+                        <span>{speakingProtocolId === protocol.id ? 'Stop Audio' : 'Listen Steps Aloud'}</span>
+                      </button>
                       <a
                         href={`tel:${protocol.hotline}`}
                         className="inline-flex items-center gap-1.5 rounded-lg bg-red-600 hover:bg-red-500 px-3 py-1.5 text-xs font-black text-white shadow"
