@@ -237,9 +237,10 @@
    - Unit tests: 96/96 passed (`tests/day14_voice_emergency.test.mjs` + regression).
    - E2E Playwright tests: 5/5 passed (`tests/e2e/day14_voice_emergency.spec.mjs`).
    - Full regression suite across Days 6-14: 100% passed with 0 errors.
-6. **Screenshots:**
+6. **Screenshots & Deployment:**
    - BEFORE: `docs/screenshots/day-14/before/desktop_safety_mode_before.png`, `mobile_safety_mode_before.png`
    - AFTER: `docs/screenshots/day-14/after/desktop_emergency_voice_active.png`, `desktop_protocol_audio_playing.png`, `mobile_emergency_voice_active.png`, `mobile_protocol_audio_playing.png`
+   - Vercel Preview: `https://travelmate-ai-flowzint-d6l7dfq4t-httplocalhost5173planner.vercel.app`
 
 **DAY 14 COMPLETE. Verification passed (5/5). Moving to DAY 15.**
 
