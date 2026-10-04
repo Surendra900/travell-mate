@@ -132,10 +132,40 @@
 **Goal:** Blind Voice Gate & Spoken Accessibility Onboarding Gate ("Are you blind?")  
 
 ### Day 11 Task List
-- [ ] Task 11.1: Capture BEFORE screenshots of onboarding and voice trigger layout.
-- [ ] Task 11.2: Implement Spoken Accessibility Onboarding Gate ("Are you blind?") in `BlindVoiceGate.jsx` with hands-free audio prompt, high-contrast accessible layout, keyboard trap, and Web Speech Recognition/Synthesis.
-- [ ] Task 11.3: Integrate Blind Voice Gate seamlessly with `App.jsx` and voice route copilot.
-- [ ] Task 11.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 11.5: Run Day 11 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 11.6: Commit, tag `day-11`, deploy preview, and record status.
+- [x] Task 11.1: Capture BEFORE screenshots of onboarding and voice trigger layout.
+- [x] Task 11.2: Implement Spoken Accessibility Onboarding Gate ("Are you blind?") in `BlindVoiceGate.jsx` with hands-free audio prompt, high-contrast accessible layout, keyboard trap, and Web Speech Recognition/Synthesis.
+- [x] Task 11.3: Integrate Blind Voice Gate seamlessly with `App.jsx` and voice route copilot.
+- [x] Task 11.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 11.5: Run Day 11 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 11.6: Commit, tag `day-11`, deploy preview, and record status.
+
+### Day 11 Verification Evidence
+1. **Full-Screen Spoken Accessibility Gate:** Implemented `BlindVoiceGate.jsx` featuring `role="alertdialog"`, `aria-modal="true"`, autofocus trap, ultra-high-contrast theme (`bg-black`, `border-4 border-yellow-400`, `text-yellow-300`), and large 22px+ action buttons.
+2. **Hands-Free Audio & Speech Recognition:** Integrated HTML5 Web Speech Synthesis (`window.speechSynthesis`) to speak the prompt: *"Welcome to TravelMate AI. Are you blind or visually impaired? Say 'Yes' to enable voice assistant mode, or say 'No' to continue with standard visual mode."* Coupled with `SpeechRecognition` to accept verbal "Yes" / "Haan" or "No" / "Nahi" answers.
+3. **Accessibility Shortcuts & Global Persistence:** Added `Alt+B` universal keyboard shortcut to open the gate anytime, `Escape` key dismissal, and persistent top-bar banner (`Voice Accessibility Mode Active`) when enabled.
+4. **Navbar & Mobile Integration:** Added accessible Voice A11y trigger button (`data-testid="navbar-voice-gate-btn"`) to both desktop navbar actions and mobile slide-out menu.
+5. **Automated Verification:**
+   - Unit tests: 84/84 passed (`tests/day11_blind_gate.test.mjs` + regression).
+   - E2E Playwright tests: 14/14 passed (`tests/e2e/day11_blind_gate.spec.mjs`).
+   - Full regression suite across Days 6-11: 100% passed with 0 errors.
+6. **Screenshots:**
+   - BEFORE: `docs/screenshots/day-11/before/desktop_home_before_voice_gate.png`, `mobile_home_before_voice_gate.png`
+   - AFTER: `docs/screenshots/day-11/after/desktop_blind_voice_gate.png`, `desktop_voice_mode_active.png`, `mobile_blind_voice_gate.png`
+
+**DAY 11 COMPLETE. Verification passed (14/14). Moving to DAY 12.**
+
+---
+
+## Sprint Entry: Day 12
+**Date:** October 2026  
+**Goal:** Voice Route Parser & Spoken Audio Confirmation Engine  
+
+### Day 12 Task List
+- [ ] Task 12.1: Capture BEFORE screenshots of route planner and voice input triggers.
+- [ ] Task 12.2: Upgrade `voiceIntent.js` and `VoiceSearchButton.jsx` with enhanced natural language parsing, Indian station phonetic matching, typo tolerance, and date extraction ("tomorrow morning", "next Friday").
+- [ ] Task 12.3: Implement spoken audio confirmation engine (`speakRouteConfirmation`) using Web Speech Synthesis to read out parsed origin, destination, and selected mode.
+- [ ] Task 12.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 12.5: Run Day 12 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 12.6: Commit, tag `day-12`, deploy preview, and record status.
+
 

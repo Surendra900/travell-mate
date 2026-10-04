@@ -60,6 +60,7 @@ server.listen(4209, async () => {
     await page.addInitScript(() => {
       localStorage.setItem('travelmate-location-onboarding', 'dismissed');
       localStorage.setItem('travelmate-storage-consent', 'granted');
+      localStorage.setItem('travelmate-blind-mode', 'disabled');
     });
 
     await page.goto('http://localhost:4209/', { waitUntil: 'networkidle' });
@@ -124,6 +125,7 @@ server.listen(4209, async () => {
     await mobilePage.addInitScript(() => {
       localStorage.setItem('travelmate-location-onboarding', 'dismissed');
       localStorage.setItem('travelmate-storage-consent', 'granted');
+      localStorage.setItem('travelmate-blind-mode', 'disabled');
     });
 
     await mobilePage.goto('http://localhost:4209/', { waitUntil: 'networkidle' });

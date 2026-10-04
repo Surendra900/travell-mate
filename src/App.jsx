@@ -8,6 +8,7 @@ import OnboardingModal from './components/OnboardingModal'
 import FloatingSOS from './components/FloatingSOS'
 import OfflineOnlyMode from './components/OfflineOnlyMode'
 import GlobalTranslationLayer from './components/GlobalTranslationLayer'
+import BlindVoiceGate from './components/BlindVoiceGate'
 import Footer from './components/Footer'
 import LocationPermissionGate from './components/LocationPermissionGate'
 import PageErrorBoundary from './components/PageErrorBoundary'
@@ -37,6 +38,8 @@ export default function App({ authEnabled = false }) {
   })
   const [toastMessage, setToastMessage] = useState('')
   const [profileModalOpen, setProfileModalOpen] = useState(false)
+  const [blindGateOpen, setBlindGateOpen] = useState(false)
+  const [blindMode, setBlindMode] = useState(false)
   const status = useDeviceStatus()
   const labels = useMemo(() => languages[language].labels, [language])
 
@@ -102,9 +105,10 @@ export default function App({ authEnabled = false }) {
   const appShell = (
     <div className="min-h-screen pb-24 sm:pb-0">
       <GlobalTranslationLayer language={language} />
+      <BlindVoiceGate forceOpen={blindGateOpen} onClose={() => setBlindGateOpen(false)} toast={toast} onModeChange={setBlindMode} />
       <LocationPermissionGate toast={toast} />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-2 focus:font-black focus:text-slate-950">Skip to main content</a>
-      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} />}
+      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} />}
       <StatusBar status={status} />
       {status.online === false ? (
         <div id="main-content"><OfflineOnlyMode status={status} toast={toast} /></div>
