@@ -67,20 +67,20 @@ server.listen(4197, async () => {
 
     // 2. Open PNR Predictor Modal directly from Home
     console.log('Opening PNR Confirmation Predictor Modal...');
-    const clicked = await page.evaluate(() => {
-      const btn = document.getElementById('open-pnr-modal-btn');
-      if (btn) {
-        btn.click();
-        return true;
-      }
-      return false;
-    });
-    console.log('Clicked open-pnr-modal-btn:', clicked);
-    await new Promise(r => setTimeout(r, 1500));
+    await page.waitForSelector('#open-pnr-modal-btn');
+    await page.click('#open-pnr-modal-btn');
+    console.log('Clicked #open-pnr-modal-btn');
+    await page.waitForSelector('#pnr-predictor-modal', { timeout: 8000 });
+    await new Promise(r => setTimeout(r, 1000));
 
     const shot3 = path.join(artifactDir, 'day5_03_pnr_predictor_modal.png');
     await page.screenshot({ path: shot3 });
     console.log(`Saved: ${shot3}`);
+
+    // Close modal
+    const closeBtn = await page.$('#pnr-predictor-modal button');
+    if (closeBtn) await closeBtn.click();
+    await new Promise(r => setTimeout(r, 500));
 
     // 3. Navigate to Planner & Trigger Search to capture Station Hopper Quota Hack Card
     console.log('Navigating to Planner for Delhi -> Kanpur to capture Station Hopper...');

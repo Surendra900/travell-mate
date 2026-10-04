@@ -90,6 +90,7 @@ export default function Home() {
           </div>
           <button
             type="button"
+            id="open-pnr-banner-btn"
             onClick={() => setShowPnrModal(true)}
             className="inline-flex items-center gap-1.5 rounded-xl bg-cyan-400 px-4 py-2 text-xs font-black text-slate-950 transition hover:bg-cyan-300"
           >

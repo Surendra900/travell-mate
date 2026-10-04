@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import {
   Activity,
   AlertTriangle,
@@ -65,8 +66,6 @@ export default function PnrPredictorModal({
       chartPrepared: activeData.chartStatus?.toLowerCase().includes('prepared') && !activeData.chartStatus?.toLowerCase().includes('not')
     })
   }, [activeData])
-
-  if (!open) return null
 
   const handleLookup = async (targetPnr) => {
     const pnr = String(targetPnr || pnrInput).replace(/\D/g, '').slice(0, 10)
@@ -156,8 +155,10 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
     setTimeout(() => setCopied(false), 2000)
   }
 
-  return (
-    <div style={{ zIndex: 9999 }} className="fixed inset-0 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="dialog" aria-modal="true">
+  if (!open) return null
+
+  const modalContent = (
+    <div id="pnr-predictor-modal" style={{ zIndex: 9999 }} className="fixed inset-0 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="dialog" aria-modal="true">
       <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/30 bg-slate-900 p-6 shadow-2xl">
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-800 pb-4">
@@ -400,4 +401,9 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
       </div>
     </div>
   )
+
+  if (typeof document !== 'undefined') {
+    return createPortal(modalContent, document.body)
+  }
+  return modalContent
 }
