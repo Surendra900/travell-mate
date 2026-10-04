@@ -176,9 +176,10 @@
    - Unit tests: 88/88 passed (`tests/day12_voice_parser.test.mjs` + regression).
    - E2E Playwright tests: 5/5 passed (`tests/e2e/day12_voice_parser.spec.mjs`).
    - Full regression suite across Days 6-12: 100% passed with 0 errors.
-5. **Screenshots:**
+5. **Screenshots & Deployment:**
    - BEFORE: `docs/screenshots/day-12/before/desktop_planner_before_voice_engine.png`, `mobile_planner_before_voice_engine.png`
    - AFTER: `docs/screenshots/day-12/after/desktop_planner_phonetic_filled.png`, `desktop_voice_dialog_input.png`, `mobile_voice_dialog.png`
+   - Vercel Preview: `https://travelmate-ai-flowzint-863rbys5j-httplocalhost5173planner.vercel.app`
 
 **DAY 12 COMPLETE. Verification passed (5/5). Moving to DAY 13.**
 
