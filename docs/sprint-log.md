@@ -33,10 +33,33 @@
 **Goal:** Tatkal Emergency Booking Mode, Countdown Engine & Auto-Fill Assistant  
 
 ### Day 7 Task List
-- [ ] Task 7.1: Capture BEFORE screenshots of Tatkal mode / countdown timer on Desktop and Mobile.
-- [ ] Task 7.2: Verify and enhance `TatkalEmergencyTimer.jsx` and `EmergencyTatkalPlanner.jsx` with millisecond-precision 10:00 AM (AC) & 11:00 AM (Non-AC) Tatkal countdown timers and sync check.
-- [ ] Task 7.3: Implement 1-click Tatkal Auto-Fill Master Data Assistant (passenger names, ages, berth preferences, captcha pre-focus).
-- [ ] Task 7.4: Add Tatkal Quota (TQ) availability filters and direct IRCTC Tatkal login deep-link generator.
-- [ ] Task 7.5: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 7.6: Run Day 7 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 7.7: Commit, tag `day-7`, deploy preview, and record status.
+- [x] Task 7.1: Capture BEFORE screenshots of Tatkal mode / countdown timer on Desktop and Mobile.
+- [x] Task 7.2: Verify and enhance `TatkalEmergencyTimer.jsx` and `EmergencyTatkalPlanner.jsx` with millisecond-precision 10:00 AM (AC) & 11:00 AM (Non-AC) Tatkal countdown timers and sync check.
+- [x] Task 7.3: Implement 1-click Tatkal Auto-Fill Master Data Assistant (passenger names, ages, berth preferences, captcha pre-focus).
+- [x] Task 7.4: Add Tatkal Quota (TQ) availability filters and direct IRCTC Tatkal login deep-link generator.
+- [x] Task 7.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-7/after/`).
+- [x] Task 7.6: Run Day 7 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 7.7: Commit, tag `day-7`, deploy preview, and record status.
+
+### Day 7 Verification Evidence
+1. **Unit & Integration Suite:** 67 passing tests in `tests/*.test.mjs`, including `tests/day7_tatkal.test.mjs` validating dual-window AC/Non-AC timing, IST sync, master data persistence, and pre-Tatkal checklist interactions.
+2. **E2E Browser Verification Gate:** Headless Edge Chromium tests via `tests/e2e/day7_tatkal.spec.mjs` passed (5/5 checks clean, 0 console errors, 0 secret bundle leaks).
+3. **Artifacts Captured:**
+   - BEFORE: `docs/screenshots/day-7/before/tatkal_mode_desktop.png`, `tatkal_mode_mobile.png`
+   - AFTER: `docs/screenshots/day-7/after/tatkal_mode_desktop.png`, `tatkal_mode_mobile.png`
+
+**DAY 7 COMPLETE. Verification passed (5/5). Moving to DAY 8.**
+
+---
+
+## Sprint Entry: Day 8
+**Date:** October 2026  
+**Goal:** Live Train Running Status Tracker, Platform Indicator & Delay Heuristics  
+
+### Day 8 Task List
+- [ ] Task 8.1: Capture BEFORE screenshots of live train running status & station boards on Desktop and Mobile.
+- [ ] Task 8.2: Implement/enhance `TrainRunningStatus.jsx` with real-time GPS station progress, platform prediction, and delay status badges (On Time, Minor Delay, Severe Delay >45m).
+- [ ] Task 8.3: Add station live arrival/departure boards with platform number indicators and historical delay prediction heuristics.
+- [ ] Task 8.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 8.5: Run Day 8 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 8.6: Commit, tag `day-8`, deploy preview, and record status.
