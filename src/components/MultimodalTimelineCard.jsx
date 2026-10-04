@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   ArrowRight,
   Bus,
@@ -18,10 +18,13 @@ import {
   Share2,
   ShieldCheck,
   Sparkles,
-  Train
+  Train,
+  Volume2,
+  VolumeX
 } from 'lucide-react'
 import { formatWhatsAppShareText, getWhatsAppShareUrl } from '../utils/multimodalRouter'
 import { getTransitHubGuide } from '../data/transitHubData'
+import { speakRouteTier, stopSpeaking } from '../utils/voiceIntent'
 import OfflineTravelerPassModal from './OfflineTravelerPassModal'
 
 const modeIcons = {
@@ -35,6 +38,26 @@ export default function MultimodalTimelineCard({ route, onSave }) {
   const [copied, setCopied] = useState(false)
   const [showHubGuide, setShowHubGuide] = useState(false)
   const [showOfflinePass, setShowOfflinePass] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
+
+  useEffect(() => {
+    return () => {
+      stopSpeaking()
+    }
+  }, [])
+
+  function handleToggleAudioSummary() {
+    if (isSpeaking) {
+      stopSpeaking()
+      setIsSpeaking(false)
+    } else {
+      setIsSpeaking(true)
+      speakRouteTier(route, {
+        onEnd: () => setIsSpeaking(false),
+        onError: () => setIsSpeaking(false)
+      })
+    }
+  }
 
   if (!route) return null
 
@@ -99,6 +122,21 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-bold text-slate-300">
                 {route.tierBadge}
               </span>
+              <button
+                type="button"
+                onClick={handleToggleAudioSummary}
+                data-testid={`speak-tier-btn-${route.tier}`}
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold transition ${
+                  isSpeaking
+                    ? 'border border-amber-400 bg-amber-400/20 text-amber-300 animate-pulse'
+                    : 'border border-cyan-400/30 bg-cyan-500/15 text-cyan-200 hover:bg-cyan-500/25'
+                }`}
+                aria-label={`Listen to ${route.tierLabel} audio summary`}
+                title={isSpeaking ? 'Stop audio summary' : 'Listen to spoken itinerary'}
+              >
+                {isSpeaking ? <VolumeX size={12} className="text-amber-300" /> : <Volume2 size={12} />}
+                <span>{isSpeaking ? 'Stop Audio' : 'Listen'}</span>
+              </button>
             </div>
 
             {/* AI Reason Box */}
@@ -268,6 +306,21 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           </span>
 
           <div className="flex flex-wrap items-center gap-2">
+            {/* Audio Summary / Spoken Tier Playback */}
+            <button
+              type="button"
+              onClick={handleToggleAudioSummary}
+              className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition ${
+                isSpeaking
+                  ? 'border-amber-400 bg-amber-400/20 text-amber-300 animate-pulse'
+                  : 'border-cyan-400/30 bg-cyan-500/15 text-cyan-200 hover:bg-cyan-500/25'
+              }`}
+              title="Listen to complete spoken itinerary summary"
+            >
+              {isSpeaking ? <VolumeX size={13} className="text-amber-300" /> : <Volume2 size={13} />}
+              <span>{isSpeaking ? 'Stop Audio' : 'Audio Summary'}</span>
+            </button>
+
             {/* Offline Pass */}
             <button
               type="button"

@@ -192,6 +192,48 @@ export function speakRouteConfirmation(parsedIntent, options = {}) {
   }
 }
 
+export function formatTierSpeechSummary(route) {
+  if (!route) return ''
+  const tierName = String(route.tierLabel || 'Alternative route').replace(/[🟢🔵⚡]/g, '').trim()
+  const fare = route.totalFare ? `${route.totalFare} rupees` : 'Standard fare'
+  const duration = route.totalDuration || 'calculated duration'
+  const leg1 = route.leg1 ? `Step 1: ${route.leg1.mode} from ${route.leg1.from} to ${route.leg1.to}, departing at ${route.leg1.depart}.` : ''
+  const transfer = route.transferBuffer ? `Transfer: ${route.transferBuffer} at ${route.hubCity} Junction.` : ''
+  const leg2 = route.leg2 ? `Step 2: ${route.leg2.mode} from ${route.leg2.from} to ${route.leg2.to}, arriving at ${route.leg2.arrive}.` : ''
+  const why = route.whyPicked ? `Why picked: ${route.whyPicked}` : ''
+
+  return `${tierName}. Total fare is ${fare}, journey duration is ${duration}. ${leg1} ${transfer} ${leg2} ${why}`.trim()
+}
+
+export function speakRouteTier(route, options = {}) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return null
+  const summary = formatTierSpeechSummary(route)
+  if (!summary) return null
+
+  try {
+    window.speechSynthesis.cancel()
+    const utterance = new SpeechSynthesisUtterance(summary)
+    utterance.lang = options.lang || 'en-IN'
+    utterance.rate = 1.0
+    utterance.pitch = 1.0
+    if (options.onStart) utterance.onstart = options.onStart
+    if (options.onEnd) utterance.onend = options.onEnd
+    if (options.onError) utterance.onerror = options.onError
+    window.speechSynthesis.speak(utterance)
+    return summary
+  } catch {
+    return null
+  }
+}
+
+export function stopSpeaking() {
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    try {
+      window.speechSynthesis.cancel()
+    } catch {}
+  }
+}
+
 export function parseVoiceIntent(rawCommand = '') {
   const normalized = cleanText(rawCommand)
   const lower = normalized.toLowerCase()
@@ -211,6 +253,46 @@ export function parseVoiceIntent(rawCommand = '') {
     return { intent: 'analyze', action: 'open-analyze', plan: {}, mode: null, routeDetected: false, message: 'Opened Analyze Journey.' }
   }
 
+  // Voice Tier Readout Command (e.g., "read fastest route", "speak budget tier")
+  const isReadTierCommand = /\b(?:read|speak|listen\s+to|tell\s+me)\b.{0,30}\b(?:route|routes|tier|option|options|fastest|cheapest|budget|balanced)\b/i.test(lower)
+  if (isReadTierCommand && !detectRoute(normalized)) {
+    const targetTier = /\b(?:fastest|flight|express|quickest)\b/i.test(lower)
+      ? 'emergency-express'
+      : /\b(?:cheapest|budget|paisa|paisa\s+vasool)\b/i.test(lower)
+        ? 'paisa-vasool'
+        : /\b(?:balanced|value|best\s+value)\b/i.test(lower)
+          ? 'smart-balanced'
+          : 'top'
+    return {
+      intent: 'planner',
+      action: 'read-tier',
+      targetTier,
+      plan: {},
+      mode: null,
+      routeDetected: false,
+      message: `Reading ${targetTier === 'top' ? 'top' : targetTier} route summary aloud.`
+    }
+  }
+
+  // Pure Voice Filter Command (without new route)
+  const isCheapestFilterOnly = /\b(?:cheapest|lowest\s+fare|budget\s+route|cheap\s+ticket)\b/i.test(lower) && !detectRoute(normalized)
+  const isFastestFilterOnly = /\b(?:fastest\s+route|quickest\s+route|fastest\s+option|emergency\s+express)\b/i.test(lower) && !detectRoute(normalized)
+  const isBalancedFilterOnly = /\b(?:balanced\s+route|best\s+value|smart\s+balanced)\b/i.test(lower) && !detectRoute(normalized)
+  const isBackupFilterOnly = /\b(?:show\s+backup|backup\s+routes?|multimodal\s+options?|alternate\s+routes?)\b/i.test(lower) && !detectRoute(normalized)
+
+  if (isCheapestFilterOnly) {
+    return { intent: 'planner', action: 'apply-filter', filter: 'budget', plan: {}, mode: null, routeDetected: false, message: 'Filtered to cheapest budget routes.' }
+  }
+  if (isFastestFilterOnly) {
+    return { intent: 'planner', action: 'apply-filter', filter: 'fastest', plan: {}, mode: null, routeDetected: false, message: 'Filtered to fastest emergency express routes.' }
+  }
+  if (isBalancedFilterOnly) {
+    return { intent: 'planner', action: 'apply-filter', filter: 'balanced', plan: {}, mode: null, routeDetected: false, message: 'Filtered to best value balanced routes.' }
+  }
+  if (isBackupFilterOnly) {
+    return { intent: 'planner', action: 'show-backup', plan: {}, mode: null, routeDetected: false, message: 'Showing multimodal backup route alternatives.' }
+  }
+
   const route = detectRoute(normalized)
   const transportMode = detectTransport(normalized)
   const plan = { ...transportPatch(transportMode) }
@@ -223,6 +305,11 @@ export function parseVoiceIntent(rawCommand = '') {
     plan.dateLabel = dateInfo.label
     plan.timeOfDay = dateInfo.timeOfDay
   }
+
+  // Filter preference inside route command
+  if (/\b(?:cheapest|lowest\s+fare|budget)\b/i.test(lower)) plan.filter = 'budget'
+  if (/\b(?:fastest|quickest|urgent)\b/i.test(lower)) plan.filter = 'fastest'
+  if (/\b(?:balanced|best\s+value)\b/i.test(lower)) plan.filter = 'balanced'
 
   const budgetMatch = lower.match(/(?:under|budget|below)\s*(?:rs|rupees)?\s*(\d+)/)
   const passengerMatch = lower.match(/(\d+)\s*(?:passenger|passengers|people|person)/)

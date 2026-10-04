@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, SlidersHorizontal, Sparkles, TicketCheck, Train, Users } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, SlidersHorizontal, Sparkles, TicketCheck, Train, Users, Volume2, VolumeX } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
 import { getProviderDeepLink } from '../data/transportData'
 import { generateMultimodalRoutes } from '../utils/multimodalRouter'
+import { speakRouteTier, stopSpeaking } from '../utils/voiceIntent'
 import MultimodalTimelineCard from './MultimodalTimelineCard'
 import StationHopperCard from './StationHopperCard'
 import { generateStationHopperHacks } from '../utils/stationHopper'
@@ -106,20 +107,7 @@ export default function LiveResultsPanel({
 }) {
   const [activeFilter, setActiveFilter] = useState('all')
   const [showPnrModal, setShowPnrModal] = useState(false)
-
-  useEffect(() => {
-    if (!open) return undefined
-    const oldOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    const handleKey = (event) => {
-      if (event.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', handleKey)
-    return () => {
-      document.body.style.overflow = oldOverflow
-      window.removeEventListener('keydown', handleKey)
-    }
-  }, [open, onClose])
+  const [isSpeakingTop, setIsSpeakingTop] = useState(false)
 
   const multimodalRoutes = useMemo(() => {
     if (!open) return []
@@ -144,6 +132,69 @@ export default function LiveResultsPanel({
     }
     return multimodalRoutes
   }, [multimodalRoutes, activeFilter])
+
+  // Sync plan filter if set from voice intent
+  useEffect(() => {
+    if (plan?.filter && ['budget', 'fastest', 'balanced', 'all'].includes(plan.filter)) {
+      setActiveFilter(plan.filter)
+    }
+  }, [plan?.filter])
+
+  // Stop speaking when panel closes or unmounts
+  useEffect(() => {
+    return () => {
+      stopSpeaking()
+    }
+  }, [open])
+
+  // Listen for voice events
+  useEffect(() => {
+    function handleVoiceFilter(e) {
+      if (e.detail?.filter && ['budget', 'fastest', 'balanced', 'all'].includes(e.detail.filter)) {
+        setActiveFilter(e.detail.filter)
+      }
+    }
+    function handleVoiceReadTier(e) {
+      const target = e.detail?.targetTier
+      if (!multimodalRoutes || multimodalRoutes.length === 0) return
+      let targetRoute = multimodalRoutes[0]
+      if (target === 'emergency-express') {
+        targetRoute = multimodalRoutes.find(r => r.tier === 'emergency-express') || multimodalRoutes[0]
+      } else if (target === 'paisa-vasool') {
+        targetRoute = multimodalRoutes.find(r => r.tier === 'paisa-vasool') || multimodalRoutes[0]
+      } else if (target === 'smart-balanced') {
+        targetRoute = multimodalRoutes.find(r => r.tier === 'smart-balanced') || multimodalRoutes[0]
+      }
+      if (targetRoute) {
+        setIsSpeakingTop(true)
+        speakRouteTier(targetRoute, {
+          onEnd: () => setIsSpeakingTop(false),
+          onError: () => setIsSpeakingTop(false)
+        })
+      }
+    }
+
+    window.addEventListener('travelmate:voice-filter', handleVoiceFilter)
+    window.addEventListener('travelmate:voice-read-tier', handleVoiceReadTier)
+    return () => {
+      window.removeEventListener('travelmate:voice-filter', handleVoiceFilter)
+      window.removeEventListener('travelmate:voice-read-tier', handleVoiceReadTier)
+    }
+  }, [multimodalRoutes])
+
+  useEffect(() => {
+    if (!open) return undefined
+    const oldOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const handleKey = (event) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => {
+      document.body.style.overflow = oldOverflow
+      window.removeEventListener('keydown', handleKey)
+    }
+  }, [open, onClose])
 
   const stationHopperHacks = useMemo(() => {
     if (!open || plan?.transportMode !== 'Train') return []
@@ -222,9 +273,39 @@ export default function LiveResultsPanel({
                       If direct tickets are waitlisted, TravelMate stitched these confirmed combinations.
                     </p>
                   </div>
-                  <span className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-bold text-cyan-200">
-                    {displayedMultimodalRoutes.length} of {multimodalRoutes.length} Ranked Options
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {displayedMultimodalRoutes.length > 0 && (
+                      <button
+                        type="button"
+                        data-testid="voice-read-top-tier"
+                        onClick={() => {
+                          if (isSpeakingTop) {
+                            stopSpeaking()
+                            setIsSpeakingTop(false)
+                          } else {
+                            setIsSpeakingTop(true)
+                            speakRouteTier(displayedMultimodalRoutes[0], {
+                              onEnd: () => setIsSpeakingTop(false),
+                              onError: () => setIsSpeakingTop(false)
+                            })
+                          }
+                        }}
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition shadow-sm ${
+                          isSpeakingTop
+                            ? 'border border-amber-400 bg-amber-400/20 text-amber-300 animate-pulse'
+                            : 'border border-cyan-400/40 bg-cyan-500/20 text-cyan-200 hover:bg-cyan-500/30'
+                        }`}
+                        title={isSpeakingTop ? 'Stop speaking top route' : 'Read aloud top recommended multimodal route'}
+                        aria-label="Read top route aloud"
+                      >
+                        {isSpeakingTop ? <VolumeX size={13} className="text-amber-300" /> : <Volume2 size={13} />}
+                        <span>{isSpeakingTop ? 'Stop Reading' : 'Read Top Option'}</span>
+                      </button>
+                    )}
+                    <span className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-bold text-cyan-200">
+                      {displayedMultimodalRoutes.length} of {multimodalRoutes.length} Ranked Options
+                    </span>
+                  </div>
                 </div>
 
                 {/* Filter Pills */}

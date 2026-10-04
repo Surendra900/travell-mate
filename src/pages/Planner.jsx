@@ -53,6 +53,21 @@ export default function Planner({ status, toast, language = 'en' }) {
   const [liveStatus, setLiveStatus] = useState({ loading: false, mode: 'idle', message: '' })
   const [pendingVoiceAction, setPendingVoiceAction] = useState(null)
 
+  const applyVoiceDetail = (detail = {}) => {
+    if (detail.mode) setManualMode(detail.mode)
+    if (detail.plan && Object.keys(detail.plan).length) {
+      setPlan((old) => ({ ...old, ...detail.plan }))
+    }
+    setPendingVoiceAction({
+      action: detail.action || 'fill-planner',
+      plan: detail.plan || {},
+      mode: detail.mode || null,
+      filter: detail.filter || null,
+      targetTier: detail.targetTier || null,
+      token: Date.now()
+    })
+  }
+
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const from = params.get('from') || ''
@@ -98,19 +113,6 @@ export default function Planner({ status, toast, language = 'en' }) {
     return () => window.removeEventListener('travelmate:voice-planner', handleVoiceUpdate)
   }, [toast])
 
-  function applyVoiceDetail(detail = {}) {
-    if (detail.mode) setManualMode(detail.mode)
-    if (detail.plan && Object.keys(detail.plan).length) {
-      setPlan((old) => ({ ...old, ...detail.plan }))
-    }
-    setPendingVoiceAction({
-      action: detail.action || 'fill-planner',
-      plan: detail.plan || {},
-      mode: detail.mode || null,
-      token: Date.now()
-    })
-  }
-
 
 
   useEffect(() => {
@@ -140,6 +142,23 @@ export default function Planner({ status, toast, language = 'en' }) {
           quota: 'Tatkal / Emergency',
           urgency: 'Emergency'
         })
+        return
+      }
+      if (action === 'apply-filter') {
+        setResultsOpen(true)
+        if (request.filter) {
+          window.dispatchEvent(new CustomEvent('travelmate:voice-filter', { detail: { filter: request.filter } }))
+        }
+        return
+      }
+      if (action === 'show-backup') {
+        setResultsOpen(true)
+        return
+      }
+      if (action === 'read-tier') {
+        setResultsOpen(true)
+        window.dispatchEvent(new CustomEvent('travelmate:voice-read-tier', { detail: { targetTier: request.targetTier } }))
+        return
       }
     }, 60)
 

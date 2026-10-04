@@ -190,12 +190,42 @@
 **Goal:** Agentic Voice Tool-Use & Spoken Route Tier Playback  
 
 ### Day 13 Task List
-- [ ] Task 13.1: Capture BEFORE screenshots of journey route results and tier cards.
-- [ ] Task 13.2: Implement agentic speech-driven filter commands ("cheapest route", "fastest flight", "prefer train", "show backup options") in `voiceIntent.js` and `NormalPlanner.jsx`.
-- [ ] Task 13.3: Implement audible spoken summary playback of multimodal route tiers (Tier 1 Fastest, Tier 2 Balanced, Tier 3 Budget) via Web Speech Synthesis.
-- [ ] Task 13.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 13.5: Run Day 13 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 13.6: Commit, tag `day-13`, deploy preview, and record status.
+- [x] Task 13.1: Capture BEFORE screenshots of journey route results and tier cards.
+- [x] Task 13.2: Implement agentic speech-driven filter commands ("cheapest route", "fastest flight", "prefer train", "show backup options") in `voiceIntent.js`, `LiveResultsPanel.jsx`, and `Planner.jsx`.
+- [x] Task 13.3: Implement audible spoken summary playback of multimodal route tiers (Tier 1 Fastest, Tier 2 Balanced, Tier 3 Budget) via Web Speech Synthesis.
+- [x] Task 13.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 13.5: Run Day 13 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 13.6: Commit, tag `day-13`, deploy preview, and record status.
+
+### Day 13 Verification Evidence
+1. **Agentic Speech-Driven Filter Commands:** Extended `parseVoiceIntent()` in `voiceIntent.js` to recognize pure voice filter commands ("cheapest routes", "fastest option", "smart balanced", "show backup options") and combined route-filter queries ("cheapest train from Hyderabad to Visakhapatnam"), dispatching `travelmate:voice-filter` events to auto-filter displayed alternative tiers.
+2. **Audible Spoken Route Tier Playback:** Implemented `formatTierSpeechSummary()`, `speakRouteTier()`, and `stopSpeaking()` via Web Speech Synthesis (`window.speechSynthesis`).
+3. **Interactive Audio Summary Controls:**
+   - Added `data-testid="speak-tier-btn-[tier]"` to each `MultimodalTimelineCard` header and a secondary footer button that toggles between "Listen" and "Stop Audio" with active pulse indicator.
+   - Added `data-testid="voice-read-top-tier"` in `LiveResultsPanel.jsx` allowing users to hear the top recommended multimodal itinerary with 1 click.
+4. **Automated Verification:**
+   - Unit tests: 93/93 passed (`tests/day13_voice_tools.test.mjs` + regression).
+   - E2E Playwright tests: 6/6 passed (`tests/e2e/day13_voice_tools.spec.mjs`).
+   - Full regression suite across Days 6-13: 100% passed with 0 errors.
+5. **Screenshots:**
+   - BEFORE: `docs/screenshots/day-13/before/desktop_multimodal_tiers_before.png`, `mobile_multimodal_tiers_before.png`
+   - AFTER: `docs/screenshots/day-13/after/desktop_multimodal_tiers_after.png`, `desktop_tier_audio_playing.png`, `mobile_multimodal_tiers_after.png`, `mobile_tier_audio_playing.png`
+
+**DAY 13 COMPLETE. Verification passed (6/6). Moving to DAY 14.**
+
+---
+
+## Sprint Entry: Day 14
+**Date:** October 2026  
+**Goal:** Voice Emergency Trigger ("Help" / "SOS") & Hands-Free Safety Dispatch  
+
+### Day 14 Task List
+- [ ] Task 14.1: Capture BEFORE screenshots of emergency mode and voice input triggers.
+- [ ] Task 14.2: Implement hands-free spoken emergency trigger keywords ("help", "sos", "save me", "accident", "danger", "police") in `voiceIntent.js` and `BlindVoiceGate.jsx`.
+- [ ] Task 14.3: Implement voice-guided safety response engine with acoustic emergency confirmation and hands-free hotline dialers.
+- [ ] Task 14.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 14.5: Run Day 14 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 14.6: Commit, tag `day-14`, deploy preview, and record status.
 
 
 

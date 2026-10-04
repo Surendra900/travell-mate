@@ -88,11 +88,15 @@ export default function App({ authEnabled = false }) {
       plan: voice.plan,
       mode: voice.mode,
       action: voice.action,
+      filter: voice.filter,
+      targetTier: voice.targetTier,
       source: 'voice'
     }
 
-    // Audible confirmation readout
-    speakRouteConfirmation(voice, { lang: languages[language]?.bcp47 || 'en-IN' })
+    // Audible confirmation readout for route searches
+    if (voice.routeDetected) {
+      speakRouteConfirmation(voice, { lang: languages[language]?.bcp47 || 'en-IN' })
+    }
 
     if (location.pathname === '/planner') {
       window.dispatchEvent(new CustomEvent('travelmate:voice-planner', { detail }))
