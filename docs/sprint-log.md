@@ -80,9 +80,32 @@
 **Goal:** Low-Network & Offline Autonomous Fallback Engine  
 
 ### Day 9 Task List
-- [ ] Task 9.1: Capture BEFORE screenshots of low-network / offline mode on Desktop and Mobile.
-- [ ] Task 9.2: Verify and enhance `LowNetworkPlanner.jsx` with offline bandwidth threshold detection (2G/3G/offline) and automatic fallback banners.
-- [ ] Task 9.3: Add offline journey cache synchronization and local transit schedule snapshots for zero-connectivity situations.
-- [ ] Task 9.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 9.5: Run Day 9 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 9.6: Commit, tag `day-9`, deploy preview, and record status.
+- [x] Task 9.1: Capture BEFORE screenshots of low-network / offline mode on Desktop and Mobile.
+- [x] Task 9.2: Verify and enhance `LowNetworkPlanner.jsx` with offline bandwidth threshold detection (2G/3G/offline) and automatic fallback banners.
+- [x] Task 9.3: Add offline journey cache synchronization and local transit schedule snapshots for zero-connectivity situations.
+- [x] Task 9.4: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-9/after/`).
+- [x] Task 9.5: Run Day 9 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 9.6: Commit, tag `day-9`, deploy preview, and record status.
+
+### Day 9 Verification Evidence
+1. **Unit & Integration Suite:** 73 passing tests in `tests/*.test.mjs`, including `tests/day9_offline.test.mjs` testing network quality heuristics, 2G bandwidth triggers, and zero-network local storage persistence.
+2. **E2E Browser Verification Gate:** Playwright E2E browser tests via `tests/e2e/day9_offline.spec.mjs` passed (5/5 checks clean, 0 console errors, 0 secret bundle leaks).
+3. **Artifacts Captured:**
+   - BEFORE: `docs/screenshots/day-9/before/low_network_desktop.png`, `low_network_mobile.png`
+   - AFTER: `docs/screenshots/day-9/after/low_network_desktop.png`, `low_network_mobile.png`
+
+**DAY 9 COMPLETE. Verification passed (5/5). Moving to DAY 10.**
+
+---
+
+## Sprint Entry: Day 10
+**Date:** October 2026  
+**Goal:** Multilingual Localization (10+ Indian Languages, RTL Urdu & SambaNova Dynamic Translation)  
+
+### Day 10 Task List
+- [ ] Task 10.1: Capture BEFORE screenshots of language switcher and localized UI on Desktop and Mobile.
+- [ ] Task 10.2: Verify and expand `languageData.js` with complete translations for 10 Indian languages: Hindi (hi), Telugu (te), Tamil (ta), Kannada (kn), Malayalam (ml), Bengali (bn), Marathi (mr), Gujarati (gu), Punjabi (pa), Urdu (ur - with RTL layout support).
+- [ ] Task 10.3: Verify SambaNova dynamic translation integration (`api/translate.js` and `GlobalTranslationLayer.jsx`) for live phrases with graceful offline fallback dictionary.
+- [ ] Task 10.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 10.5: Run Day 10 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 10.6: Commit, tag `day-10`, deploy preview, and record status.

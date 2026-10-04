@@ -78,10 +78,52 @@ export function useDeviceStatus() {
     }
   }, [])
 
-  const recommendedMode = useMemo(
-    () => (status.online ? 'normal' : 'low-network'),
-    [status.online]
-  )
+  const isSlowNetwork = useMemo(() => {
+    if (!status.online) return false
+    return (
+      status.effectiveType === '2g' ||
+      status.effectiveType === 'slow-2g' ||
+      (status.downlink !== null && status.downlink < 0.35) ||
+      status.saveData === true
+    )
+  }, [status.online, status.effectiveType, status.downlink, status.saveData])
 
-  return { ...status, recommendedMode }
+  const recommendedMode = useMemo(() => {
+    if (!status.online) return 'low-network'
+    if (isSlowNetwork) return 'low-network'
+    return 'normal'
+  }, [status.online, isSlowNetwork])
+
+  const networkQuality = useMemo(() => {
+    if (!status.online) {
+      return {
+        tier: 'offline',
+        label: 'Offline (Zero Connectivity)',
+        badgeColor: 'border-red-500/40 bg-red-500/20 text-red-200',
+        dotColor: 'bg-red-400'
+      }
+    }
+    if (isSlowNetwork) {
+      return {
+        tier: 'slow',
+        label: `Low Bandwidth (${status.effectiveType.toUpperCase() || '2G'})`,
+        badgeColor: 'border-amber-500/40 bg-amber-500/20 text-amber-200',
+        dotColor: 'bg-amber-400'
+      }
+    }
+    return {
+      tier: 'good',
+      label: 'High-Speed Broadband / 4G',
+      badgeColor: 'border-emerald-500/40 bg-emerald-500/20 text-emerald-200',
+      dotColor: 'bg-emerald-400'
+    }
+  }, [status.online, isSlowNetwork, status.effectiveType])
+
+  return {
+    ...status,
+    recommendedMode,
+    isSlowNetwork,
+    isOffline: !status.online,
+    networkQuality
+  }
 }
