@@ -207,9 +207,10 @@
    - Unit tests: 93/93 passed (`tests/day13_voice_tools.test.mjs` + regression).
    - E2E Playwright tests: 6/6 passed (`tests/e2e/day13_voice_tools.spec.mjs`).
    - Full regression suite across Days 6-13: 100% passed with 0 errors.
-5. **Screenshots:**
+5. **Screenshots & Deployment:**
    - BEFORE: `docs/screenshots/day-13/before/desktop_multimodal_tiers_before.png`, `mobile_multimodal_tiers_before.png`
    - AFTER: `docs/screenshots/day-13/after/desktop_multimodal_tiers_after.png`, `desktop_tier_audio_playing.png`, `mobile_multimodal_tiers_after.png`, `mobile_tier_audio_playing.png`
+   - Vercel Preview: `https://travelmate-ai-flowzint-rbg4c1bwe-httplocalhost5173planner.vercel.app`
 
 **DAY 13 COMPLETE. Verification passed (6/6). Moving to DAY 14.**
 
