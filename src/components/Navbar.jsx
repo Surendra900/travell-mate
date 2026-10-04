@@ -46,6 +46,10 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
               <Icon size={17} /> {label}
             </NavLink>
           ))}
+          <div className="col-span-full pt-3 mt-1 flex items-center justify-between border-t border-slate-200">
+            <LanguageSelector language={language} onChange={onLanguageChange} />
+            <AccountMenu authEnabled={authEnabled} onOpenProfile={onOpenProfile} compact />
+          </div>
         </div>
       )}
     </header>

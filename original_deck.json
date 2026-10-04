@@ -1,0 +1,620 @@
+[
+  {
+    "slide_number": 1,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "TRAVELMATE"
+      },
+      {
+        "id": 4,
+        "text": "\"Don't just find a ticket. Find the journey.\"\nAI-powered multimodal travel planning + journey safety\n🚆 Train | 🚌 Bus | ✈️ Flight | 🤖 AI | 🚨 Safety\nNational Startup Pitch Competition 2026  ·  Surendra Gedala"
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 2,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "Travel Gets Complicated When There's No Direct Route"
+      },
+      {
+        "id": 5,
+        "text": "No Direct Train"
+      },
+      {
+        "id": 6,
+        "text": "Travelers are left stranded with no single-mode solution between origin and destination."
+      },
+      {
+        "id": 8,
+        "text": "Bus Too Slow, Flight Too Expensive"
+      },
+      {
+        "id": 9,
+        "text": "Neither extreme fits. The optimal path lies somewhere in between — and no platform finds it."
+      },
+      {
+        "id": 11,
+        "text": "Manual Multi-Platform Search"
+      },
+      {
+        "id": 12,
+        "text": "Travelers jump across IRCTC, RedBus, MakeMyTrip — manually stitching together a journey themselves."
+      },
+      {
+        "id": 14,
+        "text": "Disruptions Handled Separately"
+      },
+      {
+        "id": 15,
+        "text": "Once traveling, emergencies and disruptions are managed through entirely disconnected tools."
+      },
+      {
+        "id": 18,
+        "text": "Too many decisions. Too many platforms. The traveler does the work that technology should."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 3,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "Travelers Don't Want a Ticket."
+      },
+      {
+        "id": 4,
+        "text": "They Want to Reach the Destination."
+      },
+      {
+        "id": 5,
+        "text": "The insight that drives everything TravelMate does."
+      },
+      {
+        "id": 6,
+        "text": "Traditional Travel Search"
+      },
+      {
+        "id": 7,
+        "text": "\"What transportation is available from A?\""
+      },
+      {
+        "id": 9,
+        "text": "Platforms present options by mode — train results, bus results, flight results — and leave the traveler to figure out the rest."
+      },
+      {
+        "id": 11,
+        "text": "The TravelMate Question"
+      },
+      {
+        "id": 12,
+        "text": "\"What is the best practical way to get this traveler from A to B?\""
+      },
+      {
+        "id": 14,
+        "text": "A fundamental shift: from individual ticket search to complete journey intelligence. The AI works backward from the destination, not forward from a departure board."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 4,
+    "shapes_text": [
+      {
+        "id": 2,
+        "text": "TravelMate's AI Figures Out the Journey"
+      },
+      {
+        "id": 4,
+        "text": "Direct Route Check"
+      },
+      {
+        "id": 5,
+        "text": "Verify single-mode availability and suitability."
+      },
+      {
+        "id": 6,
+        "text": "Multimodal Generation"
+      },
+      {
+        "id": 7,
+        "text": "Create combined options like Train+Flight or Bus+Flight."
+      },
+      {
+        "id": 8,
+        "text": "Journey Scoring"
+      },
+      {
+        "id": 9,
+        "text": "Score by time, cost, transfers, buffers, preferences."
+      },
+      {
+        "id": 10,
+        "text": "Ranked Output"
+      },
+      {
+        "id": 11,
+        "text": "Return fastest, cheapest, and balanced choices."
+      },
+      {
+        "id": 12,
+        "text": "Live availability and pricing require verified provider/API integrations."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 5,
+    "shapes_text": [
+      {
+        "id": 2,
+        "text": "From Destination Request to Complete Journey"
+      },
+      {
+        "id": 4,
+        "text": "How the Engine Works"
+      },
+      {
+        "id": 5,
+        "text": "The traveler simply states where they want to go. TravelMate handles the complexity underneath.\nLive availability and pricing require verified provider/API integrations."
+      },
+      {
+        "id": 7,
+        "text": "1. User Input"
+      },
+      {
+        "id": 8,
+        "text": "Origin, destination, date, budget, and preferences."
+      },
+      {
+        "id": 10,
+        "text": "2. Direct Route Check"
+      },
+      {
+        "id": 11,
+        "text": "Is a suitable single-mode option available?"
+      },
+      {
+        "id": 13,
+        "text": "3. Multimodal Generation"
+      },
+      {
+        "id": 14,
+        "text": "If no direct route, AI constructs combinations."
+      },
+      {
+        "id": 16,
+        "text": "4. Ranked Output"
+      },
+      {
+        "id": 17,
+        "text": "Fastest, cheapest, and balanced journeys presented clearly."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 6,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "One Journey, One Interface"
+      },
+      {
+        "id": 6,
+        "text": "PLAN"
+      },
+      {
+        "id": 7,
+        "text": "Train, bus, flight, and multimodal routes. All journeys saved under My Trips in one place."
+      },
+      {
+        "id": 10,
+        "text": "ASSIST"
+      },
+      {
+        "id": 11,
+        "text": "AI travel assistant with personalized recommendations, voice assistance, and multilingual journey guidance."
+      },
+      {
+        "id": 14,
+        "text": "PROTECT"
+      },
+      {
+        "id": 15,
+        "text": "Safety Mode, SOS, live location sharing, emergency contacts, and offline emergency resources — always accessible."
+      },
+      {
+        "id": 18,
+        "text": "TravelMate stays useful before, during, and when something goes wrong."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 7,
+    "shapes_text": [
+      {
+        "id": 2,
+        "text": "Travel Assistance Shouldn't Stop After Booking"
+      },
+      {
+        "id": 3,
+        "text": "Most platforms end their job at confirmation. TravelMate stays with the traveler throughout the journey — especially when things go wrong."
+      },
+      {
+        "id": 4,
+        "text": "Safety Mode Features"
+      },
+      {
+        "id": 5,
+        "text": "Emergency messages require user confirmation before sending."
+      },
+      {
+        "id": 8,
+        "text": "SOS & Emergency Contact"
+      },
+      {
+        "id": 9,
+        "text": "One-tap access to 112 and pre-set emergency contacts with location sharing."
+      },
+      {
+        "id": 11,
+        "text": "Scenario-Specific Guidance"
+      },
+      {
+        "id": 12,
+        "text": "Step-by-step assistance for medical emergencies, theft/robbery, and lost passport situations."
+      },
+      {
+        "id": 14,
+        "text": "Offline Emergency Pack"
+      },
+      {
+        "id": 15,
+        "text": "Automatic low-network fallback with locally cached journey and emergency information for connectivity gaps."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 8,
+    "shapes_text": [
+      {
+        "id": 2,
+        "text": "Planning → Travelling → Safety"
+      },
+      {
+        "id": 3,
+        "text": "A single continuous experience across every stage of the journey."
+      },
+      {
+        "id": 5,
+        "text": "PLAN"
+      },
+      {
+        "id": 6,
+        "text": "Tell TravelMate where you want to go."
+      },
+      {
+        "id": 8,
+        "text": "AI ROUTE"
+      },
+      {
+        "id": 9,
+        "text": "Find a direct or multimodal journey automatically."
+      },
+      {
+        "id": 11,
+        "text": "CHOOSE"
+      },
+      {
+        "id": 12,
+        "text": "Select based on time, cost, and convenience."
+      },
+      {
+        "id": 14,
+        "text": "MY TRIP"
+      },
+      {
+        "id": 15,
+        "text": "Keep the complete journey together in one view."
+      },
+      {
+        "id": 17,
+        "text": "TRAVEL"
+      },
+      {
+        "id": 18,
+        "text": "Get contextual AI assistance throughout the journey."
+      },
+      {
+        "id": 20,
+        "text": "SAFETY"
+      },
+      {
+        "id": 21,
+        "text": "If something goes wrong, activate Safety Mode instantly."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 9,
+    "shapes_text": [
+      {
+        "id": 2,
+        "text": "From Ticket Search to Journey Intelligence"
+      },
+      {
+        "id": 4,
+        "text": "TRADITIONAL PLATFORMS"
+      },
+      {
+        "id": 5,
+        "text": "How Travel Was Searched"
+      },
+      {
+        "id": 7,
+        "text": "Mode-by-Mode Search"
+      },
+      {
+        "id": 8,
+        "text": "Train results. Bus results. Flight results. Separate, siloed, disconnected."
+      },
+      {
+        "id": 10,
+        "text": "Manual Journey Assembly"
+      },
+      {
+        "id": 11,
+        "text": "The traveler figures out connections, timing gaps, and transfers themselves."
+      },
+      {
+        "id": 13,
+        "text": "Booking-Focused"
+      },
+      {
+        "id": 14,
+        "text": "Platform value ends at confirmation. No journey context beyond the ticket."
+      },
+      {
+        "id": 16,
+        "text": "Emergency Assistance Separate"
+      },
+      {
+        "id": 17,
+        "text": "Safety tools are entirely outside the travel platform."
+      },
+      {
+        "id": 20,
+        "text": "TRAVELMATE"
+      },
+      {
+        "id": 21,
+        "text": "How Journeys Are Intelligently Orchestrated"
+      },
+      {
+        "id": 23,
+        "text": "AI Constructs Complete Journeys"
+      },
+      {
+        "id": 24,
+        "text": "Train + Bus + Flight combinations generated and ranked automatically."
+      },
+      {
+        "id": 26,
+        "text": "Multimodal by Design"
+      },
+      {
+        "id": 27,
+        "text": "Every combination evaluated: time, cost, transfers, connection buffers, preferences."
+      },
+      {
+        "id": 29,
+        "text": "Journey-Focused with Context AI"
+      },
+      {
+        "id": 30,
+        "text": "The platform stays relevant from planning through arrival."
+      },
+      {
+        "id": 32,
+        "text": "Integrated Safety Mode"
+      },
+      {
+        "id": 33,
+        "text": "Emergency assistance built into the same interface. Always one tap away."
+      },
+      {
+        "id": 36,
+        "text": "Differentiation: Intelligently orchestrating multiple modes into one complete journey — not just aggregating tickets."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 10,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "India's Digital Travel Market Is Large — and Still Growing"
+      },
+      {
+        "id": 4,
+        "text": "India's online travel market is estimated at $25.38B in 2026 and forecast to reach $38.58B by 2031, an 8.74% CAGR. Transportation is the largest service category."
+      },
+      {
+        "id": 6,
+        "text": "TAM"
+      },
+      {
+        "id": 7,
+        "text": "India online travel market\n$25.38B (2026)\nForecast: $38.58B by 2031"
+      },
+      {
+        "id": 9,
+        "text": "SAM"
+      },
+      {
+        "id": 10,
+        "text": "Transportation\n36.24% of online travel (2025)\nTrain + Bus + Flight"
+      },
+      {
+        "id": 12,
+        "text": "Initial SOM"
+      },
+      {
+        "id": 13,
+        "text": "Initial target\nDigitally active intercity travelers — students, young professionals, and frequent public-transport users facing complex connections."
+      },
+      {
+        "id": 14,
+        "text": "Beachhead: travelers who need multi-leg journeys and currently have to stitch together options across multiple platforms."
+      },
+      {
+        "id": 15,
+        "text": "Source: Mordor Intelligence, India Online Travel Market, updated Jul 24, 2026. Market figures are estimates."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 11,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "Go-To-Market & Business Model"
+      },
+      {
+        "id": 5,
+        "text": "PHASE 1 — Student & Young Travelers"
+      },
+      {
+        "id": 6,
+        "text": "College communities, WhatsApp groups, Instagram, student ambassadors"
+      },
+      {
+        "id": 8,
+        "text": "PHASE 2 — Product-Led Growth"
+      },
+      {
+        "id": 9,
+        "text": "Core shareable experience: \"Find the best way from A → B\""
+      },
+      {
+        "id": 11,
+        "text": "PHASE 3 — Ecosystem Partnerships"
+      },
+      {
+        "id": 12,
+        "text": "Transport providers, travel agencies, universities, corporate travel, tourism organizations"
+      },
+      {
+        "id": 13,
+        "text": "Planned revenue streams: booking commissions, affiliate partnerships, premium AI/safety features, and B2B travel technology. These are planned — not current revenue."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 12,
+    "shapes_text": [
+      {
+        "id": 3,
+        "text": "Product Roadmap — From Prototype to India's Intelligent Travel Layer"
+      },
+      {
+        "id": 7,
+        "text": "1"
+      },
+      {
+        "id": 8,
+        "text": "NOW — PROTOTYPE"
+      },
+      {
+        "id": 9,
+        "text": "Working prototype: train, bus, flight workflows\nAI multimodal journey concept, Safety Mode, emergency workflows"
+      },
+      {
+        "id": 12,
+        "text": "2"
+      },
+      {
+        "id": 13,
+        "text": "0–6 MONTHS — VALIDATION"
+      },
+      {
+        "id": 14,
+        "text": "Target: 20–30 traveler interviews, prototype testing, user feedback\nValidate multimodal routing demand and build the MVP backend"
+      },
+      {
+        "id": 17,
+        "text": "3"
+      },
+      {
+        "id": 18,
+        "text": "6–12 MONTHS — LIVE TRAVEL INTELLIGENCE"
+      },
+      {
+        "id": 19,
+        "text": "Real train, bus, flight APIs; multimodal routing engine; real-time travel data"
+      },
+      {
+        "id": 22,
+        "text": "4"
+      },
+      {
+        "id": 23,
+        "text": "12–24 MONTHS — COMMERCIAL PLATFORM"
+      },
+      {
+        "id": 24,
+        "text": "Booking integrations, payments, provider partnerships, personalized AI"
+      },
+      {
+        "id": 25,
+        "text": "Current stage: Working prototype / Pre-seed / Pre-traction"
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "slide_number": 13,
+    "shapes_text": [
+      {
+        "id": 2,
+        "text": "Don't just find a ticket."
+      },
+      {
+        "id": 3,
+        "text": "Find the journey."
+      },
+      {
+        "id": 4,
+        "text": "TRAVELMATE"
+      },
+      {
+        "id": 5,
+        "text": "🚆 + 🚌 + ✈️"
+      },
+      {
+        "id": 8,
+        "text": "AI Journey Intelligence"
+      },
+      {
+        "id": 10,
+        "text": "Journey Safety"
+      },
+      {
+        "id": 11,
+        "text": "Tell us where you need to go. TravelMate figures out how to get you there."
+      }
+    ],
+    "notes": ""
+  }
+]

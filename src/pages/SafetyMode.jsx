@@ -3,6 +3,7 @@ import { Siren } from 'lucide-react'
 import EmergencyCard from '../components/EmergencyCard'
 import DocumentVault from '../components/DocumentVault'
 import EmergencyToolkit from '../components/EmergencyToolkit'
+import EmergencyPhraseCards from '../components/EmergencyPhraseCards'
 import { emergencyCards } from '../data/emergencyData'
 
 export default function SafetyMode({ toast }) {
@@ -27,6 +28,8 @@ export default function SafetyMode({ toast }) {
       <div ref={crisisPanelRef} tabIndex={-1} className="scroll-mt-24 outline-none safety-tool-shell">
         <EmergencyToolkit toast={toast} />
       </div>
+
+      <EmergencyPhraseCards toast={toast} />
 
       <section className="card-grid mt-10 safety-cards">
         {emergencyCards.map((item) => <EmergencyCard key={item.id} item={item} />)}

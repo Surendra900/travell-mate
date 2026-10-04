@@ -653,3 +653,31 @@ h1,h2,h3,h4,.tm-brand,.tm-footer-logo,.assistant-main h1,.sketch-intro h1,.sketc
   color: #e2e8f0;
 }
 
+/* RTL Support for Urdu and RTL Locales */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+[dir="rtl"] .tm-brand {
+  flex-direction: row-reverse;
+}
+[dir="rtl"] .tm-nav-links {
+  margin-left: unset;
+  margin-right: auto;
+}
+[dir="rtl"] .tm-nav-actions {
+  margin-left: unset;
+  margin-right: 20px;
+}
+[dir="rtl"] .sketch-intro {
+  align-items: flex-end;
+  text-align: right;
+}
+[dir="rtl"] .sketch-actions {
+  flex-direction: row-reverse;
+}
+[dir="rtl"] .status-strip {
+  direction: rtl;
+}
+
+

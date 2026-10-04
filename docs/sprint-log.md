@@ -103,9 +103,39 @@
 **Goal:** Multilingual Localization (10+ Indian Languages, RTL Urdu & SambaNova Dynamic Translation)  
 
 ### Day 10 Task List
-- [ ] Task 10.1: Capture BEFORE screenshots of language switcher and localized UI on Desktop and Mobile.
-- [ ] Task 10.2: Verify and expand `languageData.js` with complete translations for 10 Indian languages: Hindi (hi), Telugu (te), Tamil (ta), Kannada (kn), Malayalam (ml), Bengali (bn), Marathi (mr), Gujarati (gu), Punjabi (pa), Urdu (ur - with RTL layout support).
-- [ ] Task 10.3: Verify SambaNova dynamic translation integration (`api/translate.js` and `GlobalTranslationLayer.jsx`) for live phrases with graceful offline fallback dictionary.
-- [ ] Task 10.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 10.5: Run Day 10 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 10.6: Commit, tag `day-10`, deploy preview, and record status.
+- [x] Task 10.1: Capture BEFORE screenshots of language switcher and localized UI on Desktop and Mobile.
+- [x] Task 10.2: Verify and expand `languageData.js` with complete translations for 10 Indian languages: Hindi (hi), Telugu (te), Tamil (ta), Kannada (kn), Malayalam (ml), Bengali (bn), Marathi (mr), Gujarati (gu), Punjabi (pa), Urdu (ur - with RTL layout support).
+- [x] Task 10.3: Verify SambaNova dynamic translation integration (`api/translate.js` and `GlobalTranslationLayer.jsx`) for live phrases with graceful offline fallback dictionary.
+- [x] Task 10.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 10.5: Run Day 10 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 10.6: Commit, tag `day-10`, deploy preview, and record status.
+
+### Day 10 Verification Evidence
+1. **10 Indian Languages & RTL Urdu:** Added Punjabi (`pa`) and verified complete coverage across all 10 Indian regional languages (`hi`, `te`, `ta`, `kn`, `ml`, `mr`, `bn`, `gu`, `pa`, `ur`). RTL layout (`[dir="rtl"]`) applied and verified for Urdu with flipped navigation, brand reversal, and text alignment.
+2. **Instant Offline Fallback Dictionary:** Added `OFFLINE_UI_TRANSLATIONS` to `languageData.js` and merged into `GlobalTranslationLayer.jsx` cache, providing instant translation of core UI copy (Explore, My Trips, Assistant, Safety, Hotlines, Telemetry, Protocols) without waiting for network or failing offline.
+3. **Interactive Regional Emergency Phrase Communicator:** Added `EmergencyPhraseCards.jsx` to `SafetyMode.jsx` featuring regional language selector pills, high-contrast native phrase rendering, 1-click clipboard copy, and Web Speech Synthesis audio playback (`window.speechSynthesis`).
+4. **Mobile Navigation Support:** Extended `Navbar.jsx` mobile menu to include full language switching for mobile viewports.
+5. **Automated Verification:**
+   - Unit tests: 79/79 passed (`tests/day10_multilingual.test.mjs` + regression).
+   - E2E Playwright tests: 10/10 passed (`tests/e2e/day10_multilingual.spec.mjs`).
+   - Full regression suite across Days 6-10: 100% passed with 0 errors.
+6. **Screenshots:**
+   - BEFORE: `docs/screenshots/day-10/before/desktop_home_en.png`, `desktop_home_hi.png`, `mobile_home_en.png`
+   - AFTER: `docs/screenshots/day-10/after/desktop_home_hindi.png`, `desktop_home_urdu_rtl.png`, `desktop_safety_phrase_cards.png`, `mobile_safety_phrase_cards.png`
+
+**DAY 10 COMPLETE. Verification passed (10/10). Moving to DAY 11.**
+
+---
+
+## Sprint Entry: Day 11
+**Date:** October 2026  
+**Goal:** Blind Voice Gate & Spoken Accessibility Onboarding Gate ("Are you blind?")  
+
+### Day 11 Task List
+- [ ] Task 11.1: Capture BEFORE screenshots of onboarding and voice trigger layout.
+- [ ] Task 11.2: Implement Spoken Accessibility Onboarding Gate ("Are you blind?") in `BlindVoiceGate.jsx` with hands-free audio prompt, high-contrast accessible layout, keyboard trap, and Web Speech Recognition/Synthesis.
+- [ ] Task 11.3: Integrate Blind Voice Gate seamlessly with `App.jsx` and voice route copilot.
+- [ ] Task 11.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 11.5: Run Day 11 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 11.6: Commit, tag `day-11`, deploy preview, and record status.
+

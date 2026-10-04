@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Languages, LoaderCircle } from 'lucide-react'
+import { OFFLINE_UI_TRANSLATIONS } from '../data/languageData'
 
 const TRANSLATABLE_ATTRIBUTES = ['placeholder', 'title', 'aria-label', 'alt']
 const SKIP_SELECTOR = [
@@ -25,6 +26,7 @@ const TRANSLATING_TEXT = {
   mr: 'वेबसाइटची भाषा बदलत आहे…',
   bn: 'ওয়েবসাইটের ভাষা পরিবর্তন করা হচ্ছে…',
   gu: 'વેબસાઇટની ભાષા બદલાઈ રહી છે…',
+  pa: 'ਵੈੱਬਸਾਈਟ ਦੀ ਭਾਸ਼ਾ ਬਦਲੀ ਜਾ ਰਹੀ ਹੈ…',
   ur: 'ویب سائٹ کی زبان تبدیل کی جا رہی ہے…',
   es: 'Actualizando el idioma del sitio…',
   fr: 'Mise à jour de la langue du site…',
@@ -38,9 +40,11 @@ function storageKey(language) {
 function readCache(language) {
   try {
     const value = JSON.parse(localStorage.getItem(storageKey(language)) || '{}')
-    return value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+    const local = value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+    const offline = OFFLINE_UI_TRANSLATIONS?.[language] || {}
+    return { ...offline, ...local }
   } catch {
-    return {}
+    return OFFLINE_UI_TRANSLATIONS?.[language] || {}
   }
 }
 

@@ -3,7 +3,7 @@ import { prepareApiRequest, readJsonBody, providerStatus } from './_security.js'
 
 const languageNames = {
   en: 'English', hi: 'Hindi', te: 'Telugu', ta: 'Tamil', kn: 'Kannada', ml: 'Malayalam',
-  mr: 'Marathi', bn: 'Bengali', gu: 'Gujarati', ur: 'Urdu', es: 'Spanish', fr: 'French', de: 'German'
+  mr: 'Marathi', bn: 'Bengali', gu: 'Gujarati', pa: 'Punjabi', ur: 'Urdu', es: 'Spanish', fr: 'French', de: 'German'
 }
 
 function clean(value, max = 1400) {
