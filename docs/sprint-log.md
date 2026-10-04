@@ -57,9 +57,32 @@
 **Goal:** Live Train Running Status Tracker, Platform Indicator & Delay Heuristics  
 
 ### Day 8 Task List
-- [ ] Task 8.1: Capture BEFORE screenshots of live train running status & station boards on Desktop and Mobile.
-- [ ] Task 8.2: Implement/enhance `TrainRunningStatus.jsx` with real-time GPS station progress, platform prediction, and delay status badges (On Time, Minor Delay, Severe Delay >45m).
-- [ ] Task 8.3: Add station live arrival/departure boards with platform number indicators and historical delay prediction heuristics.
-- [ ] Task 8.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 8.5: Run Day 8 Verification Gate (Playwright tests, npm test, production build check).
-- [ ] Task 8.6: Commit, tag `day-8`, deploy preview, and record status.
+- [x] Task 8.1: Capture BEFORE screenshots of live train running status & station boards on Desktop and Mobile.
+- [x] Task 8.2: Implement/enhance `TrainRunningStatus.jsx` with real-time GPS station progress, platform prediction, and delay status badges (On Time, Minor Delay, Severe Delay >45m).
+- [x] Task 8.3: Add station live arrival/departure boards with platform number indicators and historical delay prediction heuristics.
+- [x] Task 8.4: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-8/after/`).
+- [x] Task 8.5: Run Day 8 Verification Gate (Playwright tests, npm test, production build check).
+- [x] Task 8.6: Commit, tag `day-8`, deploy preview, and record status.
+
+### Day 8 Verification Evidence
+1. **Unit & Integration Suite:** 71 passing tests in `tests/*.test.mjs`, including `tests/day8_train_status.test.mjs` validating delay heuristics, station timeline progression, and preset routing.
+2. **E2E Browser Verification Gate:** Run on headless Edge Chromium with `tests/e2e/day8_train_status.spec.mjs`. All 5 verification checkpoints passed with zero console errors and zero bundle secret leaks.
+3. **Artifacts Captured:**
+   - BEFORE: `docs/screenshots/day-8/before/train_status_desktop.png`, `train_status_mobile.png`
+   - AFTER: `docs/screenshots/day-8/after/train_status_desktop.png`, `train_status_mobile.png`
+
+**DAY 8 COMPLETE. Verification passed (5/5). Moving to DAY 9.**
+
+---
+
+## Sprint Entry: Day 9
+**Date:** October 2026  
+**Goal:** Low-Network & Offline Autonomous Fallback Engine  
+
+### Day 9 Task List
+- [ ] Task 9.1: Capture BEFORE screenshots of low-network / offline mode on Desktop and Mobile.
+- [ ] Task 9.2: Verify and enhance `LowNetworkPlanner.jsx` with offline bandwidth threshold detection (2G/3G/offline) and automatic fallback banners.
+- [ ] Task 9.3: Add offline journey cache synchronization and local transit schedule snapshots for zero-connectivity situations.
+- [ ] Task 9.4: Capture AFTER screenshots on Desktop and Mobile.
+- [ ] Task 9.5: Run Day 9 Verification Gate (Playwright tests, npm test, production build check).
+- [ ] Task 9.6: Commit, tag `day-9`, deploy preview, and record status.
