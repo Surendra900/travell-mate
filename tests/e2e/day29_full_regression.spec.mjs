@@ -47,9 +47,15 @@ server.listen(4263, async () => {
 
     const desktopErrors = [];
     desktopPage.on('console', msg => {
-      if (msg.type() === 'error') desktopErrors.push(msg.text());
+      if (msg.type() === 'error') {
+        console.error('BROWSER ERROR:', msg.text());
+        desktopErrors.push(msg.text());
+      }
     });
-    desktopPage.on('pageerror', err => desktopErrors.push(err.message));
+    desktopPage.on('pageerror', err => {
+      console.error('PAGE ERROR DETECTED:', err.stack || err.message);
+      desktopErrors.push(err.message);
+    });
 
     await desktopPage.addInitScript(() => {
       localStorage.setItem('travelmate-location-onboarding', 'dismissed');

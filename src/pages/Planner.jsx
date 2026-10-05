@@ -355,14 +355,14 @@ export default function Planner({ status, toast, language = 'en' }) {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-7 sm:py-10">
-      <section className="flex flex-col items-stretch justify-between gap-5 lg:flex-row lg:items-end">
+    <main className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
+      <section className="flex flex-col items-stretch justify-between gap-5 lg:flex-row lg:items-end pb-6 border-b border-slate-200">
         <div>
           <span className="badge">Network: {(forcedOffline || forcedLowSignal) ? 'automatic low-network' : 'online'}</span>
-          <h1 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">Journey Planner</h1>
-          <p className="mt-2 max-w-3xl text-slate-300">Plan train, flight and bus journeys with live provider checks where available. Every result is labeled as live, verified, fallback, or provider-required.</p>
+          <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl md:text-5xl">Journey Planner</h1>
+          <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600">Plan train, flight and bus journeys with verified provider schedules and smart split-routing alternatives.</p>
         </div>
-        <div className="planner-mode-tabs glass grid grid-cols-2 gap-1 rounded-2xl p-2">
+        <div className="planner-mode-tabs bg-white border border-slate-200 shadow-sm grid grid-cols-2 gap-1.5 rounded-2xl p-1.5">
           {[
             ['normal', 'Normal tickets'],
             ['emergency', 'Tatkal emergency']
@@ -372,10 +372,15 @@ export default function Planner({ status, toast, language = 'en' }) {
             return (
               <button
                 key={value}
-                className={`min-h-11 rounded-xl px-2 py-2 text-xs font-bold sm:px-3 sm:text-sm ${
+                type="button"
+                className={`min-h-11 rounded-xl px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
                   active
-                    ? emergencyTab ? 'bg-red-500 text-white shadow-danger' : 'bg-cyan-400 text-slate-950'
-                    : emergencyTab ? 'border border-red-400/40 bg-red-500/10 text-red-100 hover:bg-red-500/20' : 'text-slate-300 hover:bg-slate-800'
+                    ? emergencyTab
+                      ? 'bg-red-600 text-white shadow-sm'
+                      : 'bg-sky-700 text-white shadow-sm'
+                    : emergencyTab
+                      ? 'border border-red-200 bg-red-50 text-red-700 hover:bg-red-100'
+                      : 'text-slate-600 hover:bg-slate-100'
                 }`}
                 onClick={() => !(forcedOffline || forcedLowSignal) && setManualMode(value)}
                 disabled={forcedOffline || forcedLowSignal}
@@ -388,17 +393,13 @@ export default function Planner({ status, toast, language = 'en' }) {
       </section>
 
       {(forcedOffline || forcedLowSignal) && (
-        <div className="mt-6 rounded-3xl border border-red-400/30 bg-red-500/10 p-5 text-red-50">
-          <h2 className="text-xl font-black">Automatic Offline Shift Enabled</h2>
-          <p className="mt-2 text-sm text-red-100/90">The connection is unavailable or too weak for reliable live results. TravelMate has automatically switched to its compact low-network experience using cached route data and local storage. No manual mode switch is required.</p>
+        <div className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-5 text-red-900">
+          <h2 className="text-lg font-black">Automatic Offline Shift Enabled</h2>
+          <p className="mt-1 text-sm text-red-800">The connection is unavailable or too weak for reliable live results. TravelMate has automatically switched to its compact low-network experience using cached route data and local storage.</p>
         </div>
       )}
 
-      <div className="mt-8">
-        <MasterTrustPanel compact />
-      </div>
-
-      <section className="mt-8">
+      <section className="mt-6">
         {mode === 'emergency' ? (
           <EmergencyTatkalPlanner
             plan={enrichedPlan}
@@ -418,6 +419,10 @@ export default function Planner({ status, toast, language = 'en' }) {
           <NormalPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onFindTicket={handleLiveSearch} onOpenLiveResults={() => setResultsOpen(true)} onBookBackup={openBackupBooking} liveStatus={liveStatus} toast={toast} />
         )}
       </section>
+
+      <div className="mt-12">
+        <MasterTrustPanel compact />
+      </div>
 
       <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} plan={bookingPlan || enrichedPlan} mode={mode} onSaved={handleBookingSaved} />
       <LiveResultsPanel

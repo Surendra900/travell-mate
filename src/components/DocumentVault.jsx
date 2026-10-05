@@ -171,7 +171,7 @@ export default function DocumentVault({ toast }) {
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `travelmate-encrypted-vault-backup-${new Date().toISOString().slice(0, 10)}.json`
+      a.download = `travelmate-encrypted-vault-backup-${new Date().toISOString().split('T')[0]}.json`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)

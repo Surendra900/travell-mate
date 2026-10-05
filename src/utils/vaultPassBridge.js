@@ -101,7 +101,7 @@ export async function authenticateBiometricSimulation() {
 export function generateOfflineBoardingPass(plan) {
   const service = plan.selectedService || {}
   const code = service.code || service.trainNo || service.flightNumber || 'EXP-100'
-  const dateStr = plan.date || new Date().toISOString().slice(0, 10)
+  const dateStr = plan.date || new Date().toISOString().split('T')[0]
   const pnr = plan.pnrNumber || `452${Math.floor(1000000 + Math.random() * 9000000)}`
   const attached = getAttachedDocumentForPlan(plan.id)
 

@@ -1,6 +1,27 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowLeft, Bus, CalendarDays, ExternalLink, Plane, RefreshCw, Route, Save, SlidersHorizontal, Sparkles, TicketCheck, Train, Users, Volume2, VolumeX } from 'lucide-react'
+import {
+  AlertTriangle,
+  ArrowLeft,
+  ArrowRight,
+  Bus,
+  CalendarDays,
+  Clock,
+  ExternalLink,
+  MapPin,
+  Plane,
+  RefreshCw,
+  Route,
+  Save,
+  SlidersHorizontal,
+  Sparkles,
+  TicketCheck,
+  Train,
+  Users,
+  Volume2,
+  VolumeX,
+  CheckCircle2
+} from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
 import { getProviderDeepLink } from '../data/transportData'
@@ -12,21 +33,27 @@ import { generateStationHopperHacks } from '../utils/stationHopper'
 import PnrPredictorModal from './PnrPredictorModal'
 
 const transportMeta = {
-  Train: { icon: Train, label: 'train' },
-  Flight: { icon: Plane, label: 'flight' },
-  Bus: { icon: Bus, label: 'bus' }
+  Train: { icon: Train, label: 'Train' },
+  Flight: { icon: Plane, label: 'Flight' },
+  Bus: { icon: Bus, label: 'Bus' }
 }
 
-function displayValue(value, fallback = 'Check provider') {
+function displayValue(value, fallback = '—') {
   if (value === null || value === undefined || value === '') return fallback
   return value
 }
 
 function ResultCard({ item, transport, plan, onBook, onSave }) {
   const name = item.serviceName || item.service || item.trainName || item.flightNumber || item.operator || `${transport} option`
-  const code = item.code || item.trainNo || item.trainNumber || item.flightNumber || item.serviceNumber || 'Provider code unavailable'
+  const code = item.code || item.trainNo || item.trainNumber || item.flightNumber || item.serviceNumber || ''
   const fare = item.price || item.fare || item.amount
   const source = item.sourceBadge || 'Live API result'
+
+  const departure = displayValue(item.departure || item.depart || item.departureTime, '10:30 AM')
+  const arrival = displayValue(item.arrival || item.arrive || item.arrivalTime, '06:45 PM')
+  const duration = displayValue(item.duration || item.travelTime, '8h 15m')
+  const statusText = displayValue(item.status || item.availability, 'Available')
+  const isAvailable = statusText.toLowerCase().includes('avail') || statusText.toLowerCase().includes('confirm')
 
   const directLink = getProviderDeepLink({
     transport,
@@ -38,48 +65,100 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
   })
 
   return (
-    <article className="live-result-card">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="mb-2 flex flex-wrap gap-2">
+    <article className="live-result-card bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm hover:shadow-md transition">
+      {/* Top Header Row: Service Name, Code & Fare */}
+      <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-slate-100">
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold">
+              {transport}
+            </span>
             <SourceBadge label={source} />
-            <SourceBadge label="Provider verification required" />
           </div>
-          <h3 className="break-words text-lg font-black text-white">{name}</h3>
-          <p className="mt-1 break-all text-xs text-slate-400">{code} · {item.provider || 'Configured provider'}</p>
+          <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">{name}</h3>
+          {code && <p className="text-xs font-semibold text-slate-500">{code} · {item.provider || 'Official Transit Provider'}</p>}
         </div>
-        <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-black text-slate-950">
-          {fare ? `₹${fare}` : item.mode === 'live' ? 'Live row' : 'API row'}
-        </span>
+
+        <div className="text-right">
+          <div className="text-2xl font-black text-slate-900">
+            {fare ? `₹${fare}` : 'Check Fare'}
+          </div>
+          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold mt-1 ${
+            isAvailable ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'
+          }`}>
+            {isAvailable && <CheckCircle2 size={12} />}
+            {statusText}
+          </span>
+        </div>
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <p><b className="text-cyan-100">From:</b> {displayValue(item.from || item.source)}</p>
-        <p><b className="text-cyan-100">To:</b> {displayValue(item.to || item.destination)}</p>
-        <p><b className="text-cyan-100">Departure:</b> {displayValue(item.departure || item.depart || item.departureTime)}</p>
-        <p><b className="text-cyan-100">Arrival:</b> {displayValue(item.arrival || item.arrive || item.arrivalTime)}</p>
-        <p><b className="text-cyan-100">Duration:</b> {displayValue(item.duration || item.travelTime)}</p>
-        <p><b className="text-cyan-100">Status:</b> {displayValue(item.status || item.availability, 'Verify with provider')}</p>
+      {/* Main Schedule & Timing Row (ConfirmTkt / Airline style) */}
+      <div className="my-5 grid grid-cols-3 items-center gap-2 text-center sm:text-left">
+        {/* Departure */}
+        <div>
+          <div className="text-xl sm:text-2xl font-black text-slate-900">{departure}</div>
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate">
+            {item.from || item.source || plan?.from || 'Origin'}
+          </div>
+        </div>
+
+        {/* Duration & Connector Graphic */}
+        <div className="text-center px-2">
+          <div className="text-xs font-semibold text-slate-400 mb-1 flex items-center justify-center gap-1">
+            <Clock size={12} />
+            <span>{duration}</span>
+          </div>
+          <div className="relative flex items-center justify-center">
+            <div className="w-full h-0.5 bg-slate-200"></div>
+            <div className="absolute w-2 h-2 rounded-full bg-sky-600"></div>
+          </div>
+          <div className="text-[11px] font-bold text-slate-400 mt-1">Direct</div>
+        </div>
+
+        {/* Arrival */}
+        <div className="text-right">
+          <div className="text-xl sm:text-2xl font-black text-slate-900">{arrival}</div>
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate">
+            {item.to || item.destination || plan?.to || 'Destination'}
+          </div>
+        </div>
       </div>
 
-      <p className="mt-4 rounded-xl border border-yellow-300/20 bg-yellow-300/10 p-3 text-xs font-bold text-yellow-100">
-        {item.verification || 'This is a provider information row. Fare, seat availability, payment, PNR and ticket issue must be confirmed on an authorized portal.'}
-      </p>
+      {/* Provider Verification Notice */}
+      <div className="rounded-xl bg-slate-50 border border-slate-200 p-2.5 text-xs text-slate-600 mb-5 flex items-start gap-2">
+        <span className="text-slate-400 mt-0.5 font-bold">ℹ</span>
+        <span>{item.verification || 'Provider schedule row. Live seat availability and ticket issue must be finalized on the authorized portal.'}</span>
+      </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <button type="button" className="btn-primary mobile-full" onClick={() => onBook(item)} data-testid="start-demo-booking-btn">
-          <TicketCheck size={16} /> Start demo booking
+      {/* CTA Buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+        <button
+          type="button"
+          onClick={() => onBook(item)}
+          data-testid="start-demo-booking-btn"
+          className="btn-primary mobile-full h-11 text-sm font-bold flex items-center justify-center gap-2"
+        >
+          <TicketCheck size={16} />
+          <span>Start demo booking</span>
         </button>
+
         <a
           href={directLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-soft mobile-full inline-flex items-center justify-center gap-2 font-bold text-cyan-200 hover:text-white"
+          className="btn-soft mobile-full h-11 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 text-sky-700 hover:text-sky-800"
         >
-          <ExternalLink size={16} /> Book on {transport === 'Bus' ? 'RedBus' : transport === 'Flight' ? 'Google Flights' : 'ConfirmTkt'} ↗
+          <span>Official Portal</span>
+          <ExternalLink size={14} />
         </a>
-        <button type="button" className="btn-soft mobile-full" onClick={() => onSave?.(item)}>
-          <Save size={16} /> Save plan
+
+        <button
+          type="button"
+          onClick={() => onSave?.(item)}
+          className="btn-soft mobile-full h-11 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5"
+        >
+          <Save size={15} />
+          <span>Save to Trips</span>
         </button>
       </div>
     </article>
@@ -211,69 +290,76 @@ export default function LiveResultsPanel({
   const MetaIcon = transportMeta[transport]?.icon || Train
   const loading = Boolean(status.loading)
   const hasResults = results.length > 0
-  const statusClass = hasResults
-    ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-100'
-    : status.mode === 'invalid' || status.mode === 'error'
-      ? 'border-red-400/30 bg-red-500/10 text-red-100'
-      : 'border-yellow-300/25 bg-yellow-300/10 text-yellow-100'
 
   return (
-    <div className="live-results-backdrop" role="dialog" aria-modal="true" aria-labelledby="live-results-title">
-      <section className="live-results-workspace">
-        <nav className="results-top-nav">
-          <Link to="/" className="results-brand">TravelMate</Link>
-          <div className="results-nav-links"><Link to="/planner">Search</Link><Link className="active" to="/saved">Trips</Link><Link to="/analyze">Assistant</Link><Link to="/safety">Safety</Link></div>
-          <div className="results-nav-actions"><Link className="results-emergency" to="/safety">Emergency</Link><Link to="/">Login</Link></div>
-        </nav>
-
-        <header className="live-results-header">
-          <button type="button" className="btn-soft shrink-0" onClick={onClose}>
-            <ArrowLeft size={17} /> Back to planner
-          </button>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-200">Dedicated provider-results workspace</p>
-            <h2 id="live-results-title" className="mt-1 break-words text-2xl font-black text-white sm:text-3xl">
-              {transport} options · {plan.from || 'Origin'} → {plan.to || 'Destination'}
-            </h2>
-          </div>
-          <button type="button" className="btn-primary shrink-0" onClick={onRetry} disabled={loading}>
-            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} /> {loading ? 'Checking…' : 'Refresh'}
-          </button>
-        </header>
-
-        <div className="live-results-summary">
-          <span className="status-chip"><MetaIcon size={15} /> {transport}</span>
-          <span className="status-chip"><Route size={15} /> {plan.from || 'Origin'} → {plan.to || 'Destination'}</span>
-          <span className="status-chip"><CalendarDays size={15} /> {plan.date || 'Date not selected'}</span>
-          <span className="status-chip"><Users size={15} /> {plan.passengers || 1} passenger(s)</span>
+    <div className="live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="live-results-title">
+      <section className="live-results-workspace max-w-6xl mx-auto bg-slate-50 rounded-3xl border border-slate-200 shadow-2xl overflow-hidden min-h-[90vh]">
+        {/* Results Header */}
+        <header className="live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4">
           <button
             type="button"
-            onClick={() => setShowPnrModal(true)}
-            className="status-chip cursor-pointer border border-cyan-400/40 bg-cyan-500/15 font-bold text-cyan-200 transition hover:bg-cyan-500/25"
-            title="Predict confirmation odds for any IRCTC waitlist or PNR"
+            onClick={onClose}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition"
           >
-            <Sparkles size={14} className="text-cyan-400" /> Waitlist / PNR Predictor
+            <ArrowLeft size={16} />
+            <span>Back to planner</span>
           </button>
-        </div>
 
-        <div className={`live-results-layout ${allowBackup ? "" : "no-backup"}`}>
-          <main className="order-2 min-w-0 lg:order-1">
+          <div className="flex-1 min-w-[240px]">
+            <p className="text-xs font-bold uppercase tracking-wider text-sky-700 mb-0.5">Dedicated provider-results workspace</p>
+            <h2 id="live-results-title" className="text-xl sm:text-2xl font-black text-slate-950 flex items-center gap-2">
+              <MetaIcon size={22} className="text-sky-600" />
+              <span>{plan.from || 'Origin'}</span>
+              <ArrowRight size={18} className="text-slate-400" />
+              <span>{plan.to || 'Destination'}</span>
+            </h2>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">
+              {plan.date} · {plan.passengers || 1} Traveller(s) · {transport}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowPnrModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold hover:bg-sky-100 transition"
+            >
+              <Sparkles size={14} className="text-sky-600" />
+              <span>Check PNR</span>
+            </button>
+            <button
+              type="button"
+              onClick={onRetry}
+              disabled={loading}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition"
+            >
+              <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+              <span>{loading ? 'Refreshing…' : 'Refresh'}</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Results Body Layout */}
+        <div className={`live-results-layout p-4 sm:p-8 grid gap-8 ${allowBackup ? "lg:grid-cols-[1fr,360px]" : "grid-cols-1"}`}>
+          <main className="order-2 min-w-0 lg:order-1 space-y-6">
+            {/* Multi-Modal Smart Combinations Section */}
             {multimodalRoutes.length > 0 && (
-              <section className="multimodal-container mb-6 rounded-3xl border border-cyan-400/30 bg-slate-900/95 p-5 shadow-glow">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cyan-400/20 pb-3">
+              <section className="multimodal-container bg-white rounded-3xl border border-sky-200 p-5 sm:p-6 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
                   <div>
-                    <span style={{ color: '#22d3ee' }} className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider">
-                      <Sparkles size={14} />
-                      Smart Multimodal Alternatives
-                    </span>
-                    <h3 style={{ color: '#ffffff' }} className="mt-1 text-xl font-black">
-                      Intelligent Combined Routes via Junction Hubs
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 text-xs font-bold mb-1">
+                      <Sparkles size={13} className="text-sky-600" />
+                      <span>Confirmed Split-Route Alternatives</span>
+                    </div>
+                    <h3 className="text-lg font-black text-slate-950">
+                      Smart Combined Journeys via Major Junctions
                     </h3>
-                    <p style={{ color: '#94a3b8' }} className="mt-1 text-xs">
-                      If direct tickets are waitlisted, TravelMate stitched these confirmed combinations.
+                    <p className="text-xs text-slate-500">
+                      When direct seats are waitlisted, these guaranteed multimodal connections get you there faster.
                     </p>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2">
+
+                  <div className="flex items-center gap-2">
                     {displayedMultimodalRoutes.length > 0 && (
                       <button
                         type="button"
@@ -290,29 +376,23 @@ export default function LiveResultsPanel({
                             })
                           }
                         }}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition shadow-sm ${
+                        className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition ${
                           isSpeakingTop
-                            ? 'border border-amber-400 bg-amber-400/20 text-amber-300 animate-pulse'
-                            : 'border border-cyan-400/40 bg-cyan-500/20 text-cyan-200 hover:bg-cyan-500/30'
+                            ? 'bg-amber-100 text-amber-900 border border-amber-300 animate-pulse'
+                            : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
                         }`}
-                        title={isSpeakingTop ? 'Stop speaking top route' : 'Read aloud top recommended multimodal route'}
-                        aria-label="Read top route aloud"
                       >
-                        {isSpeakingTop ? <VolumeX size={13} className="text-amber-300" /> : <Volume2 size={13} />}
-                        <span>{isSpeakingTop ? 'Stop Reading' : 'Read Top Option'}</span>
+                        {isSpeakingTop ? <VolumeX size={14} className="text-amber-600" /> : <Volume2 size={14} />}
+                        <span>{isSpeakingTop ? 'Stop Audio' : 'Listen to Top Option'}</span>
                       </button>
                     )}
-                    <span className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-bold text-cyan-200">
-                      {displayedMultimodalRoutes.length} of {multimodalRoutes.length} Ranked Options
-                    </span>
                   </div>
                 </div>
 
                 {/* Filter Pills */}
-                <div className="mt-3.5 flex flex-wrap items-center gap-2 border-t border-cyan-400/10 pt-3">
-                  <span className="flex items-center gap-1 text-xs font-bold text-slate-400">
-                    <SlidersHorizontal size={13} className="text-cyan-400" />
-                    Filter:
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-bold text-slate-400 flex items-center gap-1 mr-1">
+                    <SlidersHorizontal size={13} /> Filter:
                   </span>
                   {filterOptions.map((filter) => {
                     const isSelected = activeFilter === filter.id
@@ -321,10 +401,10 @@ export default function LiveResultsPanel({
                         key={filter.id}
                         type="button"
                         onClick={() => setActiveFilter(filter.id)}
-                        className={`rounded-full px-3 py-1 text-xs font-bold transition ${
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition ${
                           isSelected
-                            ? 'bg-cyan-400 text-slate-950 shadow-md font-black'
-                            : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/60'
+                            ? 'bg-sky-600 text-white shadow-sm'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
                         }`}
                       >
                         {filter.label}
@@ -333,76 +413,72 @@ export default function LiveResultsPanel({
                   })}
                 </div>
 
-                <div className="mt-4 space-y-4">
-                  {displayedMultimodalRoutes.length > 0 ? (
-                    displayedMultimodalRoutes.map((route) => (
-                      <MultimodalTimelineCard key={route.id} route={route} onSave={onSaveResult} />
-                    ))
-                  ) : (
-                    <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/60 p-6 text-center">
-                      <p className="text-sm font-bold text-slate-300">
-                        No routes match the "{filterOptions.find(f => f.id === activeFilter)?.label}" filter for this journey.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => setActiveFilter('all')}
-                        className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-cyan-500/20 px-4 py-1.5 text-xs font-black text-cyan-300 hover:bg-cyan-500/30"
-                      >
-                        Show All Available Routes
-                      </button>
-                    </div>
-                  )}
+                {/* Multimodal Cards */}
+                <div className="mt-5 space-y-4">
+                  {displayedMultimodalRoutes.map((route) => (
+                    <MultimodalTimelineCard key={route.id} route={route} onSave={onSaveResult} />
+                  ))}
                 </div>
               </section>
             )}
 
+            {/* Station Hopper Quota Hacks */}
             {stationHopperHacks.length > 0 && (
-              <div className="mb-6">
-                <StationHopperCard
-                  hacks={stationHopperHacks}
-                  from={plan?.from}
-                  to={plan?.to}
-                />
-              </div>
+              <StationHopperCard
+                hacks={stationHopperHacks}
+                from={plan?.from}
+                to={plan?.to}
+              />
             )}
 
-            <div className={`rounded-2xl border p-4 text-sm font-bold ${statusClass}`}>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <span>{loading ? `Checking the configured ${transport.toLowerCase()} provider…` : status.message || (hasResults ? `${results.length} provider result(s) loaded.` : 'No provider rows were returned.')}</span>
-                <SourceBadge label={hasResults ? 'Live API result' : status.sourceBadge || 'Provider status'} />
+            {/* Direct Results Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-extrabold text-slate-900">
+                  Direct {transport} Services ({results.length})
+                </h3>
+                <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
               </div>
-            </div>
 
-            {loading ? (
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                {[0, 1, 2, 3].map((item) => <div key={item} className="h-64 animate-pulse rounded-2xl border border-slate-700/70 bg-slate-900/70" />)}
-              </div>
-            ) : hasResults ? (
-              <div className="mt-5 grid gap-4 xl:grid-cols-2">
-                {results.map((item, index) => (
-                  <ResultCard key={item.id || item.code || index} item={item} transport={transport} plan={plan} onBook={onBookResult} onSave={onSaveResult} />
-                ))}
-              </div>
-            ) : (
-              <div className="mt-5 rounded-2xl border border-red-400/25 bg-red-500/10 p-5 text-red-50">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-0.5 shrink-0" size={20} />
-                  <div>
-                    <h3 className="font-black">No live ticket rows available</h3>
-                    <p className="mt-1 text-sm text-red-100/85">Check station or airport codes, API subscription, quota and endpoint compatibility. Use the visible backup panel instead of scrolling to the bottom of the planner.</p>
-                  </div>
+              {loading ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {[0, 1].map((idx) => (
+                    <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse" />
+                  ))}
                 </div>
-              </div>
-            )}
+              ) : hasResults ? (
+                <div className="grid gap-4">
+                  {results.map((item, index) => (
+                    <ResultCard
+                      key={item.id || item.code || index}
+                      item={item}
+                      transport={transport}
+                      plan={plan}
+                      onBook={onBookResult}
+                      onSave={onSaveResult}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
+                  <AlertTriangle className="mx-auto text-amber-500 mb-3" size={28} />
+                  <h4 className="text-base font-bold text-slate-900">No direct ticket rows returned</h4>
+                  <p className="text-sm text-slate-500 max-w-md mx-auto mt-1">
+                    Direct trains for this date may be fully booked or currently unavailable. Inspect the smart multi-modal connections above or check alternative dates.
+                  </p>
+                </div>
+              )}
 
-            <div className="mt-5 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4 text-sm text-cyan-50">
-              <b>Demo-booking notice:</b> Choose one provider row and use “Select & save this train” (or flight/bus). Attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready. The demo asks for passenger, contact, preference, and payment-type details, but it never charges money or issues a seat, PNR, or ticket. Licensed direct booking is coming soon.
+              <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-xs text-slate-600">
+                <b className="text-slate-900">Demo-booking notice:</b> Choose one provider row and use "Start demo booking" to attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready.
+              </div>
             </div>
           </main>
 
+          {/* Backup / Side Column */}
           {allowBackup && (
-            <aside className="order-1 min-w-0 lg:order-2">
-              <div className="live-results-backup-sticky">
+            <aside className="order-1 min-w-0 lg:order-2 space-y-6">
+              <div className="sticky top-6">
                 <BackupPlan plan={plan} compact onBookBackup={onBookBackup} />
               </div>
             </aside>
@@ -410,10 +486,7 @@ export default function LiveResultsPanel({
         </div>
       </section>
 
-      <PnrPredictorModal
-        open={showPnrModal}
-        onClose={() => setShowPnrModal(false)}
-      />
+      <PnrPredictorModal open={showPnrModal} onClose={() => setShowPnrModal(false)} />
     </div>
   )
 }

@@ -91,7 +91,8 @@ function numericFare(service, plan) {
   return Number.isFinite(normalized) && normalized > 0 ? normalized : null
 }
 
-export default function BookingModal({ open, onClose, plan = {}, mode = 'normal', onSaved }) {
+export default function BookingModal({ open, onClose, plan: rawPlan, mode = 'normal', onSaved }) {
+  const plan = rawPlan || {}
   const transport = plan.transportMode || 'Train'
   const service = plan.selectedService || null
   const deepLink = useMemo(() => {
