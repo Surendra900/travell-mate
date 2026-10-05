@@ -10,6 +10,7 @@ import OfflineOnlyMode from './components/OfflineOnlyMode'
 import GlobalTranslationLayer from './components/GlobalTranslationLayer'
 import BlindVoiceGate from './components/BlindVoiceGate'
 import PwaInstallBanner from './components/PwaInstallBanner'
+import DpdpPrivacyModal from './components/DpdpPrivacyModal'
 import Footer from './components/Footer'
 import LocationPermissionGate from './components/LocationPermissionGate'
 import PageErrorBoundary from './components/PageErrorBoundary'
@@ -39,10 +40,17 @@ export default function App({ authEnabled = false }) {
   })
   const [toastMessage, setToastMessage] = useState('')
   const [profileModalOpen, setProfileModalOpen] = useState(false)
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(false)
   const [blindGateOpen, setBlindGateOpen] = useState(false)
   const [blindMode, setBlindMode] = useState(false)
   const status = useDeviceStatus()
   const labels = useMemo(() => languages[language].labels, [language])
+
+  useEffect(() => {
+    const handleOpenPrivacy = () => setPrivacyModalOpen(true)
+    window.addEventListener('travelmate:open-privacy', handleOpenPrivacy)
+    return () => window.removeEventListener('travelmate:open-privacy', handleOpenPrivacy)
+  }, [])
 
   useEffect(() => {
     try { localStorage.setItem('travelmate-language', language) } catch {}
@@ -147,8 +155,9 @@ export default function App({ authEnabled = false }) {
       {location.pathname !== '/analyze' && location.pathname !== '/saved' && <FloatingSOS status={status} />}
       {location.pathname !== '/analyze' && <VoiceSearchButton onSearch={handleVoiceSearch} language={language} />}
       <PwaInstallBanner />
-      {status.online !== false && <Footer />}
+      {status.online !== false && <Footer onOpenPrivacy={() => setPrivacyModalOpen(true)} />}
       {status.online !== false && <OnboardingModal toast={toast} forceOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} />}
+      <DpdpPrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} toast={toast} />
       {toastMessage && (
         <div className="app-toast" role="status" aria-live="polite">
           {toastMessage}

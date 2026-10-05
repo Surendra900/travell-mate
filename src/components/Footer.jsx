@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { TrainFront } from 'lucide-react'
 
-export default function Footer() {
+export default function Footer({ onOpenPrivacy }) {
   return (
     <footer className="tm-footer">
       <div className="tm-footer-rule" />
@@ -13,7 +13,10 @@ export default function Footer() {
         </div>
         <div className="tm-footer-col">
           <strong>Company</strong>
-          <span>About Us</span><span>Careers</span><span>Privacy Policy</span>
+          <span>About Us</span><span>Careers</span>
+          <button type="button" data-testid="footer-privacy-link" className="text-left cursor-pointer hover:underline" onClick={onOpenPrivacy}>
+            Privacy & DPDP Act
+          </button>
         </div>
         <div className="tm-footer-col">
           <strong>Resources</strong>

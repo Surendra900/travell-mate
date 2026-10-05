@@ -386,3 +386,37 @@
    - AFTER: `docs/screenshots/day-18/after/desktop_home_after_pwa.png`, `desktop_pwa_install_banner.png`, `mobile_home_after_pwa.png`, `mobile_pwa_install_banner.png`.
 
 **DAY 18 COMPLETE. Verification passed (5/5). Moving to DAY 19.**
+
+---
+
+## Sprint Entry: Day 19
+**Date:** October 2026  
+**Goal:** India DPDP Act 2023 Compliance, Granular Consent Controls & Right to Erasure  
+
+### Day 19 Task List
+- [x] Task 19.1: Capture BEFORE screenshots of Footer and Privacy triggers (`docs/screenshots/day-19/before/`).
+- [x] Task 19.2: Create `src/utils/dpdpConsent.js` with granular consent categories (`essential_storage`, `emergency_telemetry`, `ai_translation`, `voice_processing`), Node test safety, and `purgeAllUserData()`.
+- [x] Task 19.3: Create `src/components/DpdpPrivacyModal.jsx` with statutory disclosures under DPDP Act 2023, granular switches, and Right to Erasure (Sec. 12).
+- [x] Task 19.4: Link `Footer.jsx` and `App.jsx` with `footer-privacy-link` and global modal state.
+- [x] Task 19.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-19/after/`).
+- [x] Task 19.6: Run Day 19 Verification Gate (`tests/day19_dpdp_privacy.test.mjs`, `tests/e2e/day19_dpdp_privacy.spec.mjs`, `npm test`, `npm run build`).
+- [x] Task 19.7: Commit, tag `day-19`, deploy preview, and record status.
+
+### Day 19 Verification Evidence
+1. **India DPDP Act 2023 Consent Architecture:**
+   - Designed `dpdpConsent.js` managing granular consents: `essential_storage` (mandatory/locked), `emergency_telemetry` (GPS SOS), `ai_translation` (SambaNova Cloud), and `voice_processing` (Web Speech API).
+   - Enforces the statutory immutable invariant that essential local storage cannot be disabled while using the app, while all other telemetries require affirmative consent.
+   - Built safe storage abstraction (`getStorage`) with in-memory fallback for headless/Node environments.
+2. **Statutory DPDP Modal & Right to Erasure (Sec. 12):**
+   - Created `DpdpPrivacyModal.jsx` with high-contrast UI, data fiduciary transparency declaration, and granular switch toggles.
+   - Implemented Right to Erasure button executing `purgeAllUserData()`: clears `localStorage`, `sessionStorage`, and drops the IndexedDB `TravelMateVaultDB` database completely.
+3. **Automated Verification:**
+   - Unit tests: 119/119 passed (`tests/day19_dpdp_privacy.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day19_dpdp_privacy.spec.mjs`).
+   - Smoke regression: Zero console errors, zero secret leaks, clean production build.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-19/before/desktop_footer_before.png`, `mobile_footer_before.png`.
+   - AFTER: `docs/screenshots/day-19/after/desktop-dpdp-privacy-modal.png`, `mobile-dpdp-privacy-modal.png`.
+
+**DAY 19 COMPLETE. Verification passed (5/5). Moving to DAY 20.**
+
