@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Activity, ArrowRight, Bookmark, CalendarDays, CheckCircle2, DownloadCloud, Hotel, Plane, RotateCw, Sparkles, Ticket, Trash2, TrainFront, BusFront } from 'lucide-react'
+import { Activity, ArrowRight, Bookmark, CalendarDays, CheckCircle2, DownloadCloud, Hotel, Plane, RotateCw, ShieldCheck, Sparkles, Ticket, Trash2, TrainFront, BusFront } from 'lucide-react'
 import BookingModal from '../components/BookingModal'
 import PnrPredictorModal from '../components/PnrPredictorModal'
+import OfflinePassModal from '../components/OfflinePassModal'
 import { attachPnrStatus, deletePlan, getOfflinePack, getSavedPlans, saveOfflinePack, setLoadedPlan, updateSavedPlan } from '../utils/storage'
 import { calculatePlanQualityScore, planVerdict, scoreBreakdown } from '../utils/scoring'
 import { getPNRStatus } from '../services/LiveTransportApi'
@@ -16,6 +17,7 @@ function iconFor(mode) { return mode === 'Flight' ? Plane : mode === 'Bus' ? Bus
 export default function SavedPlans({ toast }) {
   const [plans, setPlans] = useState([])
   const [bookingPlan, setBookingPlan] = useState(null)
+  const [passPlan, setPassPlan] = useState(null)
   const [offline, setOffline] = useState(null)
   const [pnrLoading, setPnrLoading] = useState({})
   const [showPnrModal, setShowPnrModal] = useState(false)
@@ -100,6 +102,7 @@ export default function SavedPlans({ toast }) {
                   </div>
                   <div className="saved-card-footer">
                     <button className="text-action" onClick={() => openPlan(plan)}>View Itinerary <ArrowRight size={16} /></button>
+                    <button className="outline-action" data-testid={`view-pass-${plan.id}`} onClick={() => setPassPlan(plan)}><ShieldCheck size={15} /> Boarding Pass</button>
                     <button className="outline-action" onClick={() => setBookingPlan(plan)}><Ticket size={15} /> Manage Booking</button>
                   </div>
                 </div>
@@ -151,12 +154,27 @@ export default function SavedPlans({ toast }) {
                 <Sparkles size={14} className="text-cyan-400" /> AI Confirmation Odds
               </button>
             </div>
-            <div className="saved-detail-actions"><button className="btn-soft" onClick={() => openPlan(plan)}>Open Plan</button><button className="btn-low" disabled={!service || !Object.keys(service).length} onClick={() => { setLoadedPlan({ ...plan, mode: 'low-network' }); navigate('/planner') }}>Use Offline</button><button className="btn-primary" disabled={!service || !Object.keys(service).length} onClick={() => setBookingPlan(plan)}><Ticket size={15} /> Booking Options</button><button className="btn-danger" onClick={() => remove(plan.id)}><Trash2 size={15} /> Delete</button></div>
+            <div className="saved-detail-actions">
+              <button className="btn-soft" onClick={() => openPlan(plan)}>Open Plan</button>
+              <button className="btn-soft font-bold text-indigo-700 hover:text-indigo-900" data-testid={`detail-pass-${plan.id}`} onClick={() => setPassPlan(plan)}>
+                <ShieldCheck size={14} className="inline mr-1" /> Boarding Pass
+              </button>
+              <button className="btn-low" disabled={!service || !Object.keys(service).length} onClick={() => { setLoadedPlan({ ...plan, mode: 'low-network' }); navigate('/planner') }}>Use Offline</button>
+              <button className="btn-primary" disabled={!service || !Object.keys(service).length} onClick={() => setBookingPlan(plan)}><Ticket size={15} /> Booking Options</button>
+              <button className="btn-danger" onClick={() => remove(plan.id)}><Trash2 size={15} /> Delete</button>
+            </div>
           </article>
         })}
       </section>}
 
       <BookingModal open={Boolean(bookingPlan)} onClose={() => setBookingPlan(null)} plan={bookingPlan || {}} mode={bookingPlan?.mode || 'normal'} onSaved={handleBookingSaved} />
+
+      <OfflinePassModal
+        open={Boolean(passPlan)}
+        onClose={() => setPassPlan(null)}
+        plan={passPlan}
+        toast={toast}
+      />
 
       <PnrPredictorModal
         open={showPnrModal}

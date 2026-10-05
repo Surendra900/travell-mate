@@ -135,6 +135,7 @@ export default function App({ authEnabled = false }) {
                 <Route path="/safety/:id" element={<EmergencyDetail toast={toast} />} />
                 <Route path="/planner" element={<Planner status={status} toast={toast} labels={labels} language={language} />} />
                 <Route path="/saved" element={<SavedPlans toast={toast} />} />
+                <Route path="/plans" element={<SavedPlans toast={toast} />} />
                 <Route path="/analyze" element={<AnalyzeJourney toast={toast} />} />
                 </Routes>
               </Suspense>

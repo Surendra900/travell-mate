@@ -312,3 +312,41 @@
    - AFTER: `docs/screenshots/day-16/after/desktop_vault_locked_after.png`, `desktop_vault_unlocked_after.png`, `mobile_vault_locked_after.png`, `mobile_vault_unlocked_after.png`.
 
 **DAY 16 COMPLETE. Verification passed (5/5). Moving to DAY 17.**
+
+---
+
+## Sprint Entry: Day 17
+**Date:** October 2026  
+**Goal:** Vault Offline Pass Integration & Rapid PIN / Biometric Gate Unlock Simulation  
+
+### Day 17 Task List
+- [x] Task 17.1: Capture BEFORE screenshots of Saved Plans on Desktop and Mobile.
+- [x] Task 17.2: Implement `src/utils/vaultPassBridge.js` with SHA-256 salted Quick-PIN hashing, journey attachment mapping, biometric authentication simulation, and offline digital boarding pass generator.
+- [x] Task 17.3: Implement `src/components/OfflinePassModal.jsx` featuring high-contrast digital boarding pass, instant Quick-PIN gate verification, 1-tap biometric unlock, and national transit emergency hotlines.
+- [x] Task 17.4: Integrate Boarding Pass actions into `src/pages/SavedPlans.jsx` (upcoming featured card and detailed journey rows).
+- [x] Task 17.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-17/after/`).
+- [x] Task 17.6: Run Day 17 Verification Gate (unit tests, production build, Playwright E2E test, smoke regression).
+- [x] Task 17.7: Commit, tag `day-17`, deploy preview, and record status.
+
+### Day 17 Verification Evidence
+1. **Journey-Vault Bridge & Quick-PIN Architecture:**
+   - Implemented `setQuickPin(pin)` and `verifyQuickPin(pin)` using salted SHA-256 Web Crypto hashing (`vaultPassBridge.js`).
+   - Quick-PIN provides rapid 4-6 digit gate unlocking without exposing or re-entering the primary master vault passphrase.
+   - Implemented `authenticateBiometricSimulation()` with WebAuthn platform support check and graceful local authenticator simulation.
+2. **Offline Digital Boarding Pass Modal:**
+   - Designed `OfflinePassModal.jsx` displaying service name, train/flight/bus code, route endpoints, departure/arrival timings, seat/berth details, passenger name, and verified PNR.
+   - Built dual unlock flow: quick numeric PIN entry or 1-tap Biometric unlock with instant `Gate Security Verified` visual confirmation.
+   - Integrated national crisis hotlines (139 Rail Madad, 112 National SOS, 108 Medical).
+3. **Saved Plans UX Integration:**
+   - Added `Boarding Pass` action buttons on both upcoming trip cards and detailed journey listings in `src/pages/SavedPlans.jsx`.
+   - Added `/plans` route alias in `src/App.jsx` ensuring seamless navigation across both `/saved` and `/plans`.
+4. **Automated Verification:**
+   - Unit tests: 110/110 passed (`tests/day17_vault_pass.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day17_vault_pass.spec.mjs`).
+   - Smoke regression: Day 16 encrypted vault + Day 17 offline pass passed cleanly with 0 console or network errors.
+5. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-17/before/desktop_saved_plans_before.png`, `mobile_saved_plans_before.png`.
+   - AFTER: `docs/screenshots/day-17/after/desktop_saved_plans_after.png`, `desktop_boarding_pass_modal.png`, `desktop_pass_verified.png`, `mobile_saved_plans_after.png`, `mobile_boarding_pass_modal.png`.
+
+**DAY 17 COMPLETE. Verification passed (5/5). Moving to DAY 18.**
+
