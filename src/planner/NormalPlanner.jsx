@@ -1,6 +1,7 @@
 import { ArrowRight, BusFront, CalendarDays, Plane, Ticket, TrainFront, Users } from 'lucide-react'
 import BackupPlan from '../components/BackupPlan'
 import TrainRunningStatus from './TrainRunningStatus'
+import WeatherDisruptionAlert from '../components/WeatherDisruptionAlert'
 import { airlineOptions, getCabinOptions, getRouteInputLabels, transportModes, transportPlaces } from '../data/transportData'
 
 function Field({ label, children }) {
@@ -86,6 +87,10 @@ export default function NormalPlanner({ plan, update, onBook, onFindTicket, onOp
             <BackupPlan plan={plan} compact onBookBackup={onBookBackup} />
           </div>
         </aside>
+      </div>
+
+      <div className="mt-8">
+        <WeatherDisruptionAlert plan={plan} />
       </div>
 
       <div className="mt-8">

@@ -517,3 +517,37 @@
    - AFTER: `docs/screenshots/day-22/after/desktop-backup-contingency-severe.png`, `mobile-backup-contingency-severe.png`.
 
 **DAY 22 COMPLETE. Verification passed (5/5). Moving to DAY 23.**
+
+---
+
+## Sprint Entry: Day 23
+**Date:** October 2026  
+**Goal:** Open-Meteo Real-Time Weather & Transit Disruption Alerts (Fog, Monsoon, Cyclones)  
+
+### Day 23 Task List
+- [x] Task 23.1: Capture BEFORE screenshots of Planner before weather alert integration on Desktop and Mobile (`docs/screenshots/day-23/before/`).
+- [x] Task 23.2: Implement `src/utils/weatherDisruptionEngine.js` with Open-Meteo REST API integration (`fetchHubWeatherDisruption`), coordinates for 18+ Indian transit hubs, WMO weather code categorization, and multimodal impact analyzer (`evaluateTransitDisruption`).
+- [x] Task 23.3: Implement `src/components/WeatherDisruptionAlert.jsx` featuring live meteorological telemetry (temperature, visibility, precipitation, wind speed), transit stress scenario simulators (Delhi winter fog, Mumbai monsoon, Cyclone gale, Real-time Open-Meteo), and actionable passenger recommendations.
+- [x] Task 23.4: Integrate `WeatherDisruptionAlert` into `src/planner/NormalPlanner.jsx`.
+- [x] Task 23.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-23/after/`).
+- [x] Task 23.6: Implement unit tests (`tests/day23_weather_disruptions.test.mjs`) and Playwright E2E (`tests/e2e/day23_weather_disruptions.spec.mjs`).
+- [x] Task 23.7: Run Day 23 Verification Gate (`npm test`, `npm run build`, E2E test).
+- [x] Task 23.8: Commit, tag `day-23`, deploy preview, and record status.
+
+### Day 23 Verification Evidence
+1. **Live Open-Meteo Integration with Zero API Key:**
+   - Free, unauthenticated REST API integration (`https://api.open-meteo.com/v1/forecast`) providing real-time meteorological conditions for major Indian transit hubs and junctions.
+   - Built offline resilient fallback model ensuring graceful degradation if network or API calls fail.
+2. **Specialized Indian Weather Hazards:**
+   - Dense Northern Winter Fog (&lt;500m visibility): triggers CRITICAL alert, Indian Railways Fog Pass device warnings, train speed caps (60 km/h), +60m to +240m delay warnings, and CAT-III flight instrument approach notices.
+   - Torrential Monsoon (&gt;15mm/h): triggers track waterlogging warnings, urban cab delays, and +60m recommended connection buffers.
+   - High Gale / Cyclone (&gt;60km/h): warns of OHE wire trips and runway wind gusts.
+3. **Automated Verification:**
+   - Unit tests: 137/137 passed (`tests/day23_weather_disruptions.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day23_weather_disruptions.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-23/before/desktop-planner-before-weather.png`, `mobile-planner-before-weather.png`.
+   - AFTER: `docs/screenshots/day-23/after/desktop-weather-disruption-alert.png`, `mobile-weather-disruption-alert.png`.
+
+**DAY 23 COMPLETE. Verification passed (5/5). Moving to DAY 24.**
