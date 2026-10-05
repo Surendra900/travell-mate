@@ -420,3 +420,37 @@
 
 **DAY 19 COMPLETE. Verification passed (5/5). Moving to DAY 20.**
 
+---
+
+## Sprint Entry: Day 20
+**Date:** October 2026  
+**Goal:** Safe Booking Demo Flow, Honest Labeling, Credential Refusal & Pre-filled Portals  
+
+### Day 20 Task List
+- [x] Task 20.1: Capture BEFORE screenshots of Planner before booking on Desktop and Mobile (`docs/screenshots/day-20/before/`).
+- [x] Task 20.2: Implement and audit `BookingModal.jsx` demo guardrails (zero payment credentials, prominent disclaimer badges, non-ticket references).
+- [x] Task 20.3: Wire multi-step passenger details, transit-specific seat/berth options (Lower berth, Side lower, Window seat, Lower deck), contact inputs, and payment mode selector.
+- [x] Task 20.4: Integrate pre-filled official booking deep-links (`ConfirmTkt`, `RedBus`, `Google Flights`).
+- [x] Task 20.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-20/after/`).
+- [x] Task 20.6: Run Day 20 Verification Gate (`tests/day20_safe_booking.test.mjs`, `tests/e2e/day20_safe_booking.spec.mjs`, `npm test`, `npm run build`).
+- [x] Task 20.7: Commit, tag `day-20`, deploy preview, and record status.
+
+### Day 20 Verification Evidence
+1. **Ethical Demo Booking Guardrails:**
+   - Enforced strict refusal of payment credentials: no card numbers, CVVs, expiry dates, UPI PINs, bank passwords, OTPs, or national identity numbers (Aadhaar/Passport) are ever requested or stored.
+   - Prominent high-contrast disclaimer badge: "Demo only · no payment · no real ticket" visible throughout the flow.
+   - Non-ticket demo reference generation (`TM-DEMO-YYYYMMDD-XXXXXX`) clearly distinguishing simulation from real PNRs.
+2. **Realistic Multimodal Transit Preferences:**
+   - Dynamic preferences tailored to transit modes: Train (Lower, Middle, Upper, Side Lower, Side Upper), Flight (Window, Aisle, Middle), and Bus (Window, Aisle, Lower deck, Upper deck).
+   - Pre-filled direct deep-links to authorized ticketing platforms (ConfirmTkt, RedBus, Google Flights) ensuring frictionless real booking transition.
+3. **Automated Verification:**
+   - Unit tests: 124/124 passed (`tests/day20_safe_booking.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day20_safe_booking.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-20/before/desktop-planner-before-booking.png`, `mobile-planner-before-booking.png`.
+   - AFTER: `docs/screenshots/day-20/after/desktop-booking-modal-step0.png`, `desktop-booking-modal-confirmation.png`, `mobile-booking-modal-step0.png`, `mobile-booking-modal-confirmation.png`.
+
+**DAY 20 COMPLETE. Verification passed (5/5). Moving to DAY 21.**
+
+

@@ -67,7 +67,7 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
       </p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <button type="button" className="btn-primary mobile-full" onClick={() => onBook(item)}>
+        <button type="button" className="btn-primary mobile-full" onClick={() => onBook(item)} data-testid="start-demo-booking-btn">
           <TicketCheck size={16} /> Start demo booking
         </button>
         <a

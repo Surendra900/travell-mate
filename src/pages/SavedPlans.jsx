@@ -63,7 +63,7 @@ export default function SavedPlans({ toast }) {
     let updated = updateSavedPlan(bookingPlan.id, completedPlan)
     if (!updated) return toast('The saved plan could not be updated.')
     if (updated.pnrNumber && navigator.onLine !== false) { const data = await getPNRStatus({ pnr: updated.pnrNumber }); if (data.result) updated = attachPnrStatus(updated, data.result) || updated }
-    saveOfflinePack(); refresh(); setBookingPlan(null); toast(updated.pnrNumber ? 'Booking PNR and status saved.' : 'Demo booking saved.')
+    saveOfflinePack(); refresh(); toast(updated.pnrNumber ? 'Booking PNR and status saved.' : 'Demo booking saved.')
   }
 
   return (
@@ -160,7 +160,7 @@ export default function SavedPlans({ toast }) {
                 <ShieldCheck size={14} className="inline mr-1" /> Boarding Pass
               </button>
               <button className="btn-low" disabled={!service || !Object.keys(service).length} onClick={() => { setLoadedPlan({ ...plan, mode: 'low-network' }); navigate('/planner') }}>Use Offline</button>
-              <button className="btn-primary" disabled={!service || !Object.keys(service).length} onClick={() => setBookingPlan(plan)}><Ticket size={15} /> Booking Options</button>
+              <button className="btn-primary" disabled={!service || !Object.keys(service).length} data-testid={`booking-options-${plan.id}`} onClick={() => setBookingPlan(plan)}><Ticket size={15} /> Booking Options</button>
               <button className="btn-danger" onClick={() => remove(plan.id)}><Trash2 size={15} /> Delete</button>
             </div>
           </article>

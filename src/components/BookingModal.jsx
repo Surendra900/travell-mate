@@ -275,15 +275,15 @@ export default function BookingModal({ open, onClose, plan = {}, mode = 'normal'
   }
 
   return (
-    <div className="modal-backdrop fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-slate-950/85 p-2 backdrop-blur sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="demo-booking-title">
+    <div className="modal-backdrop fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-slate-950/85 p-2 backdrop-blur sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="demo-booking-title" data-testid="booking-modal">
       <div className="modal-card demo-booking-card my-2 w-full max-w-5xl rounded-3xl border border-cyan-400/25 bg-slate-950 p-4 shadow-glow sm:my-8 sm:p-6">
         <header className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="badge border-orange-300/40 bg-orange-300/10 text-orange-100"><ShieldAlert size={14} /> Demo only · no payment · no real ticket</p>
+            <p className="badge border-orange-300/40 bg-orange-300/10 text-orange-100" data-testid="booking-demo-disclaimer-badge"><ShieldAlert size={14} /> Demo only · no payment · no real ticket</p>
             <h2 id="demo-booking-title" className="mt-3 text-2xl font-black text-white sm:text-3xl">TravelMate demo booking</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">This walkthrough collects the normal information a booking app would request, but it never sends payment details, reserves a seat, creates a PNR, or issues a ticket. Licensed and authorized direct booking is coming soon.</p>
           </div>
-          <button className="dialog-close-button" type="button" onClick={onClose} aria-label="Close demo booking" title="Close demo booking"><X size={22} /></button>
+          <button className="dialog-close-button" type="button" onClick={onClose} aria-label="Close demo booking" title="Close demo booking" data-testid="booking-close-btn"><X size={22} /></button>
         </header>
 
         <div className="demo-stepper mt-5" aria-label="Demo booking progress">
@@ -427,7 +427,7 @@ export default function BookingModal({ open, onClose, plan = {}, mode = 'normal'
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-200">Non-ticket demo reference</p>
-                  <p className="mt-1 break-all text-xl font-black text-white">{reference}</p>
+                  <p className="mt-1 break-all text-xl font-black text-white" data-testid="booking-reference-text">{reference}</p>
                 </div>
                 <SourceBadge label="Demo only" />
               </div>
@@ -459,17 +459,17 @@ export default function BookingModal({ open, onClose, plan = {}, mode = 'normal'
 
         <footer className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-800 pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <div className="flex flex-col gap-3 sm:flex-row">
-            {step > 0 && step < 4 && <button className="btn-soft inline-flex items-center justify-center gap-2" type="button" onClick={goBack}><ChevronLeft size={17} />Back</button>}
+            {step > 0 && step < 4 && <button className="btn-soft inline-flex items-center justify-center gap-2" type="button" onClick={goBack} data-testid="booking-back-btn"><ChevronLeft size={17} />Back</button>}
             {step === 4 && <button className="btn-soft inline-flex items-center justify-center gap-2" type="button" onClick={resetDemo}><RotateCcw size={17} />Start another demo</button>}
-            <button className="btn-soft" type="button" onClick={onClose}>{step === 4 ? 'Close' : 'Cancel demo'}</button>
+            <button className="btn-soft" type="button" onClick={onClose} data-testid="booking-footer-close-btn">{step === 4 ? 'Close' : 'Cancel demo'}</button>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            {step < 3 && <button className="btn-primary inline-flex items-center justify-center gap-2" type="button" onClick={goNext}>Continue <ChevronRight size={17} /></button>}
-            {step === 3 && <button className="btn-primary inline-flex items-center justify-center gap-2" type="button" onClick={confirmDemoBooking}><TicketCheck size={18} />Confirm demo booking — no charge</button>}
+            {step < 3 && <button className="btn-primary inline-flex items-center justify-center gap-2" type="button" onClick={goNext} data-testid="booking-continue-btn">Continue <ChevronRight size={17} /></button>}
+            {step === 3 && <button className="btn-primary inline-flex items-center justify-center gap-2" type="button" onClick={confirmDemoBooking} data-testid="booking-confirm-btn"><TicketCheck size={18} />Confirm demo booking — no charge</button>}
             {step === 4 && <>
-              <button className="btn-soft inline-flex items-center justify-center gap-2" type="button" onClick={copySummary}><ClipboardCopy size={17} />Copy demo summary</button>
-              <button className="btn-primary inline-flex items-center justify-center gap-2" type="button" onClick={openPortal}><ExternalLink size={17} />Open official provider for real booking</button>
+              <button className="btn-soft inline-flex items-center justify-center gap-2" type="button" onClick={copySummary} data-testid="booking-copy-summary-btn"><ClipboardCopy size={17} />Copy demo summary</button>
+              <button className="btn-primary inline-flex items-center justify-center gap-2" type="button" onClick={openPortal} data-testid="booking-portal-btn"><ExternalLink size={17} />Open official provider for real booking</button>
             </>}
           </div>
         </footer>
