@@ -2,6 +2,7 @@ import { ArrowRight, BusFront, CalendarDays, Plane, Ticket, TrainFront, Users } 
 import BackupPlan from '../components/BackupPlan'
 import TrainRunningStatus from './TrainRunningStatus'
 import WeatherDisruptionAlert from '../components/WeatherDisruptionAlert'
+import RouteMap from '../components/RouteMap'
 import { airlineOptions, getCabinOptions, getRouteInputLabels, transportModes, transportPlaces } from '../data/transportData'
 
 function Field({ label, children }) {
@@ -91,6 +92,10 @@ export default function NormalPlanner({ plan, update, onBook, onFindTicket, onOp
 
       <div className="mt-8">
         <WeatherDisruptionAlert plan={plan} />
+      </div>
+
+      <div className="mt-8">
+        <RouteMap plan={plan} />
       </div>
 
       <div className="mt-8">

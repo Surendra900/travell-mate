@@ -551,3 +551,37 @@
    - AFTER: `docs/screenshots/day-23/after/desktop-weather-disruption-alert.png`, `mobile-weather-disruption-alert.png`.
 
 **DAY 23 COMPLETE. Verification passed (5/5). Moving to DAY 24.**
+
+---
+
+## Sprint Entry: Day 24
+**Date:** October 2026  
+**Goal:** Interactive Multi-Modal Route Map with Leaflet, Junction Markers & Station Details  
+
+### Day 24 Task List
+- [x] Task 24.1: Capture BEFORE screenshots of Planner before RouteMap mount on Desktop and Mobile (`docs/screenshots/day-24/before/`).
+- [x] Task 24.2: Upgrade `src/components/RouteMap.jsx` with Leaflet interactive visualizer, high-contrast SVG station nodes (cyan origin, emerald destination, amber junction), multimodal polyline tracks (cyan rail, orange flight, lime road), and station popup info cards.
+- [x] Task 24.3: Integrate `transitHubDirectory` guidance into RouteMap: platform connection tips, bus terminal walking distances, auto fares, and junction safety ratings.
+- [x] Task 24.4: Add interactive map view controls: "Fit Route" bounds (`data-testid="map-zoom-fit"`) and "Junction Focus" (`data-testid="map-focus-junction"`).
+- [x] Task 24.5: Mount `RouteMap` in `src/planner/NormalPlanner.jsx`.
+- [x] Task 24.6: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-24/after/`).
+- [x] Task 24.7: Implement unit tests (`tests/day24_route_map.test.mjs`) and Playwright E2E (`tests/e2e/day24_route_map.spec.mjs`).
+- [x] Task 24.8: Run Day 24 Verification Gate (`npm test`, `npm run build`, E2E test).
+- [x] Task 24.9: Commit, tag `day-24`, deploy preview, and record status.
+
+### Day 24 Verification Evidence
+1. **Interactive OpenStreetMap Route Visualization:**
+   - Client-side Leaflet mapping with zero API key requirement, rendering high-contrast multimodal transit corridors across India.
+   - Dynamic marker popups showing official station codes, platforms, and intermodal connection tips.
+2. **Transit Hub Transfer Integration:**
+   - Verified transit hub guidance card rendered for intermediate junction transfers (e.g. Nagpur, Jaipur, Vijayawada) with auto/cab fare estimates.
+   - Zoom Fit and Junction Focus controls providing intuitive viewport control on desktop and mobile.
+3. **Automated Verification:**
+   - Unit tests: 140/140 passed (`tests/day24_route_map.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day24_route_map.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-24/before/desktop-planner-before-routemap.png`, `mobile-planner-before-routemap.png`.
+   - AFTER: `docs/screenshots/day-24/after/desktop-route-map-active.png`, `mobile-route-map-active.png`.
+
+**DAY 24 COMPLETE. Verification passed (5/5). Moving to DAY 25.**
