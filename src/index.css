@@ -170,7 +170,7 @@ main{color:var(--tm-text)}
 .live-results-workspace .bg-red-500\/10{background:#fff0ef!important}
 .live-results-workspace .text-red-50,.live-results-workspace .text-red-100{color:#9d2420!important}
 
-.assistant-launcher{position:fixed;right:24px;bottom:90px;z-index:60;min-height:50px;border:0;border-radius:999px;background:var(--tm-primary-2);color:#fff;padding:12px 18px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 12px 35px rgba(99,14,212,.25);font-weight:700}
+.assistant-launcher{position:fixed;right:24px;bottom:104px;z-index:75;min-height:50px;border:0;border-radius:999px;background:var(--tm-primary-2);color:#fff;padding:12px 18px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 12px 35px rgba(99,14,212,.25);font-weight:700}
 .assistant-panel{position:fixed;right:24px;bottom:90px;z-index:85;width:min(94vw,440px);height:min(72vh,620px);display:flex;flex-direction:column;overflow:hidden;border:1px solid #d8d4e5;border-radius:20px;background:#fff;padding:16px;box-shadow:0 26px 80px rgba(50,35,100,.22)}
 .assistant-panel-header h3{color:var(--tm-text)!important}
 .assistant-message{color:#2d2940!important}

@@ -453,4 +453,38 @@
 
 **DAY 20 COMPLETE. Verification passed (5/5). Moving to DAY 21.**
 
+---
+
+## Sprint Entry: Day 21
+**Date:** October 2026  
+**Goal:** SambaNova AI Copilot, Multilingual Transit Reasoning & Conversational Agent  
+
+### Day 21 Task List
+- [x] Task 21.1: Capture BEFORE screenshots of Planner before assistant activation on Desktop and Mobile (`docs/screenshots/day-21/before/`).
+- [x] Task 21.2: Audit and enhance `SmartAssistant.jsx` with accessible dialog controls, prompt chips, resilient composer, and greeting localization across 10 Indian languages.
+- [x] Task 21.3: Enhance `api/assistant.js` with Unicode arrow parsing (`[–—→➡➜➔]`), colloquial intent detection (`book me a`), transit extraction, and resilient fallback when keys are missing.
+- [x] Task 21.4: Resolve floating launcher positioning conflict with emergency SOS dock (`bottom: 104px; z-index: 75`).
+- [x] Task 21.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-21/after/`).
+- [x] Task 21.6: Run Day 21 Verification Gate (`tests/day21_sambanova_copilot.test.mjs`, `tests/e2e/day21_sambanova_copilot.spec.mjs`, `npm test`, `npm run build`).
+- [x] Task 21.7: Commit, tag `day-21`, deploy preview, and record status.
+
+### Day 21 Verification Evidence
+1. **Agentic Multimodal Conversational Architecture:**
+   - Designed conversational agent in `SmartAssistant.jsx` supporting natural language route queries, prompt chips, and automatic planner population (`applyPlan` patch).
+   - Upgraded `api/assistant.js` natural language parser with Unicode arrow normalization (`➔`, `→`, `➡`), colloquial head stripping, and mode detection (Train/Flight/Bus).
+   - In-app multilingual greetings for 10 Indian regional languages (Hindi, Telugu, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Urdu).
+2. **Accessible Dialog & Responsive Mobile Layout:**
+   - Accessible dialog semantics (`role="dialog"`, `aria-label="AI travel assistant"`, `aria-live="polite"`).
+   - Floating launcher positioned safely (`bottom: 104px; z-index: 75`) preventing event collisions with emergency SOS dock.
+3. **Automated Verification:**
+   - Unit tests: 129/129 passed (`tests/day21_sambanova_copilot.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day21_sambanova_copilot.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-21/before/desktop-planner-assistant-closed.png`, `mobile-planner-assistant-closed.png`.
+   - AFTER: `docs/screenshots/day-21/after/desktop-smart-assistant-open.png`, `mobile-smart-assistant-open.png`.
+
+**DAY 21 COMPLETE. Verification passed (5/5). Moving to DAY 22.**
+
+
 

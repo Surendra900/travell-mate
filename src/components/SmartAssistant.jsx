@@ -161,6 +161,7 @@ export default function SmartAssistant({ plan, update, setManualMode, onPlanAppl
       {!embedded && !open && (
         <button
           type="button"
+          data-testid="assistant-launcher-btn"
           className="assistant-launcher"
           onClick={() => setOpen(true)}
           aria-expanded="false"
@@ -171,14 +172,14 @@ export default function SmartAssistant({ plan, update, setManualMode, onPlanAppl
       )}
 
       {open && (
-        <section id="travelmate-smart-assistant" className={`assistant-panel ${embedded ? 'assistant-panel-embedded' : ''}`} role="dialog" aria-modal="true" aria-label="AI travel assistant">
+        <section id="travelmate-smart-assistant" data-testid="assistant-panel" className={`assistant-panel ${embedded ? 'assistant-panel-embedded' : ''}`} role="dialog" aria-modal="true" aria-label="AI travel assistant">
           <header className="assistant-panel-header">
             <div className="assistant-panel-header-copy">
               <p className="badge"><Sparkles size={14} aria-hidden="true" /> AI travel assistant</p>
               <h3 className="mt-3 text-xl font-black text-white">Ask TravelMate</h3>
               <p className="mt-1 text-xs text-slate-400">Ask in your own words. Short phrases and minor spelling mistakes are supported. TravelMate can fill the planner, check configured provider APIs, and explain the demo-booking flow. Licensed direct booking is coming soon.</p>
             </div>
-            <button type="button" className="dialog-close-button assistant-close-button" onClick={() => setOpen(false)} aria-label="Close Smart Assistant" title="Close assistant"><X size={22} aria-hidden="true" /></button>
+            <button type="button" data-testid="assistant-close-btn" className="dialog-close-button assistant-close-button" onClick={() => setOpen(false)} aria-label="Close Smart Assistant" title="Close assistant"><X size={22} aria-hidden="true" /></button>
           </header>
 
           <div ref={listRef} className="assistant-messages mt-4 min-h-0 flex-1 space-y-3 overflow-y-auto pr-1" aria-live="polite">
@@ -216,6 +217,7 @@ export default function SmartAssistant({ plan, update, setManualMode, onPlanAppl
 
           <div className="assistant-composer mt-3 flex min-w-0 items-end gap-2">
             <textarea
+              data-testid="assistant-composer-textarea"
               className="input min-h-[52px] min-w-0 max-h-32 flex-1 resize-y"
               value={prompt}
               onChange={(event) => setPrompt(event.target.value)}
@@ -228,7 +230,7 @@ export default function SmartAssistant({ plan, update, setManualMode, onPlanAppl
               placeholder="Example: tiket from Kochi to Chennai by train"
               disabled={loading}
             />
-            <button type="button" className="btn-primary assistant-send" onClick={() => sendMessage()} disabled={loading || !prompt.trim()} aria-label="Send message">
+            <button type="button" data-testid="assistant-send-btn" className="btn-primary assistant-send" onClick={() => sendMessage()} disabled={loading || !prompt.trim()} aria-label="Send message">
               {loading ? <LoaderCircle className="animate-spin" size={18} aria-hidden="true" /> : <Send size={18} aria-hidden="true" />}
             </button>
           </div>

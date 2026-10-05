@@ -45,7 +45,7 @@ function cleanHistory(value) {
 
 export function normalizeTravelMessage(message) {
   return cleanText(message, 1200)
-    .replace(/[–—→➡➜]/g, ' to ')
+    .replace(/[–—→➡➜➔]/g, ' to ')
     .replace(/\b(?:fron|frm|froom)\b/gi, 'from')
     .replace(/\b(?:too|2)\b/gi, 'to')
     .replace(/\b(?:tiketd|tikets?|tickts?|tikt|tikcet|tickit|ticktes)\b/gi, 'ticket')
@@ -71,7 +71,8 @@ function removeIntentHead(value) {
     /^(?:please\s+|kindly\s+)?(?:can|could|will|would)\s+you\s+/i,
     /^(?:please\s+|kindly\s+)?(?:i\s+)?(?:want|need|would\s+like|am\s+looking\s+for)\s+(?:to\s+)?/i,
     /^(?:please\s+|kindly\s+)?(?:find|show|give|search|check|suggest|plan|make|prepare)\s+(?:me\s+)?/i,
-    /^(?:a\s+|an\s+|some\s+)?(?:book|booking|reserve|reservation|purchase|ticket|tickets|trip|journey|route|travel)\s+(?:for\s+|on\s+)?/i,
+    /^(?:a\s+|an\s+|some\s+)?(?:book|booking|reserve|reservation|purchase|ticket|tickets|trip|journey|route|travel)\s+(?:me\s+)?(?:for\s+|on\s+)?(?:a\s+|an\s+|some\s+)?/i,
+    /^(?:me\s+)?(?:a\s+|an\s+|some\s+)/i,
     /^(?:by\s+)?(?:train|rail|railway|flight|plane|airline|bus|coach)\s+/i
   ]
 
@@ -90,7 +91,7 @@ function removeIntentHead(value) {
 }
 
 function trimDestinationTail(value) {
-  const first = String(value || '').split(/\b(?:by|via|using|on|for|with|tomorrow|today|tonight|next\s+week|next\s+month|under|budget|passengers?|class|cabin|urgent|emergency|tickets?|booking|book|reserve|reservation|please|kindly)\b/i)[0]
+  const first = String(value || '').split(/\b(?:by|via|using|on|for|with|tomorrow|today|tonight|next\s+week|next\s+month|under|budget|passengers?|class|cabin|urgent|emergency|tickets?|booking|book|reserve|reservation|flight|flights|plane|planes|train|trains|bus|buses|coach|please|kindly)\b/i)[0]
   return trimPlace(first)
 }
 
