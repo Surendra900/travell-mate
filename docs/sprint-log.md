@@ -652,3 +652,36 @@
    - AFTER: `docs/screenshots/day-26/after/mobile-home-after.png`, `mobile-planner-after.png`, `mobile-emergency-after.png`.
 
 **DAY 26 COMPLETE. Verification passed (5/5). Moving to DAY 27.**
+
+---
+
+## Sprint Entry: Day 27
+**Date:** October 2026  
+**Goal:** Cross-Browser & Multi-Viewport Regression Gate (Desktop 1440x900, Tablet 768x1024, Mobile 390x844)  
+
+### Day 27 Task List
+- [x] Task 27.1: Capture BEFORE multi-viewport regression screenshots across desktop and mobile (`docs/screenshots/day-27/before/`).
+- [x] Task 27.2: Verify responsive viewport meta tag in `index.html` (`width=device-width, initial-scale=1.0`).
+- [x] Task 27.3: Audit entire client source tree (`src/`) for secret leaks and verify zero hardcoded credentials or API keys.
+- [x] Task 27.4: Audit all primary navigation routes (`/`, `/planner`, `/safety`, `/saved`) across Desktop (1440x900), Tablet (768x1024), and Mobile (390x844) with zero console errors.
+- [x] Task 27.5: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-27/after/`).
+- [x] Task 27.6: Implement unit tests (`tests/day27_cross_browser.test.mjs`) and Playwright E2E (`tests/e2e/day27_cross_browser.spec.mjs`).
+- [x] Task 27.7: Run Day 27 Verification Gate (`npm test`, `npm run build`, E2E test).
+- [x] Task 27.8: Commit, tag `day-27`, deploy preview, and record status.
+
+### Day 27 Verification Evidence
+1. **Multi-Viewport Zero-Error Execution:**
+   - Evaluated Desktop (1440x900), Tablet (768x1024), and Mobile (390x844) across all core application routes (`/`, `/planner`, `/safety`, `/saved`).
+   - Zero uncaught console errors, zero unhandled promise rejections, zero horizontal overflow (`scrollWidth <= innerWidth`).
+2. **Security & Client Integrity Invariants:**
+   - 100% of client bundle sources audited: zero leaked API secrets or live payment keys in client code.
+   - Navigation links validated and tested across screen breakpoints.
+3. **Automated Verification:**
+   - Unit tests: 149/149 passed (`tests/day27_cross_browser.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day27_cross_browser.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-27/before/desktop-1440-planner-regression-before.png`, `mobile-390-planner-regression-before.png`.
+   - AFTER: `docs/screenshots/day-27/after/desktop-1440-planner-regression-after.png`, `mobile-390-planner-regression-after.png`.
+
+**DAY 27 COMPLETE. Verification passed (5/5). Moving to DAY 28.**
