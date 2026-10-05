@@ -244,7 +244,7 @@ export default function RouteMap({ plan = {} }) {
 
   return (
     <section
-      className="glass overflow-hidden rounded-3xl p-5 shadow-2xl transition-all sm:p-6"
+      className="rounded-3xl border border-slate-700/60 bg-slate-900 p-5 shadow-2xl transition-all sm:p-6 text-slate-100"
       data-testid="interactive-route-map"
       aria-label="Interactive Route Map"
     >

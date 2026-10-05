@@ -62,7 +62,7 @@ export default function CarbonCalculator({ plan = {} }) {
 
   return (
     <section
-      className="glass overflow-hidden rounded-3xl p-5 shadow-2xl transition-all sm:p-6"
+      className="rounded-3xl border border-slate-700/60 bg-slate-900 p-5 shadow-2xl transition-all sm:p-6 text-slate-100"
       data-testid="carbon-analytics-card"
       aria-label="Trip Analytics & Carbon Savings"
     >
@@ -97,8 +97,8 @@ export default function CarbonCalculator({ plan = {} }) {
       {/* Main Highlights Grid */}
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {/* Footprint */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3.5">
-          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3.5">
+          <div className="flex items-center gap-1.5 text-xs text-slate-300">
             <Leaf className="h-3.5 w-3.5 text-emerald-400" />
             <span>Trip Footprint</span>
           </div>
@@ -106,41 +106,41 @@ export default function CarbonCalculator({ plan = {} }) {
             className="mt-1 text-xl font-black text-emerald-300 sm:text-2xl"
             data-testid="carbon-co2-val"
           >
-            {activeKg.toLocaleString('en-IN')} <span className="text-xs font-bold text-slate-400">kg CO₂e</span>
+            {activeKg.toLocaleString('en-IN')} <span className="text-xs font-bold text-slate-200">kg CO₂e</span>
           </p>
-          <span className="text-[10px] text-slate-400">
+          <span className="text-[10px] text-slate-300">
             {distance} km &middot; {activeMode} &middot; {passengers} pax
           </span>
         </div>
 
         {/* CO2 Saved */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3.5">
-          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3.5">
+          <div className="flex items-center gap-1.5 text-xs text-slate-300">
             <TrendingDown className="h-3.5 w-3.5 text-cyan-400" />
             <span>CO₂ Avoided</span>
           </div>
           <p className="mt-1 text-xl font-black text-cyan-300 sm:text-2xl">
             {co2SavedKg > 0 ? `-${co2SavedKg.toLocaleString('en-IN')}` : '0'}{' '}
-            <span className="text-xs font-bold text-slate-400">kg</span>
+            <span className="text-xs font-bold text-slate-200">kg</span>
           </p>
-          <span className="text-[10px] text-slate-400">vs solo {comparisonBaseline.toLowerCase()}</span>
+          <span className="text-[10px] text-slate-300">vs solo {comparisonBaseline.toLowerCase()}</span>
         </div>
 
         {/* Money Saved */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3.5">
-          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3.5">
+          <div className="flex items-center gap-1.5 text-xs text-slate-300">
             <DollarSign className="h-3.5 w-3.5 text-amber-400" />
             <span>Paisa Vasool Savings</span>
           </div>
           <p className="mt-1 text-xl font-black text-amber-300 sm:text-2xl">
             {moneySavedInr > 0 ? `₹${moneySavedInr.toLocaleString('en-IN')}` : '₹0'}
           </p>
-          <span className="text-[10px] text-slate-400">Estimated cost delta</span>
+          <span className="text-[10px] text-slate-300">Estimated cost delta</span>
         </div>
 
         {/* Trees Equivalent */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3.5">
-          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3.5">
+          <div className="flex items-center gap-1.5 text-xs text-slate-300">
             <TreePine className="h-3.5 w-3.5 text-emerald-400" />
             <span>Tree Absorption</span>
           </div>
@@ -149,27 +149,27 @@ export default function CarbonCalculator({ plan = {} }) {
             data-testid="carbon-trees-val"
           >
             {treesEquivalent}{' '}
-            <span className="text-xs font-bold text-slate-400">trees/yr</span>
+            <span className="text-xs font-bold text-slate-200">trees/yr</span>
           </p>
-          <span className="text-[10px] text-slate-400">Annual CO₂ offset eq.</span>
+          <span className="text-[10px] text-slate-300">Annual CO₂ offset eq.</span>
         </div>
       </div>
 
       {/* Multimodal Carbon & Cost Comparison Bars */}
-      <div className="mt-5 rounded-2xl border border-slate-800/80 bg-slate-950/40 p-4">
+      <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-950 p-4">
         <div className="flex flex-col justify-between gap-2 border-b border-slate-800/80 pb-3 sm:flex-row sm:items-center">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
             Modal Emissions & Cost Comparison ({distance} km)
           </span>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400">Compare vs:</span>
+            <span className="text-xs font-bold text-slate-200">Compare vs:</span>
             <button
               type="button"
               onClick={() => setComparisonBaseline('Flight')}
-              className={`rounded-lg px-2.5 py-0.5 text-xs font-bold transition-all ${
+              className={`rounded-lg px-2.5 py-1 text-xs font-bold transition-all ${
                 comparisonBaseline === 'Flight'
-                  ? 'border border-cyan-500/50 bg-cyan-500/20 text-cyan-200'
-                  : 'border border-slate-700 bg-slate-800 text-slate-400'
+                  ? 'border border-cyan-400 bg-cyan-950 text-cyan-200'
+                  : 'border border-slate-700 bg-slate-850 text-slate-300'
               }`}
             >
               Flight
@@ -177,10 +177,10 @@ export default function CarbonCalculator({ plan = {} }) {
             <button
               type="button"
               onClick={() => setComparisonBaseline('Cab')}
-              className={`rounded-lg px-2.5 py-0.5 text-xs font-bold transition-all ${
+              className={`rounded-lg px-2.5 py-1 text-xs font-bold transition-all ${
                 comparisonBaseline === 'Cab'
-                  ? 'border border-amber-500/50 bg-amber-500/20 text-amber-200'
-                  : 'border border-slate-700 bg-slate-800 text-slate-400'
+                  ? 'border border-amber-400 bg-amber-950 text-amber-200'
+                  : 'border border-slate-700 bg-slate-850 text-slate-300'
               }`}
             >
               Private Cab
@@ -195,25 +195,25 @@ export default function CarbonCalculator({ plan = {} }) {
             return (
               <div key={item.mode} className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 font-bold text-slate-200">
-                    <Icon className="h-4 w-4 text-slate-400" />
+                  <div className="flex items-center gap-2 font-bold text-slate-100">
+                    <Icon className="h-4 w-4 text-slate-300" />
                     <span>{item.mode}</span>
                     {isCurrent && (
-                      <span className="rounded bg-cyan-500/20 px-1.5 py-0.2 text-[10px] text-cyan-300">
+                      <span className="rounded bg-cyan-950 border border-cyan-500/40 px-1.5 py-0.5 text-[10px] font-bold text-cyan-300">
                         Selected
                       </span>
                     )}
                   </div>
                   <div className="flex items-center gap-3 text-xs">
-                    <span className="font-extrabold text-slate-100">
+                    <span className="font-extrabold text-white">
                       {item.kg} kg CO₂e
                     </span>
-                    <span className="text-slate-400">
+                    <span className="text-slate-300 font-semibold">
                       &middot; est. ₹{item.fare.toLocaleString('en-IN')}
                     </span>
                   </div>
                 </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800/80">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${item.color}`}
                     style={{ width: item.barWidth }}
@@ -226,8 +226,8 @@ export default function CarbonCalculator({ plan = {} }) {
       </div>
 
       {/* Investor & Citizen Advisory Footer */}
-      <div className="mt-4 flex items-center gap-2 text-[11px] text-slate-400">
-        <Info className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
+      <div className="mt-4 flex items-center gap-2 text-xs text-slate-300">
+        <Info className="h-4 w-4 shrink-0 text-cyan-400" />
         <span>
           TravelMate's multimodal routing promotes Indian Railways trunk corridors over solo air/cab travel, advancing national decarbonization and public transit efficiency under Mission LiFE.
         </span>

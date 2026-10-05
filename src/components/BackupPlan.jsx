@@ -63,10 +63,10 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
   }
 
   return (
-    <section className="glass rounded-3xl p-5" aria-labelledby="backup-title">
+    <section className="rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100" aria-labelledby="backup-title">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-bold text-cyan-200">Availability fallback & contingency</p>
+          <p className="text-sm font-bold text-cyan-300">Availability fallback & contingency</p>
           <h3 id="backup-title" className="text-2xl font-black text-white">Backup options if selected transport fails</h3>
         </div>
         {!singleOnly && (
@@ -82,8 +82,8 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
       </div>
 
       {/* Contingency Delay Simulator Controls */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-3 text-xs">
-        <span className="font-bold text-slate-300 inline-flex items-center gap-1.5">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-3 text-xs">
+        <span className="font-bold text-white inline-flex items-center gap-1.5">
           <Clock size={14} className="text-cyan-400" /> Connecting Leg Delay Simulator:
         </span>
         <div className="flex gap-1.5">
@@ -100,7 +100,7 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
               className={`rounded-lg px-2.5 py-1 font-bold transition ${
                 simulatedDelay === item.val
                   ? 'bg-cyan-500 text-slate-950 font-black'
-                  : 'bg-slate-800 text-slate-400 hover:text-white'
+                  : 'bg-slate-800 text-slate-200 hover:text-white'
               }`}
             >
               {item.label}
