@@ -11,6 +11,7 @@ import GlobalTranslationLayer from './components/GlobalTranslationLayer'
 import BlindVoiceGate from './components/BlindVoiceGate'
 import PwaInstallBanner from './components/PwaInstallBanner'
 import DpdpPrivacyModal from './components/DpdpPrivacyModal'
+import DemoTourModal from './components/DemoTourModal'
 import Footer from './components/Footer'
 import LocationPermissionGate from './components/LocationPermissionGate'
 import PageErrorBoundary from './components/PageErrorBoundary'
@@ -41,6 +42,7 @@ export default function App({ authEnabled = false }) {
   const [toastMessage, setToastMessage] = useState('')
   const [profileModalOpen, setProfileModalOpen] = useState(false)
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false)
+  const [demoTourOpen, setDemoTourOpen] = useState(false)
   const [blindGateOpen, setBlindGateOpen] = useState(false)
   const [blindMode, setBlindMode] = useState(false)
   const status = useDeviceStatus()
@@ -48,8 +50,13 @@ export default function App({ authEnabled = false }) {
 
   useEffect(() => {
     const handleOpenPrivacy = () => setPrivacyModalOpen(true)
+    const handleOpenDemoTour = () => setDemoTourOpen(true)
     window.addEventListener('travelmate:open-privacy', handleOpenPrivacy)
-    return () => window.removeEventListener('travelmate:open-privacy', handleOpenPrivacy)
+    window.addEventListener('travelmate:open-demo-tour', handleOpenDemoTour)
+    return () => {
+      window.removeEventListener('travelmate:open-privacy', handleOpenPrivacy)
+      window.removeEventListener('travelmate:open-demo-tour', handleOpenDemoTour)
+    }
   }, [])
 
   useEffect(() => {
@@ -128,7 +135,7 @@ export default function App({ authEnabled = false }) {
       <BlindVoiceGate forceOpen={blindGateOpen} onClose={() => setBlindGateOpen(false)} toast={toast} onModeChange={setBlindMode} />
       <LocationPermissionGate toast={toast} />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-2 focus:font-black focus:text-slate-950">Skip to main content</a>
-      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} />}
+      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} onOpenDemoTour={() => setDemoTourOpen(true)} />}
       <StatusBar status={status} />
       {status.online === false ? (
         <main id="main-content" tabIndex="-1"><OfflineOnlyMode status={status} toast={toast} /></main>
@@ -158,6 +165,7 @@ export default function App({ authEnabled = false }) {
       {status.online !== false && <Footer onOpenPrivacy={() => setPrivacyModalOpen(true)} />}
       {status.online !== false && <OnboardingModal toast={toast} forceOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} />}
       <DpdpPrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} toast={toast} />
+      <DemoTourModal open={demoTourOpen} onClose={() => setDemoTourOpen(false)} onLaunchVoiceGate={() => setBlindGateOpen(true)} />
       {toastMessage && (
         <div className="app-toast" role="status" aria-live="polite">
           {toastMessage}

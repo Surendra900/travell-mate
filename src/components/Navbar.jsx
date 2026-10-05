@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Menu, Search, TrainFront, ShieldAlert, Bookmark, CircleHelp, X, Volume2 } from 'lucide-react'
+import { Menu, Search, TrainFront, ShieldAlert, Bookmark, CircleHelp, X, Volume2, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import LanguageSelector from './LanguageSelector'
 import AccountMenu from './AccountMenu'
@@ -11,7 +11,7 @@ const nav = [
   { to: '/safety', label: 'Safety', icon: ShieldAlert }
 ]
 
-export default function Navbar({ language, onLanguageChange, authEnabled, onOpenProfile, onOpenVoiceGate }) {
+export default function Navbar({ language, onLanguageChange, authEnabled, onOpenProfile, onOpenVoiceGate, onOpenDemoTour }) {
   const [open, setOpen] = useState(false)
   return (
     <header className="tm-nav">
@@ -30,6 +30,17 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
         </nav>
 
         <div className="tm-nav-actions">
+          <button
+            type="button"
+            onClick={onOpenDemoTour}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-400/50 bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-black uppercase tracking-wider transition-all"
+            title="Judge & Investor Demo Tour"
+            aria-label="Judge & Investor Demo Tour"
+            data-testid="navbar-demo-tour-btn"
+          >
+            <Sparkles size={14} className="text-indigo-600" />
+            <span>Judge Tour</span>
+          </button>
           <button
             type="button"
             onClick={onOpenVoiceGate}
@@ -56,7 +67,17 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
               <Icon size={17} /> {label}
             </NavLink>
           ))}
-          <div className="col-span-full pt-3 mt-1 flex items-center justify-between gap-2 border-t border-slate-200">
+          <div className="col-span-full pt-3 mt-1 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200">
+            <button
+              type="button"
+              onClick={() => { setOpen(false); onOpenDemoTour?.(); }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-400/50 bg-indigo-500/10 text-xs font-black uppercase text-indigo-700"
+              aria-label="Judge & Investor Demo Tour"
+              data-testid="mobile-navbar-demo-tour-btn"
+            >
+              <Sparkles size={14} className="text-indigo-600" />
+              <span>Judge Tour</span>
+            </button>
             <button
               type="button"
               onClick={() => { setOpen(false); onOpenVoiceGate?.(); }}

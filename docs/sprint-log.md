@@ -685,3 +685,37 @@
    - AFTER: `docs/screenshots/day-27/after/desktop-1440-planner-regression-after.png`, `mobile-390-planner-regression-after.png`.
 
 **DAY 27 COMPLETE. Verification passed (5/5). Moving to DAY 28.**
+
+---
+
+## Sprint Entry: Day 28
+**Date:** October 2026  
+**Goal:** Judge & Investor Guided Demo Tour (5 National Hackathon Innovations Walkthrough)  
+
+### Day 28 Task List
+- [x] Task 28.1: Extract and declare `src/data/demoTourData.js` detailing the 5 national hackathon innovations (Multimodal Split-Routing, Divyangjan Voice Accessibility, AES-256 Encrypted Vault & DPDP, Open-Meteo Weather Disruption, and 1-Tap SOS Telemetry & Contingency).
+- [x] Task 28.2: Build accessible, interactive modal component `src/components/DemoTourModal.jsx` with keyboard navigation (Escape, ArrowLeft, ArrowRight), progress indicator bar, theme kickers, technical highlights, and direct action triggers.
+- [x] Task 28.3: Integrate desktop and mobile "Judge Tour" triggers into `src/components/Navbar.jsx` (`data-testid="navbar-demo-tour-btn"`, `data-testid="mobile-navbar-demo-tour-btn"`).
+- [x] Task 28.4: Register global event listener `travelmate:open-demo-tour` in `src/App.jsx` and wire into `DemoTourModal`.
+- [x] Task 28.5: Capture BEFORE screenshots on Desktop (1440x900) and Mobile (390x844) (`docs/screenshots/day-28/before/`).
+- [x] Task 28.6: Capture AFTER screenshots on Desktop (1440x900) and Mobile (390x844) (`docs/screenshots/day-28/after/`).
+- [x] Task 28.7: Implement unit tests (`tests/day28_demo_tour.test.mjs`) and Playwright E2E verification (`tests/e2e/day28_demo_tour.spec.mjs`).
+- [x] Task 28.8: Run Day 28 Verification Gate (`npm test`, `npm run build`, E2E test).
+- [x] Task 28.9: Commit, tag `day-28`, deploy preview, and record status.
+
+### Day 28 Verification Evidence
+1. **Interactive Demo Tour Experience:**
+   - 5-step structured walkthrough presenting each national hackathon innovation with high-impact problem statements, technical highlights, and direct interactive action buttons.
+   - Fully accessible dialog semantics (`role="dialog"`, `aria-modal="true"`, `aria-labelledby="demo-tour-title"`), Escape dismissal, and arrow key traversal.
+2. **Multi-Viewport & Responsive Design:**
+   - Verified on Desktop (1440x900) and Mobile (390x844). Zero horizontal overflow (`scrollWidth <= 390px`), clear touch targets, and non-clipped backdrop layout.
+3. **Automated Verification:**
+   - Unit tests: 152/152 passed (`tests/day28_demo_tour.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day28_demo_tour.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks (1701 modules transformed in 2.05s).
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-28/before/desktop-home-before-demotour.png`, `mobile-home-before-demotour.png`.
+   - AFTER: `docs/screenshots/day-28/after/desktop-demotour-modal.png`, `mobile-demotour-modal.png`.
+
+**DAY 28 COMPLETE. Verification passed (5/5). Moving to DAY 29.**
+
