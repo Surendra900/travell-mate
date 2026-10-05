@@ -7,7 +7,7 @@ export default function EmergencyCard({ item }) {
       <div className={`mb-4 h-12 w-12 rounded-2xl bg-gradient-to-br ${item.accent} shadow-lg`} />
       <h3 className="text-xl font-black text-white">{item.title}</h3>
       <p className="mt-2 min-h-12 text-sm leading-6 text-slate-300">{item.summary}</p>
-      <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-cyan-200">
+      <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-indigo-700">
         Open action flow <ArrowRight size={16} className="transition group-hover:translate-x-1" />
       </span>
     </Link>

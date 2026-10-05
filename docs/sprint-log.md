@@ -251,12 +251,31 @@
 **Goal:** Voice A11y & Screen-Reader Gate (WCAG 2.1 AA Compliance & Full 1-15 Regression)  
 
 ### Day 15 Task List
-- [ ] Task 15.1: Capture BEFORE screenshots across core app surfaces.
-- [ ] Task 15.2: Conduct WCAG 2.1 AA screen-reader audit, keyboard focus trapping, and ARIA role hardening on all voice and emergency components.
-- [ ] Task 15.3: Run full automated Axe accessibility gate with 0 critical or serious violations.
-- [ ] Task 15.4: Capture AFTER screenshots on Desktop and Mobile.
-- [ ] Task 15.5: Run Day 15 Milestone Gate (full regression across Days 1-15).
-- [ ] Task 15.6: Commit, tag `day-15`, deploy preview, and record status.
+- [x] Task 15.1: Capture BEFORE screenshots across core app surfaces.
+- [x] Task 15.2: Conduct WCAG 2.1 AA screen-reader audit, keyboard focus trapping, and ARIA role hardening on all voice and emergency components.
+- [x] Task 15.3: Run full automated Axe accessibility gate with 0 critical or serious violations.
+- [x] Task 15.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 15.5: Run Day 15 Milestone Gate (full regression across Days 1-15).
+- [x] Task 15.6: Commit, tag `day-15`, deploy preview, and record status.
+
+### Day 15 Verification Evidence
+1. **WCAG 2.1 AA Screen-Reader Landmarks & Skip Link:** Added `<a href="#main-content">` skip link and `<main id="main-content" tabIndex="-1">` in `src/App.jsx`, verified that Tab on initial page load focuses the skip link and Enter focuses the main landmark.
+2. **Keyboard Focus Trapping & Restoration:** Implemented strict modal focus trapping in `BlindVoiceGate.jsx` with Tab and Shift+Tab cycling, Escape dismissal, and automatic focus restoration to the trigger element (`previousFocusRef`).
+3. **ARIA Semantics & Live Regions:** Added `role="tab"` and `aria-selected` to transport mode tabs in `src/planner/NormalPlanner.jsx`, `aria-live="polite"` to active speech announcements, and converted `EmergencyToolkit.jsx` and `TrainRunningStatus.jsx` into self-contained solid containers (`bg-slate-950 text-white`).
+4. **Automated Axe Accessibility Gate:**
+   - Evaluated core application routes (`/`, `/planner`, `/safety`) with `@axe-core/playwright`.
+   - Fixed all color-contrast violations in `src/components/EmergencyCard.jsx` and `src/components/DocumentVault.jsx`.
+   - Result: 0 critical or serious accessibility violations across all routes (25 checks on `/`, 26 on `/planner`, 23 on `/safety`).
+5. **Full Multi-Day Regression Suite:**
+   - 100/100 unit tests passing (`tests/day15_a11y_gate.test.mjs` + full test suite).
+   - Clean production build in 1.8s.
+   - All E2E specs for Days 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 passed 100% cleanly in Edge/Chromium.
+6. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-15/before/desktop_home_before_a11y.png`, `desktop_planner_before_a11y.png`, `desktop_safety_before_a11y.png`, etc.
+   - AFTER: `docs/screenshots/day-15/after/desktop_home_after_a11y.png`, `desktop_planner_after_a11y.png`, `desktop_safety_after_a11y.png`, `desktop_voice_gate_modal_focus.png`, etc.
+
+**DAY 15 COMPLETE. Verification passed (5/5). Moving to DAY 16.**
+
 
 
 

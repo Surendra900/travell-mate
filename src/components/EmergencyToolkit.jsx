@@ -305,7 +305,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
   const isHighAccuracy = location?.accuracy != null && location.accuracy <= 35
 
   return (
-    <section className={`${compact ? '' : 'mt-10'} danger-glass rounded-3xl p-5 sm:p-6 shadow-danger`} aria-label="SOS Emergency Alert">
+    <section className={`${compact ? '' : 'mt-10'} rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-red-500/40 bg-slate-950 text-white`} aria-label="SOS Emergency Alert">
       {/* Top Header & Fast 112 Action */}
       <div className="flex flex-wrap items-start justify-between gap-4 border-b border-red-500/20 pb-5">
         <div>
@@ -318,7 +318,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
             </span>
           </div>
           <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">One-Tap Crisis Panel</h2>
-          <p className="mt-2 max-w-3xl text-sm text-red-100/90 leading-relaxed">
+          <p className="mt-2 max-w-3xl text-sm text-red-200 leading-relaxed">
             TravelMate refreshes your GPS coordinates when you tap any helpline, WhatsApp, or SMS, automatically copying your location to the clipboard for instant dispatch.
           </p>
         </div>
@@ -334,10 +334,10 @@ export default function EmergencyToolkit({ toast, compact = false }) {
       {/* 4-Hotline Indian Transit Emergency Grid */}
       <div className="mt-6" aria-label="Indian Transit Emergency Hotlines">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-black uppercase tracking-wider text-slate-300">
+          <h3 className="text-sm font-black uppercase tracking-wider text-slate-200">
             Dedicated National Transit Helplines (1-Tap Dial & Location Copy)
           </h3>
-          <span className="text-xs text-slate-400">Direct carrier dialers</span>
+          <span className="text-xs text-slate-300 font-bold">Direct carrier dialers</span>
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {TRANSIT_HOTLINES.map((hotline) => {
@@ -349,7 +349,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
             return (
               <div
                 key={hotline.id}
-                className="relative flex flex-col justify-between rounded-2xl border border-slate-700/60 bg-slate-900/80 p-4 transition-all hover:border-slate-500"
+                className="relative flex flex-col justify-between rounded-2xl border border-slate-700 bg-slate-950 p-4 transition-all hover:border-slate-600 text-white"
               >
                 <div>
                   <div className="flex items-center justify-between">
@@ -362,7 +362,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
                     <Icon size={18} className="text-slate-200" />
                     <h4 className="font-black text-sm text-white leading-tight">{hotline.title}</h4>
                   </div>
-                  <p className="mt-1 text-xs text-slate-300/80 leading-relaxed">{hotline.desc}</p>
+                  <p className="mt-1 text-xs text-slate-200 leading-relaxed">{hotline.desc}</p>
                 </div>
                 <button
                   type="button"
@@ -383,7 +383,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
       <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-5">
           {/* Live GPS Telemetry Card */}
-          <div className="rounded-2xl border border-cyan-400/30 bg-slate-950/70 p-4 shadow-inner">
+          <div className="rounded-2xl border border-cyan-500/40 bg-slate-950 p-4 shadow-inner text-white">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-cyan-500/20 pb-3">
               <div className="flex items-center gap-2">
                 <Navigation size={18} className="text-cyan-400" />
@@ -393,9 +393,9 @@ export default function EmergencyToolkit({ toast, compact = false }) {
               </div>
               <div className="flex items-center gap-2">
                 <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-black ${
-                  isHighAccuracy ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' :
-                  location ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' :
-                  'bg-red-500/20 text-red-300 border border-red-500/40'
+                  isHighAccuracy ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40' :
+                  location ? 'bg-amber-950 text-amber-300 border border-amber-500/40' :
+                  'bg-red-950 text-red-300 border border-red-500/40'
                 }`}>
                   <Radio size={12} className={locationBusy ? 'animate-spin' : ''} />
                   {isHighAccuracy ? 'Satellite Fix Locked' : location ? 'Approximate Fix' : 'GPS Offline'}
@@ -408,23 +408,23 @@ export default function EmergencyToolkit({ toast, compact = false }) {
 
             <div className="mt-3 space-y-1 text-xs">
               <div className="flex items-start justify-between gap-2">
-                <span className="font-bold text-slate-400">Coordinates:</span>
+                <span className="font-bold text-slate-300">Coordinates:</span>
                 <span className="font-mono text-cyan-200 text-right">
                   {location?.latitude != null ? `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}` : 'Unavailable'}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-2">
-                <span className="font-bold text-slate-400">Status:</span>
+                <span className="font-bold text-slate-300">Status:</span>
                 <span className="text-slate-200 text-right capitalize">{locationPermission}</span>
               </div>
               {location?.capturedAt && (
                 <div className="flex items-start justify-between gap-2">
-                  <span className="font-bold text-slate-400">Timestamp:</span>
-                  <span className="text-slate-300 text-right">{new Date(location.capturedAt).toLocaleTimeString()}</span>
+                  <span className="font-bold text-slate-300">Timestamp:</span>
+                  <span className="text-slate-200 text-right">{new Date(location.capturedAt).toLocaleTimeString()}</span>
                 </div>
               )}
               {tripContext && (
-                <div className="mt-2 rounded-lg bg-cyan-950/40 p-2 text-cyan-100 border border-cyan-800/40">
+                <div className="mt-2 rounded-lg bg-cyan-950 p-2 text-cyan-100 border border-cyan-800">
                   <span className="font-bold text-cyan-300">Active Transit Context:</span> {tripContext}
                 </div>
               )}
@@ -464,8 +464,8 @@ export default function EmergencyToolkit({ toast, compact = false }) {
           </div>
 
           {/* Emergency Alert Dispatch Form */}
-          <div className="rounded-2xl border border-red-300/30 bg-red-950/50 p-4">
-            <label htmlFor="emergency-type-select" className="text-sm font-black text-red-100">
+          <div className="rounded-2xl border border-red-500/40 bg-red-950 p-4 text-white">
+            <label htmlFor="emergency-type-select" className="text-sm font-black text-red-200">
               Emergency Dispatch Type
             </label>
             <select
@@ -484,8 +484,8 @@ export default function EmergencyToolkit({ toast, compact = false }) {
               ].map((item) => <option key={item}>{item}</option>)}
             </select>
 
-            <div className="mt-3 rounded-xl border border-red-500/20 bg-red-900/20 p-3 text-xs text-red-200">
-              <p className="font-mono text-[11px] leading-relaxed break-all">{locationLabel}</p>
+            <div className="mt-3 rounded-xl border border-red-500/30 bg-black/40 p-3 text-xs text-red-200">
+              <p className="font-mono text-[11px] leading-relaxed break-all text-red-200">{locationLabel}</p>
             </div>
 
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
@@ -503,28 +503,28 @@ export default function EmergencyToolkit({ toast, compact = false }) {
               </button>
             </div>
 
-            <p className="mt-3 rounded-xl border border-yellow-400/20 bg-yellow-400/10 p-3 text-xs font-bold text-yellow-100">
+            <p className="mt-3 rounded-xl border border-yellow-500/40 bg-yellow-950 p-3 text-xs font-bold text-yellow-200">
               If location was allowed during startup, WhatsApp and SMS normally open without another permission prompt. TravelMate still refreshes GPS first so an old position is not sent.
             </p>
           </div>
 
           {/* Offline Emergency Pack Status */}
-          <div className="rounded-2xl border border-lime-300/30 bg-lime-950/30 p-4">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-lime-200">Offline Emergency Pack</p>
+          <div className="rounded-2xl border border-lime-500/40 bg-slate-950 p-4 text-white">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-lime-300">Offline Emergency Pack</p>
             <h3 className="mt-1 text-2xl font-black text-white">{offlinePack ? 'Prepared on this device' : 'Not prepared yet'}</h3>
-            <p className="mt-2 text-sm text-lime-100/85">
+            <p className="mt-2 text-sm text-slate-200">
               Stores emergency transit guidance, cached offline routes, and station safety contacts directly on your browser storage.
             </p>
             <button className="btn-low mt-4 inline-flex items-center gap-2" onClick={prepareOffline}>
               <WifiOff size={18} /> Prepare offline
             </button>
             {offlinePack?.generatedAt && (
-              <p className="mt-3 text-xs font-bold text-lime-100">
+              <p className="mt-3 text-xs font-bold text-lime-200">
                 Last prepared: {new Date(offlinePack.generatedAt).toLocaleString()}
               </p>
             )}
             {offlinePack?.secureVaultDocumentCount > 0 && (
-              <p className="mt-2 text-xs font-bold text-cyan-100">
+              <p className="mt-2 text-xs font-bold text-cyan-200">
                 Encrypted vault documents on this device: {offlinePack.secureVaultDocumentCount}. They are not copied into the offline pack.
               </p>
             )}
@@ -532,7 +532,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
         </div>
 
         {/* Right Column: Local Emergency Contact Vault */}
-        <div className="flex flex-col rounded-2xl border border-cyan-400/25 bg-slate-950/70 p-4">
+        <div className="flex flex-col rounded-2xl border border-cyan-500/30 bg-slate-950 p-4 text-white">
           <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3">
             <div>
               <h3 className="text-xl font-black text-white">Emergency Contact Vault</h3>
@@ -637,7 +637,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
       <div className="mt-8 border-t border-slate-800 pt-6" aria-label="Offline Transit Incident Protocols">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <span className="badge border-cyan-400/30 bg-cyan-500/10 text-cyan-200 text-xs font-black tracking-wide">
+            <span className="inline-flex items-center rounded-full border border-cyan-500/50 bg-cyan-950 px-2.5 py-1 text-xs font-black tracking-wide text-cyan-200">
               ZERO-NETWORK READINESS
             </span>
             <h3 className="mt-1 text-2xl font-black text-white">
@@ -758,7 +758,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
       </div>
 
       {/* Prominent Legal Safety Notice */}
-      <div className="mt-8 rounded-2xl border border-yellow-500/40 bg-yellow-950/30 p-4 text-yellow-100 flex items-start gap-3">
+      <div className="mt-8 rounded-2xl border border-yellow-500/50 bg-yellow-950 p-4 text-yellow-100 flex items-start gap-3">
         <AlertTriangle size={24} className="text-yellow-400 flex-shrink-0 mt-0.5" />
         <div className="text-xs leading-relaxed">
           <span className="font-black text-yellow-300 uppercase tracking-wider block mb-0.5">

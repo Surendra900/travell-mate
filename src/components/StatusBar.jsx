@@ -15,7 +15,7 @@ export default function StatusBar({ status }) {
         <span className="status-chip">{status.online ? <Signal size={14} aria-hidden="true" /> : <WifiOff size={14} aria-hidden="true" />}{networkText}</span>
         <span className="status-chip"><PlugZap size={14} aria-hidden="true" />{status.online === false ? 'Offline mode' : low ? 'Auto low-network' : 'Normal mode'}</span>
         {status.online === false && <span className="shrink-0 text-xs font-black text-red-100">Emergency and saved data remain available.</span>}
-        <span className="hidden text-xs text-slate-400 xl:inline">Device readings depend on browser support.</span>
+        <span className="hidden text-xs text-slate-600 xl:inline">Device readings depend on browser support.</span>
       </div>
     </div>
   )

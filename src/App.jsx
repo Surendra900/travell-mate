@@ -122,11 +122,11 @@ export default function App({ authEnabled = false }) {
       {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} />}
       <StatusBar status={status} />
       {status.online === false ? (
-        <div id="main-content"><OfflineOnlyMode status={status} toast={toast} /></div>
+        <main id="main-content" tabIndex="-1"><OfflineOnlyMode status={status} toast={toast} /></main>
       ) : (
         <>
           <OfflineModeBanner status={status} toast={toast} />
-          <div id="main-content">
+          <main id="main-content" tabIndex="-1">
             <PageErrorBoundary key={location.pathname}>
               <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16 text-center font-bold text-cyan-100">Loading TravelMate module…</div>}>
                 <Routes>
@@ -139,7 +139,7 @@ export default function App({ authEnabled = false }) {
                 </Routes>
               </Suspense>
             </PageErrorBoundary>
-          </div>
+          </main>
         </>
       )}
       {location.pathname !== '/analyze' && location.pathname !== '/saved' && <FloatingSOS status={status} />}

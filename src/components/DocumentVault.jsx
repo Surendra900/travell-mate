@@ -215,7 +215,7 @@ export default function DocumentVault({ toast }) {
               Files and metadata are encrypted before being stored in IndexedDB. The passphrase is not saved, uploaded, or recoverable. Losing it means losing access to the documents.
             </p>
           </div>
-          <span className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-bold text-emerald-100">Encrypted · local-only · not copied into offline pack</span>
+          <span className="rounded-2xl border border-emerald-600/30 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-900">Encrypted · local-only · not copied into offline pack</span>
         </div>
 
         {legacyDetected && (
@@ -226,12 +226,12 @@ export default function DocumentVault({ toast }) {
         )}
 
         <div className="mt-5 grid gap-4 rounded-2xl border border-slate-700/70 bg-slate-950/60 p-4 sm:grid-cols-2">
-          <label className="text-sm font-bold text-cyan-100 sm:col-span-2">
+          <label className="text-sm font-bold text-slate-800 sm:col-span-2">
             <span className="mb-2 block">{hasVault ? 'Vault passphrase' : 'Create vault passphrase'}</span>
             <input className="input" type="password" autoComplete={hasVault ? 'current-password' : 'new-password'} value={passphrase} onChange={(event) => setPassphrase(event.target.value)} placeholder="At least 8 characters" />
           </label>
           {!hasVault && (
-            <label className="text-sm font-bold text-cyan-100 sm:col-span-2">
+            <label className="text-sm font-bold text-slate-800 sm:col-span-2">
               <span className="mb-2 block">Confirm passphrase</span>
               <input className="input" type="password" autoComplete="new-password" value={confirmPassphrase} onChange={(event) => setConfirmPassphrase(event.target.value)} placeholder="Repeat passphrase" />
             </label>
@@ -263,9 +263,9 @@ export default function DocumentVault({ toast }) {
       </div>
 
       <div className="mt-5 grid gap-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Document type</span><select className="input" value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>
-        <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Private label</span><input className="input" value={documentLabel} onChange={(event) => setDocumentLabel(event.target.value)} placeholder="Example: Passport front" /></label>
-        <label className="text-sm font-bold text-cyan-100 sm:col-span-2"><span className="mb-2 block">Private note</span><input className="input" value={note} onChange={(event) => setNote(event.target.value)} maxLength={500} placeholder="Optional note; encrypted with the file" /></label>
+        <label className="text-sm font-bold text-slate-800"><span className="mb-2 block">Document type</span><select className="input" value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>
+        <label className="text-sm font-bold text-slate-800"><span className="mb-2 block">Private label</span><input className="input" value={documentLabel} onChange={(event) => setDocumentLabel(event.target.value)} placeholder="Example: Passport front" /></label>
+        <label className="text-sm font-bold text-slate-800 sm:col-span-2"><span className="mb-2 block">Private note</span><input className="input" value={note} onChange={(event) => setNote(event.target.value)} maxLength={500} placeholder="Optional note; encrypted with the file" /></label>
         <label className="btn-primary inline-flex cursor-pointer items-center justify-center gap-2 sm:col-span-2">
           <UploadCloud size={18} /> {busy ? 'Encrypting…' : 'Choose and encrypt document'}
           <input className="sr-only" type="file" disabled={busy} accept="application/pdf,image/*" onChange={handleUpload} />
@@ -297,8 +297,8 @@ export default function DocumentVault({ toast }) {
       </div>
 
       <div className="mt-6 grid gap-4 rounded-2xl border border-slate-700 bg-slate-950/60 p-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">New passphrase</span><input className="input" type="password" autoComplete="new-password" value={newPassphrase} onChange={(event) => setNewPassphrase(event.target.value)} /></label>
-        <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Confirm new passphrase</span><input className="input" type="password" autoComplete="new-password" value={newPassphraseConfirm} onChange={(event) => setNewPassphraseConfirm(event.target.value)} /></label>
+        <label className="text-sm font-bold text-slate-800"><span className="mb-2 block">New passphrase</span><input className="input" type="password" autoComplete="new-password" value={newPassphrase} onChange={(event) => setNewPassphrase(event.target.value)} /></label>
+        <label className="text-sm font-bold text-slate-800"><span className="mb-2 block">Confirm new passphrase</span><input className="input" type="password" autoComplete="new-password" value={newPassphraseConfirm} onChange={(event) => setNewPassphraseConfirm(event.target.value)} /></label>
         <button className="btn-soft sm:col-span-2" type="button" disabled={busy || !newPassphrase} onClick={changePassphrase}>Re-encrypt vault with new passphrase</button>
       </div>
     </section>

@@ -87,15 +87,15 @@ export default function TrainRunningStatus({ plan, toast }) {
   const stationBoardTrains = SAMPLE_STATION_BOARDS[selectedStation] || SAMPLE_STATION_BOARDS.NDLS
 
   return (
-    <div className="glass rounded-3xl p-5 sm:p-6 shadow-xl border border-cyan-400/20 md:col-span-2">
+    <div className="train-telemetry-cockpit rounded-3xl p-5 sm:p-6 shadow-xl border border-cyan-500/30 bg-slate-950 text-white md:col-span-2">
       {/* Header and Mode Selector */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="badge border-cyan-400/30 bg-cyan-500/10 text-cyan-200 font-bold">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/50 bg-cyan-950 px-2.5 py-1 text-xs font-bold text-cyan-200">
               <Radio size={14} className="text-cyan-400 animate-pulse" /> Live Transit Telemetry
             </span>
-            <span className="badge border-emerald-400/30 bg-emerald-500/20 text-emerald-200 text-xs font-mono">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-950 px-2.5 py-1 text-xs font-mono text-emerald-200">
               GPS Verified
             </span>
           </div>
@@ -106,11 +106,11 @@ export default function TrainRunningStatus({ plan, toast }) {
         </div>
 
         {/* Tab switcher: Train Status vs Station Board */}
-        <div className="flex rounded-2xl bg-slate-900/90 p-1 border border-slate-700/60 text-xs font-bold">
+        <div className="flex rounded-2xl bg-slate-900 p-1 border border-slate-700/60 text-xs font-bold">
           <button
             type="button"
             className={`rounded-xl px-4 py-2 transition ${
-              activeTab === 'train' ? 'bg-cyan-400 text-slate-950 font-black shadow' : 'text-slate-400 hover:text-white'
+              activeTab === 'train' ? 'bg-cyan-400 text-slate-950 font-black shadow' : 'text-slate-300 hover:text-white'
             }`}
             onClick={() => setActiveTab('train')}
           >
@@ -119,7 +119,7 @@ export default function TrainRunningStatus({ plan, toast }) {
           <button
             type="button"
             className={`rounded-xl px-4 py-2 transition ${
-              activeTab === 'station' ? 'bg-cyan-400 text-slate-950 font-black shadow' : 'text-slate-400 hover:text-white'
+              activeTab === 'station' ? 'bg-cyan-400 text-slate-950 font-black shadow' : 'text-slate-300 hover:text-white'
             }`}
             onClick={() => setActiveTab('station')}
           >
@@ -132,7 +132,7 @@ export default function TrainRunningStatus({ plan, toast }) {
         <div className="mt-5 space-y-5">
           {/* Quick-Preset Train Buttons */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-slate-400">Popular Trains:</span>
+            <span className="text-xs font-bold text-slate-300">Popular Trains:</span>
             {POPULAR_TRAIN_PRESETS.map((p) => (
               <button
                 key={p.code}
@@ -141,7 +141,7 @@ export default function TrainRunningStatus({ plan, toast }) {
                 className={`rounded-lg px-2.5 py-1 text-xs font-bold transition border ${
                   trainNumber === p.code
                     ? 'border-cyan-400 bg-cyan-400/20 text-cyan-200'
-                    : 'border-slate-800 bg-slate-900/60 text-slate-300 hover:border-slate-700'
+                    : 'border-slate-700 bg-slate-900 text-slate-200 hover:border-slate-600'
                 }`}
               >
                 {p.code} ({p.name.split(' ')[0]})
@@ -196,14 +196,14 @@ export default function TrainRunningStatus({ plan, toast }) {
 
           {/* Main Train Card */}
           {status && (
-            <div className="rounded-2xl border border-slate-700/80 bg-slate-950/80 p-5 text-sm shadow-xl space-y-4">
+            <div className="rounded-2xl border border-slate-700 bg-slate-900 p-5 text-sm shadow-xl space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-3">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xl font-black text-cyan-300">{status.trainNumber}</span>
                     <h4 className="text-lg font-black text-white">{status.trainName}</h4>
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-400">{status.from} → {status.to}</p>
+                  <p className="mt-0.5 text-xs text-slate-200">{status.from} → {status.to}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {delayInfo && (
@@ -212,7 +212,7 @@ export default function TrainRunningStatus({ plan, toast }) {
                       {delayInfo.label}
                     </span>
                   )}
-                  <span className="rounded-full bg-slate-800 border border-slate-700 px-3 py-1 text-xs font-bold text-slate-300">
+                  <span className="rounded-full bg-slate-800 border border-slate-700 px-3 py-1 text-xs font-bold text-slate-200">
                     Platform: <strong className="text-white">{status.platform || 'Platform 1'}</strong>
                   </span>
                 </div>
@@ -220,27 +220,27 @@ export default function TrainRunningStatus({ plan, toast }) {
 
               {/* Current Station & Live Alert */}
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/30 p-3">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-400">Current Position</span>
+                <div className="rounded-xl border border-cyan-500/40 bg-slate-950 p-3">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-200">Current Position</span>
                   <p className="mt-1 font-bold text-white text-base">{status.currentStation}</p>
-                  <p className="mt-0.5 text-xs text-slate-300">{status.status}</p>
+                  <p className="mt-0.5 text-xs text-slate-200">{status.status}</p>
                 </div>
 
                 <div className={`rounded-xl border p-3 ${
                   delayInfo?.contingencyAlert
-                    ? 'border-red-500/40 bg-red-950/30 text-red-100'
-                    : 'border-slate-800 bg-slate-900/60 text-slate-300'
+                    ? 'border-red-500/40 bg-red-950 text-red-100'
+                    : 'border-slate-800 bg-slate-950 text-slate-200'
                 }`}>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Delay Assessment</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">Delay Assessment</span>
                   <p className="mt-1 text-xs leading-relaxed">{delayInfo?.advice || 'Monitoring schedule updates.'}</p>
-                  <p className="mt-1 text-[11px] text-slate-500">Updated: {status.updated}</p>
+                  <p className="mt-1 text-[11px] text-slate-300">Updated: {status.updated}</p>
                 </div>
               </div>
 
               {/* Station Progress Timeline */}
               {status.timeline && (
                 <div className="mt-4 pt-2">
-                  <h5 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">
+                  <h5 className="text-xs font-black uppercase tracking-wider text-slate-300 mb-3">
                     Station Progression Timeline
                   </h5>
                   <div className="grid gap-2">

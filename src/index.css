@@ -35,12 +35,12 @@ button,input,select,textarea{font:inherit}
 button:disabled{cursor:not-allowed;opacity:.6}
 a{color:inherit}
 main{color:var(--tm-text)}
-.text-white{color:#151b2d!important}
-.text-slate-50,.text-slate-100,.text-slate-200{color:#252236!important}
-.text-slate-300,.text-slate-400,.text-slate-500{color:#625e6f!important}
-.text-cyan-100,.text-cyan-200{color:#5b2ca8!important}
-.bg-slate-950,.bg-slate-900,.bg-slate-800,.bg-slate-700{background:#f8f7ff!important}
-.border-slate-700,.border-slate-600{border-color:#dfe0ee!important}
+.light-surface .text-white{color:#151b2d!important}
+.light-surface .text-slate-50,.light-surface .text-slate-100,.light-surface .text-slate-200{color:#252236!important}
+.light-surface .text-slate-300,.light-surface .text-slate-400,.light-surface .text-slate-500{color:#625e6f!important}
+.light-surface .text-cyan-100,.light-surface .text-cyan-200{color:#5b2ca8!important}
+.light-surface .bg-slate-950,.light-surface .bg-slate-900,.light-surface .bg-slate-800,.light-surface .bg-slate-700{background:#f8f7ff!important}
+.light-surface .border-slate-700,.light-surface .border-slate-600{border-color:#dfe0ee!important}
 
 .tm-page{max-width:1280px;margin:0 auto;padding:0 64px}
 .tm-page > *{position:relative}
@@ -401,8 +401,19 @@ h1,h2,h3,h4,.tm-brand,.tm-footer-logo,.assistant-main h1,.sketch-intro h1,.sketc
 
 /* PLANNER — Stitch 4 */
 #main-content>main:not(.tm-page):not(.assistant-page):not(.safety-page){max-width:1280px!important;padding:48px 64px 96px!important}
-#main-content>main>section h1{font-size:48px!important;line-height:56px!important;letter-spacing:-.02em!important;color:var(--st-ink)!important}
-#main-content>main>section p{color:var(--st-muted)!important}
+#main-content>main>section:first-of-type h1{font-size:48px!important;line-height:56px!important;letter-spacing:-.02em!important;color:var(--st-ink)!important}
+#main-content>main>section:first-of-type p{color:var(--st-muted)}
+.train-telemetry-cockpit{background:#020617!important;color:#f8fafc!important}
+.train-telemetry-cockpit p{color:#cbd5e1!important}
+.train-telemetry-cockpit .text-white{color:#ffffff!important}
+.train-telemetry-cockpit .text-cyan-200{color:#a5f3fc!important}
+.train-telemetry-cockpit .text-cyan-300{color:#67e8f9!important}
+.train-telemetry-cockpit .text-emerald-200{color:#a7f3d0!important}
+.train-telemetry-cockpit .text-emerald-400{color:#34d399!important}
+.train-telemetry-cockpit .text-slate-200{color:#e2e8f0!important}
+.train-telemetry-cockpit .text-slate-300{color:#cbd5e1!important}
+.train-telemetry-cockpit .bg-emerald-500\/10{background:rgba(16,185,129,.15)!important}
+.train-telemetry-cockpit .text-emerald-100{color:#d1fae5!important}
 .planner-mode-tabs{padding:8px!important;border-radius:16px!important;background:#fff!important;border:1px solid #e2ddec!important;box-shadow:var(--st-shadow)!important}
 .planner-mode-tabs button{min-height:52px!important;border-radius:10px!important;font-size:14px!important;color:var(--st-muted)!important}
 .planner-mode-tabs button[class*="bg-cyan-400"]{background:var(--st-primary-2)!important;color:#fff!important}
@@ -492,14 +503,14 @@ h1,h2,h3,h4,.tm-brand,.tm-footer-logo,.assistant-main h1,.sketch-intro h1,.sketc
 .safety-vault{margin-top:32px}
 
 /* Emergency details and all legacy dark Tailwind fragments */
-#main-content .text-white{color:var(--st-ink)!important}
-#main-content .text-slate-50,#main-content .text-slate-100,#main-content .text-slate-200{color:var(--st-ink)!important}
-#main-content .text-slate-300,#main-content .text-slate-400,#main-content .text-slate-500{color:var(--st-muted)!important}
-#main-content .text-cyan-100,#main-content .text-cyan-200{color:var(--st-primary)!important}
-#main-content .bg-slate-950,#main-content .bg-slate-900,#main-content .bg-slate-800,#main-content .bg-slate-700{background:#faf8ff!important}
-#main-content .border-slate-700,#main-content .border-slate-600{border-color:#e6e1ee!important}
-#main-content .bg-slate-950\/70,#main-content .bg-slate-950\/60,#main-content .bg-slate-950\/50,#main-content .bg-slate-950\/45,#main-content .bg-slate-950\/35{background:#faf8ff!important}
-#main-content .border-white\/10{border-color:#e6e1ee!important}
+.emergency-detail-legacy .text-white{color:var(--st-ink)!important}
+.emergency-detail-legacy .text-slate-50,.emergency-detail-legacy .text-slate-100,.emergency-detail-legacy .text-slate-200{color:var(--st-ink)!important}
+.emergency-detail-legacy .text-slate-300,.emergency-detail-legacy .text-slate-400,.emergency-detail-legacy .text-slate-500{color:var(--st-muted)!important}
+.emergency-detail-legacy .text-cyan-100,.emergency-detail-legacy .text-cyan-200{color:var(--st-primary)!important}
+.emergency-detail-legacy .bg-slate-950,.emergency-detail-legacy .bg-slate-900,.emergency-detail-legacy .bg-slate-800,.emergency-detail-legacy .bg-slate-700{background:#faf8ff!important}
+.emergency-detail-legacy .border-slate-700,.emergency-detail-legacy .border-slate-600{border-color:#e6e1ee!important}
+.emergency-detail-legacy .bg-slate-950\/70,.emergency-detail-legacy .bg-slate-950\/60,.emergency-detail-legacy .bg-slate-950\/50,.emergency-detail-legacy .bg-slate-950\/45,.emergency-detail-legacy .bg-slate-950\/35{background:#faf8ff!important}
+.emergency-detail-legacy .border-white\/10{border-color:#e6e1ee!important}
 
 /* Global footer — Stitch 1/2 */
 .tm-footer{margin-top:auto;background:#f2f3ff;color:var(--st-muted)}
@@ -507,7 +518,7 @@ h1,h2,h3,h4,.tm-brand,.tm-footer-logo,.assistant-main h1,.sketch-intro h1,.sketc
 .tm-footer-inner{max-width:1280px;margin:0 auto;padding:48px 64px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
 .tm-footer-logo{display:inline-flex;align-items:center;gap:8px;color:var(--st-primary);font-size:20px;font-weight:700;text-decoration:none}
 .tm-footer-brand p{max-width:420px;margin:14px 0 8px;font-size:16px;line-height:24px;color:var(--st-muted)}
-.tm-footer-brand small{font-size:12px;color:#777181}
+.tm-footer-brand small{font-size:12px;color:#3b3646}
 .tm-footer-col{display:flex;flex-direction:column;gap:12px;font-size:14px}
 .tm-footer-col strong{color:var(--st-ink);font-size:14px;margin-bottom:4px}
 .tm-footer-col a,.tm-footer-col span{color:var(--st-muted);text-decoration:none}
@@ -605,16 +616,7 @@ h1,h2,h3,h4,.tm-brand,.tm-footer-logo,.assistant-main h1,.sketch-intro h1,.sketc
 @media(max-width:760px){.results-top-nav{height:64px;padding:0 16px}.results-brand{font-size:26px}.results-nav-links{display:none}.results-nav-actions{gap:10px}.results-nav-actions a{font-size:13px}}
 
 /* Safety internals: convert legacy dark nested panels into Stitch tonal surfaces. */
-.safety-page .danger-glass{background:#fff8f7!important;border:1px solid #f2b8b5!important;color:var(--st-ink)!important}
-.safety-page .danger-glass .bg-red-950\/50{background:#fff8f7!important;border-color:#f2b8b5!important}
-.safety-page .danger-glass .bg-cyan-400\/10,.safety-page .danger-glass .bg-cyan-400\/5{background:#effaff!important;border-color:#b7e3ea!important}
-.safety-page .danger-glass .bg-yellow-400\/10{background:#fff8df!important;border-color:#f0d89a!important}
-.safety-page .danger-glass .bg-lime-400\/10{background:#effbf4!important;border-color:#b8e7cb!important}
-.safety-page .danger-glass .bg-slate-950\/60,.safety-page .danger-glass .bg-slate-900,.safety-page .danger-glass .bg-slate-900\/70{background:#faf8ff!important;border-color:#e6e1ee!important}
-.safety-page .danger-glass .text-red-100,.safety-page .danger-glass .text-red-50{color:#8f1d1a!important}
-.safety-page .danger-glass .text-yellow-100{color:#806000!important}
-.safety-page .danger-glass .text-cyan-100,.safety-page .danger-glass .text-cyan-50{color:#245765!important}
-.safety-page .danger-glass .text-lime-100,.safety-page .danger-glass .text-lime-200{color:#166534!important}
+.safety-page .glass .bg-slate-950\/60,.safety-page .glass .bg-slate-950\/50{background:#faf8ff!important;border-color:#e6e1ee!important}
 .safety-page .glass .bg-slate-950\/60,.safety-page .glass .bg-slate-950\/50{background:#faf8ff!important;border-color:#e6e1ee!important}
 .safety-page .glass .text-slate-300,.safety-page .glass .text-slate-400{color:var(--st-muted)!important}
 .safety-page .glass .text-white{color:var(--st-ink)!important}

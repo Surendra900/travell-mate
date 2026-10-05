@@ -25,6 +25,8 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
   const [audioPlayed, setAudioPlayed] = useState(false)
   const [activePreference, setActivePreference] = useState(() => getBlindModePreference())
   const yesButtonRef = useRef(null)
+  const dialogRef = useRef(null)
+  const previousFocusRef = useRef(null)
   const recognitionRef = useRef(null)
   const spokenRef = useRef(false)
 
@@ -151,13 +153,43 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [open, speakPrompt])
 
-  // Focus trap to YES button when open
+  // Focus management and keyboard focus trap
   useEffect(() => {
     if (open) {
+      previousFocusRef.current = document.activeElement
       const timer = setTimeout(() => {
         yesButtonRef.current?.focus()
       }, 100)
-      return () => clearTimeout(timer)
+
+      function handleTrapFocus(e) {
+        if (e.key !== 'Tab') return
+        const container = dialogRef.current
+        if (!container) return
+        const focusable = Array.from(
+          container.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        )
+        if (focusable.length === 0) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+
+        if (e.shiftKey) {
+          if (document.activeElement === first || !container.contains(document.activeElement)) {
+            e.preventDefault()
+            last.focus()
+          }
+        } else {
+          if (document.activeElement === last || !container.contains(document.activeElement)) {
+            e.preventDefault()
+            first.focus()
+          }
+        }
+      }
+
+      window.addEventListener('keydown', handleTrapFocus)
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('keydown', handleTrapFocus)
+      }
     } else {
       stopListening()
       try { window.speechSynthesis?.cancel() } catch {}
@@ -181,6 +213,9 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
     }
 
     setOpen(false)
+    if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+      try { previousFocusRef.current.focus() } catch {}
+    }
     onClose?.()
   }
 
@@ -201,6 +236,9 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
     }
 
     setOpen(false)
+    if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+      try { previousFocusRef.current.focus() } catch {}
+    }
     onClose?.()
   }
 
@@ -208,6 +246,9 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
     stopListening()
     try { window.speechSynthesis?.cancel() } catch {}
     setOpen(false)
+    if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+      try { previousFocusRef.current.focus() } catch {}
+    }
     onClose?.()
   }
 
@@ -241,7 +282,7 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
           aria-describedby="blind-gate-desc"
           data-testid="blind-voice-gate"
         >
-          <div className="relative w-full max-w-2xl rounded-3xl border-4 border-yellow-400 bg-neutral-950 p-6 sm:p-10 shadow-2xl text-white">
+          <div ref={dialogRef} className="relative w-full max-w-2xl rounded-3xl border-4 border-yellow-400 bg-neutral-950 p-6 sm:p-10 shadow-2xl text-white">
             {/* Header info */}
             <div className="flex items-center justify-between gap-4 border-b border-neutral-800 pb-4">
               <span className="inline-flex items-center gap-2 rounded-full bg-yellow-400/20 px-3.5 py-1.5 text-sm font-extrabold text-yellow-300 border border-yellow-400/40">
@@ -269,7 +310,7 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
             </div>
 
             {/* Listening indicator */}
-            <div className="mt-6 flex items-center justify-center sm:justify-start gap-3 rounded-2xl bg-neutral-900 border border-neutral-800 p-4">
+            <div className="mt-6 flex items-center justify-center sm:justify-start gap-3 rounded-2xl bg-neutral-900 border border-neutral-800 p-4" role="status" aria-live="polite">
               <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-neutral-800 text-neutral-400'}`}>
                 <Mic size={20} />
               </div>

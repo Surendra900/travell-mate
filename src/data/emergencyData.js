@@ -79,7 +79,7 @@ export const TRANSIT_HOTLINES = [
     desc: 'Indian Railways Coach Assistance, Onboard Medical, Train Security',
     badge: 'Railways 24/7',
     badgeColor: 'bg-amber-500/20 text-amber-200 border-amber-500/30',
-    btnColor: 'bg-amber-600 hover:bg-amber-500 text-white',
+    btnColor: 'bg-amber-700 hover:bg-amber-600 text-white',
     icon: 'Train',
     category: 'rail'
   },
@@ -90,7 +90,7 @@ export const TRANSIT_HOTLINES = [
     desc: 'State Disaster Medical Response, Critical Trauma Dispatch',
     badge: 'Medical 24/7',
     badgeColor: 'bg-emerald-500/20 text-emerald-200 border-emerald-500/30',
-    btnColor: 'bg-emerald-600 hover:bg-emerald-500 text-white',
+    btnColor: 'bg-emerald-700 hover:bg-emerald-600 text-white',
     icon: 'HeartPulse',
     category: 'ambulance'
   },

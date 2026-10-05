@@ -44,7 +44,18 @@ export default function NormalPlanner({ plan, update, onBook, onFindTicket, onOp
           <div className="booking-mode-tabs" role="tablist" aria-label="Transport method">
             {transportModes.map((item) => {
               const Icon = icons[item] || TrainFront
-              return <button key={item} className={plan.transportMode === item ? 'active' : ''} onClick={() => handleTransportChange(item)}><Icon size={18} />{item}</button>
+              return (
+                <button
+                  key={item}
+                  role="tab"
+                  aria-selected={plan.transportMode === item}
+                  className={plan.transportMode === item ? 'active' : ''}
+                  onClick={() => handleTransportChange(item)}
+                >
+                  <Icon size={18} />
+                  {item}
+                </button>
+              )
             })}
           </div>
 

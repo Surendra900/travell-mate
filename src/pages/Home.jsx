@@ -78,13 +78,13 @@ export default function Home() {
         </section>
 
         {/* Quick PNR & Waitlist Predictor Strip */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-cyan-400/30 bg-slate-900/80 p-4 backdrop-blur-sm shadow-md">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-cyan-400/40 bg-slate-950 p-4 shadow-md">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-400/20 text-cyan-300">
               <Sparkles size={20} />
             </span>
             <div>
-              <span className="text-[11px] font-black uppercase tracking-wider text-cyan-400">IRCTC Waitlist Anxious?</span>
+              <span className="text-[11px] font-black uppercase tracking-wider text-cyan-200">IRCTC Waitlist Anxious?</span>
               <h3 className="text-sm font-black text-white">AI Confirmation Probability & Alternate Station Hacks</h3>
             </div>
           </div>

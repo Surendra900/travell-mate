@@ -1,10 +1,10 @@
 const styles = {
-  'Live API result': 'border-emerald-300/40 bg-emerald-300/15 text-emerald-100',
-  'Local planning dataset': 'border-cyan-300/40 bg-cyan-300/15 text-cyan-100',
-  'Local planning estimate': 'border-yellow-300/40 bg-yellow-300/15 text-yellow-100',
-  'Provider verification required': 'border-orange-300/40 bg-orange-300/15 text-orange-100',
-  'Input required': 'border-slate-500/50 bg-slate-700/40 text-slate-200',
-  'API-ready': 'border-indigo-300/40 bg-indigo-300/15 text-indigo-100'
+  'Live API result': 'border-emerald-500/50 bg-emerald-950 text-emerald-200',
+  'Local planning dataset': 'border-cyan-500/50 bg-cyan-950 text-cyan-200',
+  'Local planning estimate': 'border-amber-500/50 bg-amber-950 text-amber-200',
+  'Provider verification required': 'border-orange-500/50 bg-orange-950 text-orange-200',
+  'Input required': 'border-slate-600 bg-slate-900 text-slate-200',
+  'API-ready': 'border-indigo-500/50 bg-indigo-950 text-indigo-200'
 }
 
 export function sourceBadgeLabel(value, mode = '') {
