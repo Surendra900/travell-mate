@@ -14,6 +14,7 @@ export default function FloatingSOS({ status }) {
       <a
         href="tel:112"
         aria-label="Call emergency number 112 now"
+        data-testid="floating-sos-btn"
         className="sos-call-button"
         onClick={() => {
           try { localStorage.setItem('travelmate-last-sos-click', new Date().toISOString()) } catch {}

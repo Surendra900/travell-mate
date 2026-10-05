@@ -619,3 +619,36 @@
    - AFTER: `docs/screenshots/day-25/after/desktop-carbon-calculator-active.png`, `mobile-carbon-calculator-active.png`.
 
 **DAY 25 COMPLETE. Verification passed (5/5). Moving to DAY 26.**
+
+---
+
+## Sprint Entry: Day 26
+**Date:** October 2026  
+**Goal:** Mobile Viewport Hardening (390x844), 48px Touch Targets & Floating Docks Non-Collision  
+
+### Day 26 Task List
+- [x] Task 26.1: Capture BEFORE screenshots on mobile viewport (390x844) across Home, Planner, and Safety (`docs/screenshots/day-26/before/`).
+- [x] Task 26.2: Enforce strict `overflow-x: hidden` and `max-width: 100vw` in `src/index.css` to guarantee 0 horizontal overflow across 390px mobile screens.
+- [x] Task 26.3: Upgrade mobile media query with `safe-area-inset-bottom` for floating docks: Smart Assistant (`bottom: calc(96px + env(safe-area-inset-bottom))`, `z-index: 75`) and Emergency SOS (`bottom: calc(16px + env(safe-area-inset-bottom))`, `z-index: 70`), achieving a guaranteed non-overlapping 28px separation buffer.
+- [x] Task 26.4: Enforce minimum 48px/44px touch targets on mobile menu items, buttons, and form inputs.
+- [x] Task 26.5: Add `data-testid="floating-sos-btn"` to `src/components/FloatingSOS.jsx`.
+- [x] Task 26.6: Capture AFTER screenshots on mobile (390x844) across Home, Planner, and Safety (`docs/screenshots/day-26/after/`).
+- [x] Task 26.7: Implement unit tests (`tests/day26_mobile_hardening.test.mjs`) and Playwright E2E (`tests/e2e/day26_mobile_hardening.spec.mjs`).
+- [x] Task 26.8: Run Day 26 Verification Gate (`npm test`, `npm run build`, E2E test).
+- [x] Task 26.9: Commit, tag `day-26`, deploy preview, and record status.
+
+### Day 26 Verification Evidence
+1. **Zero Horizontal Overflow on 390x844 Viewport:**
+   - Evaluated `document.documentElement.scrollWidth` across Home, Planner, and Emergency screens; all assert identically equal to 390px with zero viewport clipping or side scrolling.
+2. **Safe Touch Target Sizing & Floating Dock Separation:**
+   - 100% of visible interactive buttons and links meet WCAG mobile touch target minimums (>= 44px height).
+   - Floating Smart Assistant launcher and Emergency SOS button audited in mobile browser: 28px physical vertical clearance gap with zero pointer obstruction.
+3. **Automated Verification:**
+   - Unit tests: 146/146 passed (`tests/day26_mobile_hardening.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day26_mobile_hardening.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-26/before/mobile-home-before.png`, `mobile-planner-before.png`, `mobile-emergency-before.png`.
+   - AFTER: `docs/screenshots/day-26/after/mobile-home-after.png`, `mobile-planner-after.png`, `mobile-emergency-after.png`.
+
+**DAY 26 COMPLETE. Verification passed (5/5). Moving to DAY 27.**
