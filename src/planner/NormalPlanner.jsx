@@ -3,6 +3,7 @@ import BackupPlan from '../components/BackupPlan'
 import TrainRunningStatus from './TrainRunningStatus'
 import WeatherDisruptionAlert from '../components/WeatherDisruptionAlert'
 import RouteMap from '../components/RouteMap'
+import CarbonCalculator from './CarbonCalculator'
 import { airlineOptions, getCabinOptions, getRouteInputLabels, transportModes, transportPlaces } from '../data/transportData'
 
 function Field({ label, children }) {
@@ -96,6 +97,10 @@ export default function NormalPlanner({ plan, update, onBook, onFindTicket, onOp
 
       <div className="mt-8">
         <RouteMap plan={plan} />
+      </div>
+
+      <div className="mt-8">
+        <CarbonCalculator plan={plan} />
       </div>
 
       <div className="mt-8">

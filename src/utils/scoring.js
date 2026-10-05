@@ -1,5 +1,5 @@
-import { buildComboLegs, findTransportPlace, getServiceOptions, routeCombos, servicesForMode } from '../data/transportData'
-import { routeDistanceKm } from './travelMath'
+import { buildComboLegs, findTransportPlace, getServiceOptions, routeCombos, servicesForMode } from '../data/transportData.js'
+import { routeDistanceKm } from './travelMath.js'
 
 export function calculateTatkalReadiness(items) {
   const values = Object.values(items || {})

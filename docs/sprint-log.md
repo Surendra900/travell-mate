@@ -585,3 +585,37 @@
    - AFTER: `docs/screenshots/day-24/after/desktop-route-map-active.png`, `mobile-route-map-active.png`.
 
 **DAY 24 COMPLETE. Verification passed (5/5). Moving to DAY 25.**
+
+---
+
+## Sprint Entry: Day 25
+**Date:** October 2026  
+**Goal:** Multi-Modal CO2 Carbon Analytics & Financial Savings Calculator  
+
+### Day 25 Task List
+- [x] Task 25.1: Capture BEFORE screenshots of Planner before CarbonCalculator mount on Desktop and Mobile (`docs/screenshots/day-25/before/`).
+- [x] Task 25.2: Enhance `src/planner/CarbonCalculator.jsx` with multi-modal carbon metrics (Train: 0.04 kg/pkm, Bus: 0.08 kg/pkm, Flight: 0.18 kg/pkm, Private Cab: 0.16 kg/km), annual tree absorption offset equivalent, and Paisa Vasool financial savings estimation.
+- [x] Task 25.3: Add interactive comparative mode baselines (Flight vs Private Cab) with dynamic visual progress comparison bars.
+- [x] Task 25.4: Mount `CarbonCalculator` into `src/planner/NormalPlanner.jsx`.
+- [x] Task 25.5: Fix ESM imports in `src/utils/scoring.js` for standalone Node test runner compatibility.
+- [x] Task 25.6: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-25/after/`).
+- [x] Task 25.7: Implement unit tests (`tests/day25_carbon_analytics.test.mjs`) and Playwright E2E (`tests/e2e/day25_carbon_analytics.spec.mjs`).
+- [x] Task 25.8: Run Day 25 Verification Gate (`npm test`, `npm run build`, E2E test).
+- [x] Task 25.9: Commit, tag `day-25`, deploy preview, and record status.
+
+### Day 25 Verification Evidence
+1. **Mission LiFE Environmental Intelligence:**
+   - Real-time carbon emission calculations quantifying the environmental superiority of Indian Railways trunk corridors over solo air and outstation cab transit.
+   - Computes annual tree absorption equivalents (1 mature tree = 21.8 kg CO₂/year offset) and Paisa Vasool financial savings.
+2. **Interactive Comparative Visualization:**
+   - Interactive baseline toggle ("Flight" vs "Private Cab") with dynamic proportional progress bars for all 4 transport modes.
+   - High-contrast rating badge ("Ultra Low Carbon", "Moderate Footprint", "High Carbon Impact") and clean mobile-responsive layout.
+3. **Automated Verification:**
+   - Unit tests: 143/143 passed (`tests/day25_carbon_analytics.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day25_carbon_analytics.spec.mjs`).
+   - Clean production build with 0 console errors or bundle secret leaks.
+4. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-25/before/desktop-planner-before-carbon.png`, `mobile-planner-before-carbon.png`.
+   - AFTER: `docs/screenshots/day-25/after/desktop-carbon-calculator-active.png`, `mobile-carbon-calculator-active.png`.
+
+**DAY 25 COMPLETE. Verification passed (5/5). Moving to DAY 26.**
