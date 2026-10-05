@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, Eye, FileText, LockKeyhole, ShieldCheck, Trash2, UploadCloud } from 'lucide-react'
+import { AlertTriangle, Download, Eye, FileArchive, FileText, HardDrive, LockKeyhole, Shield, ShieldCheck, Trash2, UploadCloud } from 'lucide-react'
 import {
   changeSecureVaultPassphrase,
   createSecureVault,
   deleteSecureDocument,
+  exportEncryptedVaultBackup,
   hasLegacyDocumentStorage,
+  importEncryptedVaultBackup,
   listSecureDocuments,
   purgeLegacyDocumentStorage,
   readSecureDocument,
@@ -28,6 +30,7 @@ export default function DocumentVault({ toast }) {
   const [newPassphrase, setNewPassphrase] = useState('')
   const [newPassphraseConfirm, setNewPassphraseConfirm] = useState('')
   const [category, setCategory] = useState('Passport')
+  const [filterCategory, setFilterCategory] = useState('All')
   const [documentLabel, setDocumentLabel] = useState('')
   const [note, setNote] = useState('')
   const [error, setError] = useState('')
@@ -145,6 +148,52 @@ export default function DocumentVault({ toast }) {
     })
   }
 
+  async function downloadDocument(doc) {
+    await run(async () => {
+      const { blob, metadata } = await readSecureDocument(keyRef.current, doc.id)
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = metadata.name || doc.name
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.setTimeout(() => URL.revokeObjectURL(url), 2000)
+      setSuccess(`Downloaded decrypted "${metadata.name || doc.name}".`)
+      toast?.('Document downloaded.')
+    })
+  }
+
+  async function handleExportBackup() {
+    await run(async () => {
+      const json = await exportEncryptedVaultBackup()
+      const blob = new Blob([json], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `travelmate-encrypted-vault-backup-${new Date().toISOString().slice(0, 10)}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.setTimeout(() => URL.revokeObjectURL(url), 2000)
+      setSuccess('Encrypted backup exported. It remains protected by your passphrase.')
+      toast?.('Encrypted vault backup exported.')
+    })
+  }
+
+  async function handleImportBackup(event) {
+    const file = event.target.files?.[0]
+    if (!file) return
+    await run(async () => {
+      const text = await file.text()
+      const res = await importEncryptedVaultBackup(text)
+      setHasVault(true)
+      event.target.value = ''
+      setSuccess(`Encrypted backup restored (${res.documentCount} documents). Enter passphrase to unlock.`)
+      toast?.('Encrypted vault restored.')
+    })
+  }
+
   async function renameDocument(doc) {
     const next = window.prompt('Enter a new encrypted document label:', doc.category || doc.name)
     if (!next?.trim()) return
@@ -214,6 +263,11 @@ export default function DocumentVault({ toast }) {
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
               Files and metadata are encrypted before being stored in IndexedDB. The passphrase is not saved, uploaded, or recoverable. Losing it means losing access to the documents.
             </p>
+            <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold text-slate-700">
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1"><Shield size={12} className="text-indigo-600" /> AES-GCM 256-Bit</span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1"><LockKeyhole size={12} className="text-indigo-600" /> PBKDF2 (310k iter)</span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1"><HardDrive size={12} className="text-emerald-700" /> Zero-Cloud Local IndexedDB</span>
+            </div>
           </div>
           <span className="rounded-2xl border border-emerald-600/30 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-900">Encrypted · local-only · not copied into offline pack</span>
         </div>
@@ -246,10 +300,21 @@ export default function DocumentVault({ toast }) {
               {resetArmed ? 'Delete vault permanently' : 'Forgot passphrase? Reset encrypted vault'}
             </button>
           )}
+          <div className="pt-2 sm:col-span-2 flex items-center justify-between border-t border-slate-700/40">
+            <label className="cursor-pointer text-xs font-bold text-indigo-700 hover:text-indigo-900 inline-flex items-center gap-1.5">
+              <FileArchive size={14} /> Restore encrypted backup (.json)
+              <input type="file" accept=".json" className="sr-only" onChange={handleImportBackup} />
+            </label>
+            <span className="text-xs text-slate-500">Zero-server client encryption</span>
+          </div>
         </div>
       </section>
     )
   }
+
+  const filteredDocs = filterCategory === 'All'
+    ? docs
+    : docs.filter((d) => d.category === filterCategory || (filterCategory === 'Aadhaar / ID' && (d.category?.includes('Aadhaar') || d.category?.includes('ID'))))
 
   return (
     <section className="mt-8 glass rounded-3xl p-5">
@@ -258,8 +323,17 @@ export default function DocumentVault({ toast }) {
           <span className="badge"><ShieldCheck size={14} /> Vault unlocked in this tab</span>
           <h2 className="mt-3 text-2xl font-black text-white">Encrypted Documents</h2>
           <p className="mt-2 text-sm text-slate-300">Closing, refreshing, signing out, or pressing Lock removes the encryption key from memory.</p>
+          <div className="mt-2 flex flex-wrap gap-2 text-xs font-bold text-slate-700">
+            <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-2.5 py-0.5"><Shield size={11} className="text-indigo-600" /> AES-GCM 256-Bit</span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-2.5 py-0.5"><LockKeyhole size={11} className="text-indigo-600" /> PBKDF2 (310k iter)</span>
+          </div>
         </div>
-        <button className="btn-soft" type="button" onClick={lockVault}>Lock vault</button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button className="btn-soft inline-flex items-center gap-1 text-xs" type="button" data-testid="export-vault-backup" onClick={handleExportBackup}>
+            <Download size={14} /> Export Backup
+          </button>
+          <button className="btn-soft text-xs" type="button" onClick={lockVault}>Lock vault</button>
+        </div>
       </div>
 
       <div className="mt-5 grid gap-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 sm:grid-cols-2">
@@ -276,9 +350,22 @@ export default function DocumentVault({ toast }) {
       {error && <p className="mt-4 rounded-xl border border-red-400/25 bg-red-500/10 p-3 text-sm font-bold text-red-100">{error}</p>}
       {success && <p className="mt-4 rounded-xl border border-emerald-400/25 bg-emerald-400/10 p-3 text-sm font-bold text-emerald-100">{success}</p>}
 
-      <div className="mt-5 grid gap-3">
-        {docs.length === 0 && <p className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400">No encrypted documents stored.</p>}
-        {docs.map((doc) => (
+      <div className="mt-5 flex flex-wrap gap-1.5" role="toolbar" aria-label="Filter documents by category">
+        {['All', ...categories].map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            className={`rounded-full px-3 py-1 text-xs font-bold transition ${filterCategory === cat ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-800 hover:bg-slate-300'}`}
+            onClick={() => setFilterCategory(cat)}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-4 grid gap-3">
+        {filteredDocs.length === 0 && <p className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400">No encrypted documents stored under this category.</p>}
+        {filteredDocs.map((doc) => (
           <article key={doc.id} className="rounded-2xl border border-slate-700/80 bg-slate-950/60 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
@@ -288,6 +375,7 @@ export default function DocumentVault({ toast }) {
               </div>
               <div className="flex flex-wrap gap-2">
                 {!doc.corrupted && <button className="btn-soft" type="button" onClick={() => viewDocument(doc)}><Eye size={16} /> View</button>}
+                {!doc.corrupted && <button className="btn-soft" type="button" data-testid={`download-doc-${doc.id}`} onClick={() => downloadDocument(doc)}><Download size={16} /> Download</button>}
                 {!doc.corrupted && <button className="btn-soft" type="button" onClick={() => renameDocument(doc)}>Rename</button>}
                 <button className="btn-danger" type="button" onClick={() => removeDocument(doc.id)}><Trash2 size={16} /> Delete</button>
               </div>

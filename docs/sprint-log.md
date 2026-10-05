@@ -276,6 +276,39 @@
 
 **DAY 15 COMPLETE. Verification passed (5/5). Moving to DAY 16.**
 
+---
 
+## Sprint Entry: Day 16
+**Date:** October 2026  
+**Goal:** Encrypted Document Vault (Client-Side AES-GCM 256-Bit Web Crypto, IndexedDB, Zero-Server Storage)  
 
+### Day 16 Task List
+- [x] Task 16.1: Capture BEFORE screenshots of Document Vault on Desktop and Mobile.
+- [x] Task 16.2: Implement authenticated AES-GCM 256-bit Web Crypto encryption, PBKDF2 (310,000 iterations, SHA-256) master key derivation, and IndexedDB storage.
+- [x] Task 16.3: Implement direct decrypted file download, category filter tabs, and portable encrypted backup export/import (.json) with zero plaintext cloud transmission.
+- [x] Task 16.4: Capture AFTER screenshots on Desktop and Mobile.
+- [x] Task 16.5: Run Day 16 Verification Gate (unit tests, npm run build, Playwright E2E test, smoke regression).
+- [x] Task 16.6: Commit, tag `day-16`, deploy preview, and record status.
 
+### Day 16 Verification Evidence
+1. **Client-Side Cryptographic Architecture:**
+   - PBKDF2 with 310,000 iterations and SHA-256 for key derivation from user passphrase.
+   - AES-GCM 256-bit authenticated encryption with random 12-byte IV per encryption and authenticated context tags.
+   - Master passphrase and plaintexts are never stored in localStorage, cookies, or uploaded to any server.
+2. **Encrypted Backup Export and Restore:**
+   - Added `exportEncryptedVaultBackup()` and `importEncryptedVaultBackup()` in `src/utils/secureVault.js`.
+   - Export produces a client-side portable JSON bundle containing base64-encoded encrypted blobs (`meta` config + `documents` records) protected by the original passphrase.
+3. **Enhanced Document Vault UI:**
+   - Added security architecture pills (`AES-GCM 256-Bit`, `PBKDF2 (310k iter)`, `Zero-Cloud Local IndexedDB`).
+   - Added category filter toolbar (`All`, `Passport`, `Visa`, `Aadhaar / ID`, `Ticket`, etc.).
+   - Added direct decrypted download action with auto-generated object URL and download attribute.
+   - Retained strict WCAG 2.1 AA color contrast (`text-slate-800`, `bg-emerald-50 text-emerald-900`).
+4. **Automated Verification:**
+   - Unit tests: 105/105 passed (`tests/day16_encrypted_vault.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day16_encrypted_vault.spec.mjs`).
+   - Regression: Day 15 WCAG AA axe scan + Day 16 passed cleanly with 0 console or network errors.
+5. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-16/before/desktop_vault_locked_before.png`, `mobile_vault_locked_before.png`.
+   - AFTER: `docs/screenshots/day-16/after/desktop_vault_locked_after.png`, `desktop_vault_unlocked_after.png`, `mobile_vault_locked_after.png`, `mobile_vault_unlocked_after.png`.
+
+**DAY 16 COMPLETE. Verification passed (5/5). Moving to DAY 17.**

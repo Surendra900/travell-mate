@@ -334,3 +334,106 @@ export async function resetSecureVault() {
   })
   setCount(0)
 }
+
+function toBase64(bytes) {
+  const binary = Array.from(bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes))
+    .map((b) => String.fromCharCode(b))
+    .join('')
+  return btoa(binary)
+}
+
+function fromBase64(str) {
+  const binary = atob(str)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+  return bytes
+}
+
+export async function exportEncryptedVaultBackup() {
+  const db = await openDatabase()
+  try {
+    const transaction = db.transaction(['meta', 'documents'], 'readonly')
+    const config = await requestResult(transaction.objectStore('meta').get(CONFIG_ID))
+    if (!config) throw new Error('No secure vault to export.')
+    const records = await requestResult(transaction.objectStore('documents').getAll())
+
+    const backup = {
+      format: 'travelmate-encrypted-vault-backup:v1',
+      exportedAt: new Date().toISOString(),
+      config: {
+        id: config.id,
+        version: config.version,
+        iterations: config.iterations,
+        salt: toBase64(config.salt),
+        verifier: {
+          iv: toBase64(config.verifier.iv),
+          ciphertext: toBase64(config.verifier.ciphertext)
+        }
+      },
+      documents: records.map((doc) => ({
+        id: doc.id,
+        createdAt: doc.createdAt,
+        metadata: {
+          iv: toBase64(doc.metadata.iv),
+          ciphertext: toBase64(doc.metadata.ciphertext)
+        },
+        contents: {
+          iv: toBase64(doc.contents.iv),
+          ciphertext: toBase64(doc.contents.ciphertext)
+        }
+      }))
+    }
+    return JSON.stringify(backup, null, 2)
+  } finally {
+    db.close()
+  }
+}
+
+export async function importEncryptedVaultBackup(backupJsonString) {
+  const backup = typeof backupJsonString === 'string' ? JSON.parse(backupJsonString) : backupJsonString
+  if (backup.format !== 'travelmate-encrypted-vault-backup:v1' || !backup.config) {
+    throw new Error('Invalid or corrupted TravelMate encrypted vault backup format.')
+  }
+
+  const db = await openDatabase()
+  try {
+    const transaction = db.transaction(['meta', 'documents'], 'readwrite')
+    const metaStore = transaction.objectStore('meta')
+    const docStore = transaction.objectStore('documents')
+
+    const config = {
+      id: backup.config.id || CONFIG_ID,
+      version: backup.config.version || 1,
+      iterations: backup.config.iterations || DEFAULT_ITERATIONS,
+      salt: fromBase64(backup.config.salt),
+      verifier: {
+        iv: fromBase64(backup.config.verifier.iv),
+        ciphertext: fromBase64(backup.config.verifier.ciphertext).buffer
+      }
+    }
+    metaStore.put(config)
+
+    for (const doc of backup.documents || []) {
+      const record = {
+        id: doc.id,
+        createdAt: doc.createdAt,
+        metadata: {
+          iv: fromBase64(doc.metadata.iv),
+          ciphertext: fromBase64(doc.metadata.ciphertext).buffer
+        },
+        contents: {
+          iv: fromBase64(doc.contents.iv),
+          ciphertext: fromBase64(doc.contents.ciphertext).buffer
+        }
+      }
+      docStore.put(record)
+    }
+
+    await transactionDone(transaction)
+    setCount(backup.documents?.length || 0)
+    return { documentCount: backup.documents?.length || 0 }
+  } finally {
+    db.close()
+  }
+}
+
