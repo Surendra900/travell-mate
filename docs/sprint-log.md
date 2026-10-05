@@ -350,3 +350,39 @@
 
 **DAY 17 COMPLETE. Verification passed (5/5). Moving to DAY 18.**
 
+---
+
+## Sprint Entry: Day 18
+**Date:** October 2026  
+**Goal:** PWA Web App Manifest, Service Worker Caching & Custom Install Banner  
+
+### Day 18 Task List
+- [x] Task 18.1: Capture BEFORE screenshots of Home and Navigation on Desktop and Mobile.
+- [x] Task 18.2: Upgrade `public/manifest.webmanifest` to PWA standalone specification with Bharat theme colors, 192/512px standard + maskable icons, and quick app shortcuts (`/safety`, `/saved`, `/planner`).
+- [x] Task 18.3: Verify `public/sw.js` offline shell caching, stale-while-revalidate for assets, and zero-API leak safety (`cache: 'no-store'` on `/api/`).
+- [x] Task 18.4: Build `src/components/PwaInstallBanner.jsx` with `beforeinstallprompt` event interception, offline indicator, and 1-tap installation flow.
+- [x] Task 18.5: Mount `PwaInstallBanner` globally in `src/App.jsx`.
+- [x] Task 18.6: Capture AFTER screenshots on Desktop and Mobile (`docs/screenshots/day-18/after/`).
+- [x] Task 18.7: Run Day 18 Verification Gate (unit tests, production build, Playwright E2E test, smoke regression).
+- [x] Task 18.8: Commit, tag `day-18`, deploy preview, and record status.
+
+### Day 18 Verification Evidence
+1. **PWA Web App Manifest Specification:**
+   - Upgraded `public/manifest.webmanifest` with `display: "standalone"`, `start_url: "/"`, brand colors (`#630ed4` primary, `#faf8ff` bg), standard 192x192 & 512x512 icons, and maskable icons.
+   - Declared app shortcuts for Emergency SOS (`/safety`), Offline Boarding Passes (`/saved`), and Multimodal Planner (`/planner`).
+2. **Offline App Shell & Security Isolation:**
+   - Verified `public/sw.js` precaching app shell (`/index.html`, `/manifest.webmanifest`, icons).
+   - Strict API bypass: calls to `/api/` are never cached in service worker storage, preventing credential or provider response leakage.
+3. **PWA Custom Install Prompt Banner:**
+   - Implemented `PwaInstallBanner.jsx` listening for `beforeinstallprompt` and `appinstalled` events.
+   - Highlights offline value props: "100% Offline Ready" badge, zero-network boarding pass access, and 1-tap Emergency SOS.
+   - Features accessible dismiss button with 24-hour snooze persistence in localStorage.
+4. **Automated Verification:**
+   - Unit tests: 114/114 passed (`tests/day18_pwa_install.test.mjs` + full test suite).
+   - E2E Playwright tests: 5/5 passed (`tests/e2e/day18_pwa_install.spec.mjs`).
+   - Smoke regression: Day 17 offline pass + Day 18 PWA install passed cleanly with 0 console or network errors.
+5. **Screenshots & Deployment:**
+   - BEFORE: `docs/screenshots/day-18/before/desktop_home_before_pwa.png`, `mobile_home_before_pwa.png`.
+   - AFTER: `docs/screenshots/day-18/after/desktop_home_after_pwa.png`, `desktop_pwa_install_banner.png`, `mobile_home_after_pwa.png`, `mobile_pwa_install_banner.png`.
+
+**DAY 18 COMPLETE. Verification passed (5/5). Moving to DAY 19.**

@@ -9,6 +9,7 @@ import FloatingSOS from './components/FloatingSOS'
 import OfflineOnlyMode from './components/OfflineOnlyMode'
 import GlobalTranslationLayer from './components/GlobalTranslationLayer'
 import BlindVoiceGate from './components/BlindVoiceGate'
+import PwaInstallBanner from './components/PwaInstallBanner'
 import Footer from './components/Footer'
 import LocationPermissionGate from './components/LocationPermissionGate'
 import PageErrorBoundary from './components/PageErrorBoundary'
@@ -145,6 +146,7 @@ export default function App({ authEnabled = false }) {
       )}
       {location.pathname !== '/analyze' && location.pathname !== '/saved' && <FloatingSOS status={status} />}
       {location.pathname !== '/analyze' && <VoiceSearchButton onSearch={handleVoiceSearch} language={language} />}
+      <PwaInstallBanner />
       {status.online !== false && <Footer />}
       {status.online !== false && <OnboardingModal toast={toast} forceOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} />}
       {toastMessage && (
