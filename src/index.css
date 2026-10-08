@@ -589,3 +589,32 @@ button, a.btn, input, select { min-height: 44px; }
   direction: rtl;
   text-align: right;
 }
+
+/* Accessible Footer */
+.tm-footer {
+  margin-top: auto;
+  background-color: #0f172a;
+  color: #cbd5e1;
+  border-top: 1px solid #1e293b;
+}
+
+.tm-footer-rule {
+  height: 1px;
+  background-color: #1e293b;
+}
+
+.tm-footer-brand p {
+  color: #cbd5e1;
+}
+
+.tm-footer-brand small {
+  color: #94a3b8;
+}
+
+.tm-footer-col a {
+  color: #cbd5e1;
+}
+
+.tm-footer-col a:hover {
+  color: #ffffff;
+}

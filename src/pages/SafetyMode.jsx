@@ -362,7 +362,7 @@ export default function SafetyMode({ toast }) {
                           <TrainFront size={18} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Leg 1: Trunk</div>
+                          <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Leg 1: Trunk</div>
                           <div className="text-xs font-black text-slate-900 truncate">{route.leg1.service}</div>
                           <div className="text-[11px] text-slate-600 font-semibold">{route.leg1.depart} {route.leg1.from} ➔ {route.leg1.arrive} {route.hubCity}</div>
                         </div>
@@ -373,7 +373,7 @@ export default function SafetyMode({ toast }) {
                           <TrainFront size={18} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Leg 2: Connecting</div>
+                          <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Leg 2: Connecting</div>
                           <div className="text-xs font-black text-slate-900 truncate">{route.leg2.service}</div>
                           <div className="text-[11px] text-slate-600 font-semibold">{route.leg2.depart} {route.hubCity} ➔ {route.leg2.arrive} {route.leg2.to}</div>
                         </div>

@@ -148,7 +148,7 @@ export default function App({ authEnabled = false }) {
           <OfflineModeBanner status={status} toast={toast} />
           <main id="main-content" tabIndex="-1">
             <PageErrorBoundary key={location.pathname}>
-              <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16 text-center font-bold text-cyan-100">Loading TravelMate module…</div>}>
+              <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16 text-center font-bold text-slate-700">Loading TravelMate module…</div>}>
                 <Routes>
                 <Route path="/" element={<Home labels={labels} toast={toast} />} />
                 <Route path="/safety" element={<SafetyMode toast={toast} labels={labels} />} />
