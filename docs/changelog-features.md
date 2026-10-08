@@ -129,3 +129,29 @@ $ git grep -n -E '\b(DocumentVault|EmergencyPhraseCards|CarbonCalculator|StatusB
    - Upgraded `From` and `To` inputs with `StationAutocomplete`.
    - Integrated Bypass Contrast and Delay Simulator tabs under Journey Intelligence.
 
+---
+
+## Day 6: Urgent Mode Preset, Tatkal Desk & PNR Estimator
+
+### Features Added:
+1. **Urgent Departure Preset (`src/pages/Home.jsx`, `src/planner/NormalPlanner.jsx`, `src/pages/Planner.jsx`)**:
+   - Decoupled urgent same-day travel from emergency hijacking.
+   - Checkbox preset: "Need to travel tonight? (12h)" on search forms.
+   - URL query parameter integration (`urgency=Tonight&urgent=12h`).
+   - Prominent in-planner banner highlighting 12-hour recovery departure prioritization without sensationalist sirens.
+2. **Tatkal Desk Dual-Window IST Countdown (`src/components/TatkalEmergencyTimer.jsx`, `src/planner/EmergencyTatkalPlanner.jsx`, `src/planner/TatkalDesk.jsx`)**:
+   - Real-time dual countdown to 10:00 AM IST (AC classes) and 11:00 AM IST (Non-AC classes).
+   - Statutory assistive preparation notice explicitly stating that TravelMate does not automate booking, bypass captchas, or store credentials.
+   - Replaced emergency red/siren styling with clean, assistive amber/gold palette.
+3. **Local Passenger Master List & Zero-ID Compliance (`src/planner/EmergencyTatkalPlanner.jsx`)**:
+   - Client-side browser storage strictly limited to: Full Name, Age, Gender, and Berth Preference.
+   - Strict Zero-ID Policy banner: strictly zero Aadhaar, passport, or government identity numbers stored or requested.
+   - 1-Click Clipboard Copy formatting passenger records in IRCTC fast-fill comma format (`Name, Age, Gender, Berth`).
+   - "Clear All Saved Passengers" button for instant local device erasure.
+4. **PNR Status & Confirmation Estimator (`src/components/PnrPredictorModal.jsx`)**:
+   - 10-digit PNR input with historical statistical confirmation probability gauge.
+   - "How we estimate" explanation card clarifying mathematical heuristic modelling vs official PRS charting.
+   - Direct deep link to the official Indian Railways PRS enquiry portal (`indianrail.gov.in`).
+5. **Indian Transit Glossary Tooltips (`src/components/GlossaryTooltip.jsx`)**:
+   - Accessible hover and tap popover glossary for key transit acronyms: `WL` (Waitlist), `RAC` (Reservation Against Cancellation), `PNR` (Passenger Name Record), `Tatkal` (Emergency Quota), and `Junction` (Railway Hub Interchange).
+   - Includes official Indian Railways rule citations and accessibility landmarks (`aria-expanded`, keyboard navigation).

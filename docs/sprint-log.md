@@ -165,10 +165,40 @@
 4. **Interactive Leaflet Route Map:** Verified `src/components/RouteMap.jsx` rendering Leaflet canvas with custom markers, segment-colored polylines (cyan for rail, orange for flight, lime for bus), zoom-fit controls, and junction focus highlights.
 5. **Full Test Regression:** 186 out of 186 unit, integration, and property tests passing across the repository (`npm test` and `npm run check` with 0 failures, 0 lint/build warnings).
 6. **Visual QA Gallery:** Captured 2 BEFORE and 4 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-5/` and indexed in `docs/screenshots/index.html`.
-
 **DAY 5 COMPLETE. Verification passed (186/186). Moving to DAY 6.**
 
-## Sprint Entry: Day 6
+---
+
+## Master Rebuild Entry: Day 6
+**Date:** October 2026  
+**Goal:** Urgent Mode Preset, Tatkal Desk with Local Passenger Master, PNR Status & Estimate, and Transit Glossary Tooltips  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-6`  
+
+### Day 6 Task List
+- [x] Task 6.1: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for Tatkal Desk (`/planner?mode=tatkal`) and PNR tracker modal (`docs/screenshots/day-6/before/`).
+- [x] Task 6.2: Refactor Urgent Mode Preset ("Need to travel tonight? (12h)") on `Home.jsx` and `NormalPlanner.jsx` to filter departures within 12 hours without emergency framing or redirecting away from route recovery.
+- [x] Task 6.3: Upgrade Tatkal Desk (`EmergencyTatkalPlanner.jsx` / `TatkalEmergencyTimer.jsx`): dual-window IST countdown (10:00 AM AC, 11:00 AM Non-AC), assistive-only disclaimer, clean passenger master list (name, age, gender, berth only; strictly zero IDs), 1-click clipboard copy, and "Clear All Saved Passengers" button.
+- [x] Task 6.4: Upgrade PNR Tracker & Predictor (`PNRTracker.jsx` / `PnrPredictorModal.jsx`): simplified 10-digit lookup, honest estimated confirmation probability with "How we estimate" explanation, and official IRCTC / NTES direct links.
+- [x] Task 6.5: Implement accessible Indian Transit Glossary tooltips (`GlossaryTooltip.jsx`) for `WL`, `RAC`, `PNR`, `Tatkal`, and `Junction`, integrated across search, journey cards, and Tatkal desk.
+- [x] Task 6.6: Write Day 6 test suite (`tests/day6_tatkal_pnr.test.mjs`) verifying countdown logic, zero ID storage, clipboard format, clear-data action, PNR disclaimers, urgent preset, and glossary tooltips.
+- [x] Task 6.7: Capture AFTER screenshots in `docs/screenshots/day-6/after/` and update `docs/screenshots/index.html`.
+- [x] Task 6.8: Run Day 6 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-6`, and deploy Vercel Preview.
+
+### Day 6 Verification Evidence
+1. **Urgent Departure Preset (12h):** Decoupled urgent travel from Tatkal emergency hijacking. Added `Need to travel tonight? (12h)` checkbox on both `Home.jsx` and `NormalPlanner.jsx` (`data-testid="planner-urgent-tonight-checkbox"`). Set `urgency=Tonight&urgent=12h` query parameters with active banner indicator (`data-testid="urgent-tonight-banner"`).
+2. **Tatkal Desk Dual-Window IST Countdown:** Updated `src/components/TatkalEmergencyTimer.jsx` and `src/planner/EmergencyTatkalPlanner.jsx` with dual-window IST countdown for AC (10:00 AM IST) and Non-AC (11:00 AM IST) windows (`data-testid="tatkal-countdown-display"`, `data-testid="tatkal-diff-ac"`, `data-testid="tatkal-diff-nonac"`). Replaced sensationalist siren visuals with clean, professional assistive indicators.
+3. **Local Passenger Master List & Zero-ID Compliance:** Implemented client-side local passenger storage (`travelmate-tatkal-master-list`) strictly accepting only Name, Age, Gender, and Berth preference. Zero personal identity cards or numbers requested or stored (`data-testid="zero-id-notice"`). Added 1-Click Clipboard Copy in IRCTC-ready format (`Name, Age, Gender, Berth`) via `data-testid="copy-all-passengers-btn"` and local purge button (`data-testid="clear-passengers-btn"`).
+4. **PNR Status & Confirmation Estimator:** Simplified 10-digit lookup in `src/components/PnrPredictorModal.jsx` (`data-testid="pnr-input"`, `data-testid="pnr-predict-btn"`, `data-testid="pnr-probability-display"`). Added "How we estimate" explanation toggle (`data-testid="how-we-estimate-btn"`, `data-testid="pnr-estimation-disclaimer"`) clarifying historical statistical models without false guarantees, plus direct link to official Indian Railways enquiry (`data-testid="pnr-official-link"`).
+5. **Transit Glossary Tooltips:** Created `src/components/GlossaryTooltip.jsx` providing accessible definition popovers with keyboard accessibility and rule citations for `WL` (Waitlist), `RAC` (Reservation Against Cancellation), `PNR` (Passenger Name Record), `Tatkal` (Emergency Quota), and `Junction` (Transfer Hub).
+6. **Full Test Regression:** 191/191 unit, integration, and property tests passing across the repository with 0 failures (`npm test` and `npm run check` with clean production build).
+7. **Visual QA Gallery:** Captured 4 BEFORE and 4 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-6/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 6 COMPLETE. Verification passed (191/191). Moving to DAY 7.**
+
+---
+
+## Sprint Entry: Day 6 (Archived Baseline)
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  
 

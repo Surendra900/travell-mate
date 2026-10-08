@@ -15,10 +15,12 @@ This matrix tracks the authoritative disposition and status of every feature in 
 | **Connection Risk & Delay Simulator** | **KEEP & UPGRADE (P0)** | WORKING | Documented Parametric Model | `tests/day22_contingency_engine.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-02c-results.png` |
 | **Verified Deep Links (ConfirmTkt/RedBus)** | **KEEP & UPGRADE (P0)** | WORKING | Official Verified Query URLs | `tests/characterization_engines.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-02c-results.png` |
 | **Interactive Route Map (Leaflet)** | **KEEP & UPGRADE (P0)** | WORKING | OpenStreetMap / CartoDB GeoJSON | `tests/day24_route_map.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-02-planner.png` |
-| **Tatkal Desk (Countdown & Master Pass)** | **KEEP & UPGRADE (P1)** | WORKING | Live IST Clock Sync + LocalStorage | `tests/day7_tatkal.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-02b-tatkal.png` |
+| **Tatkal Desk (Countdown & Master Pass)** | **KEEP & UPGRADE (P1)** | WORKING | Live IST Clock Sync + LocalStorage | `tests/day6_tatkal_pnr.test.mjs` | `docs/screenshots/day-6/after/desktop-01-tatkal-desk.png` |
 | **Direct Single-Mode Search** | **KEEP & UPGRADE (P1)** | WORKING | LIVE (API) / TIMETABLE Fallback | `tests/day1_features.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-01-homepage.png` |
 | **Offline Boarding Pass & Trip Pack** | **KEEP & UPGRADE (P1)** | WORKING | Local-First Storage (PWA SW) | `tests/day9_offline.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-04-mytrips.png` |
-| **PNR Status & Predictor** | **SIMPLIFY (P2)** | WORKING | Live Provider or Parametric Est. | `tests/day5_pnr.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-04-mytrips.png` |
+| **PNR Status & Predictor** | **SIMPLIFY (P2)** | WORKING | Historical Heuristic Model + Official Link | `tests/day6_tatkal_pnr.test.mjs` | `docs/screenshots/day-6/after/desktop-02-pnr-tracker.png` |
+| **Urgent Departure Preset (12h)** | **ADD (P1)** | WORKING | 12h Same-Day Departure Filter | `tests/day6_tatkal_pnr.test.mjs` | `docs/screenshots/day-6/after/desktop-01-tatkal-desk.png` |
+| **Indian Transit Glossary Tooltips** | **ADD (P1)** | WORKING | Official PRS Terminology Popovers | `tests/day6_tatkal_pnr.test.mjs` | `docs/screenshots/day-6/after/desktop-01-tatkal-desk.png` |
 | **Transit Safety Drawer (112/139/GPS)** | **SIMPLIFY (P2)** | WORKING | Browser Geolocation API + `tel:` | `tests/day6_emergency.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-03-safety.png` |
 | **Contextual Weather Disruption** | **SIMPLIFY (P2)** | WORKING | Open-Meteo REST API | `tests/day23_weather_disruptions.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-02-planner.png` |
 | **Grounded AI Query Parser (Server-side)** | **ADD (P1)** | PARTIAL (SambaNova) | SambaNova Cloud / Gemini Zod API | `tests/day21_sambanova_copilot.test.mjs` | Pending Day 7 upgrade |

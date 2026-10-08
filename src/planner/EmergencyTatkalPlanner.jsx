@@ -16,13 +16,18 @@ import {
   Zap,
   ShieldCheck,
   Plus,
-  Trash2
+  Trash2,
+  Check,
+  Info,
+  Shield
 } from 'lucide-react'
 import { tatkalRules } from '../data/journeyData'
 import { getCabinOptions, getRouteInputLabels, servicesForMode, transportPlaces } from '../data/transportData'
 import TatkalEmergencyTimer from '../components/TatkalEmergencyTimer'
 import SeatAvailabilityChecker from './SeatAvailabilityChecker'
 import SourceBadge from '../components/SourceBadge'
+import StationAutocomplete from '../components/StationAutocomplete'
+import GlossaryTooltip from '../components/GlossaryTooltip'
 
 function Field({ label, children }) {
   return (
@@ -83,14 +88,14 @@ export default function EmergencyTatkalPlanner({
   const routeLabels = getRouteInputLabels('Train')
   const [targetTrainKey, setTargetTrainKey] = useState('')
 
-  // 1-Click Master Data Passenger Auto-Fill State
+  // 1-Click Master Data Passenger Auto-Fill State (Local Device Only - Zero IDs)
   const [passengers, setPassengers] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('travelmate-tatkal-master-list'))
       if (Array.isArray(saved) && saved.length) return saved
     } catch {}
     return [
-      { id: 1, name: 'Surendra Gedala', age: '24', gender: 'M', berth: 'Lower' }
+      { id: 1, name: '', age: '', gender: 'M', berth: 'No Preference' }
     ]
   })
 
@@ -160,7 +165,7 @@ export default function EmergencyTatkalPlanner({
 
   function addPassenger() {
     if (passengers.length >= 4) {
-      toast?.('Tatkal rules allow maximum 4 passengers per booking.')
+      toast?.('Tatkal regulations permit a maximum of 4 passengers per booking.')
       return
     }
     const next = [
@@ -172,14 +177,36 @@ export default function EmergencyTatkalPlanner({
 
   function removePassenger(id) {
     if (passengers.length <= 1) {
-      toast?.('At least 1 passenger is required for Tatkal master data.')
+      toast?.('At least 1 passenger row is required.')
       return
     }
     savePassengers(passengers.filter(p => p.id !== id))
   }
 
+  function clearAllPassengers() {
+    try {
+      localStorage.removeItem('travelmate-tatkal-master-list')
+    } catch {}
+    setPassengers([{ id: Date.now(), name: '', age: '', gender: 'M', berth: 'No Preference' }])
+    toast?.('Cleared all saved passenger records from this device.')
+  }
+
   function updatePassenger(id, field, value) {
     savePassengers(passengers.map(p => p.id === id ? { ...p, [field]: value } : p))
+  }
+
+  async function copySinglePassenger(p) {
+    if (!p.name?.trim()) {
+      toast?.('Enter passenger name first.')
+      return
+    }
+    const formatted = `${p.name.trim()}, ${p.age || '30'}, ${p.gender}, ${p.berth}`
+    try {
+      await navigator.clipboard.writeText(formatted)
+      toast?.(`Copied ${p.name.trim()} for IRCTC paste.`)
+    } catch {
+      toast?.('Failed to copy.')
+    }
   }
 
   async function copyMasterData() {
@@ -188,7 +215,8 @@ export default function EmergencyTatkalPlanner({
       toast?.('Enter at least one passenger name.')
       return
     }
-    const formatted = valid.map(p => `${p.name}, ${p.age || '30'}, ${p.gender}, ${p.berth}`).join(' | ')
+    // IRCTC Fast-Fill comma format: Name, Age, Gender, Berth
+    const formatted = valid.map(p => `${p.name.trim()}, ${p.age || '30'}, ${p.gender}, ${p.berth}`).join(' | ')
     try {
       await navigator.clipboard.writeText(formatted)
       toast?.('Master Passenger List copied! Ready for rapid IRCTC paste.')
@@ -234,7 +262,7 @@ export default function EmergencyTatkalPlanner({
           <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-950 text-xs font-bold">
-                <AlertTriangle size={14} className="text-amber-600" /> Emergency Mode · Tatkal Trains Only
+                <Clock size={14} className="text-amber-700" /> Tatkal Desk · IRCTC Opening Window Assistant
               </span>
               <a
                 href="https://www.irctc.co.in/nget/train-search"
@@ -242,48 +270,91 @@ export default function EmergencyTatkalPlanner({
                 rel="noreferrer noopener"
                 className="inline-flex items-center gap-1.5 rounded-full border border-sky-300 bg-sky-50 px-3.5 py-1 text-xs font-bold text-sky-800 hover:bg-sky-100 transition"
               >
-                <ExternalLink size={12} /> Open IRCTC Portal
+                <ExternalLink size={12} /> Open IRCTC Portal ↗
               </a>
             </div>
 
-            <h2 className="mt-4 text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Tatkal train booking preparation</h2>
+            {/* Statutory Assistive Disclaimer */}
+            <div data-testid="tatkal-assistive-notice" className="mt-4 rounded-2xl border border-sky-200 bg-sky-50/80 p-3.5 text-xs text-sky-950 flex items-start gap-2.5">
+              <Shield className="text-sky-700 shrink-0 mt-0.5" size={16} />
+              <div className="leading-relaxed">
+                <strong className="font-bold text-sky-900">Assistive Preparation Tool:</strong> TravelMate does not automate booking, bypass captchas, or store user credentials. All reservations and payments are completed directly by you on official Indian Railways portals (<a href="https://www.irctc.co.in" target="_blank" rel="noreferrer" className="underline font-bold text-sky-800">irctc.co.in</a>) per statutory regulations.
+              </div>
+            </div>
+
+            <h2 className="mt-4 text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Tatkal route preparation
+            </h2>
             <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-              Enter your route to check live route trains and verify Tatkal Quota (TQ) availability before booking releases at 10:00 AM (AC) or 11:00 AM (Non-AC).
+              Verify corridor trains and check <GlossaryTooltip term="Tatkal">Tatkal Quota (TQ)</GlossaryTooltip> release schedules before booking opens at 10:00 AM (AC) or 11:00 AM (Non-AC).
             </p>
 
-            <datalist id="emergency-city-list">
-              {cityOptions.map((city) => <option key={city} value={city} />)}
-            </datalist>
-
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <Field label={routeLabels.from}>
-                <input list="emergency-city-list" className="input bg-white text-slate-900 border-slate-300 rounded-xl" value={plan.from} placeholder={routeLabels.fromPlaceholder} onChange={(e) => update({ from: e.target.value })} />
-              </Field>
-              <Field label={routeLabels.to}>
-                <input list="emergency-city-list" className="input bg-white text-slate-900 border-slate-300 rounded-xl" value={plan.to} placeholder={routeLabels.toPlaceholder} onChange={(e) => update({ to: e.target.value })} />
-              </Field>
-              <Field label="Travel Date">
-                <input className="input date-input bg-white text-slate-900 border-slate-300 rounded-xl" type="date" value={plan.date} onChange={(e) => update({ date: e.target.value })} />
+              <div>
+                <StationAutocomplete
+                  id="tatkal-from-autocomplete"
+                  label={routeLabels.from}
+                  value={plan.from}
+                  inputTestId="tatkal-from-input"
+                  placeholder={routeLabels.fromPlaceholder}
+                  onChange={(val) => update({ from: val })}
+                />
+              </div>
+              <div>
+                <StationAutocomplete
+                  id="tatkal-to-autocomplete"
+                  label={routeLabels.to}
+                  value={plan.to}
+                  inputTestId="tatkal-to-input"
+                  placeholder={routeLabels.toPlaceholder}
+                  onChange={(val) => update({ to: val })}
+                />
+              </div>
+              <Field label="Travel Date (Tomorrow / Next Day)">
+                <input
+                  className="input date-input bg-white text-slate-900 border-slate-300 rounded-xl"
+                  type="date"
+                  value={plan.date}
+                  onChange={(e) => update({ date: e.target.value })}
+                />
               </Field>
               <Field label="Quota Class">
-                <select className="input bg-white text-slate-900 border-slate-300 rounded-xl" value={emergencyClass} onChange={(e) => update({ classType: e.target.value })}>
+                <select
+                  className="input bg-white text-slate-900 border-slate-300 rounded-xl"
+                  value={emergencyClass}
+                  onChange={(e) => update({ classType: e.target.value })}
+                >
                   {trainClassOptions().map((item) => <option key={item}>{item}</option>)}
                 </select>
                 <span className="mt-1 block text-xs text-slate-500 font-medium">General is hidden; only Tatkal-eligible classes shown.</span>
               </Field>
               <Field label="Passengers (Max 4 for Tatkal)">
-                <select className="input bg-white text-slate-900 border-slate-300 rounded-xl" value={Number(plan.passengers || 1)} onChange={(e) => update({ passengers: Number(e.target.value) })}>
+                <select
+                  className="input bg-white text-slate-900 border-slate-300 rounded-xl"
+                  value={Number(plan.passengers || 1)}
+                  onChange={(e) => update({ passengers: Number(e.target.value) })}
+                >
                   {[1, 2, 3, 4].map((count) => <option key={count} value={count}>{count}</option>)}
                 </select>
               </Field>
             </div>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              <button className="btn-primary inline-flex min-h-12 items-center justify-center gap-2 font-bold" type="button" onClick={checkLiveTatkalTrains} disabled={Boolean(liveStatus.loading)}>
+              <button
+                className="btn-primary inline-flex min-h-12 items-center justify-center gap-2 font-bold"
+                type="button"
+                onClick={checkLiveTatkalTrains}
+                disabled={Boolean(liveStatus.loading)}
+              >
                 {liveStatus.loading ? <LoaderCircle className="animate-spin" size={18} /> : <Wifi size={18} />}
-                {liveStatus.loading ? 'Checking live trains...' : 'Check live Tatkal trains'}
+                {liveStatus.loading ? 'Checking live corridor trains...' : 'Check live Tatkal trains'}
               </button>
-              <button className="btn-soft inline-flex min-h-12 items-center justify-center gap-2 font-bold text-slate-700" type="button" onClick={() => onOpenLiveResults?.()} disabled={!liveTatkalTrains.length}>
+              <button
+                className="btn-soft inline-flex min-h-12 items-center justify-center gap-2 font-bold text-slate-700"
+                type="button"
+                onClick={() => onOpenLiveResults?.()}
+                disabled={!liveTatkalTrains.length}
+              >
                 <ExternalLink size={18} /> Open full live results
               </button>
             </div>
@@ -294,7 +365,7 @@ export default function EmergencyTatkalPlanner({
                 <SourceBadge label={hasLiveRows ? 'Live API result' : liveStatus.sourceBadge || 'Provider check required'} />
               </div>
               <p className="mt-2 text-xs leading-relaxed">{liveStatus.message || 'Enter your route and press Check live Tatkal trains to verify trains operating on this corridor.'}</p>
-              <p className="mt-2 text-xs font-bold text-sky-900">Select any train below to check real-time Tatkal Quota (TQ) seat and waitlist availability.</p>
+              <p className="mt-2 text-xs font-bold text-sky-900">Select any train below to check real-time Tatkal Quota (TQ) seat and <GlossaryTooltip term="WL">waitlist</GlossaryTooltip> availability.</p>
             </div>
 
             <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50/50 p-4 text-sm text-amber-950">
@@ -359,9 +430,14 @@ export default function EmergencyTatkalPlanner({
                       <button className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${selected ? 'bg-sky-600 text-white' : 'border border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'}`} onClick={() => setTargetTrainKey(key)}>
                         {selected ? '✓ Selected Train' : 'Select Train'}
                       </button>
-                      <button className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-950 hover:bg-amber-100" onClick={() => { setTargetTrainKey(key); bookSelectedTrain(item) }}>
-                        <Ticket className="mr-1 inline text-amber-600" size={12} /> Start Tatkal Demo
-                      </button>
+                      <a
+                        href="https://www.irctc.co.in/nget/train-search"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-950 hover:bg-amber-100 inline-flex items-center gap-1"
+                      >
+                        <Ticket className="text-amber-600" size={12} /> Book on IRCTC ↗
+                      </a>
                     </div>
                   </article>
                 )
@@ -381,24 +457,45 @@ export default function EmergencyTatkalPlanner({
 
         {/* Right Column: Tatkal Auto-Fill Master Data & Pre-Tatkal Checklist */}
         <div className="space-y-6">
-          {/* 1-Click Master Data Passenger Auto-Fill Assistant */}
+          {/* 1-Click Master Data Passenger Auto-Fill Assistant (Local Device Only - Zero IDs) */}
           <div className="rounded-3xl border border-sky-200 bg-white p-5 sm:p-6 shadow-sm">
-            <div className="flex items-center justify-between border-b border-sky-100 pb-3">
+            <div className="flex flex-wrap items-center justify-between border-b border-sky-100 pb-3 gap-2">
               <div>
                 <span className="badge border-sky-200 bg-sky-50 text-sky-800 text-[10px] font-black tracking-wide">
-                  IRCTC SPEED PASS
+                  LOCAL DEVICE STORAGE
                 </span>
-                <h3 className="mt-1 text-lg font-black text-slate-900">Tatkal Auto-Fill Master Data</h3>
-                <p className="text-xs text-slate-500 font-medium">Pre-fill passengers for 1-click clipboard copy into IRCTC.</p>
+                <h3 className="mt-1 text-lg font-black text-slate-900">Passenger Master List</h3>
+                <p className="text-xs text-slate-500 font-medium">Tatkal Auto-Fill Master Data: Pre-fill passengers for 1-click clipboard copy into IRCTC.</p>
               </div>
-              <button
-                type="button"
-                onClick={addPassenger}
-                className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-bold text-slate-700"
-                disabled={passengers.length >= 4}
-              >
-                <Plus size={14} /> Add
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  data-testid="clear-passengers-btn"
+                  onClick={clearAllPassengers}
+                  className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-bold text-rose-700 hover:bg-rose-50"
+                  title="Clear all saved passengers from this browser"
+                >
+                  <Trash2 size={13} /> Clear
+                </button>
+                <button
+                  type="button"
+                  data-testid="add-passenger-btn"
+                  onClick={addPassenger}
+                  className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-bold text-sky-700 hover:bg-sky-50"
+                  disabled={passengers.length >= 4}
+                  title="Add passenger (up to 4)"
+                >
+                  <Plus size={14} /> Add
+                </button>
+              </div>
+            </div>
+
+            {/* Strict Zero-ID Notice */}
+            <div data-testid="zero-id-notice" className="mt-3 flex items-start gap-2 p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-[11px] font-medium text-emerald-950">
+              <ShieldCheck size={15} className="text-emerald-700 shrink-0 mt-0.5" />
+              <span>
+                <strong>Zero-ID Policy (Zero ID Numbers Stored):</strong> TravelMate strictly NEVER stores or asks for Aadhaar, Passport, or Govt ID numbers. All data is kept locally on this device.
+              </span>
             </div>
 
             <div className="mt-4 space-y-3">
@@ -406,21 +503,31 @@ export default function EmergencyTatkalPlanner({
                 <div key={p.id} className="rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-xs">
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <span className="font-bold text-sky-900">Passenger #{idx + 1}</span>
-                    {passengers.length > 1 && (
+                    <div className="flex items-center gap-1.5">
                       <button
                         type="button"
-                        onClick={() => removePassenger(p.id)}
-                        className="text-slate-400 hover:text-rose-600 transition"
-                        aria-label={`Remove Passenger ${idx + 1}`}
+                        onClick={() => copySinglePassenger(p)}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 bg-white text-[10px] font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition"
+                        title="Copy this passenger"
                       >
-                        <Trash2 size={14} />
+                        <Copy size={11} /> Copy
                       </button>
-                    )}
+                      {passengers.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removePassenger(p.id)}
+                          className="text-slate-400 hover:text-rose-600 transition p-0.5"
+                          aria-label={`Remove Passenger ${idx + 1}`}
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <div className="grid gap-2 sm:grid-cols-2">
                     <input
                       className="input py-1 text-xs bg-white text-slate-900 border-slate-300"
-                      placeholder="Full Name (as on Govt ID)"
+                      placeholder="Full Name (as per ticket)"
                       value={p.name}
                       onChange={(e) => updatePassenger(p.id, 'name', e.target.value)}
                     />
@@ -466,10 +573,11 @@ export default function EmergencyTatkalPlanner({
             <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap gap-2">
               <button
                 type="button"
+                data-testid="copy-all-passengers-btn"
                 className="btn-primary flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-black shadow-xs"
                 onClick={copyMasterData}
               >
-                <Copy size={14} /> Copy Master Data (IRCTC Quick Paste)
+                <Copy size={14} /> 1-Click Copy All (IRCTC Fast-Fill Format)
               </button>
             </div>
           </div>
@@ -526,7 +634,7 @@ export default function EmergencyTatkalPlanner({
                 <li key={rule}>{rule}</li>
               ))}
               <li>Tatkal quota tickets do not permit senior citizen or concessionary fares.</li>
-              <li>TravelMate simulates booking and prepares live data; final payment is completed on the official IRCTC portal.</li>
+              <li>TravelMate is an assistive preparation tool; official booking and payment are completed directly on IRCTC.</li>
             </ul>
           </div>
         </div>

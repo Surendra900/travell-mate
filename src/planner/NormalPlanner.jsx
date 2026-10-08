@@ -24,6 +24,7 @@ import RouteMap from '../components/RouteMap'
 import StationAutocomplete from '../components/StationAutocomplete'
 import WaitlistBypassContrast from '../components/WaitlistBypassContrast'
 import DelayContingencySimulator from '../components/DelayContingencySimulator'
+import { localDateIso } from '../utils/date'
 import {
   airlineOptions,
   getCabinOptions,
@@ -253,10 +254,32 @@ export default function NormalPlanner({
             )}
           </div>
 
+          {/* Urgent Tonight Preset per Master Spec Section 8 */}
+          <div className="mt-4 flex items-center">
+            <label className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-sky-50/50 cursor-pointer transition select-none text-xs font-bold text-slate-800">
+              <input
+                type="checkbox"
+                data-testid="planner-urgent-tonight-checkbox"
+                checked={plan.urgency === 'Tonight'}
+                onChange={(e) => {
+                  const checked = e.target.checked
+                  update({
+                    urgency: checked ? 'Tonight' : 'Normal',
+                    ...(checked ? { date: localDateIso() } : {})
+                  })
+                }}
+                className="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500"
+              />
+              <Clock size={15} className="text-amber-600" />
+              <span>Need to travel tonight? (12h)</span>
+            </label>
+          </div>
+
           {/* Primary Search Button */}
-          <div className="mt-8">
+          <div className="mt-6">
             <button
               type="button"
+              data-testid="planner-search-btn"
               onClick={() => (onFindTicket ? onFindTicket() : toast('Enter route details first.'))}
               className="w-full h-13 rounded-2xl bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition active:scale-[0.99]"
             >

@@ -77,7 +77,11 @@ export default function Home({ toast }) {
       transportMode: targetMode,
       passengers: travellers
     })
-    if (travelTonight) params.set('urgency', 'Tonight')
+    if (travelTonight) {
+      params.set('urgency', 'Tonight')
+      params.set('urgent', '12h')
+      params.set('date', localDateIso())
+    }
     navigate(`/planner?${params.toString()}`)
   }
 
@@ -273,10 +277,11 @@ export default function Home({ toast }) {
             <button
               type="button"
               id="open-pnr-banner-btn"
+              data-testid="home-pnr-status-btn"
               onClick={() => setShowPnrModal(true)}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-300 hover:border-sky-400 bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-bold text-xs transition whitespace-nowrap"
             >
-              <span>Check PNR Odds</span>
+              <span>Check PNR Status & Odds</span>
               <ArrowRight size={14} />
             </button>
           </div>

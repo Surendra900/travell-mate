@@ -16,13 +16,15 @@ import {
   Sparkles,
   Train,
   Users,
-  X
+  X,
+  Shield
 } from 'lucide-react'
 import {
   predictWaitlistConfirmation,
   SAMPLE_PNR_PRESETS
 } from '../utils/pnrPredictor'
 import { getPNRStatus } from '../services/LiveTransportApi'
+import GlossaryTooltip from './GlossaryTooltip'
 
 export default function PnrPredictorModal({
   open,
@@ -34,6 +36,7 @@ export default function PnrPredictorModal({
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
   const [apiNotice, setApiNotice] = useState('')
+  const [showHowWeEstimate, setShowHowWeEstimate] = useState(false)
 
   useEffect(() => {
     if (initialPnr) {
@@ -158,7 +161,7 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
   if (!open) return null
 
   const modalContent = (
-    <div id="pnr-predictor-modal" style={{ zIndex: 9999 }} className="fixed inset-0 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="dialog" aria-modal="true">
+    <div id="pnr-predictor-modal" data-testid="pnr-modal-container" style={{ zIndex: 9999 }} className="fixed inset-0 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="dialog" aria-modal="true">
       <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/30 bg-slate-900 p-6 shadow-2xl">
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-800 pb-4">
@@ -168,10 +171,10 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
             </span>
             <div>
               <span className="text-[11px] font-black uppercase tracking-wider text-cyan-400">
-                AI Railway Intelligence
+                Railway Status Intelligence
               </span>
               <h2 className="text-xl font-black text-white sm:text-2xl">
-                IRCTC Waitlist Confirmation Predictor
+                <GlossaryTooltip term="PNR">PNR Status</GlossaryTooltip> & Confirmation Estimator
               </h2>
             </div>
           </div>
@@ -196,6 +199,7 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
               <input
                 type="text"
                 maxLength={10}
+                data-testid="pnr-input"
                 value={pnrInput}
                 onChange={(e) => setPnrInput(e.target.value.replace(/\D/g, ''))}
                 placeholder="e.g. 4523819204"
@@ -204,18 +208,19 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
             </div>
             <button
               type="button"
+              data-testid="pnr-predict-btn"
               onClick={() => handleLookup()}
               disabled={loading}
               className="inline-flex items-center gap-1.5 rounded-xl bg-cyan-400 px-5 py-2.5 text-xs font-black text-slate-950 transition hover:bg-cyan-300 disabled:opacity-50"
             >
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-              {loading ? 'Checking…' : 'Predict'}
+              {loading ? 'Checking…' : 'Estimate'}
             </button>
           </div>
 
           {/* Quick Preset Buttons */}
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-400 mr-1">Try Scenarios:</span>
+            <span className="text-[11px] font-bold text-slate-400 mr-1">Sample PNR Scenarios:</span>
             {SAMPLE_PNR_PRESETS.map((preset, idx) => (
               <button
                 key={preset.pnrNumber}
@@ -273,16 +278,43 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
               </div>
             </div>
 
-            {/* AI Confirmation Probability Gauge */}
+            {/* Estimated Confirmation Probability Gauge */}
             <div className="rounded-2xl border border-cyan-500/30 bg-gradient-to-r from-slate-950 to-slate-900 p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-400">
-                  AI Waitlist Confirmation Probability
-                </span>
-                <span className={`rounded-full px-3 py-1 text-xs font-black ${prediction.badgeClass}`}>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                    Estimated Confirmation Probability (Historical Model)
+                  </span>
+                  <button
+                    type="button"
+                    data-testid="how-we-estimate-btn"
+                    onClick={() => setShowHowWeEstimate(v => !v)}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-300 hover:text-cyan-200 underline mt-0.5"
+                  >
+                    <HelpCircle size={12} />
+                    <span>{showHowWeEstimate ? 'Hide calculation details' : 'How we estimate'}</span>
+                  </button>
+                </div>
+                <span data-testid="pnr-probability-display" className={`rounded-full px-3 py-1 text-xs font-black ${prediction.badgeClass}`}>
                   {prediction.label}
                 </span>
               </div>
+
+              {/* Expandable "How We Estimate" Section per Master Spec Section 5 */}
+              {showHowWeEstimate && (
+                <div data-testid="pnr-estimation-disclaimer" className="mt-3 p-3.5 rounded-xl border border-cyan-500/30 bg-cyan-950/40 text-xs text-cyan-100 space-y-2 animate-in fade-in">
+                  <div className="font-bold flex items-center gap-1.5 text-cyan-200">
+                    <Info size={14} />
+                    <span>Documented Parametric Confirmation Model</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    Our statistical model evaluates 4 verified parameters: (1) Quota type clearance velocity (GNWL clears significantly faster than PQWL/RLWL), (2) Coach class capacity multiplier (Sleeper absorbs higher cancellations than 2A/1A), (3) Days to departure (cancellations surge in the final 48 hours), and (4) Charting thresholds.
+                  </p>
+                  <p className="text-[11px] text-amber-300/90 font-medium pt-1 border-t border-cyan-900/50">
+                    Statutory Disclaimer: Predictions are probabilistic estimates based on historical patterns, not guarantees. Actual berth allocation is executed solely by Indian Railways PRS when chart is prepared 4 hours prior to departure.
+                  </p>
+                </div>
+              )}
 
               {/* Probability Progress Bar */}
               <div className="mt-3">
@@ -367,13 +399,35 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
               </span>
 
               <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="https://www.indianrail.gov.in/enquiry/PNR/PnrEnquiry.html?locale=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="pnr-official-link"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-sky-400/40 bg-sky-500/20 px-3.5 py-1.5 text-xs font-bold text-sky-200 transition hover:bg-sky-500/30"
+                >
+                  <ExternalLink size={13} />
+                  Official IR Enquiry ↗
+                </a>
+
+                <a
+                  href={`https://www.confirmtkt.com/pnr-status/${activeData.pnrNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="pnr-confirmtkt-link"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-400/30 bg-cyan-500/20 px-3.5 py-1.5 text-xs font-black text-cyan-200 transition hover:bg-cyan-500/30"
+                >
+                  <ExternalLink size={13} />
+                  ConfirmTkt ↗
+                </a>
+
                 <button
                   type="button"
                   onClick={handleShareWhatsApp}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-600/20 px-3.5 py-1.5 text-xs font-bold text-emerald-300 transition hover:bg-emerald-600/30"
                 >
                   <Share2 size={13} />
-                  WhatsApp Share
+                  WhatsApp
                 </button>
 
                 <button
@@ -384,16 +438,6 @@ Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
                   {copied ? <CheckCircle2 size={13} className="text-emerald-400" /> : <Copy size={13} />}
                   {copied ? 'Copied' : 'Copy'}
                 </button>
-
-                <a
-                  href={`https://www.confirmtkt.com/pnr-status/${activeData.pnrNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-400/30 bg-cyan-500/20 px-3.5 py-1.5 text-xs font-black text-cyan-200 transition hover:bg-cyan-500/30"
-                >
-                  <ExternalLink size={13} />
-                  ConfirmTkt ↗
-                </a>
               </div>
             </div>
           </div>

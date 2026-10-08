@@ -18,7 +18,7 @@
 | **Day 3** | **Route Recovery Engine v2** | Graph timetable search; minimum connection times; risk labels; delay simulator & contingency engine; unit & property tests. | **DONE-VERIFIED** | `day-3` |
 | **Day 4** | **App Shell & Search UX** | Clean 4-item navbar; hero search with autocomplete; "How it works in 3 steps"; honest "See a Demo" scenario mode. | **DONE-VERIFIED** | `day-4` |
 | **Day 5** | **Results & Split Routes** | Direct vs Split contrast; journey cards; interactive route map; risk badges; delay slider tab; deep-link buttons; legal disclosures. | **DONE-VERIFIED** | `day-5` |
-| **Day 6** | **Urgent Mode & Tatkal Desk** | "Need to travel tonight?" 12-hour preset; Tatkal dual-window countdown; local passenger auto-fill pass; simplified PNR estimate. | PENDING | `day-6` |
+| **Day 6** | **Urgent Mode & Tatkal Desk** | "Need to travel tonight?" 12-hour preset; Tatkal dual-window countdown; local passenger auto-fill pass; simplified PNR estimate. | **DONE-VERIFIED** | `day-6` |
 | **Day 7** | **Passes, Safety & Grounded AI** | Offline boarding passes; Transit Safety drawer (112/139 + GPS); contextual weather alerts; 2 server-side grounded AI endpoints. | PENDING | `day-7` |
 | **Day 8** | **Comprehensive QA & A11y** | States (loading, empty, error, skeleton); responsive layout check (390px / 768px / 1440px); axe WCAG 2.1 AA audit; click budget test. | PENDING | `day-8` |
 | **Day 9** | **Hardening & Compliance** | Security audit; DPDP 2023 statutory consent & data minimization; privacy, terms, and disclaimer pages; analytics & error boundaries. | PENDING | `day-9` |

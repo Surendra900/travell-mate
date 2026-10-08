@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Clock, Ticket } from 'lucide-react'
 import NormalPlanner from '../planner/NormalPlanner'
 import EmergencyTatkalPlanner from '../planner/EmergencyTatkalPlanner'
 import LowNetworkPlanner from '../planner/LowNetworkPlanner'
@@ -8,6 +8,7 @@ import { attachPnrStatus, consumeLoadedPlan, saveOfflinePack, savePlan } from '.
 import { calculateTravelScore } from '../utils/scoring'
 import MasterTrustPanel from '../components/MasterTrustPanel'
 import LiveResultsPanel from '../components/LiveResultsPanel'
+import PnrPredictorModal from '../components/PnrPredictorModal'
 import { getPNRStatus, searchLiveTransport } from '../services/LiveTransportApi'
 import { localDateIso } from '../utils/date'
 import { getCabinOptions, getProviderDeepLink } from '../data/transportData'
@@ -50,9 +51,10 @@ export default function Planner({ status, toast, language = 'en' }) {
   const [liveStatus, setLiveStatus] = useState({ loading: false, mode: 'idle', message: '' })
   const [pendingVoiceAction, setPendingVoiceAction] = useState(null)
   const [isDemoMode, setIsDemoMode] = useState(false)
+  const [showPnrModal, setShowPnrModal] = useState(false)
 
   const applyVoiceDetail = (detail = {}) => {
-    if (detail.mode) setManualMode(detail.mode)
+    if (detail.mode) setManualMode(detail.mode === 'emergency' ? 'tatkal' : detail.mode)
     if (detail.plan && Object.keys(detail.plan).length) {
       setPlan((old) => ({ ...old, ...detail.plan }))
     }
@@ -77,16 +79,21 @@ export default function Planner({ status, toast, language = 'en' }) {
     const urgency = params.get('urgency')
 
     if (demoParam) setIsDemoMode(true)
-    if (modeParam === 'tatkal' || urgency === 'Emergency' || urgency === 'Tonight') {
-      setManualMode('emergency')
+    if (modeParam === 'tatkal' || urgency === 'Emergency') {
+      setManualMode('tatkal')
+    } else if (modeParam === 'pnr') {
+      setShowPnrModal(true)
     }
 
-    if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode)) {
+    const isTonight = urgency === 'Tonight' || params.get('urgent') === '12h'
+
+    if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode) || isTonight) {
       setPlan((old) => ({
         ...old,
         ...(from ? { from } : {}),
         ...(to ? { to } : {}),
-        ...(date ? { date } : {}),
+        ...(date ? { date } : isTonight ? { date: localDateIso() } : {}),
+        ...(isTonight ? { urgency: 'Tonight' } : {}),
         ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? { transportMode: requestedMode, routeCombo: `${requestedMode} only`, classType: getCabinOptions(requestedMode)[0] } : {})
       }))
     }
@@ -395,38 +402,89 @@ export default function Planner({ status, toast, language = 'en' }) {
       <section className="flex flex-col items-stretch justify-between gap-5 lg:flex-row lg:items-end pb-6 border-b border-slate-200">
         <div>
           <span className="badge">Network: {(forcedOffline || forcedLowSignal) ? 'automatic low-network' : 'online'}</span>
-          <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl md:text-5xl">Journey Planner</h1>
-          <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600">Plan train, flight and bus journeys with verified provider schedules and smart split-routing alternatives.</p>
+          <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+            {manualMode === 'tatkal' || manualMode === 'emergency' ? 'Tatkal Desk' : 'Journey Planner'}
+          </h1>
+          <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600">
+            {manualMode === 'tatkal' || manualMode === 'emergency'
+              ? 'Dual-window countdown, verified Tatkal Quota availability, and local passenger preparation.'
+              : 'Plan train, flight and bus journeys with verified provider schedules and smart split-routing alternatives.'}
+          </p>
         </div>
-        <div className="planner-mode-tabs bg-white border border-slate-200 shadow-sm grid grid-cols-2 gap-1.5 rounded-2xl p-1.5">
-          {[
-            ['normal', 'Normal tickets'],
-            ['emergency', 'Tatkal emergency']
-          ].map(([value, label]) => {
-            const active = manualMode === value
-            const emergencyTab = value === 'emergency'
-            return (
-              <button
-                key={value}
-                type="button"
-                className={`min-h-11 rounded-xl px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
-                  active
-                    ? emergencyTab
-                      ? 'bg-red-600 text-white shadow-sm'
-                      : 'bg-sky-700 text-white shadow-sm'
-                    : emergencyTab
-                      ? 'border border-red-200 bg-red-50 text-red-700 hover:bg-red-100'
-                      : 'text-slate-600 hover:bg-slate-100'
-                }`}
-                onClick={() => !(forcedOffline || forcedLowSignal) && setManualMode(value)}
-                disabled={forcedOffline || forcedLowSignal}
-              >
-                {label}
-              </button>
-            )
-          })}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            data-testid="planner-pnr-status-btn"
+            onClick={() => setShowPnrModal(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-xs"
+          >
+            <Ticket size={14} className="text-sky-600" />
+            <span>Check PNR Status</span>
+          </button>
+
+          <div className="planner-mode-tabs bg-white border border-slate-200 shadow-sm grid grid-cols-2 gap-1.5 rounded-2xl p-1.5">
+            {[
+              ['normal', 'Route Finder'],
+              ['tatkal', 'Tatkal Desk']
+            ].map(([value, label]) => {
+              const active = manualMode === value || (value === 'tatkal' && manualMode === 'emergency')
+              const isTatkalTab = value === 'tatkal'
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  data-testid={`planner-tab-${value}`}
+                  className={`min-h-11 rounded-xl px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
+                    active
+                      ? isTatkalTab
+                        ? 'bg-amber-600 text-white shadow-sm'
+                        : 'bg-sky-700 text-white shadow-sm'
+                      : isTatkalTab
+                        ? 'border border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                        : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                  onClick={() => !(forcedOffline || forcedLowSignal) && setManualMode(value)}
+                  disabled={forcedOffline || forcedLowSignal}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </section>
+
+      {/* Urgent Departure Mode Active Banner (Master Spec Section 8) */}
+      {plan.urgency === 'Tonight' && manualMode !== 'tatkal' && (
+        <div
+          data-testid="urgent-tonight-banner"
+          className="mt-6 rounded-2xl border-2 border-amber-300 bg-amber-50/90 p-4 text-amber-950 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0">
+              <Clock size={20} />
+            </div>
+            <div>
+              <div className="text-sm font-black text-amber-950 flex items-center gap-2">
+                <span>Urgent Departure Preset Active (12h)</span>
+                <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">
+                  DEPART TONIGHT
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                Prioritizing multimodal recovery routes departing within the next 12 hours from current time.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setPlan((p) => ({ ...p, urgency: 'Normal' }))}
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-amber-300 hover:bg-amber-100 text-amber-900 transition shrink-0"
+          >
+            Reset to All Departures
+          </button>
+        </div>
+      )}
 
       {isDemoMode && (
         <div
@@ -467,7 +525,7 @@ export default function Planner({ status, toast, language = 'en' }) {
       )}
 
       <section className="mt-6">
-        {mode === 'emergency' ? (
+        {mode === 'tatkal' || mode === 'emergency' ? (
           <EmergencyTatkalPlanner
             plan={enrichedPlan}
             update={update}
@@ -501,7 +559,12 @@ export default function Planner({ status, toast, language = 'en' }) {
         onBookResult={openLiveResultBooking}
         onSaveResult={saveLiveResult}
         onBookBackup={openBackupBooking}
-        allowBackup={manualMode !== 'emergency'}
+        allowBackup={manualMode !== 'tatkal' && manualMode !== 'emergency'}
+      />
+
+      <PnrPredictorModal
+        open={showPnrModal}
+        onClose={() => setShowPnrModal(false)}
       />
     </main>
   )
