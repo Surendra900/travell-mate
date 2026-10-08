@@ -94,13 +94,41 @@
 **Git Tag:** `day-3`  
 
 ### Day 3 Task List
-- [ ] Task 3.1: Build time-expanded graph search engine in `server/services/routeEngine.js` searching direct options first, then 1-transfer itineraries through the Top 25 junction hubs.
-- [ ] Task 3.2: Implement strict Minimum Connection Time (MCT) matrix in `server/config/connectionTimes.js` (Rail-to-Rail: 45 min; Rail-to-Bus: 105 min; Rail-to-Airport: 210 min; overnight transfer rules).
-- [ ] Task 3.3: Implement connection risk classification and parametric delay reliability model (`Safe` >=120m, `Moderate` 90-119m, `Tight` 60-89m, `High Risk` <60m).
-- [ ] Task 3.4: Implement 3-tier multimodal ranking algorithm (Budget: Rail+Rail, Balanced: Rail+AC Bus, Fastest: Rail+Flight).
-- [ ] Task 3.5: Build inline Delay Contingency Simulator ("If Leg 1 runs late" slider recomputing slack, risk badge, and next 3 viable departures).
-- [ ] Task 3.6: Write unit and property test suite (`tests/day3_engine_v2.test.mjs`) proving zero MCT violations, chronological consistency, and deadline fulfillment.
-- [ ] Task 3.7: Run Day 3 Verification Gate, capture screenshots, commit, tag `day-3`, and deploy Vercel Preview.
+- [x] Task 3.1: Build time-expanded graph search engine in `server/services/routeEngine.js` searching direct options first, then 1-transfer itineraries through the Top 25 junction hubs.
+- [x] Task 3.2: Implement strict Minimum Connection Time (MCT) matrix in `server/config/connectionTimes.js` (Rail-to-Rail: 45 min; Rail-to-Bus: 105 min; Rail-to-Airport: 210 min; overnight transfer rules).
+- [x] Task 3.3: Implement connection risk classification and parametric delay reliability model (`Safe` >=120m, `Moderate` 90-119m, `Tight` 60-89m, `High Risk` <60m).
+- [x] Task 3.4: Implement 3-tier multimodal ranking algorithm (Budget: Rail+Rail, Balanced: Rail+AC Bus, Fastest: Rail+Flight).
+- [x] Task 3.5: Build inline Delay Contingency Simulator ("If Leg 1 runs late" slider recomputing slack, risk badge, and next 3 viable departures).
+- [x] Task 3.6: Write unit and property test suite (`tests/day3_engine_v2.test.mjs`) proving zero MCT violations, chronological consistency, and deadline fulfillment.
+- [x] Task 3.7: Run Day 3 Verification Gate, capture screenshots, commit, tag `day-3`, and deploy Vercel Preview.
+
+### Day 3 Verification Evidence
+1. **Engine & MCT Matrix:** `server/config/connectionTimes.js` enforces strict tested thresholds (Rail-to-Rail: 45 min, Cross-Metro: 90 min, Rail-to-Bus: 105 min, Rail-to-Airport: 210 min).
+2. **Parametric Reliability Model:** `server/config/reliabilityModel.js` replaces static percentages with documented delay distributions across train categories (Vande Bharat p85: 25m, Rajdhani p85: 40m, Superfast p85: 60m) and computes exact "Safe up to +X min delay on Leg 1" absorption limits.
+3. **Time-Expanded Route Recovery Engine:** `server/services/routeEngine.js` implements direct route lookup and 1-transfer graph searches through Top 25 junction hubs with verified deep links and legal disclaimers.
+4. **Contingency Engine:** `server/services/contingencyEngine.js` simulates Leg 1 delay propagation, recomputes slack, identifies point of no return, and fetches fallback onward departures.
+5. **Full Test Regression:** 176 out of 176 unit and property tests passing across the repository (`npm test` and `npm run check` with 0 failures).
+6. **Visual QA:** Desktop 1440x900 and Mobile 390x844 screenshots captured in `docs/screenshots/day-3/after/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 3 COMPLETE. Verification passed (176/176). Moving to DAY 4.**
+
+---
+
+## Master Rebuild Entry: Day 4
+**Date:** October 2026  
+**Goal:** App Shell, 4-Item Minimal Navigation, Clean Homepage Hero, Real-Time Autocomplete Search, 3-Step Educational Strip, and Honest Demo Scenario Mode  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-4`  
+
+### Day 4 Task List
+- [ ] Task 4.1: Streamline App Shell and Navbar to strict 4-item minimal architecture (Route Finder, Tatkal Desk, Passes & Safety, See a Demo).
+- [ ] Task 4.2: Build clean Homepage Hero with single primary visual focus (From, To, Date, Passengers, Mode, and prominent Search CTA).
+- [ ] Task 4.3: Implement high-performance Station Autocomplete using canonical `stations.json` dataset (keyboard navigable, search-as-you-type).
+- [ ] Task 4.4: Implement "How TravelMate Works in 3 Steps" educational onboarding strip and "Direct route unavailable?" combinations explainer.
+- [ ] Task 4.5: Implement honest "See a Demo" mode with distinct visual styling and explicit banner ("Demo scenario: illustrative availability").
+- [ ] Task 4.6: Run Day 4 Verification Gate, capture screenshots, commit, tag `day-4`, and deploy Vercel Preview.
+
+---
 
 
 
