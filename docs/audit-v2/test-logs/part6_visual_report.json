@@ -1,0 +1,19 @@
+{
+  "overflows": [],
+  "riskBadgesAccessibility": [],
+  "cssTokenCheck": {
+    "declaredCustomPropertiesCount": 27,
+    "sampleTokens": [
+      "--tm-bg:",
+      "--tm-surface:",
+      "--tm-surface-subtle:",
+      "--tm-surface-hover:",
+      "--tm-ink:",
+      "--tm-ink-secondary:",
+      "--tm-muted:",
+      "--tm-border:",
+      "--tm-border-strong:",
+      "--tm-primary:"
+    ]
+  }
+}

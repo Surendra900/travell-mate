@@ -1,0 +1,62 @@
+{
+  "secretLeaks": [],
+  "securityHeaders": {
+    "statusCode": 200,
+    "hsts": "max-age=63072000; includeSubDomains; preload",
+    "xContentTypeOptions": "nosniff",
+    "xFrameOptions": "DENY",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "permissionsPolicy": "camera=(), geolocation=(self), microphone=(self), payment=()",
+    "contentSecurityPolicy": "MISSING"
+  },
+  "npmAuditSummary": {
+    "vulnerabilitiesCount": {
+      "info": 0,
+      "low": 0,
+      "moderate": 5,
+      "high": 9,
+      "critical": 0,
+      "total": 14
+    },
+    "totalDependencies": 170
+  },
+  "localStorageAudit": {},
+  "apiFuzzingResults": [
+    {
+      "payload": "SQL Injection",
+      "status": "HANDLED_GRACEFULLY",
+      "returnedDirect": 0,
+      "returnedSplit": 0
+    },
+    {
+      "payload": "XSS Vector",
+      "status": "HANDLED_GRACEFULLY",
+      "returnedDirect": 0,
+      "returnedSplit": 0
+    },
+    {
+      "payload": "Path Traversal",
+      "status": "HANDLED_GRACEFULLY",
+      "returnedDirect": 0,
+      "returnedSplit": 0
+    },
+    {
+      "payload": "Buffer Overflow",
+      "status": "HANDLED_GRACEFULLY",
+      "returnedDirect": 0,
+      "returnedSplit": 0
+    },
+    {
+      "payload": "Null / Undefined",
+      "status": "HANDLED_GRACEFULLY",
+      "returnedDirect": 0,
+      "returnedSplit": 0
+    },
+    {
+      "payload": "Type Confusion",
+      "status": "HANDLED_GRACEFULLY",
+      "returnedDirect": 0,
+      "returnedSplit": 0
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "apiBenchmarks": {
+    "totalCalls": 30,
+    "coldCallDurationMs": 0.170499999999997,
+    "warmCallDurationMs": 0.19870000000000232,
+    "minMs": 0.170499999999997,
+    "maxMs": 11.069099999999999,
+    "p50Ms": 0.2616999999999976,
+    "p95Ms": 1.0829000000000022,
+    "allLatenciesMs": [
+      0.17,
+      0.2,
+      0.2,
+      0.2,
+      0.21,
+      0.22,
+      0.22,
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.24,
+      0.24,
+      0.25,
+      0.26,
+      0.27,
+      0.28,
+      0.31,
+      0.37,
+      0.41,
+      0.45,
+      0.47,
+      0.52,
+      0.54,
+      0.68,
+      0.73,
+      0.73,
+      1.08,
+      11.07
+    ]
+  },
+  "bundleSizes": [
+    {
+      "file": "Planner-B54ho9XL.js",
+      "sizeBytes": 210892,
+      "sizeKb": 205.9
+    },
+    {
+      "file": "vendor-auth-DObaHfal.js",
+      "sizeBytes": 210102,
+      "sizeKb": 205.2
+    },
+    {
+      "file": "index-Bv6Kbywh.js",
+      "sizeBytes": 191350,
+      "sizeKb": 186.9
+    },
+    {
+      "file": "vendor-maps-B40yZd3c.js",
+      "sizeBytes": 148818,
+      "sizeKb": 145.3
+    },
+    {
+      "file": "index-D6Wu9Oci.css",
+      "sizeBytes": 78949,
+      "sizeKb": 77.1
+    },
+    {
+      "file": "SafetyMode-CqJDwApX.js",
+      "sizeBytes": 37596,
+      "sizeKb": 36.7
+    },
+    {
+      "file": "vendor-0b5rP9hd.js",
+      "sizeBytes": 29748,
+      "sizeKb": 29.1
+    },
+    {
+      "file": "vendor-icons-B-w2rkHV.js",
+      "sizeBytes": 28155,
+      "sizeKb": 27.5
+    },
+    {
+      "file": "PnrPredictorModal-CsmwnecI.js",
+      "sizeBytes": 26364,
+      "sizeKb": 25.7
+    },
+    {
+      "file": "SavedPlans-B-XDJnaZ.js",
+      "sizeBytes": 23174,
+      "sizeKb": 22.6
+    },
+    {
+      "file": "NaturalLanguageQueryInput-WJ6T_RJG.js",
+      "sizeBytes": 22864,
+      "sizeKb": 22.3
+    },
+    {
+      "file": "Home-BPrllqZg.js",
+      "sizeBytes": 15325,
+      "sizeKb": 15
+    },
+    {
+      "file": "vendor-maps-CcXJxNtP.css",
+      "sizeBytes": 14808,
+      "sizeKb": 14.5
+    },
+    {
+      "file": "vendor-router-C1uG2bLD.js",
+      "sizeBytes": 14074,
+      "sizeKb": 13.7
+    },
+    {
+      "file": "OfflineTravelerPassModal-CsjrG49Y.js",
+      "sizeBytes": 9433,
+      "sizeKb": 9.2
+    },
+    {
+      "file": "PrivacyPolicy-BoIVzv3c.js",
+      "sizeBytes": 6833,
+      "sizeKb": 6.7
+    },
+    {
+      "file": "EmergencyDetail-BLUQDteZ.js",
+      "sizeBytes": 5417,
+      "sizeKb": 5.3
+    },
+    {
+      "file": "LegalDisclaimer-CmZvK2ne.js",
+      "sizeBytes": 5148,
+      "sizeKb": 5
+    },
+    {
+      "file": "TermsOfService-DuJ3qRyh.js",
+      "sizeBytes": 4943,
+      "sizeKb": 4.8
+    },
+    {
+      "file": "AnalyzeJourney-IgIPsMiB.js",
+      "sizeBytes": 4547,
+      "sizeKb": 4.4
+    },
+    {
+      "file": "vendor-react-DQp0g44c.js",
+      "sizeBytes": 846,
+      "sizeKb": 0.8
+    },
+    {
+      "file": "rolldown-runtime-Bh1tDfsg.js",
+      "sizeBytes": 567,
+      "sizeKb": 0.6
+    },
+    {
+      "file": "date-oOsr9jzQ.js",
+      "sizeBytes": 276,
+      "sizeKb": 0.3
+    }
+  ],
+  "throttlingAudit": {}
+}

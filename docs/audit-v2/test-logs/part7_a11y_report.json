@@ -1,0 +1,170 @@
+{
+  "axeByRoute": {
+    "home": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 3,
+          "sampleTargets": [
+            [
+              "button[data-testid=\"footer-dpdp-modal-btn\"]"
+            ],
+            [
+              ".text-cyan-400"
+            ],
+            [
+              "p:nth-child(1)"
+            ]
+          ]
+        }
+      ]
+    },
+    "planner": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 3,
+          "sampleTargets": [
+            [
+              "button[data-testid=\"footer-dpdp-modal-btn\"]"
+            ],
+            [
+              "button[data-testid=\"footer-feedback-btn\"]"
+            ],
+            [
+              ".pb-2 > p:nth-child(1)"
+            ]
+          ]
+        }
+      ]
+    },
+    "safety": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 5,
+          "sampleTargets": [
+            [
+              ".p-3\\.5.bg-slate-50.border-slate-200\\/80:nth-child(1) > .min-w-0 > .text-slate-400.tracking-wider.text-\\[10px\\]"
+            ],
+            [
+              ".p-3\\.5.bg-slate-50.border-slate-200\\/80:nth-child(2) > .min-w-0 > .text-slate-400.tracking-wider.text-\\[10px\\]"
+            ],
+            [
+              "button[data-testid=\"footer-dpdp-modal-btn\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    "saved": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 3,
+          "sampleTargets": [
+            [
+              "button[data-testid=\"footer-dpdp-modal-btn\"]"
+            ],
+            [
+              ".text-cyan-400"
+            ],
+            [
+              "p:nth-child(1)"
+            ]
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 20,
+          "sampleTargets": [
+            [
+              ".hover\\:text-cyan-300"
+            ],
+            [
+              ".font-medium"
+            ],
+            [
+              "section:nth-child(1) > h2"
+            ]
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 19,
+          "sampleTargets": [
+            [
+              ".hover\\:text-cyan-300"
+            ],
+            [
+              ".font-medium"
+            ],
+            [
+              "section:nth-child(1) > h2"
+            ]
+          ]
+        }
+      ]
+    },
+    "disclaimer": {
+      "violationsCount": 1,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodesCount": 26,
+          "sampleTargets": [
+            [
+              ".hover\\:text-cyan-300"
+            ],
+            [
+              ".bg-red-500\\/20"
+            ],
+            [
+              ".font-medium"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "skipLinkFound": true,
+  "zoomReflowCheck": {
+    "viewport320ScrollWidth": 320,
+    "hasHorizontalScrollAt400Percent": false
+  }
+}

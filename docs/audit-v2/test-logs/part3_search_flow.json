@@ -1,0 +1,10 @@
+{
+  "fromValue": "Delhi (NDLS)",
+  "toValue": "Patna (PNBE)",
+  "currentUrlAfterHomeSearch": "http://127.0.0.1:5173/planner?from=Delhi+%28NDLS%29&to=Patna+%28PNBE%29&date=2026-10-08&transportMode=Train&passengers=1",
+  "isPlannerUrl": true,
+  "resultsImmediatelyVisibleOnPlanner": true,
+  "plannerSearchBtnPresent": true,
+  "resultsCountAfterSecondClick": 2,
+  "resultsVisibleAfterSecondClick": true
+}
