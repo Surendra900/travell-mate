@@ -6,33 +6,35 @@ import {
   Plane,
   ArrowRight,
   ArrowLeftRight,
-  MapPin,
   CalendarDays,
   Users,
   Sparkles,
   ShieldAlert,
   ShieldCheck,
+  Compass,
   CheckCircle2,
   Clock,
-  Compass,
-  AlertTriangle
+  Layers,
+  ArrowUpRight,
+  HelpCircle,
+  Building2
 } from 'lucide-react'
 import { localDateIso } from '../utils/date'
+import StationAutocomplete from '../components/StationAutocomplete'
 import PnrPredictorModal from '../components/PnrPredictorModal'
-import { transportPlaces } from '../data/transportData'
 
 const modes = [
-  { id: 'Train', label: 'Train', icon: TrainFront, desc: 'Indian Railways & Vande Bharat' },
-  { id: 'Bus', label: 'Bus', icon: BusFront, desc: 'State Transport & Intercity' },
-  { id: 'Flight', label: 'Flight', icon: Plane, desc: 'Domestic Air Travel' },
-  { id: 'Multimodal', label: 'All Combinations', icon: Compass, desc: 'Smart Split-Routing' }
+  { id: 'Multimodal', label: 'All Combinations', icon: Compass, desc: 'Train + Bus & Train + Flight split routes' },
+  { id: 'Train', label: 'Trains Only', icon: TrainFront, desc: 'Vande Bharat, Rajdhani, Express' },
+  { id: 'Bus', label: 'Buses', icon: BusFront, desc: 'Inter-State AC Volvo & Sleeper' },
+  { id: 'Flight', label: 'Flights', icon: Plane, desc: 'Domestic Civil Aviation' }
 ]
 
 const popularCorridors = [
-  { from: 'New Delhi', to: 'Mumbai', label: 'Delhi ⇄ Mumbai' },
-  { from: 'Bengaluru', to: 'Goa', label: 'Bengaluru ⇄ Goa' },
-  { from: 'Chennai', to: 'Hyderabad', label: 'Chennai ⇄ Hyderabad' },
-  { from: 'Kolkata', to: 'Patna', label: 'Kolkata ⇄ Patna' }
+  { from: 'Delhi (NDLS)', to: 'Patna (PNBE)', label: 'Delhi ⇄ Patna', desc: 'Bypass Sampoorna Kranti waitlist via Kanpur' },
+  { from: 'Delhi (NDLS)', to: 'Mumbai (MMCT)', label: 'Delhi ⇄ Mumbai', desc: 'Golden Quadrilateral via Vadodara/Kota' },
+  { from: 'Hyderabad (SC)', to: 'Bengaluru (SBC)', label: 'Hyderabad ⇄ Bengaluru', desc: 'Connecting express via Guntakal Junction' },
+  { from: 'Howrah (HWH)', to: 'Chennai (MAS)', label: 'Kolkata ⇄ Chennai', desc: 'East Coast corridor via Kharagpur & Vijayawada' }
 ]
 
 export default function Home({ toast }) {
@@ -40,11 +42,10 @@ export default function Home({ toast }) {
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [date, setDate] = useState(localDateIso())
-  const [transportMode, setTransportMode] = useState('Train')
+  const [transportMode, setTransportMode] = useState('Multimodal')
   const [travellers, setTravellers] = useState('1')
+  const [travelTonight, setTravelTonight] = useState(false)
   const [showPnrModal, setShowPnrModal] = useState(false)
-
-  const cityList = transportPlaces.map((p) => p.city)
 
   function handleSwap() {
     const temp = from
@@ -57,39 +58,52 @@ export default function Home({ toast }) {
     setTo(corridor.to)
   }
 
+  function handleLaunchDemo(e) {
+    e?.preventDefault()
+    navigate('/planner?from=Delhi+(NDLS)&to=Patna+(PNBE)&date=2026-10-15&demo=true')
+  }
+
   function handleSearch(e) {
     e?.preventDefault()
     if (!from.trim() || !to.trim()) {
-      toast?.('Please enter both departure and destination.')
+      toast?.('Please select both departure and destination stations.')
+      return
     }
     const targetMode = transportMode === 'Multimodal' ? 'Train' : transportMode
-    navigate(
-      `/planner?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}&transportMode=${encodeURIComponent(targetMode)}`
-    )
+    const params = new URLSearchParams({
+      from: from.trim(),
+      to: to.trim(),
+      date,
+      transportMode: targetMode,
+      passengers: travellers
+    })
+    if (travelTonight) params.set('urgency', 'Tonight')
+    navigate(`/planner?${params.toString()}`)
   }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-slate-50 pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
+      <section className="relative overflow-hidden bg-gradient-to-b from-sky-50/70 via-white to-slate-50 pt-10 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/90 border border-sky-200 text-sky-800 text-xs sm:text-sm font-bold tracking-wide mb-6 shadow-sm">
-            <Sparkles size={15} className="text-sky-600" />
-            <span>TravelMate · Your Emergency Travel Assistant</span>
+          {/* Top Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/90 border border-sky-200 text-sky-800 text-xs sm:text-sm font-bold tracking-wide mb-5 shadow-sm">
+            <Sparkles size={14} className="text-sky-600" />
+            <span>Multimodal Disruption & Route Recovery Engine</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight leading-[1.15]">
-            Find the best way to get there.
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.12]">
+            Find a way forward when direct tickets are sold out.
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Search trains, buses, and flights. And when direct tickets are sold out, TravelMate finds confirmed multi-modal alternatives so you never get stranded.
+          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
+            When direct trains are waitlisted, TravelMate calculates time-tested split-routes through India’s Top 25 junction hubs with verified layovers, delay simulations, and official booking links.
           </p>
 
           {/* Primary Dominant Search Card */}
           <div className="mt-10 bg-white rounded-3xl border border-slate-200 shadow-xl p-5 sm:p-8 text-left transition-shadow hover:shadow-2xl">
-            {/* Step 1: Transport Mode Selector */}
-            <div className="flex flex-wrap items-center gap-2 pb-6 border-b border-slate-100" role="tablist" aria-label="Transport Mode">
+            {/* Mode Selector Tabs */}
+            <div className="flex flex-wrap items-center gap-2 pb-5 border-b border-slate-100" role="tablist" aria-label="Transport Mode">
               {modes.map(({ id, label, icon: Icon }) => {
                 const active = transportMode === id
                 return (
@@ -99,47 +113,31 @@ export default function Home({ toast }) {
                     role="tab"
                     aria-selected={active}
                     onClick={() => setTransportMode(id)}
-                    className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                       active
-                        ? 'bg-sky-700 text-white shadow-md shadow-sky-700/25 scale-[1.02]'
+                        ? 'bg-sky-700 text-white shadow-md shadow-sky-700/25 scale-[1.01]'
                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80 hover:text-slate-950'
                     }`}
                   >
-                    <Icon size={18} />
+                    <Icon size={16} />
                     <span>{label}</span>
                   </button>
                 )
               })}
             </div>
 
-            {/* Step 2 & 3: Route & Details Form */}
+            {/* Main Form */}
             <form onSubmit={handleSearch} className="mt-6 space-y-5">
-              <datalist id="home-city-list">
-                {cityList.map((c) => (
-                  <option key={c} value={c} />
-                ))}
-              </datalist>
-
               <div className="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-3 items-center">
-                {/* From Field */}
-                <div>
-                  <label htmlFor="home-from-input" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    From (Departure)
-                  </label>
-                  <div className="relative">
-                    <MapPin size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input
-                      id="home-from-input"
-                      aria-label="Departure city or station"
-                      type="text"
-                      list="home-city-list"
-                      value={from}
-                      onChange={(e) => setFrom(e.target.value)}
-                      placeholder={transportMode === 'Train' ? 'e.g. New Delhi (NDLS)' : 'e.g. Bengaluru'}
-                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
-                    />
-                  </div>
-                </div>
+                {/* From Autocomplete */}
+                <StationAutocomplete
+                  id="home-from-input"
+                  label="From (Departure Station or City)"
+                  value={from}
+                  onChange={setFrom}
+                  placeholder="e.g. New Delhi (NDLS) or Delhi"
+                  required
+                />
 
                 {/* Swap Button */}
                 <div className="flex justify-center pt-2 md:pt-6">
@@ -153,38 +151,27 @@ export default function Home({ toast }) {
                   </button>
                 </div>
 
-                {/* To Field */}
-                <div>
-                  <label htmlFor="home-to-input" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    To (Destination)
-                  </label>
-                  <div className="relative">
-                    <MapPin size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input
-                      id="home-to-input"
-                      aria-label="Destination city or station"
-                      type="text"
-                      list="home-city-list"
-                      value={to}
-                      onChange={(e) => setTo(e.target.value)}
-                      placeholder={transportMode === 'Train' ? 'e.g. Mumbai Central (BCT)' : 'e.g. Goa'}
-                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
-                    />
-                  </div>
-                </div>
+                {/* To Autocomplete */}
+                <StationAutocomplete
+                  id="home-to-input"
+                  label="To (Destination Station or City)"
+                  value={to}
+                  onChange={setTo}
+                  placeholder="e.g. Patna (PNBE) or Mumbai"
+                  required
+                />
               </div>
 
-              {/* Journey Meta Row: Date & Travellers */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              {/* Journey Meta Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
                 <div>
-                  <label htmlFor="home-travel-date" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                  <label htmlFor="home-travel-date" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Travel Date
                   </label>
                   <div className="relative">
-                    <CalendarDays size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <CalendarDays size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
                       id="home-travel-date"
-                      aria-label="Travel Date"
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
@@ -194,14 +181,13 @@ export default function Home({ toast }) {
                 </div>
 
                 <div>
-                  <label htmlFor="home-travellers-select" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Travellers
+                  <label htmlFor="home-travellers-select" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Passengers
                   </label>
                   <div className="relative">
-                    <Users size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Users size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <select
                       id="home-travellers-select"
-                      aria-label="Number of travellers"
                       value={travellers}
                       onChange={(e) => setTravellers(e.target.value)}
                       className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition appearance-none"
@@ -210,33 +196,60 @@ export default function Home({ toast }) {
                       <option value="2">2 Passengers</option>
                       <option value="3">3 Passengers</option>
                       <option value="4">4 Passengers</option>
-                      <option value="5">5+ Passengers</option>
+                      <option value="5">5+ Group</option>
                     </select>
                   </div>
                 </div>
+
+                {/* Urgent Tonight Preset per Master Spec Section 8 */}
+                <div className="flex flex-col justify-end">
+                  <label className="flex items-center gap-2.5 h-12 px-3.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-sky-50/50 cursor-pointer transition select-none">
+                    <input
+                      type="checkbox"
+                      checked={travelTonight}
+                      onChange={(e) => setTravelTonight(e.target.checked)}
+                      className="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500"
+                    />
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                      <Clock size={15} className="text-amber-600" />
+                      <span>Need to travel tonight? (12h)</span>
+                    </div>
+                  </label>
+                </div>
               </div>
 
-              {/* Primary Dominant CTA */}
-              <div className="pt-3">
+              {/* Primary CTA Button */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
                 <button
                   type="submit"
-                  className="w-full h-14 rounded-2xl bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg shadow-sky-700/30 transition transform active:scale-[0.99]"
+                  data-testid="home-search-btn"
+                  className="w-full sm:flex-1 h-14 rounded-2xl bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition transform active:scale-[0.99]"
                 >
-                  <span>Search Available Trips</span>
+                  <span>Search Recovery Routes</span>
                   <ArrowRight size={20} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleLaunchDemo}
+                  className="w-full sm:w-auto h-14 px-6 rounded-2xl border border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold text-sm flex items-center justify-center gap-2 transition"
+                >
+                  <Sparkles size={16} className="text-sky-600" />
+                  <span>See a Demo</span>
                 </button>
               </div>
             </form>
 
-            {/* Popular Routes quick-click */}
+            {/* Popular Corridors */}
             <div className="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold text-slate-700">Popular:</span>
+              <span className="text-xs font-bold text-slate-700">High-Traffic Corridors:</span>
               {popularCorridors.map((corridor) => (
                 <button
                   key={corridor.label}
                   type="button"
                   onClick={() => handleQuickRoute(corridor)}
                   className="text-xs font-semibold text-slate-700 hover:text-sky-800 bg-slate-100 hover:bg-sky-50 px-2.5 py-1 rounded-lg border border-slate-200 transition"
+                  title={corridor.desc}
                 >
                   {corridor.label}
                 </button>
@@ -244,38 +257,16 @@ export default function Home({ toast }) {
             </div>
           </div>
 
-          {/* Progressive Disclosure: Emergency & Urgent Travel Banner */}
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-left">
+          {/* Quick PNR Odds Banner */}
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm text-left">
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center flex-shrink-0">
-                <AlertTriangle size={20} />
+              <span className="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
+                <Clock size={20} />
               </span>
               <div>
-                <h2 className="text-sm font-bold text-amber-950">Need to travel urgently? Or direct tickets full?</h2>
-                <p className="text-xs text-amber-800">
-                  Search fastest emergency combinations and Tatkal quota countdowns with 1 tap.
-                </p>
-              </div>
-            </div>
-            <Link
-              to="/planner?urgency=Emergency"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs shadow-sm transition whitespace-nowrap"
-            >
-              <span>Emergency Travel</span>
-              <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          {/* Quick PNR Confirmation Predictor Strip */}
-          <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm text-left">
-            <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center flex-shrink-0">
-                <Sparkles size={20} />
-              </span>
-              <div>
-                <h3 className="text-sm font-bold text-slate-900">Waitlisted Train Ticket?</h3>
+                <h3 className="text-sm font-bold text-slate-900">Holding a Waitlisted (WL) Ticket?</h3>
                 <p className="text-xs text-slate-500">
-                  Check confirmation probability and alternate station quota hacks.
+                  Evaluate mathematical confirmation odds and alternate station quota hacks before cancelling.
                 </p>
               </div>
             </div>
@@ -292,62 +283,106 @@ export default function Home({ toast }) {
         </div>
       </section>
 
-      {/* 3 Core Value Pillars (Why TravelMate) */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="text-center max-w-2xl mx-auto mb-12">
+      {/* "How TravelMate Works in 3 Steps" Educational Strip per Section 8 */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div className="text-center max-w-xl mx-auto mb-10">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
-            Built for how India actually travels.
+            How Route Recovery Works in 3 Steps
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-slate-600">
-            Smart routing when direct bookings fail, combined with pro-active emergency safety and zero-network access.
+          <p className="mt-2 text-sm text-slate-600">
+            Never get stranded by fully booked direct trains again.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Multi-Modal Split Routes */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-            <div className="w-12 h-12 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center mb-5">
-              <Compass size={24} />
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative">
+            <div className="w-10 h-10 rounded-xl bg-sky-600 text-white font-extrabold flex items-center justify-center mb-4 text-base shadow-md shadow-sky-600/30">
+              1
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Smart Split-Routing</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              When direct trains are waitlisted, our engine finds connecting train + bus or flight combinations that arrive hours earlier with confirmed seats.
+            <h3 className="text-base font-bold text-slate-900 mb-2">Search Any Corridor</h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Enter your departure station and destination. We scan direct train schedules across Indian Railways in under 2 seconds.
             </p>
-            <div className="mt-4 pt-4 border-t border-slate-100 text-xs font-semibold text-sky-700 flex items-center gap-1">
-              <span>Automatic connection buffers included</span>
-            </div>
           </div>
 
-          {/* Card 2: 24/7 Transit Safety */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-            <div className="w-12 h-12 rounded-xl bg-red-100 text-red-700 flex items-center justify-center mb-5">
-              <ShieldAlert size={24} />
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative">
+            <div className="w-10 h-10 rounded-xl bg-sky-600 text-white font-extrabold flex items-center justify-center mb-4 text-base shadow-md shadow-sky-600/30">
+              2
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Transit Safety & SOS</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Instant 1-tap dialers for 112 Police, 139 RailMadad, 108 Ambulance, and 1090 Women Helpline with automated GPS link sharing over WhatsApp & SMS.
+            <h3 className="text-base font-bold text-slate-900 mb-2">Bypass Waitlists via Hubs</h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              If direct tickets are waitlisted, our engine finds 1-transfer split routes via Top 25 junction hubs with verified layovers ($\ge 45$m).
             </p>
-            <div className="mt-4 pt-4 border-t border-slate-100 text-xs font-semibold text-red-700 flex items-center gap-1">
-              <Link to="/safety" className="hover:underline flex items-center gap-1">
-                Explore Safety Mode <ArrowRight size={12} />
-              </Link>
-            </div>
           </div>
 
-          {/* Card 3: Encrypted Offline Passes */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-            <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
-              <ShieldCheck size={24} />
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative">
+            <div className="w-10 h-10 rounded-xl bg-sky-600 text-white font-extrabold flex items-center justify-center mb-4 text-base shadow-md shadow-sky-600/30">
+              3
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Offline Passes & Vault</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Store your tickets, PNR updates, and government IDs on your device with military-grade AES-GCM 256 encryption. Accessible with zero cellular network.
+            <h3 className="text-base font-bold text-slate-900 mb-2">Book with Clear Proof</h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Compare Budget, Balanced, and Fastest tiers. Tap direct pre-filled deep links to book officially on ConfirmTkt, redBus, or airlines.
             </p>
-            <div className="mt-4 pt-4 border-t border-slate-100 text-xs font-semibold text-emerald-700 flex items-center gap-1">
-              <Link to="/saved" className="hover:underline flex items-center gap-1">
-                View My Trips <ArrowRight size={12} />
-              </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* "Direct Route Unavailable?" Combinations Explainer per Section 8 & 9 */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div className="bg-gradient-to-r from-sky-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+          <div className="max-w-2xl mb-6">
+            <span className="text-xs font-bold uppercase tracking-wider text-sky-300">Intelligent Split-Routing</span>
+            <h2 className="text-xl sm:text-2xl font-black mt-1">Direct route unavailable? Here is what TravelMate builds for you:</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/10">
+              <div className="flex items-center gap-2 text-sky-300 font-bold text-sm mb-2">
+                <TrainFront size={18} />
+                <span>Train + Train</span>
+              </div>
+              <h3 className="font-bold text-white text-sm mb-1">Station Hopper Quota Hack</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Connect two high-frequency express trains at an intermediate junction with guaranteed platform transfer buffer.
+              </p>
             </div>
+
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/10">
+              <div className="flex items-center gap-2 text-amber-300 font-bold text-sm mb-2">
+                <BusFront size={18} />
+                <span>Train + AC Bus</span>
+              </div>
+              <h3 className="font-bold text-white text-sm mb-1">Rail to Intercity Bus</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Take an express train to a regional hub, followed by an inter-state AC Volvo with 105+ min transfer guidance.
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/10">
+              <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm mb-2">
+                <Plane size={18} />
+                <span>Train + Flight</span>
+              </div>
+              <h3 className="font-bold text-white text-sm mb-1">Feeder Rail to Airport</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Fast feeder train to a major metropolitan airport with 210+ min check-in slack, followed by non-stop domestic flight.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust & Honesty Strip per Section 5 */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="p-4 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs flex flex-wrap items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-2 mx-auto sm:mx-0">
+            <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+            <span>Official IR timetable data as of October 2026 · No scraping · No captcha bypass</span>
+          </div>
+          <div className="flex items-center gap-4 mx-auto sm:mx-0 font-medium">
+            <span>Zero personal data stored</span>
+            <span>•</span>
+            <span>Direct official deep-links</span>
           </div>
         </div>
       </section>

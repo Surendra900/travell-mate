@@ -121,12 +121,38 @@
 **Git Tag:** `day-4`  
 
 ### Day 4 Task List
-- [ ] Task 4.1: Streamline App Shell and Navbar to strict 4-item minimal architecture (Route Finder, Tatkal Desk, Passes & Safety, See a Demo).
-- [ ] Task 4.2: Build clean Homepage Hero with single primary visual focus (From, To, Date, Passengers, Mode, and prominent Search CTA).
-- [ ] Task 4.3: Implement high-performance Station Autocomplete using canonical `stations.json` dataset (keyboard navigable, search-as-you-type).
-- [ ] Task 4.4: Implement "How TravelMate Works in 3 Steps" educational onboarding strip and "Direct route unavailable?" combinations explainer.
-- [ ] Task 4.5: Implement honest "See a Demo" mode with distinct visual styling and explicit banner ("Demo scenario: illustrative availability").
-- [ ] Task 4.6: Run Day 4 Verification Gate, capture screenshots, commit, tag `day-4`, and deploy Vercel Preview.
+- [x] Task 4.1: Streamline App Shell and Navbar to strict 4-item minimal architecture (Route Finder, Tatkal Desk, Passes & Safety, See a Demo).
+- [x] Task 4.2: Build clean Homepage Hero with single primary visual focus (From, To, Date, Passengers, Mode, and prominent Search CTA).
+- [x] Task 4.3: Implement high-performance Station Autocomplete using canonical `stations.json` dataset (keyboard navigable, search-as-you-type).
+- [x] Task 4.4: Implement "How TravelMate Works in 3 Steps" educational onboarding strip and "Direct route unavailable?" combinations explainer.
+- [x] Task 4.5: Implement honest "See a Demo" mode with distinct visual styling and explicit banner ("Demo scenario: illustrative availability").
+- [x] Task 4.6: Run Day 4 Verification Gate, capture screenshots, commit, tag `day-4`, and deploy Vercel Preview.
+
+### Day 4 Verification Evidence
+1. **Minimal 4-Item Navigation Bar:** `src/components/Navbar.jsx` adheres strictly to Master Spec Section 8 (Route Finder `/planner`, Tatkal Desk `/planner?mode=tatkal`, Passes & Safety `/safety`, Saved Trips `/saved`, plus prominent "See a Demo" action button `data-testid="navbar-demo-tour-btn"`).
+2. **High-Performance Station Autocomplete:** Built `src/components/StationAutocomplete.jsx` backed by `src/data/stationsData.js` and canonical `shared/data/stations.json`. Implements ARIA combobox semantics, keyboard navigation (`ArrowDown`, `ArrowUp`, `Enter`, `Escape`), and highlights Top 25 junction hubs.
+3. **Consumer-Grade Homepage UX:** Rebuilt `src/pages/Home.jsx` with single dominant search focus, 12-hour "Need to travel tonight?" preset, "How TravelMate Works in 3 Steps" educational strip, and "Direct Route Unavailable?" combinations explainer.
+4. **Honest Demo Scenario Mode:** Documented in `docs/demo-mode.md` and implemented in `src/pages/Planner.jsx` with prominent illustrative banner (`data-testid="demo-mode-banner"`).
+5. **Full Test Regression:** 181 out of 181 unit, integration, and property tests passing across the repository (`npm test` and `npm run check` with 0 failures).
+6. **Visual QA:** Desktop 1440x900 and Mobile 390x844 screenshots captured in `docs/screenshots/day-4/after/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 4 COMPLETE. Verification passed (181/181). Moving to DAY 5.**
+
+---
+
+## Master Rebuild Entry: Day 5
+**Date:** October 2026  
+**Goal:** Results & Split Routes Experience — Direct vs Split Contrast, Journey Cards, Interactive Route Map, Risk Badges, Delay Simulator Tab, Deep-Link Buttons, and Legal Disclosures  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-5`  
+
+### Day 5 Task List
+- [ ] Task 5.1: Implement Left/Right "Waitlist Bypass" visual contrast (Left: Direct Train status; Right: Split-Route Recovery alternative).
+- [ ] Task 5.2: Build consumer-grade Journey Cards displaying departure, arrival, duration, mode, transfer junction, fare estimate, and provenance badges.
+- [ ] Task 5.3: Integrate interactive Leaflet Route Visualizer with markers for origin, transfer hubs, and destination.
+- [ ] Task 5.4: Mount inline "If Leg 1 runs late" Delay Simulator tab with interactive slider, connection risk indicator, and fallback departures.
+- [ ] Task 5.5: Embed verified portal deep-links (ConfirmTkt, redBus, Google Flights) and statutory independent booking disclosures.
+- [ ] Task 5.6: Run Day 5 Verification Gate, capture screenshots, commit, tag `day-5`, and deploy Vercel Preview.
 
 ---
 

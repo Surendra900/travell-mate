@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { Sparkles } from 'lucide-react'
 import NormalPlanner from '../planner/NormalPlanner'
 import EmergencyTatkalPlanner from '../planner/EmergencyTatkalPlanner'
 import LowNetworkPlanner from '../planner/LowNetworkPlanner'
@@ -48,6 +49,7 @@ export default function Planner({ status, toast, language = 'en' }) {
   const [liveResults, setLiveResults] = useState([])
   const [liveStatus, setLiveStatus] = useState({ loading: false, mode: 'idle', message: '' })
   const [pendingVoiceAction, setPendingVoiceAction] = useState(null)
+  const [isDemoMode, setIsDemoMode] = useState(false)
 
   const applyVoiceDetail = (detail = {}) => {
     if (detail.mode) setManualMode(detail.mode)
@@ -70,6 +72,15 @@ export default function Planner({ status, toast, language = 'en' }) {
     const to = params.get('to') || ''
     const date = params.get('date') || ''
     const requestedMode = params.get('transportMode')
+    const demoParam = params.get('demo') === 'true'
+    const modeParam = params.get('mode')
+    const urgency = params.get('urgency')
+
+    if (demoParam) setIsDemoMode(true)
+    if (modeParam === 'tatkal' || urgency === 'Emergency' || urgency === 'Tonight') {
+      setManualMode('emergency')
+    }
+
     if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode)) {
       setPlan((old) => ({
         ...old,
@@ -416,6 +427,37 @@ export default function Planner({ status, toast, language = 'en' }) {
           })}
         </div>
       </section>
+
+      {isDemoMode && (
+        <div
+          data-testid="demo-mode-banner"
+          className="mt-6 rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0">
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <div className="text-sm font-black text-amber-950 flex items-center gap-2">
+                <span>Demo scenario: illustrative availability</span>
+                <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">
+                  DEMO MODE
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                Timetable schedules and junction transfers are real computed facts from the canonical graph. Seat availability statuses are illustrative for demonstration purposes.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsDemoMode(false)}
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-amber-300 hover:bg-amber-100 text-amber-900 transition shrink-0"
+          >
+            Exit Demo Mode
+          </button>
+        </div>
+      )}
 
       {(forcedOffline || forcedLowSignal) && (
         <div className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-5 text-red-900">

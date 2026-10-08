@@ -1,14 +1,14 @@
 import { NavLink } from 'react-router-dom'
-import { Menu, Search, TrainFront, ShieldAlert, Bookmark, CircleHelp, X, Volume2, Sparkles } from 'lucide-react'
+import { Menu, Search, TrainFront, ShieldAlert, Bookmark, X, Volume2, Sparkles, Clock } from 'lucide-react'
 import { useState } from 'react'
 import LanguageSelector from './LanguageSelector'
 import AccountMenu from './AccountMenu'
 
 const nav = [
-  { to: '/planner', label: 'Plan Trip', icon: Search },
-  { to: '/saved', label: 'My Trips', icon: Bookmark },
-  { to: '/safety', label: 'Safety & SOS', icon: ShieldAlert },
-  { to: '/analyze', label: 'Assistant', icon: CircleHelp }
+  { to: '/planner', label: 'Route Finder', icon: Search },
+  { to: '/planner?mode=tatkal', label: 'Tatkal Desk', icon: Clock },
+  { to: '/safety', label: 'Passes & Safety', icon: ShieldAlert },
+  { to: '/saved', label: 'Saved Trips', icon: Bookmark }
 ]
 
 export default function Navbar({ language, onLanguageChange, authEnabled, onOpenProfile, onOpenVoiceGate, onOpenDemoTour }) {
@@ -20,7 +20,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <span className="tm-brand-icon w-9 h-9 rounded-xl bg-sky-600 text-white flex items-center justify-center shadow-md shadow-sky-600/30">
             <TrainFront size={20} />
           </span>
-          <span className="font-extrabold text-slate-900">TravelMate</span>
+          <span className="font-extrabold text-slate-900 tracking-tight">TravelMate</span>
         </NavLink>
 
         <nav className="tm-nav-links hidden md:flex items-center gap-1.5 grid-cols-4 lg:max-w-4xl" aria-label="Primary navigation">
@@ -47,19 +47,19 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
             type="button"
             onClick={onOpenDemoTour}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
-            title="Judge & Investor Demo Tour"
-            aria-label="Judge & Investor Demo Tour"
+            title="See a Demo scenario"
+            aria-label="See a Demo"
             data-testid="navbar-demo-tour-btn"
           >
             <Sparkles size={14} className="text-sky-600" />
-            <span className="hidden sm:inline">Demo Tour</span>
+            <span className="hidden sm:inline">See a Demo</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenVoiceGate}
             className="flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 bg-white text-slate-700 hover:text-sky-600 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm transition"
-            title="Voice Accessibility Gate (Alt+B)"
+            title="Voice Accessibility Mode (Alt+B)"
             aria-label="Voice Accessibility Mode (Alt+B)"
             data-testid="navbar-voice-gate-btn"
           >
@@ -80,7 +80,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
       </div>
 
       {open && (
-        <div className="tm-mobile-menu md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-2 grid-cols-4 shadow-xl">
+        <div className="tm-mobile-menu md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-2 grid-cols-4 shadow-xl animate-in fade-in slide-in-from-top-2">
           {nav.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -104,24 +104,11 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
                 setOpen(false)
                 onOpenDemoTour?.()
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-sky-300 bg-sky-50 text-xs font-bold text-sky-800"
-              aria-label="Judge & Investor Demo Tour"
               data-testid="mobile-navbar-demo-tour-btn"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold"
             >
               <Sparkles size={14} className="text-sky-600" />
-              <span>Judge Tour</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false)
-                onOpenVoiceGate?.()
-              }}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-300 bg-slate-50 text-xs font-bold text-slate-700"
-              aria-label="Voice Accessibility Mode (Alt+B)"
-            >
-              <Volume2 size={16} />
-              <span>Voice A11y</span>
+              <span>See a Demo</span>
             </button>
           </div>
         </div>
