@@ -45,7 +45,7 @@ export default function WaitlistBypassContrast({
     slackMinutes: 105,
     maxAbsorbableDelay: 60,
     riskLevel: 'Safe',
-    whyPicked: 'Splits journey into two confirmed regional quotas via Kanpur Central, bypassing direct waitlist.',
+    whyPicked: 'Splits journey into two verified regional quotas via Kanpur Central, bypassing direct waitlist.',
     leg1: {
       mode: 'Train',
       service: 'Vande Bharat Express (22436)',
@@ -195,7 +195,7 @@ export default function WaitlistBypassContrast({
                 </span>
               </h3>
               <p className="text-xs text-slate-600 mt-0.5">
-                {split.whyPicked || `Splits journey into two confirmed regional quotas via ${split.hubCity}.`}
+                {split.whyPicked || `Splits journey into two verified regional quotas via ${split.hubCity}.`}
               </p>
             </div>
 

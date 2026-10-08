@@ -376,7 +376,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
             <span>Why TravelMate Picked This Route (Grounded Facts):</span>
           </div>
           <p className="leading-relaxed text-slate-700 font-normal">
-            {route.rationale || route.whyPicked || `Connects ${route.from || route.leg1?.from} to ${route.to || route.leg2?.to} via ${hubCity} Junction with a verified ${slackMinutes}m transfer buffer. Bypasses direct waitlists with confirmed split-ticket availability.`}
+            {route.rationale || route.whyPicked || `Connects ${route.from || route.leg1?.from} to ${route.to || route.leg2?.to} via ${hubCity} Junction with a verified ${slackMinutes}m transfer buffer. Bypasses direct waitlists with verified split-ticket schedule availability.`}
           </p>
         </div>
 
@@ -423,7 +423,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-3.5 py-2 text-xs font-bold text-white transition shadow-sm"
-              title="Share confirmed itinerary on WhatsApp"
+              title="Share recovered itinerary on WhatsApp"
             >
               <Share2 size={13} />
               Share on WhatsApp

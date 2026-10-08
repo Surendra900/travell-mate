@@ -18,18 +18,18 @@ export default function StationHopperCard({ hacks = [], from = '', to = '' }) {
               IRCTC Quota Hack Engine
             </span>
             <h4 className="text-base font-black text-slate-950">
-              Same Train, Confirmed Seat Bypass 💡
+              Same Train, Higher-Quota Seat Bypass 💡
             </h4>
           </div>
         </div>
         <span className="rounded-full bg-amber-100 border border-amber-300 px-3 py-1 text-xs font-bold text-amber-950 shadow-sm">
-          {hacks.length} Confirmed Bypass Option{hacks.length > 1 ? 's' : ''}
+          {hacks.length} Quota Bypass Option{hacks.length > 1 ? 's' : ''}
         </span>
       </div>
 
       <p className="mt-2.5 text-xs leading-relaxed text-slate-700">
         Direct tickets between <b className="text-slate-950">{from || 'Origin'}</b> and <b className="text-slate-950">{to || 'Destination'}</b> are often waitlisted.
-        By booking from an originating junction or extending by 1 station, you tap into larger General Quotas with confirmed berths:
+        By booking from an originating junction or extending by 1 station, you tap into larger General Quotas with higher availability:
       </p>
 
       <div className="mt-3.5 space-y-3">
@@ -58,7 +58,7 @@ export default function StationHopperCard({ hacks = [], from = '', to = '' }) {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <span className="text-xs font-bold text-emerald-700">
-                    🟢 ~{hack.confirmedProbability}% Confirmation
+                    🟢 ~{hack.confirmedProbability}% Historical Clearance Rate
                   </span>
                   <span className="rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-xs font-bold text-slate-700">
                     +₹{hack.estimatedExtraFare} extra

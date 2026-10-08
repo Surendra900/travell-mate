@@ -363,7 +363,7 @@ export default function Home({ toast }) {
               </div>
               <h3 className="font-bold text-white text-sm mb-1">Station Hopper Quota Hack</h3>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Connect two high-frequency express trains at an intermediate junction with guaranteed platform transfer buffer.
+                Connect two high-frequency express trains at an intermediate junction with verified Minimum Connection Time buffer.
               </p>
             </div>
 

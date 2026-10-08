@@ -95,7 +95,7 @@ export function generateMultimodalRoutes({
       totalDurationMin,
       hubCity: primaryHub.city,
       transferBuffer: '1h 45m safe daylight transfer',
-      whyPicked: `Saves up to ₹3,500 vs. flight. Splits into two confirmed train quotas via ${primaryHub.city}.`,
+      whyPicked: `Saves up to ₹3,500 vs. flight. Splits into two high-availability train quotas via ${primaryHub.city}.`,
       leg1: {
         legIndex: 1,
         mode: 'Train',
@@ -158,7 +158,7 @@ export function generateMultimodalRoutes({
       totalDurationMin,
       hubCity: primaryHub.city,
       transferBuffer: '2h 00m buffer between Rail & Bus Station',
-      whyPicked: `Confirmed AC sleeper travel. Fast daytime train to ${primaryHub.city}, then overnight AC bus.`,
+      whyPicked: `Scheduled AC sleeper travel. Fast daytime train to ${primaryHub.city}, then overnight AC bus.`,
       leg1: {
         legIndex: 1,
         mode: 'Train',
@@ -271,7 +271,7 @@ export function formatWhatsAppShareText(route) {
   const l2 = route.leg2
 
   return [
-    `🚆 *TravelMate Confirmed Journey*`,
+    `🚆 *TravelMate Recovered Journey Plan*`,
     `📍 *Route:* ${l1?.from} ➔ ${l2?.to}`,
     `🏷 *Plan:* ${route.tierLabel || route.tier} (${route.tierBadge})`,
     `💰 *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
