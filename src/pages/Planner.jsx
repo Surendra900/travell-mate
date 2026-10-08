@@ -1,17 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import BookingModal from '../components/BookingModal'
 import NormalPlanner from '../planner/NormalPlanner'
 import EmergencyTatkalPlanner from '../planner/EmergencyTatkalPlanner'
 import LowNetworkPlanner from '../planner/LowNetworkPlanner'
 import { attachPnrStatus, consumeLoadedPlan, saveOfflinePack, savePlan } from '../utils/storage'
 import { calculateTravelScore } from '../utils/scoring'
-import SmartAssistant from '../components/SmartAssistant'
 import MasterTrustPanel from '../components/MasterTrustPanel'
 import LiveResultsPanel from '../components/LiveResultsPanel'
 import { getPNRStatus, searchLiveTransport } from '../services/LiveTransportApi'
 import { localDateIso } from '../utils/date'
-import { getCabinOptions } from '../data/transportData'
+import { getCabinOptions, getProviderDeepLink } from '../data/transportData'
 
 const basePlan = {
   from: '',
@@ -46,8 +44,6 @@ export default function Planner({ status, toast, language = 'en' }) {
   const location = useLocation()
   const [manualMode, setManualMode] = useState('normal')
   const [plan, setPlan] = useState(basePlan)
-  const [bookingOpen, setBookingOpen] = useState(false)
-  const [bookingPlan, setBookingPlan] = useState(null)
   const [resultsOpen, setResultsOpen] = useState(false)
   const [liveResults, setLiveResults] = useState([])
   const [liveStatus, setLiveStatus] = useState({ loading: false, mode: 'idle', message: '' })
@@ -206,8 +202,19 @@ export default function Planner({ status, toast, language = 'en' }) {
       toast('Enter From and To before opening ticket booking.')
       return
     }
-    setBookingPlan(nextPlan)
-    setBookingOpen(true)
+    const transport = nextPlan.transportMode || 'Train'
+    const link = getProviderDeepLink({
+      transport,
+      from: nextPlan.from,
+      to: nextPlan.to,
+      date: nextPlan.date,
+      serviceCode: nextPlan.selectedService?.code,
+      serviceName: nextPlan.selectedService?.serviceName || nextPlan.selectedServiceName
+    })
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official booking portal (${transport}). Direct booking on operator site.`)
   }
 
   function openBackupBooking(combo, leg = null) {
@@ -216,15 +223,18 @@ export default function Planner({ status, toast, language = 'en' }) {
       return
     }
     const transportFromLeg = leg?.mode || enrichedPlan.transportMode
-    setBookingPlan({
-      ...enrichedPlan,
-      transportMode: transportFromLeg,
-      routeCombo: combo?.label || enrichedPlan.routeCombo,
-      selectedBackup: combo,
-      selectedService: leg ? { ...leg, service: leg.service, code: leg.code } : undefined,
-      selectedProvider: leg ? `Backup leg ${leg.leg}` : 'Local backup recommendation'
+    const link = getProviderDeepLink({
+      transport: transportFromLeg,
+      from: leg?.from || enrichedPlan.from,
+      to: leg?.to || enrichedPlan.to,
+      date: enrichedPlan.date,
+      serviceCode: leg?.code,
+      serviceName: leg?.service
     })
-    setBookingOpen(true)
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official portal for backup leg (${transportFromLeg}).`)
   }
 
   function openServiceBooking(service, groupKey) {
@@ -235,14 +245,19 @@ export default function Planner({ status, toast, language = 'en' }) {
     const transportFromGroup = groupKey === 'flights' ? 'Flight' : groupKey === 'buses' ? 'Bus' : 'Train'
     const selected = selectedServicePatch(service, transportFromGroup, 'Planning result')
     setPlan((current) => ({ ...current, ...selected, transportMode: transportFromGroup, routeCombo: `${transportFromGroup} only` }))
-    setBookingPlan({
-      ...enrichedPlan,
-      ...selected,
-      transportMode: transportFromGroup,
-      routeCombo: `${transportFromGroup} only`
+    const link = getProviderDeepLink({
+      transport: transportFromGroup,
+      from: enrichedPlan.from,
+      to: enrichedPlan.to,
+      date: enrichedPlan.date,
+      serviceCode: selected.selectedServiceCode,
+      serviceName: selected.selectedServiceName
     })
     setResultsOpen(false)
-    setBookingOpen(true)
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official portal for ${selected.selectedServiceName || transportFromGroup}.`)
   }
 
   async function runLiveSearch(nextPlan, { announce = true } = {}) {
@@ -301,14 +316,24 @@ export default function Planner({ status, toast, language = 'en' }) {
   }
 
   function openLiveResultBooking(item) {
+    const transport = enrichedPlan.transportMode || 'Train'
     const selected = selectedServicePatch(
       item,
-      enrichedPlan.transportMode || 'Train',
+      transport,
       liveStatus.mode === 'live' ? 'Live API result' : 'Provider status'
     )
-    setPlan((current) => ({ ...current, ...selected }))
-    setBookingPlan({ ...enrichedPlan, ...selected })
-    setBookingOpen(true)
+    const link = getProviderDeepLink({
+      transport,
+      from: item.from || enrichedPlan.from,
+      to: item.to || enrichedPlan.to,
+      date: enrichedPlan.date,
+      serviceCode: selected.selectedServiceCode,
+      serviceName: selected.selectedServiceName
+    })
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official portal for ${selected.selectedServiceName || transport}.`)
   }
 
   function saveLiveResult(item) {
@@ -424,7 +449,6 @@ export default function Planner({ status, toast, language = 'en' }) {
         <MasterTrustPanel compact />
       </div>
 
-      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} plan={bookingPlan || enrichedPlan} mode={mode} onSaved={handleBookingSaved} />
       <LiveResultsPanel
         open={resultsOpen}
         onClose={() => setResultsOpen(false)}
@@ -437,7 +461,6 @@ export default function Planner({ status, toast, language = 'en' }) {
         onBookBackup={openBackupBooking}
         allowBackup={manualMode !== 'emergency'}
       />
-      <SmartAssistant plan={enrichedPlan} update={update} setManualMode={setManualMode} onPlanApplied={handleAssistantPlanApplied} toast={toast} language={language} />
     </main>
   )
 }

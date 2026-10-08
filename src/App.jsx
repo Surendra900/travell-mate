@@ -1,11 +1,9 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import Navbar from './components/Navbar'
-import StatusBar from './components/StatusBar'
 import OfflineModeBanner from './components/OfflineModeBanner'
 import VoiceSearchButton from './components/VoiceSearchButton'
 import OnboardingModal from './components/OnboardingModal'
-import FloatingSOS from './components/FloatingSOS'
 import OfflineOnlyMode from './components/OfflineOnlyMode'
 import GlobalTranslationLayer from './components/GlobalTranslationLayer'
 import BlindVoiceGate from './components/BlindVoiceGate'
@@ -136,7 +134,6 @@ export default function App({ authEnabled = false }) {
       <LocationPermissionGate toast={toast} />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-2 focus:font-black focus:text-slate-950">Skip to main content</a>
       {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} onOpenDemoTour={() => setDemoTourOpen(true)} />}
-      <StatusBar status={status} />
       {status.online === false ? (
         <main id="main-content" tabIndex="-1"><OfflineOnlyMode status={status} toast={toast} /></main>
       ) : (
@@ -159,7 +156,6 @@ export default function App({ authEnabled = false }) {
           </main>
         </>
       )}
-      {location.pathname !== '/analyze' && location.pathname !== '/saved' && <FloatingSOS status={status} />}
       {location.pathname !== '/analyze' && <VoiceSearchButton onSearch={handleVoiceSearch} language={language} />}
       <PwaInstallBanner />
       {status.online !== false && <Footer onOpenPrivacy={() => setPrivacyModalOpen(true)} />}

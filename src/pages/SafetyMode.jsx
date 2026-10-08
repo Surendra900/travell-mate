@@ -4,16 +4,11 @@ import {
   Siren,
   PhoneCall,
   ShieldCheck,
-  FileLock2,
-  Languages,
   BookOpen,
-  ArrowRight,
-  Sparkles
+  ArrowRight
 } from 'lucide-react'
 import EmergencyCard from '../components/EmergencyCard'
-import DocumentVault from '../components/DocumentVault'
 import EmergencyToolkit from '../components/EmergencyToolkit'
-import EmergencyPhraseCards from '../components/EmergencyPhraseCards'
 import { emergencyCards } from '../data/emergencyData'
 
 export default function SafetyMode({ toast }) {
@@ -39,11 +34,11 @@ export default function SafetyMode({ toast }) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight">
-            Transit Safety & Emergency Center
+            Transit Safety & Helplines
           </h1>
 
           <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Immediate crisis dialers, live GPS telemetry sharing with trusted contacts, zero-network incident protocols, and your encrypted document vault.
+            Verified transit helplines, live GPS telemetry sharing with trusted contacts upon user action, and zero-network transit assistance guides.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -53,29 +48,27 @@ export default function SafetyMode({ toast }) {
               className="btn-danger h-12 px-6 rounded-2xl text-sm font-extrabold flex items-center gap-2 shadow-lg shadow-red-600/25"
             >
               <Siren size={18} />
-              <span>SOS — Trigger Emergency Alert</span>
+              <span>Transit Helplines & Live GPS Pin</span>
             </button>
 
             <Link
               to="/planner?urgency=Emergency"
               className="btn-soft h-12 px-6 rounded-2xl text-sm font-bold flex items-center gap-2"
             >
-              <span>Emergency Route Planner</span>
+              <span>Tatkal Emergency Route Desk</span>
               <ArrowRight size={16} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Main Content Area with Clean Tabs */}
+      {/* Main Content Area */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {/* Navigation Tabs */}
         <div className="flex flex-wrap items-center gap-2 pb-6 border-b border-slate-200" role="tablist" aria-label="Safety Hub Sections">
           {[
-            { id: 'sos', label: '1-Tap SOS & Helplines', icon: PhoneCall },
-            { id: 'phrases', label: 'Regional Transit Phrases', icon: Languages },
-            { id: 'guides', label: 'Incident Protocols', icon: BookOpen },
-            { id: 'vault', label: 'Encrypted Document Vault', icon: FileLock2 }
+            { id: 'sos', label: '1-Tap Transit Helplines & GPS Share', icon: PhoneCall },
+            { id: 'guides', label: 'Transit Guides & Station Help', icon: BookOpen }
           ].map(({ id, label, icon: Icon }) => {
             const active = activeTab === id
             return (
@@ -98,37 +91,25 @@ export default function SafetyMode({ toast }) {
           })}
         </div>
 
-        {/* Tab 1: SOS & Helplines */}
+        {/* Tab 1: Transit Helplines & GPS */}
         <div className={activeTab === 'sos' ? 'block mt-6' : 'hidden'}>
           <div ref={crisisPanelRef} tabIndex={-1} className="outline-none safety-tool-shell">
             <EmergencyToolkit toast={toast} />
           </div>
         </div>
 
-        {/* Tab 2: Regional Phrases */}
-        <div className={activeTab === 'phrases' ? 'block mt-6' : 'hidden'}>
-          <EmergencyPhraseCards toast={toast} />
-        </div>
-
-        {/* Tab 3: Incident Guides */}
+        {/* Tab 2: Incident & Station Guides */}
         <div className={activeTab === 'guides' ? 'block mt-6' : 'hidden'}>
           <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
             <div className="mb-6">
-              <h2 className="text-xl font-black text-slate-950">Safety Information & Protocols</h2>
-              <p className="text-xs text-slate-500 mt-1">Detailed crisis advice verified for Indian railway and road transit.</p>
+              <h2 className="text-xl font-black text-slate-950">Safety Information & Station Guides</h2>
+              <p className="text-xs text-slate-500 mt-1">Official guidance for Indian railway and road transit security.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {emergencyCards.map((item) => (
                 <EmergencyCard key={item.id} item={item} />
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Tab 4: Encrypted Document Vault */}
-        <div className={activeTab === 'vault' ? 'block mt-6' : 'hidden'}>
-          <div className="safety-vault">
-            <DocumentVault toast={toast} />
           </div>
         </div>
       </main>

@@ -19,7 +19,6 @@ import {
   Clock,
   MapPin
 } from 'lucide-react'
-import BookingModal from '../components/BookingModal'
 import PnrPredictorModal from '../components/PnrPredictorModal'
 import OfflinePassModal from '../components/OfflinePassModal'
 import {
@@ -405,12 +404,6 @@ export default function SavedPlans({ toast }) {
         )}
       </main>
 
-      <BookingModal
-        open={Boolean(bookingPlan)}
-        onClose={() => setBookingPlan(null)}
-        plan={bookingPlan}
-        onSaved={handleBookingSaved}
-      />
       <OfflinePassModal
         open={Boolean(passPlan)}
         onClose={() => setPassPlan(null)}

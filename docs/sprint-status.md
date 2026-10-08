@@ -12,9 +12,9 @@
 
 | Day | Focus / Objective | Core Deliverables | Gate Status | Verification Tag |
 | :---: | :--- | :--- | :---: | :---: |
-| **Day 0** | **Audit & Baseline** | Full system audit; baseline screenshots captured; characterization tests locking legacy engines; git tag `baseline-before-rebuild`; initialize all tracking docs. | **IN PROGRESS** | `baseline-before-rebuild` |
-| **Day 1** | **Foundation** | Layered architecture scaffolding; design tokens & core primitives; Prisma schema & local Postgres config; strict TypeScript & lint setup; PWA shell. | PENDING | `day-1` |
-| **Day 2** | **Data Pipeline (ETL)** | Stations, trains, stop times, top 25 junctions, airports, and bus terminals ETL; Prisma seed; provenance fields; data-quality tests; attribution. | PENDING | `day-2` |
+| **Day 0** | **Audit & Baseline** | Full system audit; baseline screenshots captured; characterization tests locking legacy engines; git tag `baseline-before-rebuild`; initialize all tracking docs. | **DONE-VERIFIED** | `day-0` |
+| **Day 1** | **Foundation** | Layered architecture scaffolding; design tokens & core primitives; Prisma schema & local Postgres config; purge 7 bloat components; verified deep-links; PWA shell. | **DONE-VERIFIED** | `day-1` |
+| **Day 2** | **Data Pipeline (ETL)** | Stations, trains, stop times, top 25 junctions, airports, and bus terminals ETL; Prisma seed; provenance fields; data-quality tests; attribution. | **IN PROGRESS** | `day-2` |
 | **Day 3** | **Route Recovery Engine v2** | Graph timetable search; minimum connection times; risk labels; delay simulator & contingency engine; unit & property tests. | PENDING | `day-3` |
 | **Day 4** | **App Shell & Search UX** | Clean 4-item navbar; hero search with autocomplete; "How it works in 3 steps"; honest "See a Demo" scenario mode. | PENDING | `day-4` |
 | **Day 5** | **Results & Split Routes** | Direct vs Split contrast; journey cards; interactive route map; risk badges; delay slider tab; deep-link buttons; legal disclosures. | PENDING | `day-5` |

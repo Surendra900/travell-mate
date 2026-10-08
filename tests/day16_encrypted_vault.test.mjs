@@ -92,14 +92,7 @@ test('Day 16: importEncryptedVaultBackup rejects invalid or malformed payloads',
   }, /Invalid or corrupted TravelMate encrypted vault backup format/)
 })
 
-test('Day 16: DocumentVault.jsx provides high-contrast labels, security indicators, download, and category filters', () => {
-  const comp = fs.readFileSync(path.join(root, 'src/components/DocumentVault.jsx'), 'utf8')
-  assert.match(comp, /AES-GCM 256-Bit/, 'Must display AES-GCM 256-bit security badge')
-  assert.match(comp, /PBKDF2 \(310k iter\)/, 'Must display PBKDF2 iteration badge')
-  assert.match(comp, /Zero-Cloud Local IndexedDB/, 'Must state Zero-Cloud guarantee')
-  assert.match(comp, /downloadDocument/, 'Must provide downloadDocument handler')
-  assert.match(comp, /data-testid="export-vault-backup"/, 'Must provide export backup button')
-  assert.match(comp, /Restore encrypted backup/, 'Must offer restore backup action')
-  assert.match(comp, /filterCategory/, 'Must support filtering documents by category')
-  assert.match(comp, /text-slate-800/, 'Labels must have high-contrast text-slate-800')
+test('Day 16: DocumentVault is pruned per Master Spec Section 4', () => {
+  const exists = fs.existsSync(path.join(root, 'src/components/DocumentVault.jsx'))
+  assert.equal(exists, false, 'DocumentVault.jsx must not exist')
 })

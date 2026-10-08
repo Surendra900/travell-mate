@@ -139,7 +139,7 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
           className="btn-primary mobile-full h-11 text-sm font-bold flex items-center justify-center gap-2"
         >
           <TicketCheck size={16} />
-          <span>Start demo booking</span>
+          <span>Book on Portal</span>
         </button>
 
         <a

@@ -19,7 +19,6 @@ import BackupPlan from '../components/BackupPlan'
 import TrainRunningStatus from './TrainRunningStatus'
 import WeatherDisruptionAlert from '../components/WeatherDisruptionAlert'
 import RouteMap from '../components/RouteMap'
-import CarbonCalculator from './CarbonCalculator'
 import {
   airlineOptions,
   getCabinOptions,
@@ -319,7 +318,7 @@ export default function NormalPlanner({
               Journey Intelligence & Live Insights
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Inspect interactive route topology, live delays, weather hazards, and carbon footprint.
+              Inspect interactive route topology, live delays, and weather hazards.
             </p>
           </div>
 
@@ -327,8 +326,7 @@ export default function NormalPlanner({
             {[
               { id: 'map', label: 'Route Map', icon: Compass },
               { id: 'tracker', label: 'Live Train Tracker', icon: Clock },
-              { id: 'weather', label: 'Disruption Monitor', icon: ShieldAlert },
-              { id: 'carbon', label: 'Eco Footprint', icon: Sparkles }
+              { id: 'weather', label: 'Disruption Monitor', icon: ShieldAlert }
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -361,10 +359,6 @@ export default function NormalPlanner({
 
           <div className={activeInsightTab === 'weather' ? 'block' : 'hidden'}>
             <WeatherDisruptionAlert plan={plan} />
-          </div>
-
-          <div className={activeInsightTab === 'carbon' ? 'block' : 'hidden'}>
-            <CarbonCalculator plan={plan} />
           </div>
         </div>
       </section>

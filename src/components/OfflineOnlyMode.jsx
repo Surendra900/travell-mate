@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { MapPinned, MessageSquareText, PhoneCall, RefreshCw, ShieldCheck, WifiOff } from 'lucide-react'
 import { getOfflinePack, getSavedPlans, saveOfflinePack } from '../utils/storage'
 import { formatEmergencyLocation, getCachedEmergencyLocation, requestEmergencyLocation } from '../utils/locationSafety'
-import DocumentVault from './DocumentVault'
 import { buildComboLegs, routeCombos } from '../data/transportData'
 
 function savedAt(plan) {
@@ -158,8 +157,6 @@ export default function OfflineOnlyMode({ status, toast }) {
           </article>
         </section>
       )}
-
-      <DocumentVault toast={toast} />
 
       <section className="mt-6 grid gap-4 md:grid-cols-3">
         {[

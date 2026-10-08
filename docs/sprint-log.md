@@ -31,6 +31,53 @@
 
 ---
 
+## Master Rebuild Entry: Day 1
+**Date:** October 2026  
+**Goal:** Foundation — Layered Architecture, Prisma Schema, Docker Compose, Env Validation, Design Tokens, Core UI Primitives, and Feature Pruning  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-1`  
+
+### Day 1 Task List
+- [x] Task 1.1: Capture BEFORE screenshots for screens being updated.
+- [x] Task 1.2: Scaffold clean layered directory structure (`src/app`, `src/features`, `shared`, `server`, `src/components/ui`, `src/styles/tokens`, `src/lib`).
+- [x] Task 1.3: Define central semantic design tokens in `src/styles/tokens/` and core UI primitives in `src/components/ui/` (`Button`, `Badge`, `Card`, `Input`, `RiskBadge`, `ProvenanceBadge`).
+- [x] Task 1.4: Create `docker-compose.yml` for local Postgres and `prisma/schema.prisma` with core models (`Station`, `Train`, `TrainStop`, `Junction`, `Terminal`, `Airport`, `TransferGuide`, `ApiCache`, `Feedback`).
+- [x] Task 1.5: Implement runtime Zod environment validator (`src/lib/env.js` and `server/config/env.js`) with zero secret leakage.
+- [x] Task 1.6: Execute Section 4 Feature Disposition — purge the 7 deprecated bloat components (`DocumentVault.jsx`, `EmergencyPhraseCards.jsx`, `CarbonCalculator.jsx`, `StatusBar.jsx`, `FloatingSOS.jsx`, `SmartAssistant.jsx`, fake booking modal) and update `docs/changelog-features.md` with grep proof.
+- [x] Task 1.7: Update PWA manifest and npm scripts in `package.json`.
+- [x] Task 1.8: Run Day 1 Verification Gate (161/161 tests passing, production build passing, zero console errors, no secret leaks).
+- [x] Task 1.9: Capture AFTER screenshots in `docs/screenshots/day-1/after/` and update `docs/screenshots/index.html`.
+- [x] Task 1.10: Commit Day 1, tag `day-1`, and deploy Vercel Preview.
+
+### Day 1 Verification Evidence
+1. **Zero Bloat Proof:** Git grep confirmed 0 remaining occurrences of the 7 deprecated components in `src/`.
+2. **Test Suite:** 161 of 161 unit, integration, and characterization tests passing cleanly (`npm test`).
+3. **Production Build:** Vite production bundle compiled in 1.28s with zero warnings or errors.
+4. **Visual Gallery:** 12 AFTER screenshots captured across desktop-1440 and mobile-390 and indexed in `docs/screenshots/index.html`.
+
+**DAY 1 COMPLETE. Verification passed (161/161). Moving to DAY 2.**
+
+---
+
+## Master Rebuild Entry: Day 2
+**Date:** October 2026  
+**Goal:** Data Pipeline (ETL & Seed) — Stations, Trains, Stop-Times, Top 25 Junction Corridors, Bus Terminals, Airports, Provenance Metadata, Data Quality Assertions & Attribution  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-2`  
+
+### Day 2 Task List
+- [ ] Task 2.1: Create open data ETL pipeline in `data/etl/` for Indian Railway stations and timetable stop-times (GODL / ODbL / Open Data sources documented in `docs/data-sources.md`).
+- [ ] Task 2.2: Build Top 25 Junction Hubs directory dataset with platforms, safety ratings, transfer cross-city links, and operating facilities.
+- [ ] Task 2.3: Build Major Airports (IATA/ICAO) and Inter-State Bus Terminals (ISBT) dataset linking to regional transit corridors.
+- [ ] Task 2.4: Implement `prisma/seed.ts` (and standalone JSON fallback seed for zero-db setups) loading all stations, trains, stops, junctions, terminals, and transfer guides.
+- [ ] Task 2.5: Enforce data provenance fields (`source`, `license`, `retrievedAt`, `reliabilityScore`) on every record.
+- [ ] Task 2.6: Write comprehensive data-quality test suite (`tests/day2_data_pipeline.test.mjs`) verifying coordinate validity, timetable chronological monotonicity, no negative durations, and corridor completeness.
+- [ ] Task 2.7: Update UI footer with "Timetable data as of <date>" and attribution notice per Master Spec Section 6.
+- [ ] Task 2.8: Run Day 2 Verification Gate, commit, tag `day-2`, and deploy Vercel Preview.
+
+
+---
+
 ## Sprint Entry: Day 6
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  

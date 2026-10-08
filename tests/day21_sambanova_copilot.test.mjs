@@ -6,7 +6,6 @@ import { normalizeTravelMessage, extractRouteIntent } from '../api/assistant.js'
 
 const root = path.resolve('.');
 const smartAssistantPath = path.join(root, 'src/components/SmartAssistant.jsx');
-const assistantApiPath = path.join(root, 'api/assistant.js');
 
 test('Day 21: normalizeTravelMessage cleans typos and normalizes transit terms', () => {
   const dirty = 'tikets fron Kochi 2 Chennai by trian';
@@ -38,19 +37,6 @@ test('Day 21: extractRouteIntent extracts flight routes with typo tolerance', ()
   assert.equal(intent.patch.classType, 'Economy');
 });
 
-test('Day 21: SmartAssistant component provides multilingual greetings across 10 Indian languages', () => {
-  const code = fs.readFileSync(smartAssistantPath, 'utf8');
-  for (const lang of ['hi', 'te', 'ta', 'kn', 'ml', 'mr', 'bn', 'gu', 'ur']) {
-    assert.ok(code.includes(`${lang}:`), `Must contain greeting for language ${lang}`);
-  }
-});
-
-test('Day 21: SmartAssistant component implements accessible dialog and resilient composer', () => {
-  const code = fs.readFileSync(smartAssistantPath, 'utf8');
-  assert.ok(code.includes('role="dialog"'), 'Must declare dialog semantics');
-  assert.ok(code.includes('aria-label="AI travel assistant"'), 'Must have accessible label');
-  assert.ok(code.includes('data-testid="assistant-launcher-btn"'), 'Must declare launcher testid');
-  assert.ok(code.includes('data-testid="assistant-composer-textarea"'), 'Must declare composer testid');
-  assert.ok(code.includes('data-testid="assistant-send-btn"'), 'Must declare send button testid');
-  assert.ok(code.includes('SAMBANOVA_API_KEY'), 'Must handle missing SAMBANOVA_API_KEY gracefully');
+test('Day 21: SmartAssistant chat drawer is pruned per Master Spec Section 4', () => {
+  assert.equal(fs.existsSync(smartAssistantPath), false, 'SmartAssistant.jsx must not exist');
 });

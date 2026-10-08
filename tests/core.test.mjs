@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -130,11 +130,11 @@ test('ambulance contact is configured as 108 while integrated SOS remains 112', 
 test('translation, browser voice and AI assistant are connected to server APIs', () => {
   const translation = readFileSync(path.join(root, 'src/components/GlobalTranslationLayer.jsx'), 'utf8')
   const voice = readFileSync(path.join(root, 'src/components/VoiceSearchButton.jsx'), 'utf8')
-  const assistant = readFileSync(path.join(root, 'src/components/SmartAssistant.jsx'), 'utf8')
+  const assistantApi = readFileSync(path.join(root, 'api/assistant.js'), 'utf8')
   assert.match(translation, /\/api\/translate/)
   assert.match(voice, /SpeechRecognition|webkitSpeechRecognition/)
   assert.match(voice, /\/api\/voice\/transcribe/)
-  assert.match(assistant, /\/api\/assistant/)
+  assert.match(assistantApi, /extractRouteIntent|parse/)
 })
 
 test('service worker never runtime-caches API responses', () => {
@@ -411,28 +411,19 @@ test('assistant deterministically fills From, To and transport for explicit rout
   }
 })
 
-test('Smart Assistant sends applied routes to the provider checker and labels demo booking honestly', () => {
-  const assistant = readFileSync(path.join(root, 'src/components/SmartAssistant.jsx'), 'utf8')
-  const planner = readFileSync(path.join(root, 'src/pages/Planner.jsx'), 'utf8')
-  assert.match(assistant, /onPlanApplied/)
-  assert.match(assistant, /providerSummary/)
-  assert.match(assistant, /Licensed\/authorized direct booking is coming soon/)
-  assert.match(planner, /handleAssistantPlanApplied/)
-  assert.match(planner, /onPlanApplied=\{handleAssistantPlanApplied\}/)
+test('Smart Assistant route parsing extracts routes and handles assistant intents', () => {
+  const assistantApi = readFileSync(path.join(root, 'api/assistant.js'), 'utf8')
+  assert.match(assistantApi, /extractRouteIntent/)
+  assert.match(assistantApi, /normalizeTravelMessage/)
 })
 
 test('mobile interface uses a structured navigation grid and safe floating action dock', () => {
   const navbar = readFileSync(path.join(root, 'src/components/Navbar.jsx'), 'utf8')
   const styles = readFileSync(path.join(root, 'src/index.css'), 'utf8')
-  const assistant = readFileSync(path.join(root, 'src/components/SmartAssistant.jsx'), 'utf8')
   const voice = readFileSync(path.join(root, 'src/components/VoiceSearchButton.jsx'), 'utf8')
 
   assert.match(navbar, /grid-cols-4/)
   assert.match(styles, /env\(safe-area-inset-bottom\)/)
-  assert.match(styles, /\.assistant-panel/)
-  assert.match(styles, /height: calc\(100dvh - 1rem\)/)
-  assert.match(assistant, /assistant-launcher/)
-  assert.match(assistant, /assistant-send/)
   assert.match(voice, /voice-panel/)
   assert.match(voice, /Stop listening/)
 })
@@ -513,13 +504,8 @@ test('partial translation failures do not render the old gold warning popup', ()
   assert.match(source, /if \(state !== 'working'\) return null/)
 })
 
-test('assistant and voice UI preserve user text while localizing generated and placeholder text', () => {
-  const assistant = readFileSync(path.join(root, 'src/components/SmartAssistant.jsx'), 'utf8')
+test('voice UI preserves user text while localizing placeholder text', () => {
   const voice = readFileSync(path.join(root, 'src/components/VoiceSearchButton.jsx'), 'utf8')
-  assert.match(assistant, /localizeAssistantText/)
-  assert.match(assistant, /setMessages\(\[\{ role: 'assistant', content: greeting\(language\), localized: true \}\]\)/)
-  assert.match(assistant, /data-no-translate=\{message\.role === 'user'/)
-  assert.doesNotMatch(assistant, /placeholder="Example: tiket[^\n]+\n\s+data-no-translate/)
   assert.match(voice, /<span>Heard:<\/span> <span data-no-translate>\{transcript\}<\/span>/)
   assert.doesNotMatch(voice, /placeholder="Example: train from Hyderabad to Delhi"\s+data-no-translate/)
 })
@@ -574,7 +560,7 @@ test('PNR provider configuration stays separate from train-search host', () => {
   assert.match(source, /RAPIDAPI_PNR_ENDPOINT/)
   assert.match(source, /RAPIDAPI_PNR_KEY \|\| process\.env\.RAPIDAPI_KEY/)
   assert.doesNotMatch(source, /callRapidRail\('/)
-  assert.match(envExample, /RAPIDAPI_PNR_HOST=irctc-indian-railway-pnr-status\.p\.rapidapi\.com/)
+  assert.match(envExample, /RAPIDAPI_PNR_HOST=["']?irctc-indian-railway-pnr-status\.p\.rapidapi\.com["']?/)
 })
 
 test('live provider tickets open in a dedicated results workspace instead of a bottom result block', () => {
@@ -609,24 +595,16 @@ test('main navigation keeps complete labels visible without ellipsis', () => {
   assert.match(styles, /\.nav-item span \{[\s\S]*?white-space:\s*normal/)
 })
 
-test('guided demo booking collects normal booking categories without payment credentials or real ticket claims', () => {
-  const booking = readFileSync(path.join(root, 'src/components/BookingModal.jsx'), 'utf8')
+test('deep link provider generates valid URLs without collecting payment credentials', () => {
   const results = readFileSync(path.join(root, 'src/components/LiveResultsPanel.jsx'), 'utf8')
+  const transportData = readFileSync(path.join(root, 'src/data/transportData.js'), 'utf8')
 
-  for (const label of ['Passenger details', 'Contact and traveller preferences', 'Choose payment type', 'Confirm demo booking — no charge', 'Demo booking completed']) {
-    assert.equal(booking.includes(label), true, `missing demo-booking label: ${label}`)
-  }
-  assert.match(booking, /No money was charged/)
-  assert.match(booking, /not a PNR or ticket number/)
-  assert.equal(/name=\"(?:cardNumber|cvv|upiPin|bankPassword)\"|\b(?:cardNumber|upiPin|bankPassword)\s*:/i.test(booking), false)
-  assert.equal(booking.includes('localStorage.'), false)
-  assert.match(results, /Start demo booking/)
-})
-
-test('planner demo-booking helpers tolerate a missing selected service without crashing the route', () => {
-  const booking = readFileSync(path.join(root, 'src/components/BookingModal.jsx'), 'utf8')
-  assert.match(booking, /const safeService = service && typeof service === 'object' \? service : \{\}/)
-  assert.doesNotMatch(booking, /function selectedServiceCode\(service = \{\}\)/)
+  assert.match(transportData, /getProviderDeepLink/)
+  assert.match(transportData, /confirmtkt\.com/)
+  assert.match(transportData, /redbus\.in/)
+  assert.match(transportData, /google\.com\/travel\/flights/)
+  assert.equal(/name=\"(?:cardNumber|cvv|upiPin|bankPassword)\"|\b(?:cardNumber|upiPin|bankPassword)\s*:/i.test(transportData), false)
+  assert.match(results, /Book on Portal/)
 })
 
 test('route-level error boundary prevents a component exception from leaving a blank page', () => {
@@ -658,27 +636,17 @@ test('live train route results preserve station codes for the Tatkal seat checke
 })
 
 
-test('assistant and voice dialogs use large non-shrinking close controls', () => {
-  const assistant = readFileSync(path.join(root, 'src/components/SmartAssistant.jsx'), 'utf8')
+test('voice dialog uses large non-shrinking close controls', () => {
   const voice = readFileSync(path.join(root, 'src/components/VoiceSearchButton.jsx'), 'utf8')
-  const booking = readFileSync(path.join(root, 'src/components/BookingModal.jsx'), 'utf8')
   const styles = readFileSync(path.join(root, 'src/index.css'), 'utf8')
-  assert.match(assistant, /dialog-close-button assistant-close-button/)
-  assert.match(assistant, /<X size=\{22\}/)
   assert.match(voice, /className="dialog-close-button"/)
-  assert.match(booking, /className="dialog-close-button"/)
   assert.match(styles, /\.dialog-close-button[\s\S]*?flex:\s*0 0 48px/)
   assert.match(styles, /\.dialog-close-button[\s\S]*?min-width:\s*48px/)
 })
 
-test('assistant suggestions and composer remain visible on narrow mobile screens', () => {
-  const assistant = readFileSync(path.join(root, 'src/components/SmartAssistant.jsx'), 'utf8')
-  const styles = readFileSync(path.join(root, 'src/index.css'), 'utf8')
-  assert.match(assistant, /assistant-prompts/)
-  assert.match(assistant, /assistant-composer/)
-  assert.match(styles, /@media \(max-width: 640px\)[\s\S]*?\.assistant-panel[\s\S]*?height:\s*100dvh/)
-  assert.match(styles, /@media \(max-width: 440px\)[\s\S]*?\.assistant-prompts[\s\S]*?grid-template-columns:\s*1fr/)
-  assert.match(styles, /\.assistant-prompt-chip[\s\S]*?white-space:\s*normal/)
+test('assistant chat drawer is pruned per Master Spec Section 4', () => {
+  const exists = existsSync(path.join(root, 'src/components/SmartAssistant.jsx'))
+  assert.equal(exists, false, 'SmartAssistant.jsx must not exist')
 })
 
 test('saved plans use automatic booking PNR status and keep the snapshot offline', () => {
@@ -695,13 +663,7 @@ test('saved plans use automatic booking PNR status and keep the snapshot offline
   assert.match(storage, /bookingStatus/)
 })
 
-test('demo booking shows transport-specific berth or seat preferences', () => {
-  const booking = readFileSync(path.join(root, 'src/components/BookingModal.jsx'), 'utf8')
-
-  assert.match(booking, /label: 'Berth preference'/)
-  assert.match(booking, /'Lower berth'/)
-  assert.match(booking, /'Window seat', 'Aisle seat', 'Middle seat'/)
-  assert.match(booking, /'Lower deck', 'Upper deck'/)
-  assert.equal(booking.includes('Seat / berth preference'), false)
-  assert.equal(booking.includes('Lower berth / aisle'), false)
+test('in-app booking modal is pruned in favor of verified direct deep links per Master Spec Section 4', () => {
+  const exists = existsSync(path.join(root, 'src/components/BookingModal.jsx'))
+  assert.equal(exists, false, 'BookingModal.jsx must not exist')
 })

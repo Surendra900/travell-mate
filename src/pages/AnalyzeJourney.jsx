@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { CalendarDays, CheckCircle2, MapPin, MessageCircle, Send, Sparkles, Ticket, TrainFront, BusFront, Plane, ShieldCheck, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import SmartAssistant from '../components/SmartAssistant'
 import { localDateIso } from '../utils/date'
 import { calculateTravelScore } from '../utils/scoring'
 
@@ -20,7 +19,7 @@ export default function AnalyzeJourney({ toast }) {
     budget: 1500, ticketType: 'Normal', quota: 'Normal', mode: 'normal'
   })
   const [showAnalysis, setShowAnalysis] = useState(false)
-  const [assistantOpen, setAssistantOpen] = useState(false)
+  const [queryInput, setQueryInput] = useState('')
 
   const update = (fields) => setPlan((old) => ({ ...old, ...fields }))
   const score = useMemo(() => calculateTravelScore(plan), [plan])
@@ -57,14 +56,31 @@ export default function AnalyzeJourney({ toast }) {
 
         <div className="assistant-composer-static">
           <MessageCircle size={20} />
-          <input aria-label="Ask TravelMate" placeholder="Ask about destinations, trains, buses, flights or language..." onKeyDown={(e) => {
-            if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-              setAssistantOpen(true)
-            }
-          }} />
-          <button onClick={() => setAssistantOpen(true)} aria-label="Send"><Send size={20} /></button>
+          <input
+            aria-label="Ask TravelMate"
+            placeholder="Ask about destinations, trains, buses, flights or language..."
+            value={queryInput}
+            onChange={(e) => setQueryInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && queryInput.trim()) {
+                navigate(`/planner?query=${encodeURIComponent(queryInput.trim())}`)
+              }
+            }}
+          />
+          <button
+            onClick={() => {
+              if (queryInput.trim()) {
+                navigate(`/planner?query=${encodeURIComponent(queryInput.trim())}`)
+              } else {
+                toast?.('Enter a travel query first.')
+              }
+            }}
+            aria-label="Send"
+          >
+            <Send size={20} />
+          </button>
         </div>
-        <p className="assistant-disclaimer">TravelMate AI can make mistakes. Consider verifying important information.</p>
+        <p className="assistant-disclaimer">TravelMate AI provides structured recovery queries and route rationale. Verify tickets on official portals.</p>
 
         <button className="assistant-analysis-link" onClick={() => setShowAnalysis((v) => !v)}>
           <ShieldCheck size={16} /> {showAnalysis ? 'Hide journey analysis' : 'Open journey analysis'}
@@ -82,8 +98,6 @@ export default function AnalyzeJourney({ toast }) {
           </div>
         )}
       </section>
-
-      {assistantOpen && <SmartAssistant plan={plan} update={update} setManualMode={setManualMode} onPlanApplied={onPlanApplied} toast={toast} language="en" />}
     </main>
   )
 }
