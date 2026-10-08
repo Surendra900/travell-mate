@@ -267,14 +267,11 @@ export default function LiveResultsPanel({
 
   useEffect(() => {
     if (!open) return undefined
-    const oldOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
     const handleKey = (event) => {
       if (event.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handleKey)
     return () => {
-      document.body.style.overflow = oldOverflow
       window.removeEventListener('keydown', handleKey)
     }
   }, [open, onClose])
@@ -296,8 +293,8 @@ export default function LiveResultsPanel({
   const hasResults = results.length > 0
 
   return (
-    <div className="live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="live-results-title">
-      <section className="live-results-workspace max-w-6xl mx-auto bg-slate-50 rounded-3xl border border-slate-200 shadow-2xl overflow-hidden min-h-[90vh]">
+    <div id="live-results-section" className="live-results-workspace mt-8 mb-12 max-w-6xl mx-auto" aria-labelledby="live-results-title">
+      <section className="bg-slate-50 rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         {/* Results Header */}
         <header className="live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4">
           <button
