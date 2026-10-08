@@ -32,11 +32,20 @@ export default function LocationPermissionGate({ toast }) {
         return
       }
 
-      const choice = getLocationOnboardingChoice()
-      setOpen(!choice)
+      // Spec Section 15: Never auto-open on cold load without user gesture.
+      // Remains closed until explicitly invoked via user action in Safety Mode or emergency tools.
+      setOpen(false)
     }
     initialize()
-    return () => { active = false }
+
+    function handleOpenRequest() {
+      setOpen(true)
+    }
+    window.addEventListener('travelmate:open-location-gate', handleOpenRequest)
+    return () => {
+      active = false
+      window.removeEventListener('travelmate:open-location-gate', handleOpenRequest)
+    }
   }, [])
 
   async function enableLocation() {

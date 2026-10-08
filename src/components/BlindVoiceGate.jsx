@@ -111,28 +111,6 @@ export default function BlindVoiceGate({ forceOpen = false, onClose, toast, onMo
     if (forceOpen) {
       setOpen(true)
       speakPrompt()
-      return
-    }
-
-    // Only auto-prompt on the main home landing page ('/')
-    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
-      return
-    }
-
-    const current = getBlindModePreference()
-    if (!current) {
-      // Prompt first-time visitors once per session on home landing
-      if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('travelmate-blind-gate-shown') === 'true') {
-        return
-      }
-      try { sessionStorage.setItem('travelmate-blind-gate-shown', 'true') } catch {}
-
-      setOpen(true)
-      // Slight delay to allow DOM to settle and user gesture readiness
-      const timer = setTimeout(() => {
-        speakPrompt()
-      }, 600)
-      return () => clearTimeout(timer)
     }
   }, [forceOpen, speakPrompt])
 

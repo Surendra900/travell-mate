@@ -135,7 +135,9 @@ export default function App({ authEnabled = false }) {
   const appShell = (
     <div className="min-h-screen pb-24 sm:pb-0">
       <GlobalTranslationLayer language={language} />
-      <BlindVoiceGate forceOpen={blindGateOpen} onClose={() => setBlindGateOpen(false)} toast={toast} onModeChange={setBlindMode} />
+      {blindGateOpen && (
+        <BlindVoiceGate forceOpen={blindGateOpen} onClose={() => setBlindGateOpen(false)} toast={toast} onModeChange={setBlindMode} />
+      )}
       <LocationPermissionGate toast={toast} />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-2 focus:font-black focus:text-slate-950">Skip to main content</a>
       {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} onOpenDemoTour={() => setDemoTourOpen(true)} />}
