@@ -1,6 +1,6 @@
 {
   "pipelineVersion": "2.0.0",
-  "generatedAt": "2026-10-08T11:08:11.496Z",
+  "generatedAt": "2026-10-08T19:03:27.286Z",
   "freshnessAsOf": "October 2026",
   "attribution": "Timetable data as of October 2026. Map data © OpenStreetMap contributors. Weather data by Open-Meteo.",
   "domains": {
@@ -37,8 +37,8 @@
       "license": "Open Database License (ODbL) / Public Domain",
       "retrievedAt": "2026-10-01",
       "provenance": "TIMETABLE",
-      "trainCount": 12,
-      "stopCount": 63
+      "trainCount": 44,
+      "stopCount": 230
     },
     "transferGuides": {
       "source": "TravelMate Intermodal Connectivity Directory & OpenStreetMap Routing",
