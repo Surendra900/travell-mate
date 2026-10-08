@@ -22,6 +22,7 @@ import {
 import { localDateIso } from '../utils/date'
 import StationAutocomplete from '../components/StationAutocomplete'
 import PnrPredictorModal from '../components/PnrPredictorModal'
+import NaturalLanguageQueryInput from '../components/NaturalLanguageQueryInput'
 
 const modes = [
   { id: 'Multimodal', label: 'All Combinations', icon: Compass, desc: 'Train + Bus & Train + Flight split routes' },
@@ -130,8 +131,22 @@ export default function Home({ toast }) {
               })}
             </div>
 
+            {/* Natural-Language AI Query Assistant (Master Spec Section 7.a) */}
+            <div className="mt-5">
+              <NaturalLanguageQueryInput
+                toast={toast}
+                onApplyPlan={(parsed) => {
+                  if (parsed.from) setFrom(parsed.from)
+                  if (parsed.to) setTo(parsed.to)
+                  if (parsed.date) setDate(parsed.date)
+                  if (parsed.passengers) setTravellers(String(parsed.passengers))
+                  if (parsed.transportMode) setTransportMode(parsed.transportMode)
+                }}
+              />
+            </div>
+
             {/* Main Form */}
-            <form onSubmit={handleSearch} className="mt-6 space-y-5">
+            <form onSubmit={handleSearch} className="mt-4 space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-3 items-center">
                 {/* From Autocomplete */}
                 <StationAutocomplete

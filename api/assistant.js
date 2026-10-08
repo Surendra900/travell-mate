@@ -258,6 +258,29 @@ export default async function handler(req, res) {
 
   try {
     const body = await readJsonBody(req, 64_000)
+
+    // Feature 7.a: Grounded Natural-Language Query to Structured JSON
+    if (body?.action === 'parse_query') {
+      const { parseNaturalLanguageQuery } = await import('../server/adapters/aiProvider.js')
+      try {
+        const parsed = await parseNaturalLanguageQuery(body.query || '')
+        return res.status(200).json({ ok: true, mode: 'grounded-query', data: parsed })
+      } catch (err) {
+        return res.status(400).json({ ok: false, error: err.message })
+      }
+    }
+
+    // Feature 7.b: Grounded Route Rationale (strictly 2 sentences from computed facts)
+    if (body?.action === 'route_rationale') {
+      const { generateRouteRationale } = await import('../server/adapters/aiProvider.js')
+      try {
+        const rationale = await generateRouteRationale(body.facts || {})
+        return res.status(200).json({ ok: true, mode: 'grounded-rationale', rationale })
+      } catch (err) {
+        return res.status(400).json({ ok: false, error: err.message })
+      }
+    }
+
     message = cleanText(body.message, 1200)
     if (!message) return res.status(400).json({ ok: false, mode: 'invalid', message: 'Enter a message for the assistant.' })
 

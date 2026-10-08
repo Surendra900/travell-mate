@@ -155,3 +155,22 @@ $ git grep -n -E '\b(DocumentVault|EmergencyPhraseCards|CarbonCalculator|StatusB
 5. **Indian Transit Glossary Tooltips (`src/components/GlossaryTooltip.jsx`)**:
    - Accessible hover and tap popover glossary for key transit acronyms: `WL` (Waitlist), `RAC` (Reservation Against Cancellation), `PNR` (Passenger Name Record), `Tatkal` (Emergency Quota), and `Junction` (Railway Hub Interchange).
    - Includes official Indian Railways rule citations and accessibility landmarks (`aria-expanded`, keyboard navigation).
+
+---
+
+## Day 7: Passes, Safety Hub, Contextual Weather & Grounded AI
+
+### Features Added:
+1. **Passes & Transit Safety Hub (`src/pages/SafetyMode.jsx`)**:
+   - Consolidated the legacy safety page into the unified "Passes & Transit Safety" Hub specified in Section 8.
+   - Tab 1: Offline Boarding Passes & Trip Pack (P1) displaying digital boarding passes with leg-by-leg details, sample route pass, 1-click print, 1-click clipboard summary copy, and PWA cache sync (`data-testid="tab-offline-passes"`, `data-testid="pwa-offline-status"`, `data-testid="sync-offline-pack-btn"`, `data-testid="view-offline-pass-btn"`, `data-testid="print-pass-btn"`, `data-testid="copy-pass-summary-btn"`).
+   - Tab 2: Transit Safety Drawer (P2) with 1-tap 112 (`data-testid="helpline-112"`) and 139 RailMadad (`data-testid="helpline-139"`), live GPS pin sharing on explicit user action (`data-testid="share-gps-pin-btn"`), statutory disclaimer (`data-testid="safety-statutory-notice"`: *"TravelMate is not an emergency service. In an emergency call 112."*), and location privacy disclosure (`data-testid="location-privacy-notice"`).
+   - Tab 3: Station Layover Guides (`data-testid="tab-station-guides"`).
+2. **Server-Side Grounded AI Architecture (Master Spec Section 7)**:
+   - Zod validation schemas (`server/schemas/querySchema.js`): `TravelQuerySchema` and `RouteFactsSchema`.
+   - Dual-provider AI interface (`server/adapters/aiProvider.js`) supporting SambaNova primary, Google Gemini fallback, and deterministic heuristic fallback (`heuristicParseQuery`).
+   - Feature 7.a: `src/components/NaturalLanguageQueryInput.jsx` on Home and Planner with speech input, "I understood: ..." banner (`data-testid="ai-understood-banner"`), editable chips (`chip-origin`, `chip-destination`, `chip-date`, `chip-mode`, `chip-passengers`), and 1-click form application.
+   - Feature 7.b: Grounded route rationale (`data-testid="route-grounded-rationale"`) in `MultimodalTimelineCard.jsx` with strict anti-hallucination validator (`validateRouteRationale`) rejecting unverified cities/places/numbers.
+3. **Contextual Weather Disruption (`src/components/MultimodalTimelineCard.jsx`, `src/utils/weatherDisruptionEngine.js`)**:
+   - Contextual weather check card (`data-testid="route-contextual-weather"`) evaluating Open-Meteo weather codes and visibility for transfer hubs without full-screen clutter.
+

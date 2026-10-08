@@ -24,6 +24,7 @@ import RouteMap from '../components/RouteMap'
 import StationAutocomplete from '../components/StationAutocomplete'
 import WaitlistBypassContrast from '../components/WaitlistBypassContrast'
 import DelayContingencySimulator from '../components/DelayContingencySimulator'
+import NaturalLanguageQueryInput from '../components/NaturalLanguageQueryInput'
 import { localDateIso } from '../utils/date'
 import {
   airlineOptions,
@@ -127,6 +128,23 @@ export default function NormalPlanner({
                 </button>
               )
             })}
+          </div>
+
+          {/* Grounded Natural-Language Query Input (Master Spec Section 7.a) */}
+          <div className="mt-5">
+            <NaturalLanguageQueryInput
+              toast={toast}
+              onApplyPlan={(parsed) => {
+                update({
+                  ...(parsed.from ? { from: parsed.from } : {}),
+                  ...(parsed.to ? { to: parsed.to } : {}),
+                  ...(parsed.date ? { date: parsed.date } : {}),
+                  ...(parsed.passengers ? { passengers: parsed.passengers } : {}),
+                  ...(parsed.transportMode ? { transportMode: parsed.transportMode } : {}),
+                  ...(parsed.budget ? { budget: parsed.budget } : {})
+                })
+              }}
+            />
           </div>
 
           {/* Route Grid: From ⇄ To with StationAutocomplete */}

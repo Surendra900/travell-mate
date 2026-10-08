@@ -198,6 +198,44 @@
 
 ---
 
+## Master Rebuild Entry: Day 7
+**Date:** October 2026  
+**Goal:** Passes and Safety Hub (Offline Boarding Passes & Trip Pack, 112/139 Helplines, Location Pin Sharing), Contextual Weather Disruption, and Grounded AI Endpoints (Query Parser & Route Rationale)  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-7`  
+
+### Day 7 Task List
+- [x] Task 7.1: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for Passes & Safety (`/safety`) and AI natural language search (`docs/screenshots/day-7/before/`).
+- [x] Task 7.2: Refactor `SafetyMode.jsx` into unified "Passes and Transit Safety" Hub:
+  - Tab 1: Offline Boarding Passes & Trip Pack (P1) with immediate access to digital boarding passes, sample route pass, 1-click print, 1-click clipboard summary, and PWA caching.
+  - Tab 2: Transit Safety Drawer (P2) with one-tap 112 and 139 (RailMadad) helplines, live GPS pin sharing on explicit user action, and visible statutory disclaimer: "TravelMate is not an emergency service. In an emergency call 112."
+  - Tab 3: Station Layover Guides.
+- [x] Task 7.3: Build server-side Grounded AI system (`server/adapters/aiProvider.js`, `server/schemas/querySchema.js`, `api/assistant.js`):
+  - Provider interface with SambaNova as primary and Google Gemini as an alternative, with automatic fallback.
+  - Feature 7.a: Natural language query to structured JSON (zod schema: origin, destination, date, budget, mode, passengers) and UI with "I understood: ..." editable chips.
+  - Feature 7.b: Grounded route rationale (2 sentences strictly from computed facts, with validator rejecting extraneous claims and falling back to template).
+- [x] Task 7.4: Contextual Weather Disruption: ensure Open-Meteo route warnings (fog, monsoon) are displayed contextually on results cards without full-screen clutter (`data-testid="route-contextual-weather"`).
+- [x] Task 7.5: Write Day 7 test suite (`tests/day7_passes_safety_ai.test.mjs`) verifying passes, safety disclaimers, explicit location consent, zod schema parsing, route rationale validation, and weather disruption.
+- [x] Task 7.6: Capture AFTER screenshots in `docs/screenshots/day-7/after/` and update `docs/screenshots/index.html`.
+- [x] Task 7.7: Run Day 7 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-7`, and deploy Vercel Preview.
+
+### Day 7 Verification Evidence
+1. **Passes & Transit Safety Hub:** Rebuilt `src/pages/SafetyMode.jsx` into the consolidated "Passes & Transit Safety" Hub uniting Offline Boarding Passes & Trip Pack (`data-testid="tab-offline-passes"`), Transit Helplines (`data-testid="tab-safety-helplines"`), and Station Layover Guides (`data-testid="tab-station-guides"`). Renders statutory disclaimer (`data-testid="safety-statutory-notice"`: *"TravelMate is not an emergency service. In an emergency call 112."*).
+2. **Offline Digital Boarding Passes & PWA Trip Pack:** Implemented offline passes with leg-by-leg departure details, transfer buffers, and local storage persistence. Added 1-click "View Digital Pass" (`data-testid="view-offline-pass-btn"`), 1-click "Print / Save PDF" (`data-testid="print-pass-btn"`), 1-click "Copy Summary" (`data-testid="copy-pass-summary-btn"`), and PWA offline sync (`data-testid="sync-offline-pack-btn"`, `data-testid="pwa-offline-status"`).
+3. **National Transit Helplines & Explicit Location Consent:** Updated `src/components/EmergencyToolkit.jsx` with dedicated 112 (`data-testid="helpline-112"`) and 139 RailMadad (`data-testid="helpline-139"`) direct carrier dialers. Enforced DPDP-compliant explicit user consent for live GPS pin sharing (`data-testid="share-gps-pin-btn"`) with visible disclosure (`data-testid="location-privacy-notice"`: *"Location requested only on your explicit action. No background tracking or logging."*).
+4. **Grounded AI Architecture (Master Spec Section 7):**
+   - Zod validation in `server/schemas/querySchema.js` (`TravelQuerySchema` and `RouteFactsSchema`).
+   - Provider interface in `server/adapters/aiProvider.js` supporting SambaNova primary, Google Gemini fallback, and deterministic heuristic fallback (`heuristicParseQuery`).
+   - Feature 7.a: `src/components/NaturalLanguageQueryInput.jsx` on Home and Planner rendering "I understood: ..." banner (`data-testid="ai-understood-banner"`) with editable parameter chips (`chip-origin`, `chip-destination`, `chip-date`, `chip-mode`, `chip-passengers`, `apply-ai-chips-btn`).
+   - Feature 7.b: Grounded route rationale (`data-testid="route-grounded-rationale"`) in `MultimodalTimelineCard.jsx` and strict anti-hallucination validator (`validateRouteRationale`) rejecting unverified cities/places/numbers.
+5. **Contextual Weather Disruption (Master Spec Section 4 & 12):** Evaluates Open-Meteo weather codes and visibility for transfer hubs (dense fog, torrential rain) and displays clean contextual advisory on journey cards (`data-testid="route-contextual-weather"`).
+6. **Full Test Regression:** 197 out of 197 unit, property, and integration tests passing across the repository (`npm test` and `npm run check` with clean production build).
+7. **Visual QA Gallery:** Captured 4 BEFORE and 6 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-7/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 7 COMPLETE. Verification passed (197/197). Moving to DAY 8.**
+
+---
+
 ## Sprint Entry: Day 6 (Archived Baseline)
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  

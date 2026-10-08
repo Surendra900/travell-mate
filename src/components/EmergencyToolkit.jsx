@@ -323,12 +323,22 @@ export default function EmergencyToolkit({ toast, compact = false }) {
           </p>
         </div>
         <button
+          data-testid="helpline-112"
           className="btn-danger inline-flex items-center gap-2 text-lg px-6 py-3 font-black shadow-lg shadow-red-900/50 hover:scale-[1.02] transition-transform"
           onClick={handleCall112}
           aria-label="Call 112 National Emergency"
         >
           <Phone size={22} className="animate-pulse" /> Call 112 now
         </button>
+      </div>
+
+      {/* Statutory Emergency Disclaimer (Master Spec Section 15) */}
+      <div
+        data-testid="safety-statutory-notice"
+        className="mt-4 rounded-xl border border-red-500/40 bg-red-950/40 p-3 text-xs text-red-200 font-bold flex items-center gap-2"
+      >
+        <ShieldAlert size={16} className="text-red-400 shrink-0" />
+        <span>TravelMate is not an emergency service. In an emergency call 112.</span>
       </div>
 
       {/* 4-Hotline Indian Transit Emergency Grid */}
@@ -366,7 +376,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
                 </div>
                 <button
                   type="button"
-                  data-testid={`hotline-call-${hotline.id}`}
+                  data-testid={hotline.number === '139' ? 'helpline-139' : `hotline-call-${hotline.id}`}
                   onClick={() => handleHotlineCall(hotline)}
                   className={`mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-black shadow transition-all ${hotline.btnColor}`}
                   aria-label={`Call ${hotline.title} on ${hotline.number}`}
@@ -454,13 +464,18 @@ export default function EmergencyToolkit({ toast, compact = false }) {
               )}
               <button
                 type="button"
+                data-testid="share-gps-pin-btn"
                 className="btn-soft inline-flex items-center gap-1.5 py-1.5 px-3 text-xs font-bold"
                 onClick={() => copy(googleMapsUrl || locationLabel, 'Maps pin link copied.')}
                 aria-label="Copy Google Maps link"
               >
-                <Copy size={14} /> Copy Pin Link
+                <Copy size={14} /> Share Live GPS Pin
               </button>
             </div>
+            {/* Explicit Location Privacy Disclosure (Master Spec Section 15) */}
+            <p data-testid="location-privacy-notice" className="mt-2 text-[11px] text-slate-400">
+              Location requested only on your explicit action. No background tracking or logging.
+            </p>
           </div>
 
           {/* Emergency Alert Dispatch Form */}
