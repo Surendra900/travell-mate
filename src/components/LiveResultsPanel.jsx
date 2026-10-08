@@ -460,11 +460,15 @@ export default function LiveResultsPanel({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
-                  <AlertTriangle className="mx-auto text-amber-500 mb-3" size={28} />
-                  <h4 className="text-base font-bold text-slate-900">No direct ticket rows returned</h4>
-                  <p className="text-sm text-slate-500 max-w-md mx-auto mt-1">
-                    Direct trains for this date may be fully booked or currently unavailable. Inspect the smart multi-modal connections above or check alternative dates.
+                <div className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
+                  <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
+                    <Sparkles size={24} />
+                  </div>
+                  <h4 className="text-base font-extrabold text-slate-900">
+                    No direct {transport.toLowerCase()} seats available
+                  </h4>
+                  <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
+                    Direct {transport.toLowerCase()} options for this date are unavailable or fully waitlisted. {multimodalRoutes.length > 0 ? "TravelMate has discovered confirmed multi-modal connections via transfer junctions above so you can still reach your destination on time." : "Try checking nearby dates or exploring Tatkal emergency options in the planner."}
                   </p>
                 </div>
               )}

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 
 const distDir = path.resolve('./dist');
-const outDir = path.resolve('./docs/screenshots/redesign-qa');
+const outDir = path.resolve('./docs/screenshots/day-0/before');
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir, { recursive: true });
 }
@@ -21,7 +21,7 @@ const mimeTypes = {
 
 const server = http.createServer(async (req, res) => {
   if (req.url.startsWith('/api/')) {
-    const requestUrl = new URL(req.url, 'http://localhost:4280');
+    const requestUrl = new URL(req.url, 'http://localhost:4390');
     const apiPath = requestUrl.pathname.slice('/api/'.length).replace(/^\/+/, '');
     const apiFile = path.resolve('./api', `${apiPath}.js`);
     if (fs.existsSync(apiFile)) {
@@ -68,19 +68,18 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(4280, async () => {
-  console.log('Visual QA Server running on port 4280...');
+server.listen(4390, async () => {
+  console.log('Day 0 Baseline Server running on port 4390...');
   const browser = await chromium.launch({ channel: 'msedge', headless: true });
 
   const viewports = [
     { name: 'desktop-1440', width: 1440, height: 900, isMobile: false },
-    { name: 'tablet-768', width: 768, height: 1024, isMobile: true },
     { name: 'mobile-390', width: 390, height: 844, isMobile: true }
   ];
 
   try {
     for (const vp of viewports) {
-      console.log(`Testing viewport: ${vp.name}...`);
+      console.log(`Capturing Day 0 baseline for viewport: ${vp.name}...`);
       const context = await browser.newContext({
         viewport: { width: vp.width, height: vp.height },
         isMobile: vp.isMobile
@@ -95,16 +94,16 @@ server.listen(4280, async () => {
       });
 
       // 1. Homepage
-      await page.goto('http://localhost:4280/', { waitUntil: 'domcontentloaded' });
+      await page.goto('http://localhost:4390/', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(600);
       await page.screenshot({ path: path.join(outDir, `${vp.name}-01-homepage.png`), fullPage: false });
 
       // 2. Journey Planner
-      await page.goto('http://localhost:4280/planner', { waitUntil: 'domcontentloaded' });
+      await page.goto('http://localhost:4390/planner', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(600);
       await page.screenshot({ path: path.join(outDir, `${vp.name}-02-planner.png`), fullPage: false });
 
-      // 2b. Tatkal Emergency Mode
+      // 3. Tatkal Emergency Mode
       const tatkalBtn = page.locator('button:has-text("Tatkal emergency")');
       if (await tatkalBtn.isVisible()) {
         await tatkalBtn.click();
@@ -112,8 +111,8 @@ server.listen(4280, async () => {
         await page.screenshot({ path: path.join(outDir, `${vp.name}-02b-tatkal.png`), fullPage: false });
       }
 
-      // 2c. Results Workspace
-      await page.goto('http://localhost:4280/planner?from=New%20Delhi&to=Mumbai', { waitUntil: 'domcontentloaded' });
+      // 4. Results Workspace
+      await page.goto('http://localhost:4390/planner?from=New%20Delhi&to=Mumbai', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(400);
       const searchBtn = page.locator('button:has-text("Search Available")');
       if (await searchBtn.isVisible()) {
@@ -122,22 +121,22 @@ server.listen(4280, async () => {
         await page.screenshot({ path: path.join(outDir, `${vp.name}-02c-results.png`), fullPage: false });
       }
 
-      // 3. Safety Mode
-      await page.goto('http://localhost:4280/safety', { waitUntil: 'domcontentloaded' });
+      // 5. Safety Mode
+      await page.goto('http://localhost:4390/safety', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(600);
       await page.screenshot({ path: path.join(outDir, `${vp.name}-03-safety.png`), fullPage: false });
 
-      // 4. My Trips
-      await page.goto('http://localhost:4280/saved', { waitUntil: 'domcontentloaded' });
+      // 6. My Trips
+      await page.goto('http://localhost:4390/saved', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(600);
       await page.screenshot({ path: path.join(outDir, `${vp.name}-04-mytrips.png`), fullPage: false });
 
       await context.close();
     }
 
-    console.log('All Visual QA screenshots captured successfully in docs/screenshots/redesign-qa/ !');
+    console.log('All Day 0 Baseline screenshots captured successfully in docs/screenshots/day-0/before/ !');
   } catch (err) {
-    console.error('Visual QA error:', err);
+    console.error('Day 0 Baseline Capture error:', err);
   } finally {
     await browser.close();
     server.close();

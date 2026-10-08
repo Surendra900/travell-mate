@@ -2,6 +2,35 @@
 
 ---
 
+## Master Rebuild Entry: Day 0
+**Date:** October 2026  
+**Goal:** Comprehensive Audit, Engine Characterization Tests, Baseline Artifact Capture, and Tracking Document Initialization  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `baseline-before-rebuild`  
+
+### Day 0 Task List
+- [x] Task 0.1: Save Master Specification verbatim to `docs/MASTER_SPEC.md` as the single source of truth.
+- [x] Task 0.2: Create branch `rebuild/route-recovery` and tag baseline state with `baseline-before-rebuild`.
+- [x] Task 0.3: Inspect developer environment and CLI extensions (Docker v29.7.2, Vercel v59.10.0, Prisma, GitLens), record details in `docs/tooling.md`.
+- [x] Task 0.4: Document architectural decisions, 7 deprecated feature removals, and supersession of old plans in `docs/decisions.md`.
+- [x] Task 0.5: Group all external integration keys, providers, free-tier limits, URLs, and test commands in `docs/api-keys-needed.md`.
+- [x] Task 0.6: Compile dataset sources, licenses, attribution rules, and Top 25 Junction Corridors in `docs/data-sources.md`.
+- [x] Task 0.7: Establish authoritative feature disposition, provenance mapping, and proof test suites in `docs/feature-matrix.md`.
+- [x] Task 0.8: Write characterization tests (`tests/characterization_engines.test.mjs`) locking legacy behaviors of multimodalRouter, contingencyEngine, deep links, Tatkal rules, and Leaflet RouteMap.
+- [x] Task 0.9: Capture 12 baseline screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-0/before/`.
+- [x] Task 0.10: Build visual verification gallery index in `docs/screenshots/index.html`.
+- [x] Task 0.11: Update `sprint-status.md` and feature changelog in `docs/changelog-features.md`.
+
+### Day 0 Verification Evidence
+1. **Characterization Suite:** 7 passing unit tests in `tests/characterization_engines.test.mjs` confirming behavior of `findTransitHubs`, `generateMultimodalRoutes`, `calculateConnectionRisk`, `generateContingencyOptions`, `getProviderDeepLink`, `TatkalEmergencyTimer`, and `RouteMap`.
+2. **Baseline Artifacts:** 12 screenshots captured across Desktop (1440x900) and Mobile (390x844) viewports for Homepage, Planner, Tatkal, Results, Safety, and My Trips saved in `docs/screenshots/day-0/before/` and indexed in `docs/screenshots/index.html`.
+3. **Environment Audit:** Vercel authenticated as `surendragedala6-3289` linked to project `travelmate-ai-flowzint`. Docker CLI v29.7.2 verified.
+4. **Git State:** Working on branch `rebuild/route-recovery`, tagged `baseline-before-rebuild`.
+
+**DAY 0 COMPLETE. Verification passed (7/7). Moving to DAY 1.**
+
+---
+
 ## Sprint Entry: Day 6
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  

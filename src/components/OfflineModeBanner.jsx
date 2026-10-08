@@ -16,13 +16,7 @@ export default function OfflineModeBanner({ status, toast }) {
   }, [offline])
 
   if (!offline) {
-    return (
-      <div className="border-b border-emerald-200 bg-emerald-50/80 px-4 py-2 text-xs text-emerald-900">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-2"><WifiOff size={14} className="text-emerald-700" /> Offline readiness: {cacheCount > 0 ? `${cacheCount} cached files` : 'auto-prepares after first online visit'}</span>
-        </div>
-      </div>
-    )
+    return null
   }
 
   return (

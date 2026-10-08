@@ -201,7 +201,12 @@ a {
 }
 
 .input::placeholder {
-  color: #94a3b8;
+  color: var(--tm-muted);
+}
+
+.input.pl-10,
+.input.pl-11 {
+  padding-left: 2.75rem !important;
 }
 
 /* Dialog close button required by tests */
@@ -419,11 +424,36 @@ a {
   justify-content: center;
 }
 
+/* Voice Search Launcher Dock */
+.voice-launcher {
+  position: fixed;
+  left: 20px;
+  bottom: 24px;
+  z-index: 70;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--tm-radius-pill);
+  background-color: var(--tm-primary);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.voice-launcher:hover {
+  background-color: var(--tm-primary-hover);
+  transform: translateY(-2px);
+}
+
 /* AI Assistant Launcher & Drawer */
 .assistant-launcher {
   position: fixed;
   right: 20px;
-  bottom: 88px;
+  bottom: 98px;
   z-index: 75;
   min-height: 48px;
   padding: 0 18px;
@@ -532,6 +562,7 @@ button, a.btn, input, select { min-height: 44px; }
   }
   .assistant-launcher{right:16px;bottom:calc(96px + env(safe-area-inset-bottom, 0px));z-index:75}
   .floating-sos{right:12px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:70}
+  .voice-launcher{left:12px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));width:48px;height:48px;z-index:70}
   .sos-call-button {
     min-height: 48px;
     padding: 0 16px;

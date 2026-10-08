@@ -73,9 +73,9 @@ export default function Home({ toast }) {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-slate-50 pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/80 border border-sky-200 text-sky-800 text-xs sm:text-sm font-bold tracking-wide mb-6 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/90 border border-sky-200 text-sky-800 text-xs sm:text-sm font-bold tracking-wide mb-6 shadow-sm">
             <Sparkles size={15} className="text-sky-600" />
-            <span>India's Multimodal Travel Assistant</span>
+            <span>TravelMate · Your Emergency Travel Assistant</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight leading-[1.15]">
@@ -83,7 +83,7 @@ export default function Home({ toast }) {
           </h1>
 
           <p className="mt-4 text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Search trains, buses, and flights. And if direct tickets are sold out, TravelMate finds confirmed multi-modal alternatives so you never get stranded.
+            Search trains, buses, and flights. And when direct tickets are sold out, TravelMate finds confirmed multi-modal alternatives so you never get stranded.
           </p>
 
           {/* Primary Dominant Search Card */}
@@ -136,7 +136,7 @@ export default function Home({ toast }) {
                       value={from}
                       onChange={(e) => setFrom(e.target.value)}
                       placeholder={transportMode === 'Train' ? 'e.g. New Delhi (NDLS)' : 'e.g. Bengaluru'}
-                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
+                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
                     />
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export default function Home({ toast }) {
                       value={to}
                       onChange={(e) => setTo(e.target.value)}
                       placeholder={transportMode === 'Train' ? 'e.g. Mumbai Central (BCT)' : 'e.g. Goa'}
-                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
+                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
                     />
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function Home({ toast }) {
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
-                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
+                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
                     />
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function Home({ toast }) {
                       aria-label="Number of travellers"
                       value={travellers}
                       onChange={(e) => setTravellers(e.target.value)}
-                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition appearance-none"
+                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition appearance-none"
                     >
                       <option value="1">1 Passenger (Solo)</option>
                       <option value="2">2 Passengers</option>

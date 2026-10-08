@@ -7,6 +7,7 @@ export default function PwaInstallBanner() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [installed, setInstalled] = useState(false)
   const [dismissed, setDismissed] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [installing, setInstalling] = useState(false)
 
   useEffect(() => {
@@ -28,11 +29,13 @@ export default function PwaInstallBanner() {
     function handleBeforeInstallPrompt(e) {
       e.preventDefault()
       setDeferredPrompt(e)
+      setVisible(true)
       setDismissed(false)
     }
 
     function handleAppInstalled() {
       setInstalled(true)
+      setVisible(false)
       setDeferredPrompt(null)
       localStorage.removeItem(DISMISS_KEY)
     }
@@ -42,6 +45,7 @@ export default function PwaInstallBanner() {
 
     // Custom event to trigger banner open from navbar/footer
     function handleOpenInstallPrompt() {
+      setVisible(true)
       setDismissed(false)
     }
     window.addEventListener('travelmate:open-pwa-install', handleOpenInstallPrompt)
@@ -54,6 +58,7 @@ export default function PwaInstallBanner() {
   }, [])
 
   function dismiss() {
+    setVisible(false)
     setDismissed(true)
     try {
       localStorage.setItem(DISMISS_KEY, String(Date.now()))
@@ -82,14 +87,14 @@ export default function PwaInstallBanner() {
     }
   }
 
-  if (installed || dismissed) return null
+  if (installed || dismissed || !visible) return null
 
   return (
     <aside
       role="banner"
       aria-label="Install TravelMate Web Application"
       data-testid="pwa-install-banner"
-      className="fixed bottom-20 left-4 right-4 z-40 mx-auto max-w-xl rounded-2xl border border-indigo-400/40 bg-slate-950/95 p-4 text-white shadow-2xl backdrop-blur-md md:bottom-6"
+      className="fixed bottom-20 left-4 right-4 z-40 mx-auto max-w-lg rounded-2xl border border-sky-400/30 bg-slate-950/95 p-4 text-white shadow-2xl backdrop-blur-md sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">

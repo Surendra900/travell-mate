@@ -1,45 +1,62 @@
-# TravelMate AI — 30-Day Sprint Status Audit
+# TravelMate Master Rebuild — Sprint Status
 
-**Project:** TravelMate AI  
-**Lead:** Principal Full-Stack Engineer, Product Engineer & QA Lead  
+**Project:** TravelMate — The Multimodal Disruption & Route Recovery Engine  
+**Lead:** Principal Product Designer, Senior Full-Stack Engineer & QA Lead  
 **Vercel Target:** `travelmate-ai-flowzint.vercel.app` (`surendragedala6-3289`)  
-**Audit Date:** October 2026  
-**Reconstruction Assumption:** The 30-day roadmap was reconstructed based on git history (Days 1–5), the core product specification (Emergency Mode, Voice Accessibility for blind users, Document Vault, Tatkal, PNR, SambaNova Copilot, PWA offline readiness), and hackathon judge/investor readiness requirements.
+**Git Branch:** `rebuild/route-recovery`  
+**Master Spec:** [MASTER_SPEC.md](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/docs/MASTER_SPEC.md) (The Single Source of Truth)
 
 ---
 
-## 1. 30-Day Master Sprint Table
+## 1. 10-Day Master Rebuild Roadmap & Progress
+
+| Day | Focus / Objective | Core Deliverables | Gate Status | Verification Tag |
+| :---: | :--- | :--- | :---: | :---: |
+| **Day 0** | **Audit & Baseline** | Full system audit; baseline screenshots captured; characterization tests locking legacy engines; git tag `baseline-before-rebuild`; initialize all tracking docs. | **IN PROGRESS** | `baseline-before-rebuild` |
+| **Day 1** | **Foundation** | Layered architecture scaffolding; design tokens & core primitives; Prisma schema & local Postgres config; strict TypeScript & lint setup; PWA shell. | PENDING | `day-1` |
+| **Day 2** | **Data Pipeline (ETL)** | Stations, trains, stop times, top 25 junctions, airports, and bus terminals ETL; Prisma seed; provenance fields; data-quality tests; attribution. | PENDING | `day-2` |
+| **Day 3** | **Route Recovery Engine v2** | Graph timetable search; minimum connection times; risk labels; delay simulator & contingency engine; unit & property tests. | PENDING | `day-3` |
+| **Day 4** | **App Shell & Search UX** | Clean 4-item navbar; hero search with autocomplete; "How it works in 3 steps"; honest "See a Demo" scenario mode. | PENDING | `day-4` |
+| **Day 5** | **Results & Split Routes** | Direct vs Split contrast; journey cards; interactive route map; risk badges; delay slider tab; deep-link buttons; legal disclosures. | PENDING | `day-5` |
+| **Day 6** | **Urgent Mode & Tatkal Desk** | "Need to travel tonight?" 12-hour preset; Tatkal dual-window countdown; local passenger auto-fill pass; simplified PNR estimate. | PENDING | `day-6` |
+| **Day 7** | **Passes, Safety & Grounded AI** | Offline boarding passes; Transit Safety drawer (112/139 + GPS); contextual weather alerts; 2 server-side grounded AI endpoints. | PENDING | `day-7` |
+| **Day 8** | **Comprehensive QA & A11y** | States (loading, empty, error, skeleton); responsive layout check (390px / 768px / 1440px); axe WCAG 2.1 AA audit; click budget test. | PENDING | `day-8` |
+| **Day 9** | **Hardening & Compliance** | Security audit; DPDP 2023 statutory consent & data minimization; privacy, terms, and disclaimer pages; analytics & error boundaries. | PENDING | `day-9` |
+| **Day 10** | **Release & Pitch Assets** | Production Vercel deployment; public access verification; 60s pitch & 45s demo script; judge objection Q&A; final regression gate. | PENDING | `day-10` |
+
+---
+
+## 2. Historical Baseline 30-Day Sprint Table (Archived)
 
 | Day | Goal | Core Tasks | Status | Verification Evidence |
 | :---: | :--- | :--- | :---: | :--- |
-| **Day 1** | Search UI & Deep-Links | Modern hero search, mode tabs (Train/Bus/Flight), pre-filled deep links (ConfirmTkt, RedBus, Google Flights). | **DONE-VERIFIED** | Commit `ad626cc`, `tests/day1_features.test.mjs`, verified in Chromium. |
-| **Day 2** | Multimodal Split-Routing | Train+Bus & Train+Flight engine with 3 ranked tiers: Paisa Vasool (Budget), Smart Balanced, Emergency Express. | **DONE-VERIFIED** | Commit `d528467`, `src/utils/multimodalRouter.js`, 62 tests passing. |
-| **Day 3** | Sharing & Reasoning | 1-tap WhatsApp route itinerary share, interactive budget/speed filters, high-contrast AI reasoning callouts. | **DONE-VERIFIED** | Commit `5a20f3c`, `day3_progress_report.md`, verified deep link formatting. |
-| **Day 4** | Junction Navigation & Pass | Hub transfer navigation (Nagpur, Jaipur, etc.), visual 3-node journey track, 100% offline boarding pass with helplines. | **DONE-VERIFIED** | Commit `ceac952`, `src/data/transitHubData.js`, `day4_progress_report.md`. |
-| **Day 5** | Quota Hacks & PNR Engine | Station Hopper same-train GN quota bypass, AI PNR confirmation probability predictor modal, Pitch Deck v2 & Defense guide. | **DONE-VERIFIED** | Commit `d2317de` & `e7f633a`, `day5_progress_report.md`, verified modal screenshot. |
-| **Day 6** | Emergency Mode & 1-Tap SOS | Dedicated Emergency Mode, device GPS extraction, prepared WhatsApp/SMS dispatch, verified hotlines (112, 139, 108, 1090), offline incident cards. | **DONE-VERIFIED** | 4-hotlines & Live GPS engine implemented; `tests/day6_emergency.test.mjs` and Playwright E2E passed (5/5); AFTER screenshots saved. |
-| **Day 7** | Tatkal Emergency Mode | Tatkal countdown timer, auto-fill assistant, preparation checklist, Tatkal quota (TQ) availability filters. | **DONE-VERIFIED** | Dual-window countdown engine & 1-click master data auto-fill verified; `tests/day7_tatkal.test.mjs` and Playwright E2E passed (5/5); screenshots captured. |
-| **Day 8** | Live Train Status & Stations | Live train running status tracker, station boards, delay prediction heuristics, platform indicators. | **DONE-VERIFIED** | Live station progression timeline, platform indicators, and dual-mode station boards verified; `tests/day8_train_status.test.mjs` and Playwright E2E passed (5/5); screenshots saved. |
-| **Day 9** | Low-Network / Offline Mode | Bandwidth detector, automated low-network fallback mode, offline status indicators, cached route snapshots. | **DONE-VERIFIED** | 2G/cellular diagnostic banner, autonomous zero-network fallback, and offline snapshot sync verified; `tests/day9_offline.test.mjs` and Playwright E2E passed (5/5); screenshots saved. |
-| **Day 10** | Multilingual Localization | 10+ Indian languages (Hindi, Telugu, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, Urdu RTL), SambaNova translation & offline dictionary fallback, Emergency Phrase Cards. | **DONE-VERIFIED** | 10 Indian languages, RTL layout, offline fallback dictionary, and interactive Emergency Phrase Cards verified; `tests/day10_multilingual.test.mjs` and Playwright E2E passed (10/10); screenshots saved. |
-| **Day 11** | Blind Voice Gate | Spoken accessibility onboarding gate ("Are you blind?"), hands-free audio prompt, high-contrast accessible layout. | **DONE-VERIFIED** | Full-screen spoken onboarding gate, hands-free SpeechSynthesis & SpeechRecognition, Alt+B keyboard shortcut, and persistent Voice Mode banner verified; `tests/day11_blind_gate.test.mjs` and Playwright E2E passed (14/14); screenshots saved. |
-| **Day 12** | Voice Route Parser | Natural-language spoken route parsing, typo tolerance, spoken audio confirmation via Web Speech Synthesis. | **DONE-VERIFIED** | Indian city phonetic alias resolution, relative date extraction ("tomorrow", "next Friday"), and Web Speech Synthesis route readout verified; `tests/day12_voice_parser.test.mjs` and Playwright E2E passed (5/5); screenshots saved; Vercel: `https://travelmate-ai-flowzint-863rbys5j-httplocalhost5173planner.vercel.app`. |
-| **Day 13** | Agentic Voice Tool-Use | Speech-driven filter controls, audio playback of route tiers, screen-reader parity. | **DONE-VERIFIED** | Speech-driven filters, `formatTierSpeechSummary` & `speakRouteTier` Web Speech playback, Listen Tier buttons, and Read Top Option verified; `tests/day13_voice_tools.test.mjs` and Playwright E2E passed (6/6); screenshots saved; Vercel: `https://travelmate-ai-flowzint-rbg4c1bwe-httplocalhost5173planner.vercel.app`. |
-| **Day 14** | Voice Emergency Trigger | Hands-free emergency trigger ("Help" / "SOS"), spoken guidance for stranded travelers, voice helpline dialing. | **DONE-VERIFIED** | Spoken distress keywords, Blind Gate distress interceptor, `speakEmergencyConfirmation` & `speakProtocolGuidance` Web Speech engine, and Incident Protocol audio controls verified; `tests/day14_voice_emergency.test.mjs` and Playwright E2E passed (5/5); screenshots saved; Vercel: `https://travelmate-ai-flowzint-d6l7dfq4t-httplocalhost5173planner.vercel.app`. |
-| **Day 15** | Voice A11y & Screen-Reader Gate | WCAG 2.1 AA compliance, keyboard focus trapping, axe accessibility audit with zero critical/serious issues. | **DONE-VERIFIED** | Axe WCAG 2.1 AA scan passed on all routes (0 critical/serious violations), skip-to-content and modal focus trapping verified; `tests/day15_a11y_gate.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-15`. |
-| **Day 16** | Encrypted Document Vault | Client-side AES-GCM 256-bit encryption (Web Crypto API), zero-server document storage for Aadhaar, tickets, passes. | **DONE-VERIFIED** | AES-GCM 256-bit encryption, PBKDF2 (310k iterations), IndexedDB persistence, decrypted download, and encrypted backup export/import verified; `tests/day16_encrypted_vault.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-16`. |
-| **Day 17** | Vault Offline Pass Integration | Document attachments to saved journeys, offline document decryption, PIN/biometric unlock simulation. | **DONE-VERIFIED** | Quick-PIN SHA-256 hashing, biometric simulation, `OfflinePassModal`, and Boarding Pass integration in `SavedPlans` verified; `tests/day17_vault_pass.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-17`. |
-| **Day 18** | PWA Installation & Sync | Web App Manifest, Service Worker standalone install, offline asset pre-caching, install prompt banner. | **DONE-VERIFIED** | Web app manifest upgraded, service worker caching verified, and `PwaInstallBanner` with offline badges integrated; `tests/day18_pwa_install.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-18`. |
-| **Day 19** | Privacy & DPDP Compliance | India Digital Personal Data Protection (DPDP) compliance: consent manager, local data deletion, terms/privacy pages. | **DONE-VERIFIED** | Granular consent manager, DPDP disclosures, and Right to Erasure verified; `tests/day19_dpdp_privacy.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-19`. |
-| **Day 20** | Safe Booking Demo Flow | End-to-end realistic demo booking flow with passenger selection, demo verification badge, refusal of payment credentials. | **DONE-VERIFIED** | Credential refusal, disclaimer badges, preferences, and non-ticket references verified; `tests/day20_safe_booking.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-20`. |
-| **Day 21** | SambaNova AI Copilot | Conversational copilot chat, multimodal journey reasoning, contextual transit advice via Llama-3.1 API. | **DONE-VERIFIED** | NLP route parsing, typo tolerance, 10-language greetings, and conversational planner auto-population verified; `tests/day21_sambanova_copilot.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-21`. |
-| **Day 22** | Backup Route & Contingency | Automatic alternative journey calculation if connecting leg faces severe delay (>45 min). | **DONE-VERIFIED** | Contingency engine, connection risk evaluation (>45m threshold), 1-tap fallback activation, and simulator controls verified; `tests/day22_contingency_engine.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-22`. |
-| **Day 23** | Open-Meteo Weather Alerts | Real-time weather, fog, and monsoon disruption warnings for transit junctions via Open-Meteo REST API. | **DONE-VERIFIED** | Open-Meteo REST API integration, Winter Fog (&lt;500m) & Monsoon disruption evaluation, stress test scenarios, and telemetry dashboard verified; `tests/day23_weather_disruptions.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-23`. |
-| **Day 24** | Interactive Route Map | Leaflet route visualizer with station markers, transfer walking/auto path preview, junction highlights. | **DONE-VERIFIED** | Leaflet route visualizer, SVG station markers, junction popups, transit hub platform/auto connection guides, and zoom fit controls verified; `tests/day24_route_map.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-24`. |
-| **Day 25** | Trip Analytics & Carbon | Multi-modal CO2 carbon savings calculator and financial savings comparison against solo flight/cabs. | **DONE-VERIFIED** | Multi-modal CO2 emissions calculator, annual tree offset equivalents, comparative baseline toggle (Flight vs Cab), and financial savings analytics verified; `tests/day25_carbon_analytics.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-25`. |
-| **Day 26** | Mobile UX & Touch Targets | Mobile viewport hardening (390x844), touch target minimum 48px, safe floating docks, zero horizontal overflow. | **DONE-VERIFIED** | 390px zero horizontal overflow verified across Home/Planner/Emergency, touch targets &gt;= 44px, safe area insets, and 28px floating dock clearance verified; `tests/day26_mobile_hardening.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-26`. |
-| **Day 27** | Cross-Browser Regression | Comprehensive multi-viewport testing on desktop (1440x900) and mobile (390x844) with zero console errors. | **DONE-VERIFIED** | Multi-viewport testing (1440x900, 768x1024, 390x844) across all routes with 0 console errors, 0 runtime exceptions, secret key scan clean; `tests/day27_cross_browser.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-27`. |
-| **Day 28** | Judge & Investor Demo Tour | One-click guided walkthrough highlighting the 5 key innovations with real corridor transit data. | **DONE-VERIFIED** | Interactive 5-step modal tour presenting core national innovations with technical highlights, action triggers, and responsive desktop/mobile support; `tests/day28_demo_tour.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-28`. |
-| **Day 29** | Full Regression & Axe Gate | 100% automated test pass rate across all e2e and unit suites; axe accessibility zero errors. | **DONE-VERIFIED** | Full 29-day unit regression passed (155/155 tests); Playwright Axe WCAG 2.1 AA audit passed across Desktop & Mobile viewports (0 critical/serious violations); `tests/day29_full_regression.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-29`. |
-| **Day 30** | Final Production Vercel Deploy | Production Vercel deployment, public access verification without login, Lighthouse mobile audit, CTO handover report. | **DONE-VERIFIED** | Live production deployment verified on `https://travelmate-ai-flowzint.vercel.app`; zero authentication roadblock; `tests/day30_production_deploy.test.mjs` and Playwright E2E passed (5/5); screenshots saved; tagged `day-30`. |
-
+| **Day 1** | Search UI & Deep-Links | Modern hero search, mode tabs, pre-filled deep links | **DONE-VERIFIED** | Commit `ad626cc`, `tests/day1_features.test.mjs` |
+| **Day 2** | Multimodal Split-Routing | Train+Bus & Train+Flight engine with 3 ranked tiers | **DONE-VERIFIED** | Commit `d528467`, `src/utils/multimodalRouter.js` |
+| **Day 3** | Sharing & Reasoning | 1-tap WhatsApp route share, budget/speed filters | **DONE-VERIFIED** | Commit `5a20f3c`, `day3_progress_report.md` |
+| **Day 4** | Junction Navigation & Pass | Hub transfer navigation, visual journey track | **DONE-VERIFIED** | Commit `ceac952`, `src/data/transitHubData.js` |
+| **Day 5** | Quota Hacks & PNR Engine | Station Hopper GN quota bypass, PNR predictor | **DONE-VERIFIED** | Commit `d2317de` & `e7f633a` |
+| **Day 6** | Emergency Mode & 1-Tap SOS | Transit Emergency Mode, GPS extraction, hotlines | **DONE-VERIFIED** | `tests/day6_emergency.test.mjs` |
+| **Day 7** | Tatkal Emergency Mode | Tatkal countdown timer, auto-fill assistant | **DONE-VERIFIED** | `tests/day7_tatkal.test.mjs` |
+| **Day 8** | Live Train Status & Stations | Live train tracker, station boards | **DONE-VERIFIED** | `tests/day8_train_status.test.mjs` |
+| **Day 9** | Low-Network / Offline Mode | Bandwidth detector, offline fallback mode | **DONE-VERIFIED** | `tests/day9_offline.test.mjs` |
+| **Day 10** | Multilingual Localization | 10+ Indian languages, offline fallback | **DONE-VERIFIED** | `tests/day10_multilingual.test.mjs` |
+| **Day 11** | Blind Voice Gate | Spoken accessibility onboarding gate | **DONE-VERIFIED** | `tests/day11_blind_gate.test.mjs` |
+| **Day 12** | Voice Route Parser | Natural-language spoken route parsing | **DONE-VERIFIED** | `tests/day12_voice_parser.test.mjs` |
+| **Day 13** | Agentic Voice Tool-Use | Speech-driven filter controls | **DONE-VERIFIED** | `tests/day13_voice_tools.test.mjs` |
+| **Day 14** | Voice Emergency Trigger | Hands-free emergency trigger | **DONE-VERIFIED** | `tests/day14_voice_emergency.test.mjs` |
+| **Day 15** | Voice A11y & Screen-Reader Gate | WCAG 2.1 AA compliance, axe audit | **DONE-VERIFIED** | `tests/day15_a11y_gate.test.mjs` |
+| **Day 16** | Encrypted Document Vault | Client-side AES-GCM 256-bit encryption | **DONE-VERIFIED** | `tests/day16_encrypted_vault.test.mjs` |
+| **Day 17** | Vault Offline Pass Integration | Document attachments to saved journeys | **DONE-VERIFIED** | `tests/day17_vault_pass.test.mjs` |
+| **Day 18** | PWA Installation & Sync | Web App Manifest, Service Worker | **DONE-VERIFIED** | `tests/day18_pwa_install.test.mjs` |
+| **Day 19** | Privacy & DPDP Compliance | India DPDP Act 2023 compliance | **DONE-VERIFIED** | `tests/day19_dpdp_privacy.test.mjs` |
+| **Day 20** | Safe Booking Demo Flow | Demo booking flow with non-ticket reference | **DONE-VERIFIED** | `tests/day20_safe_booking.test.mjs` |
+| **Day 21** | SambaNova AI Copilot | Conversational copilot chat, Llama-3.1 | **DONE-VERIFIED** | `tests/day21_sambanova_copilot.test.mjs` |
+| **Day 22** | Backup Route & Contingency | Severe delay contingency calculation | **DONE-VERIFIED** | `tests/day22_contingency_engine.test.mjs` |
+| **Day 23** | Open-Meteo Weather Alerts | Weather & fog disruption warnings | **DONE-VERIFIED** | `tests/day23_weather_disruptions.test.mjs` |
+| **Day 24** | Interactive Route Map | Leaflet route visualizer with station markers | **DONE-VERIFIED** | `tests/day24_route_map.test.mjs` |
+| **Day 25** | Trip Analytics & Carbon | Multi-modal CO2 carbon savings calculator | **DONE-VERIFIED** | `tests/day25_carbon_analytics.test.mjs` |
+| **Day 26** | Mobile UX & Touch Targets | Mobile viewport hardening (390x844) | **DONE-VERIFIED** | `tests/day26_mobile_hardening.test.mjs` |
+| **Day 27** | Cross-Browser Regression | Multi-viewport testing (1440x900, 390x844) | **DONE-VERIFIED** | `tests/day27_cross_browser.test.mjs` |
+| **Day 28** | Judge & Investor Demo Tour | One-click guided walkthrough | **DONE-VERIFIED** | `tests/day28_demo_tour.test.mjs` |
+| **Day 29** | Full Regression & Axe Gate | 100% test pass rate across all suites | **DONE-VERIFIED** | `tests/day29_full_regression.test.mjs` |
+| **Day 30** | Final Production Vercel Deploy | Production Vercel deployment | **DONE-VERIFIED** | `tests/day30_production_deploy.test.mjs` |
