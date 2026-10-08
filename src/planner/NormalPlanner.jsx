@@ -55,6 +55,7 @@ export default function NormalPlanner({
   onOpenLiveResults,
   onBookBackup,
   liveStatus = {},
+  resultsOpen = false,
   toast
 }) {
   const [activeInsightTab, setActiveInsightTab] = useState('map')
@@ -388,11 +389,13 @@ export default function NormalPlanner({
           </div>
 
           <div className={activeInsightTab === 'contrast' ? 'block' : 'hidden'}>
-            <WaitlistBypassContrast
-              from={plan.from || 'New Delhi'}
-              to={plan.to || 'Patna Jn'}
-              date={plan.date}
-            />
+            {!resultsOpen && (
+              <WaitlistBypassContrast
+                from={plan.from || 'New Delhi'}
+                to={plan.to || 'Patna Jn'}
+                date={plan.date}
+              />
+            )}
           </div>
 
           <div className={activeInsightTab === 'simulator' ? 'block' : 'hidden'}>

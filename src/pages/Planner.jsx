@@ -541,7 +541,7 @@ export default function Planner({ status, toast, language = 'en' }) {
         ) : mode === 'low-network' ? (
           <LowNetworkPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onBookService={openServiceBooking} toast={toast} status={status} />
         ) : (
-          <NormalPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onFindTicket={handleLiveSearch} onOpenLiveResults={() => setResultsOpen(true)} onBookBackup={openBackupBooking} liveStatus={liveStatus} toast={toast} />
+          <NormalPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onFindTicket={handleLiveSearch} onOpenLiveResults={() => setResultsOpen(true)} onBookBackup={openBackupBooking} liveStatus={liveStatus} resultsOpen={resultsOpen} toast={toast} />
         )}
       </section>
 
