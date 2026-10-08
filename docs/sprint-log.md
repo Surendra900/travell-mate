@@ -66,14 +66,42 @@
 **Git Tag:** `day-2`  
 
 ### Day 2 Task List
-- [ ] Task 2.1: Create open data ETL pipeline in `data/etl/` for Indian Railway stations and timetable stop-times (GODL / ODbL / Open Data sources documented in `docs/data-sources.md`).
-- [ ] Task 2.2: Build Top 25 Junction Hubs directory dataset with platforms, safety ratings, transfer cross-city links, and operating facilities.
-- [ ] Task 2.3: Build Major Airports (IATA/ICAO) and Inter-State Bus Terminals (ISBT) dataset linking to regional transit corridors.
-- [ ] Task 2.4: Implement `prisma/seed.ts` (and standalone JSON fallback seed for zero-db setups) loading all stations, trains, stops, junctions, terminals, and transfer guides.
-- [ ] Task 2.5: Enforce data provenance fields (`source`, `license`, `retrievedAt`, `reliabilityScore`) on every record.
-- [ ] Task 2.6: Write comprehensive data-quality test suite (`tests/day2_data_pipeline.test.mjs`) verifying coordinate validity, timetable chronological monotonicity, no negative durations, and corridor completeness.
-- [ ] Task 2.7: Update UI footer with "Timetable data as of <date>" and attribution notice per Master Spec Section 6.
-- [ ] Task 2.8: Run Day 2 Verification Gate, commit, tag `day-2`, and deploy Vercel Preview.
+- [x] Task 2.1: Create open data ETL pipeline in `data/etl/` for Indian Railway stations and timetable stop-times (GODL / ODbL / Open Data sources documented in `docs/data-sources.md`).
+- [x] Task 2.2: Build Top 25 Junction Hubs directory dataset with platforms, safety ratings, transfer cross-city links, and operating facilities.
+- [x] Task 2.3: Build Major Airports (IATA/ICAO) and Inter-State Bus Terminals (ISBT) dataset linking to regional transit corridors.
+- [x] Task 2.4: Implement `prisma/seed.ts` (and standalone JSON fallback seed for zero-db setups) loading all stations, trains, stops, junctions, terminals, and transfer guides.
+- [x] Task 2.5: Enforce data provenance fields (`source`, `license`, `retrievedAt`, `reliabilityScore`) on every record.
+- [x] Task 2.6: Write comprehensive data-quality test suite (`tests/day2_data_pipeline.test.mjs`) verifying coordinate validity, timetable chronological monotonicity, no negative durations, and corridor completeness.
+- [x] Task 2.7: Update UI footer with "Timetable data as of <date>" and attribution notice per Master Spec Section 6.
+- [x] Task 2.8: Run Day 2 Verification Gate, commit, tag `day-2`, and deploy Vercel Preview.
+
+### Day 2 Verification Evidence
+1. **ETL Extraction Output:** Generated 47 stations, 25 junctions, 22 bus terminals, 17 civil airports, 12 high-frequency trunk trains with 63 stops, and 24 intermodal transfer guides in `data/processed/` and `shared/data/`.
+2. **Data Quality Suite:** 7 out of 7 test suites passing in `tests/day2_data_pipeline.test.mjs` verifying geographic coordinate bounds, chronological monotonic stop sequences, contiguous stop numbering, and non-negative distances.
+3. **Database & Fallback Seed:** `prisma/seed.js` and `prisma/seed.ts` executed with zero errors, validating all models and outputting full attribution.
+4. **UI Attribution:** UI footer in `src/components/Footer.jsx` verified displaying: *"Timetable data as of October 2026 · Map data © OpenStreetMap contributors · Weather data by Open-Meteo"*.
+5. **Full Regression Suite:** 168 of 168 tests passing cleanly across the entire repository.
+6. **Visual QA:** 6 AFTER screenshots captured across desktop-1440 and mobile-390 and indexed in `docs/screenshots/index.html`.
+
+**DAY 2 COMPLETE. Verification passed (168/168). Moving to DAY 3.**
+
+---
+
+## Master Rebuild Entry: Day 3
+**Date:** October 2026  
+**Goal:** Route Recovery Engine v2 — Time-Expanded Timetable Graph, Minimum Connection Times, Risk Slack Classifier, Parametric Reliability Delay Model, Multi-Modal 3-Tier Ranking, and Delay Simulator Tabs  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-3`  
+
+### Day 3 Task List
+- [ ] Task 3.1: Build time-expanded graph search engine in `server/services/routeEngine.js` searching direct options first, then 1-transfer itineraries through the Top 25 junction hubs.
+- [ ] Task 3.2: Implement strict Minimum Connection Time (MCT) matrix in `server/config/connectionTimes.js` (Rail-to-Rail: 45 min; Rail-to-Bus: 105 min; Rail-to-Airport: 210 min; overnight transfer rules).
+- [ ] Task 3.3: Implement connection risk classification and parametric delay reliability model (`Safe` >=120m, `Moderate` 90-119m, `Tight` 60-89m, `High Risk` <60m).
+- [ ] Task 3.4: Implement 3-tier multimodal ranking algorithm (Budget: Rail+Rail, Balanced: Rail+AC Bus, Fastest: Rail+Flight).
+- [ ] Task 3.5: Build inline Delay Contingency Simulator ("If Leg 1 runs late" slider recomputing slack, risk badge, and next 3 viable departures).
+- [ ] Task 3.6: Write unit and property test suite (`tests/day3_engine_v2.test.mjs`) proving zero MCT violations, chronological consistency, and deadline fulfillment.
+- [ ] Task 3.7: Run Day 3 Verification Gate, capture screenshots, commit, tag `day-3`, and deploy Vercel Preview.
+
 
 
 ---

@@ -63,3 +63,24 @@ All 7 bloat components identified in Section 4 have been completely purged from 
 $ git grep -n -E '\b(DocumentVault|EmergencyPhraseCards|CarbonCalculator|StatusBar|FloatingSOS|SmartAssistant|BookingModal)\b' src/
 (Exit code: 1, 0 matches found)
 ```
+
+---
+
+## Day 2: Data Pipeline (ETL & Seed)
+
+### Features Added:
+1. **Master Open Data ETL Pipeline (`data/etl/`)**:
+   - `extractStations.js`: 47 key railway stations with geo-coordinates and state mapping (GODL-India).
+   - `extractJunctions.js`: Top 25 transit junction hubs directory with platforms, transfer metrics, and operating facilities (ODbL).
+   - `extractTerminals.js`: 22 inter-state bus terminals (ISBTs & Central Bus Stands) mapped to regional corridors (ODbL).
+   - `extractAirports.js`: 17 major civil airports with IATA codes and coordinates (OurAirports CC0).
+   - `extractTrainsAndStops.js`: High-frequency trunk train schedules and stop sequences with departure/arrival timings and day offsets (Open Rail Commons).
+   - `extractTransferGuides.js`: 24 intermodal transfer guides (Station <-> Bus Terminal / Airport) with transferMode, distanceKm, approxMinutes, and step-by-step guidance.
+   - `runEtl.js`: Unified ETL runner validating data quality and generating canonical datasets in `data/processed/` and `shared/data/`.
+2. **Prisma Seed Scripts (`prisma/seed.js` and `prisma/seed.ts`)**:
+   - Automated database upsert for Station, Junction, Terminal, Airport, Train, TrainStop, and TransferGuide models with graceful fallback for zero-db setups.
+3. **Data Quality Test Suite (`tests/day2_data_pipeline.test.mjs`)**:
+   - 7 test suites validating coordinate bounds, chronological monotonic stop sequences, non-negative distances, Top 25 hub completeness, and license metadata.
+4. **Attribution & Freshness Footer**:
+   - Standardized timetable attribution strip in `src/components/Footer.jsx`: "Timetable data as of October 2026 · Map data © OpenStreetMap contributors · Weather data by Open-Meteo" per Section 6.
+

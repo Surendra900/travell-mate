@@ -1,0 +1,172 @@
+[
+  {
+    "iataCode": "DEL",
+    "name": "Indira Gandhi International Airport",
+    "city": "Delhi",
+    "latitude": 28.5562,
+    "longitude": 77.1,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "BOM",
+    "name": "Chhatrapati Shivaji Maharaj International Airport",
+    "city": "Mumbai",
+    "latitude": 19.0896,
+    "longitude": 72.8656,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "BLR",
+    "name": "Kempegowda International Airport",
+    "city": "Bengaluru",
+    "latitude": 13.1986,
+    "longitude": 77.7066,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "MAA",
+    "name": "Chennai International Airport",
+    "city": "Chennai",
+    "latitude": 12.9941,
+    "longitude": 80.1709,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "CCU",
+    "name": "Netaji Subhash Chandra Bose International Airport",
+    "city": "Kolkata",
+    "latitude": 22.6547,
+    "longitude": 88.4467,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "HYD",
+    "name": "Rajiv Gandhi International Airport",
+    "city": "Hyderabad",
+    "latitude": 17.2403,
+    "longitude": 78.4294,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "AMD",
+    "name": "Sardar Vallabhbhai Patel International Airport",
+    "city": "Ahmedabad",
+    "latitude": 23.0734,
+    "longitude": 72.6347,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "PNQ",
+    "name": "Pune Airport (Lohegaon)",
+    "city": "Pune",
+    "latitude": 18.5822,
+    "longitude": 73.9197,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "JAI",
+    "name": "Jaipur International Airport",
+    "city": "Jaipur",
+    "latitude": 26.8242,
+    "longitude": 75.8122,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "LKO",
+    "name": "Chaudhary Charan Singh International Airport",
+    "city": "Lucknow",
+    "latitude": 26.7606,
+    "longitude": 80.8893,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "PAT",
+    "name": "Jay Prakash Narayan Airport",
+    "city": "Patna",
+    "latitude": 25.5913,
+    "longitude": 85.088,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "VNS",
+    "name": "Lal Bahadur Shastri International Airport",
+    "city": "Varanasi",
+    "latitude": 25.4524,
+    "longitude": 82.8593,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "BHO",
+    "name": "Raja Bhoj Airport",
+    "city": "Bhopal",
+    "latitude": 23.2875,
+    "longitude": 77.3378,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "NAG",
+    "name": "Dr. Babasaheb Ambedkar International Airport",
+    "city": "Nagpur",
+    "latitude": 21.0922,
+    "longitude": 79.0472,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "VGA",
+    "name": "Vijayawada International Airport",
+    "city": "Vijayawada",
+    "latitude": 16.5304,
+    "longitude": 80.7968,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "VTZ",
+    "name": "Visakhapatnam International Airport",
+    "city": "Visakhapatnam",
+    "latitude": 17.7212,
+    "longitude": 83.2245,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "iataCode": "GWL",
+    "name": "Rajmata Vijaya Raje Scindia Airport",
+    "city": "Gwalior",
+    "latitude": 26.2933,
+    "longitude": 78.2278,
+    "source": "OurAirports Open Database / DGCA India",
+    "license": "Creative Commons Zero (CC0) / Public Domain",
+    "provenance": "TIMETABLE"
+  }
+]

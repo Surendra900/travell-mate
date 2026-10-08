@@ -1,0 +1,429 @@
+[
+  {
+    "id": "junc_ndls",
+    "rank": 1,
+    "stationCode": "NDLS",
+    "cityName": "Delhi",
+    "platformCount": 16,
+    "transferScore": 94,
+    "facilities": [
+      "Cloakroom",
+      "Metro Interchange",
+      "24x7 Waiting Lounge",
+      "Wheelchair Ramps",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_cnb",
+    "rank": 2,
+    "stationCode": "CNB",
+    "cityName": "Kanpur",
+    "platformCount": 10,
+    "transferScore": 91,
+    "facilities": [
+      "Cloakroom",
+      "AC Dormitory",
+      "Prepaid Taxi",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_ddu",
+    "rank": 3,
+    "stationCode": "DDU",
+    "cityName": "Mughalsarai",
+    "platformCount": 8,
+    "transferScore": 89,
+    "facilities": [
+      "Cloakroom",
+      "Retiring Rooms",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_pnbe",
+    "rank": 4,
+    "stationCode": "PNBE",
+    "cityName": "Patna",
+    "platformCount": 10,
+    "transferScore": 88,
+    "facilities": [
+      "Cloakroom",
+      "AC Waiting Hall",
+      "Prepaid Auto",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_hwh",
+    "rank": 5,
+    "stationCode": "HWH",
+    "cityName": "Kolkata",
+    "platformCount": 23,
+    "transferScore": 95,
+    "facilities": [
+      "Cloakroom",
+      "Metro Station (Line 2)",
+      "Ferry Ghat",
+      "24x7 Waiting Lounge",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_jp",
+    "rank": 6,
+    "stationCode": "JP",
+    "cityName": "Jaipur",
+    "platformCount": 8,
+    "transferScore": 90,
+    "facilities": [
+      "Cloakroom",
+      "Metro Interchange",
+      "Tourist Information",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_adi",
+    "rank": 7,
+    "stationCode": "ADI",
+    "cityName": "Ahmedabad",
+    "platformCount": 12,
+    "transferScore": 92,
+    "facilities": [
+      "Cloakroom",
+      "Metro Interchange (Kalupur)",
+      "AC Lounges",
+      "Prepaid Auto"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_bpl",
+    "rank": 8,
+    "stationCode": "BPL",
+    "cityName": "Bhopal",
+    "platformCount": 6,
+    "transferScore": 88,
+    "facilities": [
+      "Cloakroom",
+      "AC Waiting Rooms",
+      "Battery Car Ramps",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_et",
+    "rank": 9,
+    "stationCode": "ET",
+    "cityName": "Itarsi",
+    "platformCount": 8,
+    "transferScore": 86,
+    "facilities": [
+      "Cloakroom",
+      "Retiring Rooms",
+      "24x7 Transit Canteen",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_ngp",
+    "rank": 10,
+    "stationCode": "NGP",
+    "cityName": "Nagpur",
+    "platformCount": 8,
+    "transferScore": 92,
+    "facilities": [
+      "Cloakroom",
+      "Metro Interchange",
+      "AC Retiring Rooms",
+      "Prepaid Taxi"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_vglj",
+    "rank": 11,
+    "stationCode": "VGLJ",
+    "cityName": "Jhansi",
+    "platformCount": 8,
+    "transferScore": 87,
+    "facilities": [
+      "Cloakroom",
+      "Waiting Hall",
+      "Prepaid Auto",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_gwl",
+    "rank": 12,
+    "stationCode": "GWL",
+    "cityName": "Gwalior",
+    "platformCount": 5,
+    "transferScore": 85,
+    "facilities": [
+      "Cloakroom",
+      "Retiring Rooms",
+      "Wheelchair Service"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_pryj",
+    "rank": 13,
+    "stationCode": "PRYJ",
+    "cityName": "Prayagraj",
+    "platformCount": 10,
+    "transferScore": 89,
+    "facilities": [
+      "Cloakroom",
+      "AC Waiting Lounge",
+      "Battery Cars",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_bsb",
+    "rank": 14,
+    "stationCode": "BSB",
+    "cityName": "Varanasi",
+    "platformCount": 9,
+    "transferScore": 90,
+    "facilities": [
+      "Cloakroom",
+      "AC Retiring Rooms",
+      "Prepaid Taxi",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_gkp",
+    "rank": 15,
+    "stationCode": "GKP",
+    "cityName": "Gorakhpur",
+    "platformCount": 10,
+    "transferScore": 87,
+    "facilities": [
+      "Cloakroom (Longest Platform)",
+      "Retiring Rooms",
+      "Bus Interchange"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_kgp",
+    "rank": 16,
+    "stationCode": "KGP",
+    "cityName": "Kharagpur",
+    "platformCount": 12,
+    "transferScore": 88,
+    "facilities": [
+      "Cloakroom",
+      "AC Waiting Hall",
+      "RPF Post"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_bza",
+    "rank": 17,
+    "stationCode": "BZA",
+    "cityName": "Vijayawada",
+    "platformCount": 10,
+    "transferScore": 93,
+    "facilities": [
+      "Cloakroom",
+      "AC Retiring Rooms",
+      "Escalators",
+      "Prepaid Auto",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_vskp",
+    "rank": 18,
+    "stationCode": "VSKP",
+    "cityName": "Visakhapatnam",
+    "platformCount": 8,
+    "transferScore": 90,
+    "facilities": [
+      "Cloakroom",
+      "Executive Lounge",
+      "Prepaid Taxi",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_sc",
+    "rank": 19,
+    "stationCode": "SC",
+    "cityName": "Hyderabad",
+    "platformCount": 10,
+    "transferScore": 93,
+    "facilities": [
+      "Cloakroom",
+      "Metro Interchange",
+      "AC Waiting Lounge",
+      "Prepaid Taxi",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_gtl",
+    "rank": 20,
+    "stationCode": "GTL",
+    "cityName": "Guntakal",
+    "platformCount": 7,
+    "transferScore": 84,
+    "facilities": [
+      "Cloakroom",
+      "Retiring Rooms",
+      "Transit Refreshments"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_sbc",
+    "rank": 21,
+    "stationCode": "SBC",
+    "cityName": "Bengaluru",
+    "platformCount": 10,
+    "transferScore": 95,
+    "facilities": [
+      "Cloakroom",
+      "Namma Metro Interchange",
+      "BMTC Bus Terminus Sub-Way",
+      "Executive Lounge",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_kpd",
+    "rank": 22,
+    "stationCode": "KPD",
+    "cityName": "Katpadi",
+    "platformCount": 5,
+    "transferScore": 86,
+    "facilities": [
+      "Cloakroom",
+      "Vellore Bus Shuttle",
+      "Waiting Rooms"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_mas",
+    "rank": 23,
+    "stationCode": "MAS",
+    "cityName": "Chennai",
+    "platformCount": 12,
+    "transferScore": 95,
+    "facilities": [
+      "Cloakroom",
+      "Chennai Metro Interchange",
+      "Central Bus Bays",
+      "Air-Conditioned Lounge",
+      "RPF Help Desk"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_pune",
+    "rank": 24,
+    "stationCode": "PUNE",
+    "cityName": "Pune",
+    "platformCount": 6,
+    "transferScore": 92,
+    "facilities": [
+      "Cloakroom",
+      "Pune Metro Interchange",
+      "AC Waiting Hall",
+      "Prepaid Auto",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "id": "junc_mmct",
+    "rank": 25,
+    "stationCode": "MMCT",
+    "cityName": "Mumbai",
+    "platformCount": 9,
+    "transferScore": 94,
+    "facilities": [
+      "Cloakroom",
+      "Mumbai Metro Interchange",
+      "Pod Hotel Retiring Units",
+      "Prepaid Taxi",
+      "RPF Station"
+    ],
+    "source": "TravelMate National Transit Directory & data.gov.in",
+    "license": "Open Database License (ODbL) / GODL-India",
+    "provenance": "TIMETABLE"
+  }
+]

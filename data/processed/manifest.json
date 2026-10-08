@@ -1,0 +1,51 @@
+{
+  "pipelineVersion": "2.0.0",
+  "generatedAt": "2026-10-08T11:08:11.496Z",
+  "freshnessAsOf": "October 2026",
+  "attribution": "Timetable data as of October 2026. Map data © OpenStreetMap contributors. Weather data by Open-Meteo.",
+  "domains": {
+    "stations": {
+      "source": "data.gov.in / Indian Railways Station Master",
+      "license": "Government Open Data License (GODL-India)",
+      "retrievedAt": "2026-10-01",
+      "provenance": "TIMETABLE",
+      "count": 47
+    },
+    "junctions": {
+      "source": "TravelMate National Transit Directory & data.gov.in",
+      "license": "Open Database License (ODbL) / GODL-India",
+      "retrievedAt": "2026-10-01",
+      "provenance": "TIMETABLE",
+      "count": 25
+    },
+    "terminals": {
+      "source": "OpenStreetMap (OSM) / State Road Transport Corporations",
+      "license": "Open Database License (ODbL) 1.0",
+      "retrievedAt": "2026-10-01",
+      "provenance": "TIMETABLE",
+      "count": 22
+    },
+    "airports": {
+      "source": "OurAirports Open Database / DGCA India",
+      "license": "Creative Commons Zero (CC0) / Public Domain",
+      "retrievedAt": "2026-10-01",
+      "provenance": "TIMETABLE",
+      "count": 17
+    },
+    "trainsAndStops": {
+      "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+      "license": "Open Database License (ODbL) / Public Domain",
+      "retrievedAt": "2026-10-01",
+      "provenance": "TIMETABLE",
+      "trainCount": 12,
+      "stopCount": 63
+    },
+    "transferGuides": {
+      "source": "TravelMate Intermodal Connectivity Directory & OpenStreetMap Routing",
+      "license": "Open Database License (ODbL) / Public Domain",
+      "retrievedAt": "2026-10-01",
+      "provenance": "ESTIMATE",
+      "count": 24
+    }
+  }
+}

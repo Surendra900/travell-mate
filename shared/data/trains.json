@@ -1,0 +1,134 @@
+[
+  {
+    "number": "12302",
+    "name": "Howrah Rajdhani Express",
+    "type": "Rajdhani",
+    "originCode": "NDLS",
+    "destCode": "HWH",
+    "runsOnDays": "1111110",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12301",
+    "name": "New Delhi Rajdhani Express",
+    "type": "Rajdhani",
+    "originCode": "HWH",
+    "destCode": "NDLS",
+    "runsOnDays": "1111110",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12394",
+    "name": "Sampoorna Kranti Express",
+    "type": "Superfast",
+    "originCode": "NDLS",
+    "destCode": "PNBE",
+    "runsOnDays": "1111111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "22436",
+    "name": "Varanasi Vande Bharat Express",
+    "type": "Vande Bharat",
+    "originCode": "NDLS",
+    "destCode": "BSB",
+    "runsOnDays": "1110111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12952",
+    "name": "Mumbai Central Rajdhani Express",
+    "type": "Rajdhani",
+    "originCode": "NDLS",
+    "destCode": "MMCT",
+    "runsOnDays": "1111111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12628",
+    "name": "Karnataka Express",
+    "type": "Superfast",
+    "originCode": "NDLS",
+    "destCode": "SBC",
+    "runsOnDays": "1111111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12724",
+    "name": "Telangana Express",
+    "type": "Superfast",
+    "originCode": "NDLS",
+    "destCode": "HYB",
+    "runsOnDays": "1111111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12841",
+    "name": "Coromandel Express",
+    "type": "Superfast",
+    "originCode": "HWH",
+    "destCode": "MAS",
+    "runsOnDays": "1111111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "20834",
+    "name": "Visakhapatnam Vande Bharat Express",
+    "type": "Vande Bharat",
+    "originCode": "SC",
+    "destCode": "VSKP",
+    "runsOnDays": "1111110",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12028",
+    "name": "KSR Bengaluru - Chennai Shatabdi",
+    "type": "Shatabdi",
+    "originCode": "SBC",
+    "destCode": "MAS",
+    "runsOnDays": "1111110",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "20607",
+    "name": "Chennai - Mysuru Vande Bharat",
+    "type": "Vande Bharat",
+    "originCode": "MAS",
+    "destCode": "SBC",
+    "runsOnDays": "1111110",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  },
+  {
+    "number": "12123",
+    "name": "Deccan Queen Express",
+    "type": "Superfast",
+    "originCode": "CSMT",
+    "destCode": "PUNE",
+    "runsOnDays": "1111111",
+    "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
+    "license": "Open Database License (ODbL) / Public Domain",
+    "provenance": "TIMETABLE"
+  }
+]
