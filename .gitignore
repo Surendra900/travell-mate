@@ -9,5 +9,16 @@ npm-debug.log*
 
 .vercel
 .env*
-
-.vercel
+.agent/
+.agents/
+.gemini/
+.gsd/
+.vscode/
+GSD-STYLE.md
+PROJECT_RULES.md
+VERSION
+adapters/
+model_capabilities.yaml
+scripts/search_repo.*
+scripts/setup_search.*
+scripts/validate-*

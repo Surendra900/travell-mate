@@ -22,7 +22,7 @@
 | **Day 7** | **Passes, Safety & Grounded AI** | Offline boarding passes; Transit Safety drawer (112/139 + GPS); contextual weather alerts; 2 server-side grounded AI endpoints. | **DONE-VERIFIED** | `day-7` |
 | **Day 8** | **Comprehensive QA & A11y** | States (loading, empty, error, skeleton); responsive layout check (390px / 768px / 1440px); axe WCAG 2.1 AA audit; click budget test. | **DONE-VERIFIED** | `day-8` |
 | **Day 9** | **Hardening & Compliance** | Security audit; DPDP 2023 statutory consent & data minimization; privacy, terms, and disclaimer pages; analytics & error boundaries. | **DONE-VERIFIED** | `day-9` |
-| **Day 10** | **Release & Pitch Assets** | Production Vercel deployment; public access verification; 60s pitch & 45s demo script; judge objection Q&A; final regression gate. | PENDING | `day-10` |
+| **Day 10** | **Release & Pitch Assets** | Production Vercel deployment; public access verification; 60s pitch & 45s demo script; judge objection Q&A; final regression gate. | **DONE-VERIFIED** | `day-10` |
 
 ---
 

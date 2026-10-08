@@ -35,6 +35,8 @@ This matrix tracks the authoritative disposition and status of every feature in 
 | **DPDP 2023 Consent & Privacy Policy** | **ADD (P1)** | WORKING | Local-First Zero-ID + Sec 12 Erasure | `tests/day9_security_dpdp_compliance.test.mjs` | `docs/screenshots/day-9/after/desktop-01-privacy-policy.png` |
 | **Terms of Service & Legal Disclaimers** | **ADD (P1)** | WORKING | Statutory Independent Booking Notice | `tests/day9_security_dpdp_compliance.test.mjs` | `docs/screenshots/day-9/after/desktop-02-terms-of-service.png` |
 | **Anonymous Feedback Loop** | **ADD (P1)** | WORKING | Zero-ID Anonymous Local Queue | `tests/day9_security_dpdp_compliance.test.mjs` | `docs/screenshots/day-9/after/desktop-05-feedback-modal.png` |
+| **Release & Pitch Asset Suite** | **ADD (P0)** | WORKING | Comprehensive Investor & Judge Documentation | `tests/day10_release_regression.test.mjs` | `docs/screenshots/day-10/after/desktop-01-home.png` |
+| **Production Multi-Viewport PWA** | **RELEASE (P0)** | WORKING | PWA Standalone Manifest & Vercel Deploy | `tests/day10_release_regression.test.mjs` | `docs/screenshots/day-10/after/mobile-01-home.png` |
 | **Encrypted Document Vault** | **REMOVE COMPLETELY** | REMOVED | None (Irrelevant bloat) | Grep verification (0 refs) | N/A |
 | **Regional Transit Phrases** | **REMOVE COMPLETELY** | REMOVED | None (Dictionary bloat) | Grep verification (0 refs) | N/A |
 | **Carbon Footprint Calculator** | **REMOVE COMPLETELY** | REMOVED | None (Virtue metric bloat) | Grep verification (0 refs) | N/A |
