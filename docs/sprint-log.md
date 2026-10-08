@@ -236,6 +236,59 @@
 
 ---
 
+## Master Rebuild Entry: Day 8
+**Date:** October 2026  
+**Goal:** Comprehensive States (Loading, Empty, Error, Skeletons), Multi-Viewport Responsive Layout (390px, 768px, 1440px), WCAG 2.1 AA Accessibility Audit, First-Time User Tasks, and Click-Budget Validation  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-8`  
+
+### Day 8 Task List
+- [x] Task 8.1: Initialize Day 8 task tracking in `docs/sprint-log.md`.
+- [x] Task 8.2: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for core application screens (`docs/screenshots/day-8/before/`).
+- [x] Task 8.3: Comprehensive States Hardening (Master Spec U9):
+  - Audit and polish loading skeletons, zero-result empty states, and error boundary states across Home, Results, Tatkal Desk, and Passes & Safety.
+  - Ensure empty results provide clear recovery instructions: *"No direct trains found. TravelMate found alternative multimodal routes."*
+- [x] Task 8.4: Multi-Viewport Responsive Layout Audit (Master Spec U10):
+  - Enforce zero horizontal overflow (`scrollWidth <= innerWidth`) on 390px (mobile), 768px (tablet), and 1440px (desktop).
+  - Verify touch target dimensions meet WCAG minimums ($\ge 44\text{px}$).
+- [x] Task 8.5: Axe Accessibility Gate (Master Spec U11, Section 13):
+  - Automated Axe accessibility audit across Home, Results, Tatkal Desk, and Passes & Safety ensuring zero critical and zero serious violations.
+  - Visible focus indicators, accessible modals (`aria-modal`, `role="dialog"`), and full keyboard navigation.
+- [x] Task 8.6: First-Time User Task & Click-Budget Verification (Master Spec Section 8):
+  - Search to Results: $\le 3$ user interactions.
+  - Result to Booking: $\le 2$ user interactions.
+  - Task flows: (1) Alternative route search, (2) PNR lookup & estimate, (3) Demo scenario walkthrough, (4) Save & view offline boarding pass, (5) 1-tap transit helpline dial.
+- [x] Task 8.7: Write comprehensive Day 8 test suite (`tests/day8_states_responsive_a11y.test.mjs`, 8/8 passing).
+- [x] Task 8.8: Capture AFTER screenshots in `docs/screenshots/day-8/after/` and update `docs/screenshots/index.html`.
+- [x] Task 8.9: Run Day 8 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-8`, and deploy Vercel Preview.
+
+### Day 8 Verification Evidence
+1. **Comprehensive UI States (Master Spec U9):**
+   - Verified skeleton loaders (`data-testid="results-skeleton-loader"`), direct waitlist empty states with recovery suggestions (`data-testid="empty-direct-results"`: *"No direct trains found. TravelMate found alternative multimodal routes through regional junctions with confirmed quotas."*), results error recovery (`data-testid="results-error-state"`, `data-testid="error-retry-btn"`), and empty saved trips state (`data-testid="empty-saved-plans"`).
+2. **Multi-Viewport Responsive Hardening (Master Spec U10):**
+   - Tested across Mobile (390x844), Tablet (768x1024), and Desktop (1440x900). Zero horizontal overflow (`overflow-x:hidden`, `max-width: 100vw`).
+   - Touch targets comply with WCAG minimums ($\ge 44\text{px}$ touch target height for buttons, tabs, comboboxes, and deep links).
+3. **Accessibility & Keyboard Semantics (Master Spec U11, Section 13):**
+   - Verified ARIA landmark roles (`aria-label="Primary navigation"`), ARIA combobox semantics on `StationAutocomplete` (`role="combobox"`, `aria-expanded`), dialog semantics on modals (`role="dialog"`, `aria-modal="true"` on `OfflineTravelerPassModal` and `PnrPredictorModal`), and WCAG color contrast standards.
+4. **Click-Budget & First-Time User Tasks (Master Spec Section 8):**
+   - Search Click-Budget: $\le 3$ interactions (`select-origin` $\to$ `select-destination` $\to$ `click-search`).
+   - Booking Click-Budget: $\le 2$ interactions (`select-route-tier` $\to$ `click-official-deep-link`).
+   - All 5 first-time user tasks proven:
+     1. Alternative multimodal routes through regional junctions (`generateMultimodalRoutes`).
+     2. PNR status lookup and waitlist confirmation odds estimation (`predictWaitlistConfirmation`).
+     3. Honest Demo Scenario Mode walkthrough (`data-testid="demo-mode-banner"`).
+     4. Save, view, and print offline boarding pass (`data-testid="view-offline-pass-btn"`, `data-testid="print-pass-btn"`).
+     5. 1-tap national transit helplines (112, 139) and GPS telemetry sharing (`data-testid="helpline-112"`, `data-testid="share-gps-pin-btn"`).
+5. **Full Automated Test Suite:**
+   - 205 out of 205 tests passing cleanly across the entire repository (`npm test`).
+   - `npm run check` passed 100% (audit, tests, and Vite production bundle compiled in 1.78s).
+6. **Visual QA Gallery:**
+   - 7 BEFORE screenshots and 10 AFTER screenshots captured across Desktop, Tablet, and Mobile viewports in `docs/screenshots/day-8/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 8 COMPLETE. Verification passed (205/205). Moving to DAY 9.**
+
+---
+
 ## Sprint Entry: Day 6 (Archived Baseline)
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  

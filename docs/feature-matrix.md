@@ -29,6 +29,9 @@ This matrix tracks the authoritative disposition and status of every feature in 
 | **"Waitlist Bypass" Visual Contrast** | **ADD (P0)** | WORKING | TIMETABLE Direct vs Split Graph | `tests/day5_results_experience.test.mjs` | `docs/screenshots/day-5/after/desktop-01-results-contrast.png` |
 | **Inline Delay Contingency Simulator** | **ADD (P0)** | WORKING | Parametric Slack Absorption Model | `tests/day5_results_experience.test.mjs` | `docs/screenshots/day-5/after/desktop-02-delay-simulator.png` |
 | **Statutory Split Booking Disclosures** | **ADD (P0)** | WORKING | Section 5 Mandatory Legal Notice | `tests/day5_results_experience.test.mjs` | `docs/screenshots/day-5/after/desktop-01-results-contrast.png` |
+| **Comprehensive UI States (Skeletons, Empty, Error)** | **HARDEN (P0)** | WORKING | Skeletons & Recovery Guidance (Spec U9) | `tests/day8_states_responsive_a11y.test.mjs` | `docs/screenshots/day-8/after/desktop-02-planner.png` |
+| **Multi-Viewport Layout (390px, 768px, 1440px)** | **HARDEN (P0)** | WORKING | Zero Overflow & 44px Touch Targets (Spec U10) | `tests/day8_states_responsive_a11y.test.mjs` | `docs/screenshots/day-8/after/mobile-02-planner.png` |
+| **WCAG 2.1 AA Accessibility & Click Budget** | **HARDEN (P0)** | WORKING | ARIA Combobox/Dialog, <=3 Search, <=2 Book (Spec U11, Sec 8) | `tests/day8_states_responsive_a11y.test.mjs` | `docs/screenshots/day-8/after/desktop-01-home.png` |
 | **Encrypted Document Vault** | **REMOVE COMPLETELY** | REMOVED | None (Irrelevant bloat) | Grep verification (0 refs) | N/A |
 | **Regional Transit Phrases** | **REMOVE COMPLETELY** | REMOVED | None (Dictionary bloat) | Grep verification (0 refs) | N/A |
 | **Carbon Footprint Calculator** | **REMOVE COMPLETELY** | REMOVED | None (Virtue metric bloat) | Grep verification (0 refs) | N/A |

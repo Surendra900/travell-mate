@@ -470,10 +470,37 @@ export default function LiveResultsPanel({
                   <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
                 </div>
 
+                {status.error && (
+                  <div data-testid="results-error-state" className="rounded-2xl border border-red-300 bg-red-50 p-6 text-center mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-700 mx-auto flex items-center justify-center mb-3">
+                      <AlertTriangle size={24} />
+                    </div>
+                    <h4 className="text-base font-extrabold text-red-950">
+                      Unable to load direct provider results
+                    </h4>
+                    <p className="text-sm text-red-700 max-w-lg mx-auto mt-1 leading-relaxed">
+                      {status.error || 'The provider API is temporarily unreachable or returned an unexpected response.'}
+                    </p>
+                    <button
+                      type="button"
+                      data-testid="error-retry-btn"
+                      onClick={onRetry}
+                      className="btn-primary mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+                    >
+                      <RefreshCw size={14} />
+                      <span>Retry provider search</span>
+                    </button>
+                  </div>
+                )}
+
                 {loading ? (
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div data-testid="results-skeleton-loader" className="grid gap-4 md:grid-cols-2">
                     {[0, 1].map((idx) => (
-                      <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse" />
+                      <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse">
+                        <div className="h-4 bg-slate-200 rounded w-1/3 mb-4"></div>
+                        <div className="h-8 bg-slate-200 rounded w-2/3 mb-4"></div>
+                        <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                      </div>
                     ))}
                   </div>
                 ) : hasResults ? (
@@ -490,7 +517,7 @@ export default function LiveResultsPanel({
                     ))}
                   </div>
                 ) : (
-                  <div className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
+                  <div data-testid="empty-direct-results" className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
                     <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
                       <Sparkles size={24} />
                     </div>
@@ -498,7 +525,7 @@ export default function LiveResultsPanel({
                       No direct {transport.toLowerCase()} seats available
                     </h4>
                     <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
-                      Direct {transport.toLowerCase()} options for this date are unavailable or fully waitlisted. {multimodalRoutes.length > 0 ? "TravelMate has discovered split-route recovery options via transfer junctions above so you can still reach your destination on time." : "Try checking nearby dates or exploring Tatkal emergency options in the planner."}
+                      No direct {transport.toLowerCase()}s found. {multimodalRoutes.length > 0 ? `TravelMate found ${multimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
                     </p>
                   </div>
                 )}

@@ -169,8 +169,25 @@ export default function SavedPlans({ toast }) {
             <span className="text-xs font-semibold text-slate-500">{plans.length} total saved</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {plans.slice(0, 2).map((plan) => {
+          {plans.length === 0 ? (
+            <div data-testid="empty-saved-plans" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 mx-auto flex items-center justify-center mb-4">
+                <Bookmark size={26} />
+              </div>
+              <h3 className="text-lg font-black text-slate-900">No saved journeys yet</h3>
+              <p className="text-sm text-slate-500 max-w-md mx-auto mt-1.5 leading-relaxed">
+                When you find an optimal route recovery option in the planner, save it here to access it instantly offline with 1-click boarding passes.
+              </p>
+              <div className="mt-5 flex justify-center">
+                <Link to="/planner" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold shadow-md shadow-sky-600/20">
+                  <span>Explore Route Recovery</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {plans.slice(0, 2).map((plan) => {
               const service = plan.selectedService || {}
               const ModeIcon = iconFor(plan.transportMode)
               const name =
@@ -260,24 +277,8 @@ export default function SavedPlans({ toast }) {
                 </article>
               )
             })}
-
-            {plans.length === 0 && (
-              <div className="col-span-full bg-white rounded-3xl border border-dashed border-slate-300 p-10 text-center">
-                <Bookmark size={32} className="mx-auto text-slate-400 mb-3" />
-                <h3 className="text-lg font-bold text-slate-900">No trips saved yet</h3>
-                <p className="text-sm text-slate-500 max-w-sm mx-auto mt-1 mb-5">
-                  Search any train, bus, or flight in Journey Planner and tap "Save to Trips" to keep it accessible here.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => navigate('/planner')}
-                  className="btn-primary text-sm font-bold"
-                >
-                  Plan Your First Trip
-                </button>
-              </div>
-            )}
           </div>
+          )}
         </section>
 
         {/* Offline Pack Generator */}

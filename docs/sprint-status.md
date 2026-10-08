@@ -20,7 +20,7 @@
 | **Day 5** | **Results & Split Routes** | Direct vs Split contrast; journey cards; interactive route map; risk badges; delay slider tab; deep-link buttons; legal disclosures. | **DONE-VERIFIED** | `day-5` |
 | **Day 6** | **Urgent Mode & Tatkal Desk** | "Need to travel tonight?" 12-hour preset; Tatkal dual-window countdown; local passenger auto-fill pass; simplified PNR estimate. | **DONE-VERIFIED** | `day-6` |
 | **Day 7** | **Passes, Safety & Grounded AI** | Offline boarding passes; Transit Safety drawer (112/139 + GPS); contextual weather alerts; 2 server-side grounded AI endpoints. | **DONE-VERIFIED** | `day-7` |
-| **Day 8** | **Comprehensive QA & A11y** | States (loading, empty, error, skeleton); responsive layout check (390px / 768px / 1440px); axe WCAG 2.1 AA audit; click budget test. | PENDING | `day-8` |
+| **Day 8** | **Comprehensive QA & A11y** | States (loading, empty, error, skeleton); responsive layout check (390px / 768px / 1440px); axe WCAG 2.1 AA audit; click budget test. | **DONE-VERIFIED** | `day-8` |
 | **Day 9** | **Hardening & Compliance** | Security audit; DPDP 2023 statutory consent & data minimization; privacy, terms, and disclaimer pages; analytics & error boundaries. | PENDING | `day-9` |
 | **Day 10** | **Release & Pitch Assets** | Production Vercel deployment; public access verification; 60s pitch & 45s demo script; judge objection Q&A; final regression gate. | PENDING | `day-10` |
 

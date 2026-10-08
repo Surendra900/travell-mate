@@ -174,3 +174,26 @@ $ git grep -n -E '\b(DocumentVault|EmergencyPhraseCards|CarbonCalculator|StatusB
 3. **Contextual Weather Disruption (`src/components/MultimodalTimelineCard.jsx`, `src/utils/weatherDisruptionEngine.js`)**:
    - Contextual weather check card (`data-testid="route-contextual-weather"`) evaluating Open-Meteo weather codes and visibility for transfer hubs without full-screen clutter.
 
+---
+
+## Day 8: Comprehensive States, Multi-Viewport Responsive Layout & Accessibility Gate
+
+### Features Hardened & Polished:
+1. **Comprehensive UI States (Master Spec U9)**:
+   - Polished loading skeleton loaders in `src/components/LiveResultsPanel.jsx` (`data-testid="results-skeleton-loader"`).
+   - Added helpful empty results state (`data-testid="empty-direct-results"`) providing constructive recovery instructions: *"No direct trains found. TravelMate found alternative multimodal routes through regional junctions with confirmed quotas."*
+   - Hardened error boundary and fetch failure states (`data-testid="results-error-state"`, `data-testid="error-retry-btn"`).
+   - Polished empty state for saved journeys in `src/pages/SavedPlans.jsx` (`data-testid="empty-saved-plans"`).
+2. **Multi-Viewport Responsive Hardening (Master Spec U10)**:
+   - Verified zero horizontal overflow on mobile (390px), tablet (768px), and desktop (1440px) with `overflow-x:hidden` and `max-width: 100vw`.
+   - Audited all touch target dimensions to ensure $\ge 44\text{px}$ touch target height for buttons, tabs, comboboxes, and deep links.
+3. **Accessibility & ARIA Semantics (Master Spec U11, Section 13)**:
+   - Added/verified ARIA landmark roles (`aria-label="Primary navigation"` in `Navbar.jsx`).
+   - Verified combobox semantics on `StationAutocomplete` (`role="combobox"`, `aria-expanded`).
+   - Verified dialog semantics and modal attributes on `OfflineTravelerPassModal` and `PnrPredictorModal` (`role="dialog"`, `aria-modal="true"`).
+4. **Click-Budget & User Task Verification (Master Spec Section 8)**:
+   - Verified Search-to-Results budget ($\le 3$ interactions: origin $\to$ destination $\to$ search).
+   - Verified Result-to-Booking budget ($\le 2$ interactions: select route tier $\to$ tap deep link).
+   - Verified all 5 first-time user flows (alternative route search, PNR confirmation odds, demo mode walkthrough, offline boarding pass, 1-tap transit emergency helplines).
+
+
