@@ -9,7 +9,9 @@ export default function StationAutocomplete({
   onChange,
   placeholder = 'Search by station or city (e.g. NDLS, Mumbai)',
   required = false,
-  className = ''
+  className = '',
+  inputTestId = '',
+  ...rest
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState(value)
@@ -93,6 +95,7 @@ export default function StationAutocomplete({
         <input
           ref={inputRef}
           id={id}
+          data-testid={inputTestId || rest['data-testid']}
           type="text"
           role="combobox"
           aria-expanded={isOpen}

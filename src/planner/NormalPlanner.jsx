@@ -13,12 +13,17 @@ import {
   Sparkles,
   Ticket,
   TrainFront,
-  Users
+  Users,
+  Zap,
+  SlidersHorizontal
 } from 'lucide-react'
 import BackupPlan from '../components/BackupPlan'
 import TrainRunningStatus from './TrainRunningStatus'
 import WeatherDisruptionAlert from '../components/WeatherDisruptionAlert'
 import RouteMap from '../components/RouteMap'
+import StationAutocomplete from '../components/StationAutocomplete'
+import WaitlistBypassContrast from '../components/WaitlistBypassContrast'
+import DelayContingencySimulator from '../components/DelayContingencySimulator'
 import {
   airlineOptions,
   getCabinOptions,
@@ -35,8 +40,6 @@ function Field({ label, children }) {
     </label>
   )
 }
-
-const cityOptions = transportPlaces.map((item) => item.city)
 
 function classOptions(mode) {
   return getCabinOptions(mode)
@@ -125,34 +128,25 @@ export default function NormalPlanner({
             })}
           </div>
 
-          <datalist id="city-list">
-            {cityOptions.map((city) => (
-              <option key={city} value={city} />
-            ))}
-          </datalist>
-
-          {/* Route Grid: From ⇄ To */}
+          {/* Route Grid: From ⇄ To with StationAutocomplete */}
           <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-3 items-end">
-            <Field label={routeLabels.from}>
-              <div className="relative">
-                <MapPin size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  list="city-list"
-                  className="input pl-10"
-                  data-testid="planner-from-input"
-                  value={plan.from}
-                  placeholder={routeLabels.fromPlaceholder}
-                  onChange={(e) =>
-                    update({
-                      from: e.target.value,
-                      selectedService: null,
-                      selectedServiceName: '',
-                      selectedServiceCode: ''
-                    })
-                  }
-                />
-              </div>
-            </Field>
+            <div>
+              <StationAutocomplete
+                id="planner-from-autocomplete"
+                label={routeLabels.from}
+                value={plan.from}
+                inputTestId="planner-from-input"
+                placeholder={routeLabels.fromPlaceholder}
+                onChange={(val) =>
+                  update({
+                    from: val,
+                    selectedService: null,
+                    selectedServiceName: '',
+                    selectedServiceCode: ''
+                  })
+                }
+              />
+            </div>
 
             <div className="flex justify-center pb-1">
               <button
@@ -165,26 +159,23 @@ export default function NormalPlanner({
               </button>
             </div>
 
-            <Field label={routeLabels.to}>
-              <div className="relative">
-                <MapPin size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  list="city-list"
-                  className="input pl-10"
-                  data-testid="planner-to-input"
-                  value={plan.to}
-                  placeholder={routeLabels.toPlaceholder}
-                  onChange={(e) =>
-                    update({
-                      to: e.target.value,
-                      selectedService: null,
-                      selectedServiceName: '',
-                      selectedServiceCode: ''
-                    })
-                  }
-                />
-              </div>
-            </Field>
+            <div>
+              <StationAutocomplete
+                id="planner-to-autocomplete"
+                label={routeLabels.to}
+                value={plan.to}
+                inputTestId="planner-to-input"
+                placeholder={routeLabels.toPlaceholder}
+                onChange={(val) =>
+                  update({
+                    to: val,
+                    selectedService: null,
+                    selectedServiceName: '',
+                    selectedServiceCode: ''
+                  })
+                }
+              />
+            </div>
           </div>
 
           {/* Journey Meta Grid: Date, Passengers, Class, Airline */}
@@ -315,16 +306,18 @@ export default function NormalPlanner({
         <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
           <div>
             <h3 className="text-xl font-black text-slate-950">
-              Journey Intelligence & Live Insights
+              Journey Intelligence & Recovery Tools
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Inspect interactive route topology, live delays, and weather hazards.
+              Inspect interactive route topology, bypass alternatives, delay impact, and weather hazards.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2" role="tablist">
             {[
               { id: 'map', label: 'Route Map', icon: Compass },
+              { id: 'contrast', label: 'Bypass Contrast', icon: Zap },
+              { id: 'simulator', label: 'Delay Simulator', icon: Clock },
               { id: 'tracker', label: 'Live Train Tracker', icon: Clock },
               { id: 'weather', label: 'Disruption Monitor', icon: ShieldAlert }
             ].map(({ id, label, icon: Icon }) => (
@@ -351,6 +344,18 @@ export default function NormalPlanner({
         <div className="mt-6">
           <div className={activeInsightTab === 'map' ? 'block' : 'hidden'}>
             <RouteMap plan={plan} />
+          </div>
+
+          <div className={activeInsightTab === 'contrast' ? 'block' : 'hidden'}>
+            <WaitlistBypassContrast
+              from={plan.from || 'New Delhi'}
+              to={plan.to || 'Patna Jn'}
+              date={plan.date}
+            />
+          </div>
+
+          <div className={activeInsightTab === 'simulator' ? 'block' : 'hidden'}>
+            <DelayContingencySimulator />
           </div>
 
           <div className={activeInsightTab === 'tracker' ? 'block' : 'hidden'}>

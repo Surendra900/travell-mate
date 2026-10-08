@@ -3,7 +3,7 @@ import { searchRecoveryRoutes } from '../server/services/routeEngine.js';
 import { simulateLeg1Delay } from '../server/services/contingencyEngine.js';
 
 export default async function handler(req, res) {
-  if (!await prepareApiRequest(req, res, { rateLimit: 40 })) return;
+  if (!await prepareApiRequest(req, res, { methods: ['GET', 'POST'], rateLimit: 40 })) return;
 
   // Handle POST for Delay Simulation
   if (req.method === 'POST') {

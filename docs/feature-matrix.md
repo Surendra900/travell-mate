@@ -23,7 +23,10 @@ This matrix tracks the authoritative disposition and status of every feature in 
 | **Contextual Weather Disruption** | **SIMPLIFY (P2)** | WORKING | Open-Meteo REST API | `tests/day23_weather_disruptions.test.mjs` | `docs/screenshots/day-0/before/desktop-1440-02-planner.png` |
 | **Grounded AI Query Parser (Server-side)** | **ADD (P1)** | PARTIAL (SambaNova) | SambaNova Cloud / Gemini Zod API | `tests/day21_sambanova_copilot.test.mjs` | Pending Day 7 upgrade |
 | **Grounded Route Rationale (Server-side)** | **ADD (P1)** | PARTIAL (Template fallback) | Computed Facts JSON Validator | `tests/characterization_engines.test.mjs` | Pending Day 7 upgrade |
-| **"See a Demo" Scenario Mode** | **ADD (P0)** | PENDING | Labeled Demo Scenario Banner | To be implemented in Day 4 | Pending Day 4 |
+| **"See a Demo" Scenario Mode** | **ADD (P0)** | WORKING | Labeled Demo Scenario Banner | `tests/day4_app_shell_search.test.mjs` | `docs/screenshots/day-4/after/desktop-02-demo-banner.png` |
+| **"Waitlist Bypass" Visual Contrast** | **ADD (P0)** | WORKING | TIMETABLE Direct vs Split Graph | `tests/day5_results_experience.test.mjs` | `docs/screenshots/day-5/after/desktop-01-results-contrast.png` |
+| **Inline Delay Contingency Simulator** | **ADD (P0)** | WORKING | Parametric Slack Absorption Model | `tests/day5_results_experience.test.mjs` | `docs/screenshots/day-5/after/desktop-02-delay-simulator.png` |
+| **Statutory Split Booking Disclosures** | **ADD (P0)** | WORKING | Section 5 Mandatory Legal Notice | `tests/day5_results_experience.test.mjs` | `docs/screenshots/day-5/after/desktop-01-results-contrast.png` |
 | **Encrypted Document Vault** | **REMOVE COMPLETELY** | REMOVED | None (Irrelevant bloat) | Grep verification (0 refs) | N/A |
 | **Regional Transit Phrases** | **REMOVE COMPLETELY** | REMOVED | None (Dictionary bloat) | Grep verification (0 refs) | N/A |
 | **Carbon Footprint Calculator** | **REMOVE COMPLETELY** | REMOVED | None (Virtue metric bloat) | Grep verification (0 refs) | N/A |

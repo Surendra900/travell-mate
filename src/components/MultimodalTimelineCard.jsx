@@ -20,12 +20,16 @@ import {
   Sparkles,
   Train,
   Volume2,
-  VolumeX
+  VolumeX,
+  SlidersHorizontal
 } from 'lucide-react'
 import { formatWhatsAppShareText, getWhatsAppShareUrl } from '../utils/multimodalRouter'
 import { getTransitHubGuide } from '../data/transitHubData'
 import { speakRouteTier, stopSpeaking } from '../utils/voiceIntent'
 import OfflineTravelerPassModal from './OfflineTravelerPassModal'
+import { RiskBadge } from './ui/RiskBadge'
+import { ProvenanceBadge } from './ui/ProvenanceBadge'
+import DelayContingencySimulator from './DelayContingencySimulator'
 
 const modeIcons = {
   Train: Train,
@@ -37,6 +41,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
   const [saved, setSaved] = useState(false)
   const [copied, setCopied] = useState(false)
   const [showHubGuide, setShowHubGuide] = useState(false)
+  const [showSimulator, setShowSimulator] = useState(false)
   const [showOfflinePass, setShowOfflinePass] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
 
@@ -64,11 +69,17 @@ export default function MultimodalTimelineCard({ route, onSave }) {
   const Leg1Icon = modeIcons[route.leg1?.mode] || Train
   const Leg2Icon = modeIcons[route.leg2?.mode] || Train
 
+  const hubCity = route.hubCity || route.transfer?.hubCity || 'Junction'
+  const slackMinutes = route.slackMinutes || route.transfer?.slackMinutes || 105
+  const mctMinutes = route.mctMinutes || route.transfer?.mctMinutes || 45
+  const maxAbsorbableDelay = Math.max(0, slackMinutes - mctMinutes)
+  const riskLevel = route.riskLevel || route.reliability?.riskLevel || 'Safe'
+
   const hubGuide = getTransitHubGuide({
     hubCity: route.hubCity,
     leg1Mode: route.leg1?.mode,
     leg2Mode: route.leg2?.mode,
-    bufferMinutes: 105
+    bufferMinutes: slackMinutes
   })
 
   const tierColors = {
@@ -113,9 +124,15 @@ export default function MultimodalTimelineCard({ route, onSave }) {
     }
   }
 
+  const leg1Provenance = route.leg1?.provenance || 'TIMETABLE'
+  const leg2Provenance = route.leg2?.provenance || (route.leg2?.mode === 'Bus' ? 'ESTIMATE' : 'TIMETABLE')
+
   return (
     <>
-      <article className={`rounded-3xl border ${tierColors.border} bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition text-slate-900`}>
+      <article
+        data-testid="multimodal-journey-card"
+        className={`rounded-3xl border ${tierColors.border} bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition text-slate-900`}
+      >
         {/* Header */}
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">
           <div className="max-w-xl">
@@ -141,15 +158,17 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               </button>
             </div>
 
-            {/* AI Reason Box */}
+            {/* AI Reason Box / Why This Junction */}
             <div className="multimodal-ai-reason mt-3.5 flex items-start gap-2.5 rounded-2xl bg-sky-50/70 border border-sky-100 p-3.5 shadow-sm">
               <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-700">
                 <Sparkles size={12} />
               </div>
               <div className="min-w-0">
-                <span className="ai-kicker text-[10px] font-black uppercase tracking-wider text-sky-900">Why TravelMate Picked This</span>
+                <span className="ai-kicker text-[10px] font-black uppercase tracking-wider text-sky-900">
+                  Why TravelMate Picked This Junction
+                </span>
                 <p className="mt-0.5 text-xs font-semibold leading-relaxed text-slate-700">
-                  {route.whyPicked}
+                  {route.whyPicked || `High-capacity interchange at ${hubCity} providing safe transfer slack and verified connecting departures.`}
                 </p>
               </div>
             </div>
@@ -157,7 +176,8 @@ export default function MultimodalTimelineCard({ route, onSave }) {
 
           <div className="text-right">
             <p className={`text-2xl sm:text-3xl font-black ${tierColors.price}`}>{route.fareFormatted}</p>
-            <p className="flex items-center justify-end gap-1 text-xs font-bold text-slate-600 mt-0.5">
+            <span className="text-[11px] font-medium text-slate-500 block">Estimate: verify on portal</span>
+            <p className="flex items-center justify-end gap-1 text-xs font-bold text-slate-600 mt-1">
               <Clock size={12} className="text-slate-500" /> {route.totalDuration} total
             </p>
           </div>
@@ -173,7 +193,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           <div className="mx-2 flex flex-1 items-center justify-center gap-1">
             <div className="h-0.5 w-full bg-slate-300"></div>
             <span className="shrink-0 flex items-center gap-1 rounded-full bg-amber-100/80 px-2.5 py-0.5 text-[11px] font-bold text-amber-950 border border-amber-200 shadow-sm">
-              <MapPin size={11} className="text-amber-700" /> {route.hubCity} Junction
+              <MapPin size={11} className="text-amber-700" /> {hubCity} Junction
             </span>
             <div className="h-0.5 w-full bg-slate-300"></div>
           </div>
@@ -184,18 +204,21 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           </div>
         </div>
 
-        {/* Visual Timeline */}
+        {/* Visual Timeline Legs */}
         <div className="mt-4 space-y-3">
           {/* Leg 1 */}
           <div className="multimodal-timeline-leg rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-900">
+              <div className="flex items-center gap-2">
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-100 text-sky-700">
                   <Leg1Icon size={16} />
                 </span>
-                Step 1: {route.leg1?.service}
-              </span>
-              <span className="text-sm font-extrabold text-slate-900">₹{route.leg1?.fare}</span>
+                <span className="text-sm font-black text-slate-900">
+                  Step 1: {route.leg1?.service}
+                </span>
+                <ProvenanceBadge source={leg1Provenance} />
+              </div>
+              <span className="text-sm font-extrabold text-slate-900">₹{route.leg1?.fare} <span className="text-[10px] text-slate-400 font-normal">est.</span></span>
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
@@ -216,24 +239,54 @@ export default function MultimodalTimelineCard({ route, onSave }) {
             </div>
           </div>
 
-          {/* Transfer Buffer & Junction Navigator */}
+          {/* Transfer Buffer, Risk Badge, and Delay Simulator Toggle */}
           <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-3.5 text-xs text-amber-950">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2 font-semibold">
+              <div className="flex flex-wrap items-center gap-2">
                 <MapPin size={15} className="text-amber-700 shrink-0" />
-                <span>Hub: <b>{hubGuide.stationName}</b> · {route.transferBuffer}</span>
+                <span className="font-semibold">
+                  Hub: <b>{hubGuide.stationName}</b> · {route.transferBuffer || `${slackMinutes}m transfer buffer`}
+                </span>
+                <RiskBadge
+                  bufferMinutes={slackMinutes}
+                  maxDelayMinutes={maxAbsorbableDelay}
+                  riskLabel={riskLevel}
+                />
               </div>
 
-              <button
-                type="button"
-                onClick={() => setShowHubGuide(!showHubGuide)}
-                className="inline-flex items-center gap-1 rounded-xl border border-amber-300 bg-white px-2.5 py-1 text-[11px] font-bold text-amber-900 transition hover:bg-amber-100 shadow-sm"
-              >
-                <Compass size={13} />
-                {showHubGuide ? 'Hide Transfer Guide' : 'Station Transfer Guide'}
-                {showHubGuide ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  data-testid="toggle-delay-simulator-btn"
+                  onClick={() => setShowSimulator(!showSimulator)}
+                  className={`inline-flex items-center gap-1 rounded-xl px-2.5 py-1 text-[11px] font-bold transition shadow-sm border ${
+                    showSimulator
+                      ? 'bg-slate-900 text-white border-slate-900'
+                      : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
+                  }`}
+                >
+                  <SlidersHorizontal size={12} />
+                  <span>{showSimulator ? 'Close Delay Test' : 'Test +Delay'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowHubGuide(!showHubGuide)}
+                  className="inline-flex items-center gap-1 rounded-xl border border-amber-300 bg-white px-2.5 py-1 text-[11px] font-bold text-amber-900 transition hover:bg-amber-100 shadow-sm"
+                >
+                  <Compass size={13} />
+                  {showHubGuide ? 'Hide Guide' : 'Transfer Guide'}
+                  {showHubGuide ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                </button>
+              </div>
             </div>
+
+            {/* Inline Delay Simulator */}
+            {showSimulator && (
+              <div className="mt-3 border-t border-amber-200 pt-3">
+                <DelayContingencySimulator itinerary={route} />
+              </div>
+            )}
 
             {/* Expanded Junction Transfer Guide */}
             {showHubGuide && (
@@ -243,12 +296,12 @@ export default function MultimodalTimelineCard({ route, onSave }) {
                     {hubGuide.transferType}
                   </span>
                   <span className="text-[11px] font-bold text-emerald-700">
-                    🟢 {hubGuide.safetyScore}% Safe Connection Score
+                    🟢 {hubGuide.safetyScore || 92}% Safe Connection Score
                   </span>
                 </div>
 
                 <p className="text-xs leading-relaxed text-slate-700">
-                  <b className="text-slate-900">Navigation Instructions:</b> {hubGuide.transferInstructions}
+                  <b className="text-slate-900">Navigation Steps:</b> {hubGuide.transferInstructions}
                 </p>
 
                 <p className="text-xs text-amber-950">
@@ -272,13 +325,16 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           {/* Leg 2 */}
           <div className="multimodal-timeline-leg rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-900">
+              <div className="flex items-center gap-2">
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
                   <Leg2Icon size={16} />
                 </span>
-                Step 2: {route.leg2?.service}
-              </span>
-              <span className="text-sm font-extrabold text-slate-900">₹{route.leg2?.fare}</span>
+                <span className="text-sm font-black text-slate-900">
+                  Step 2: {route.leg2?.service}
+                </span>
+                <ProvenanceBadge source={leg2Provenance} />
+              </div>
+              <span className="text-sm font-extrabold text-slate-900">₹{route.leg2?.fare} <span className="text-[10px] text-slate-400 font-normal">est.</span></span>
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
@@ -286,6 +342,12 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               <span className="text-slate-400 font-semibold">── {route.leg2?.duration} ──➔</span>
               <span><b className="text-slate-900">{route.leg2?.arrive}</b> {route.leg2?.to}</span>
             </div>
+
+            {route.leg2?.mode === 'Bus' && (
+              <p className="text-[11px] text-slate-500 mt-1 italic">
+                * Buses usually depart every 30 to 60 min. Check the portal for exact boarding point.
+              </p>
+            )}
 
             <div className="mt-3 flex justify-end">
               <a
@@ -300,11 +362,16 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           </div>
         </div>
 
+        {/* Statutory Split Booking Disclosure */}
+        <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3 text-[11px] text-slate-600 leading-relaxed">
+          <b className="text-slate-900">Disclosure:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation.
+        </div>
+
         {/* Footer Actions */}
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
           <span className="text-xs text-slate-500 font-medium">
             <ShieldCheck size={14} className="mr-1 inline text-emerald-600" />
-            Direct booking with pre-filled route on provider portal
+            Direct pre-filled links on official portals
           </span>
 
           <div className="flex flex-wrap items-center gap-2">

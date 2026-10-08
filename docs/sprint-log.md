@@ -147,18 +147,26 @@
 **Git Tag:** `day-5`  
 
 ### Day 5 Task List
-- [ ] Task 5.1: Implement Left/Right "Waitlist Bypass" visual contrast (Left: Direct Train status; Right: Split-Route Recovery alternative).
-- [ ] Task 5.2: Build consumer-grade Journey Cards displaying departure, arrival, duration, mode, transfer junction, fare estimate, and provenance badges.
-- [ ] Task 5.3: Integrate interactive Leaflet Route Visualizer with markers for origin, transfer hubs, and destination.
-- [ ] Task 5.4: Mount inline "If Leg 1 runs late" Delay Simulator tab with interactive slider, connection risk indicator, and fallback departures.
-- [ ] Task 5.5: Embed verified portal deep-links (ConfirmTkt, redBus, Google Flights) and statutory independent booking disclosures.
-- [ ] Task 5.6: Run Day 5 Verification Gate, capture screenshots, commit, tag `day-5`, and deploy Vercel Preview.
+- [x] Task 5.1: Implement Left/Right "Waitlist Bypass" visual contrast (`src/components/WaitlistBypassContrast.jsx`: Left: Direct Train status; Right: Split-Route Recovery alternative).
+- [x] Task 5.2: Build consumer-grade Journey Cards (`src/components/MultimodalTimelineCard.jsx`) displaying departure, arrival, duration, mode, transfer junction, fare estimate, and provenance badges (`TIMETABLE`, `ESTIMATE`, `LIVE`).
+- [x] Task 5.3: Integrate interactive Leaflet Route Visualizer (`src/components/RouteMap.jsx`) with markers for origin, transfer hubs, and destination.
+- [x] Task 5.4: Mount inline "If Leg 1 runs late" Delay Simulator tab (`src/components/DelayContingencySimulator.jsx`) with interactive slider, connection risk indicator, and fallback departures.
+- [x] Task 5.5: Embed verified portal deep-links (ConfirmTkt, redBus, Google Flights) and statutory independent booking disclosures (`data-testid="statutory-split-disclosure"`).
+- [x] Task 5.6: Upgrade `NormalPlanner.jsx` with `StationAutocomplete` and contextual insight tabs (`Route Map`, `Bypass Contrast`, `Delay Simulator`).
+- [x] Task 5.7: Upgrade `LiveResultsPanel.jsx` with dedicated filter tabs and Waitlist Bypass Contrast view mode.
+- [x] Task 5.8: Write Day 5 test suite (`tests/day5_results_experience.test.mjs`, 5/5 passing).
+- [x] Task 5.9: Capture BEFORE and AFTER screenshots across Desktop (1440x900) and Mobile (390x844) into `docs/screenshots/day-5/` and update `docs/screenshots/index.html`.
+- [x] Task 5.10: Run Day 5 Verification Gate (`npm run check` with 186/186 passing tests and clean build), commit, tag `day-5`, and deploy Vercel Preview.
 
----
+### Day 5 Verification Evidence
+1. **Waitlist Bypass Visual Contrast:** Created `src/components/WaitlistBypassContrast.jsx` displaying side-by-side contrast between direct train bottlenecks (`data-testid="contrast-direct-card"`) and split-route alternatives (`data-testid="contrast-split-card"`), plus statutory independent booking disclosure (`data-testid="statutory-split-disclosure"`).
+2. **Consumer-Grade Journey Cards:** Enhanced `src/components/MultimodalTimelineCard.jsx` with provenance badges (`TIMETABLE`, `ESTIMATE`, or `LIVE`), dynamic delay tolerance indicator ("Safe up to +X min delay on Leg 1"), transfer risk badges (`RiskBadge`), junction selection rationale ("Why TravelMate Picked This Junction"), station transfer guide, and inline delay simulator stress-testing.
+3. **Interactive Delay Simulator:** Built `src/components/DelayContingencySimulator.jsx` featuring an interactive delay slider (0 to 180m), preset buttons, real-time effective slack computation (`data-testid="effective-slack"`), connection status classifier (`data-testid="contingency-status"`), point of no return clock time (`data-testid="point-of-no-return"`), and alternative onward departures.
+4. **Interactive Leaflet Route Map:** Verified `src/components/RouteMap.jsx` rendering Leaflet canvas with custom markers, segment-colored polylines (cyan for rail, orange for flight, lime for bus), zoom-fit controls, and junction focus highlights.
+5. **Full Test Regression:** 186 out of 186 unit, integration, and property tests passing across the repository (`npm test` and `npm run check` with 0 failures, 0 lint/build warnings).
+6. **Visual QA Gallery:** Captured 2 BEFORE and 4 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-5/` and indexed in `docs/screenshots/index.html`.
 
-
-
----
+**DAY 5 COMPLETE. Verification passed (186/186). Moving to DAY 6.**
 
 ## Sprint Entry: Day 6
 **Date:** October 2026  
