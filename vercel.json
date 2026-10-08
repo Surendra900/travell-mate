@@ -40,6 +40,14 @@
   ],
   "rewrites": [
     {
+      "source": "/api/trains/by-station",
+      "destination": "/api/trains/live-station"
+    },
+    {
+      "source": "/api/recovery/:path*",
+      "destination": "/api/recovery"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },

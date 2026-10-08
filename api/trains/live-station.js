@@ -27,7 +27,7 @@ function normalizeRows(payload, fromStationCode, toStationCode) {
 
 export default async function handler(req, res) {
   if (!await prepareApiRequest(req, res, { rateLimit: 20 })) return
-  const fromStationCode = stationCode(req.query.fromStationCode || req.query.from || '')
+  const fromStationCode = stationCode(req.query.fromStationCode || req.query.from || req.query.stationCode || '')
   const toStationCode = stationCode(req.query.toStationCode || req.query.to || '')
   const hours = String(req.query.hours || '4')
   if (!fromStationCode) return res.status(400).json({ ok: false, mode: 'invalid', message: 'A valid fromStationCode is required.', results: [] })
