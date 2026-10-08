@@ -289,6 +289,48 @@
 
 ---
 
+## Master Rebuild Entry: Day 9
+**Date:** October 2026  
+**Goal:** Hardening — Security Review, DPDP 2023 Statutory Consent & Data Minimization, Privacy, Terms & Disclaimer Pages, Anonymous Feedback Loop, Error Boundary & SEO Previews  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-9`  
+
+### Day 9 Task List
+- [x] Task 9.1: Initialize Day 9 task tracking in `docs/sprint-log.md`.
+- [x] Task 9.2: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for compliance touchpoints (`docs/screenshots/day-9/before/`).
+- [x] Task 9.3: Create dedicated accessible compliance pages:
+  - `src/pages/PrivacyPolicy.jsx` (`/privacy`): India DPDP Act 2023 compliance, Zero-ID Policy, Data Minimization, 1-Click Erasure (`data-testid="dpdp-erase-all-btn"`).
+  - `src/pages/TermsOfService.jsx` (`/terms`): Terms of service, independent operator booking disclaimer, no automated bot ticketing notice, limitation of liability.
+  - `src/pages/LegalDisclaimer.jsx` (`/disclaimer`): Statutory disclaimer ("TravelMate is not an emergency service. In an emergency call 112."), open data attribution (OpenStreetMap, Open-Meteo, Indian Railways open timetables), algorithmic probability disclaimer.
+- [x] Task 9.4: Wire new routes into `src/App.jsx` and add navigation links into `src/components/Footer.jsx`.
+- [x] Task 9.5: Build lightweight privacy-preserving user feedback dialog `src/components/FeedbackModal.jsx` and wire into `src/components/Footer.jsx` (`data-testid="footer-feedback-btn"`).
+- [x] Task 9.6: Security & SEO Hardening:
+  - Update `index.html` with canonical title, description, OpenGraph (`og:title`, `og:description`, `og:image`, `og:url`), Twitter card tags, and strict referrer policy.
+  - Verify zero secrets in client bundle and safe external deep-links (`rel="noreferrer noopener"`).
+- [x] Task 9.7: Write Day 9 automated test suite (`tests/day9_security_dpdp_compliance.test.mjs`, 6/6 passing).
+- [x] Task 9.8: Capture AFTER screenshots in `docs/screenshots/day-9/after/` and update `docs/screenshots/index.html`.
+- [x] Task 9.9: Run Day 9 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-9`, and deploy Vercel Preview.
+
+### Day 9 Verification Evidence
+1. **Dedicated Compliance Pages:**
+   - Built [PrivacyPolicy.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/pages/PrivacyPolicy.jsx) (`/privacy`) incorporating DPDP Act 2023 Section 12 Right to Erasure (`data-testid="dpdp-erase-all-btn"`), Zero-ID policy disclosure, and grievance contact.
+   - Built [TermsOfService.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/pages/TermsOfService.jsx) (`/terms`) with transparent deep-linking disclosures and automated bot booking prohibitions.
+   - Built [LegalDisclaimer.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/pages/LegalDisclaimer.jsx) (`/disclaimer`) declaring mandatory emergency notice (*"TravelMate is not an emergency service. In an emergency call 112."*) and attribution for OpenStreetMap and Open-Meteo.
+2. **Accessible Feedback Loop (Zero-ID):**
+   - Implemented [FeedbackModal.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/components/FeedbackModal.jsx) with `role="dialog"`, `aria-modal="true"`, star ratings, topic categorization, and local anonymous storage.
+3. **SEO, OpenGraph & Security Hardening:**
+   - Updated `index.html` with canonical title: *TravelMate — Multimodal Disruption & Route Recovery Engine*, OpenGraph tags, Twitter summary card, and `referrer="strict-origin-when-cross-origin"`.
+   - Verified zero leaked private keys across all client source files.
+4. **Full Automated Test Suite:**
+   - 211 out of 211 tests passing cleanly across the entire repository (`npm test`).
+   - `npm run check` passed 100% (audit, tests, and Vite production bundle compiled in 10.13s with zero errors).
+5. **Visual QA Gallery:**
+   - 5 BEFORE screenshots and 9 AFTER screenshots captured across Desktop and Mobile viewports in `docs/screenshots/day-9/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 9 COMPLETE. Verification passed (211/211). Moving to DAY 10.**
+
+---
+
 ## Sprint Entry: Day 6 (Archived Baseline)
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  

@@ -196,4 +196,21 @@ $ git grep -n -E '\b(DocumentVault|EmergencyPhraseCards|CarbonCalculator|StatusB
    - Verified Result-to-Booking budget ($\le 2$ interactions: select route tier $\to$ tap deep link).
    - Verified all 5 first-time user flows (alternative route search, PNR confirmation odds, demo mode walkthrough, offline boarding pass, 1-tap transit emergency helplines).
 
+---
+
+## Day 9: Security Hardening, DPDP 2023 Compliance & Legal Architecture
+
+### Features Added:
+1. **Dedicated Compliance Pages**:
+   - `src/pages/PrivacyPolicy.jsx` (`/privacy`): Comprehensive privacy policy aligned with the Digital Personal Data Protection (DPDP) Act, 2023 of India, Zero-ID policy disclosure, and Section 12 Right to Erasure (`data-testid="dpdp-erase-all-btn"`).
+   - `src/pages/TermsOfService.jsx` (`/terms`): Terms of service specifying independent route recovery nature, operator deep-link ticketing rules, automated booking prohibitions, and liability disclaimers.
+   - `src/pages/LegalDisclaimer.jsx` (`/disclaimer`): Mandatory statutory disclosures ("TravelMate is not an emergency service. In an emergency call 112."), algorithmic heuristic probability disclaimers, and open data licensing (GODL, ODbL, Open-Meteo CC BY 4.0).
+2. **Anonymous Traveler Feedback Loop (`src/components/FeedbackModal.jsx`)**:
+   - Accessible feedback dialog (`data-testid="feedback-modal"`, `data-testid="submit-feedback-btn"`) with star rating, topic classification (route accuracy, transfer buffers, UI), zero tracking, and local device persistence.
+3. **SEO, OpenGraph Metadata & Security Headers (`index.html`)**:
+   - Added canonical title: *TravelMate — Multimodal Disruption & Route Recovery Engine*.
+   - Added OpenGraph (`og:title`, `og:description`, `og:image`, `og:url`, `og:type`) and Twitter card (`summary_large_image`) metadata.
+   - Enforced strict referrer policy (`strict-origin-when-cross-origin`).
+   - Verified 0 leaked API secrets in client source bundles.
+
 

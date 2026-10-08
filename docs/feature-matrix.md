@@ -32,6 +32,9 @@ This matrix tracks the authoritative disposition and status of every feature in 
 | **Comprehensive UI States (Skeletons, Empty, Error)** | **HARDEN (P0)** | WORKING | Skeletons & Recovery Guidance (Spec U9) | `tests/day8_states_responsive_a11y.test.mjs` | `docs/screenshots/day-8/after/desktop-02-planner.png` |
 | **Multi-Viewport Layout (390px, 768px, 1440px)** | **HARDEN (P0)** | WORKING | Zero Overflow & 44px Touch Targets (Spec U10) | `tests/day8_states_responsive_a11y.test.mjs` | `docs/screenshots/day-8/after/mobile-02-planner.png` |
 | **WCAG 2.1 AA Accessibility & Click Budget** | **HARDEN (P0)** | WORKING | ARIA Combobox/Dialog, <=3 Search, <=2 Book (Spec U11, Sec 8) | `tests/day8_states_responsive_a11y.test.mjs` | `docs/screenshots/day-8/after/desktop-01-home.png` |
+| **DPDP 2023 Consent & Privacy Policy** | **ADD (P1)** | WORKING | Local-First Zero-ID + Sec 12 Erasure | `tests/day9_security_dpdp_compliance.test.mjs` | `docs/screenshots/day-9/after/desktop-01-privacy-policy.png` |
+| **Terms of Service & Legal Disclaimers** | **ADD (P1)** | WORKING | Statutory Independent Booking Notice | `tests/day9_security_dpdp_compliance.test.mjs` | `docs/screenshots/day-9/after/desktop-02-terms-of-service.png` |
+| **Anonymous Feedback Loop** | **ADD (P1)** | WORKING | Zero-ID Anonymous Local Queue | `tests/day9_security_dpdp_compliance.test.mjs` | `docs/screenshots/day-9/after/desktop-05-feedback-modal.png` |
 | **Encrypted Document Vault** | **REMOVE COMPLETELY** | REMOVED | None (Irrelevant bloat) | Grep verification (0 refs) | N/A |
 | **Regional Transit Phrases** | **REMOVE COMPLETELY** | REMOVED | None (Dictionary bloat) | Grep verification (0 refs) | N/A |
 | **Carbon Footprint Calculator** | **REMOVE COMPLETELY** | REMOVED | None (Virtue metric bloat) | Grep verification (0 refs) | N/A |

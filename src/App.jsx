@@ -13,6 +13,7 @@ import DemoTourModal from './components/DemoTourModal'
 import Footer from './components/Footer'
 import LocationPermissionGate from './components/LocationPermissionGate'
 import PageErrorBoundary from './components/PageErrorBoundary'
+import FeedbackModal from './components/FeedbackModal'
 import { languages } from './data/languageData'
 import { useDeviceStatus } from './utils/deviceStatus'
 import { warmOfflineCache } from './utils/offlineMode'
@@ -25,6 +26,9 @@ const EmergencyDetail = lazy(() => import('./pages/EmergencyDetail'))
 const Planner = lazy(() => import('./pages/Planner'))
 const SavedPlans = lazy(() => import('./pages/SavedPlans'))
 const AnalyzeJourney = lazy(() => import('./pages/AnalyzeJourney'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
+const LegalDisclaimer = lazy(() => import('./pages/LegalDisclaimer'))
 
 export default function App({ authEnabled = false }) {
   const navigate = useNavigate()
@@ -40,6 +44,7 @@ export default function App({ authEnabled = false }) {
   const [toastMessage, setToastMessage] = useState('')
   const [profileModalOpen, setProfileModalOpen] = useState(false)
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false)
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
   const [demoTourOpen, setDemoTourOpen] = useState(false)
   const [blindGateOpen, setBlindGateOpen] = useState(false)
   const [blindMode, setBlindMode] = useState(false)
@@ -150,6 +155,9 @@ export default function App({ authEnabled = false }) {
                 <Route path="/saved" element={<SavedPlans toast={toast} />} />
                 <Route path="/plans" element={<SavedPlans toast={toast} />} />
                 <Route path="/analyze" element={<AnalyzeJourney toast={toast} />} />
+                <Route path="/privacy" element={<PrivacyPolicy toast={toast} />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/disclaimer" element={<LegalDisclaimer />} />
                 </Routes>
               </Suspense>
             </PageErrorBoundary>
@@ -158,9 +166,15 @@ export default function App({ authEnabled = false }) {
       )}
       {location.pathname !== '/analyze' && <VoiceSearchButton onSearch={handleVoiceSearch} language={language} />}
       <PwaInstallBanner />
-      {status.online !== false && <Footer onOpenPrivacy={() => setPrivacyModalOpen(true)} />}
+      {status.online !== false && (
+        <Footer
+          onOpenPrivacy={() => setPrivacyModalOpen(true)}
+          onOpenFeedback={() => setFeedbackModalOpen(true)}
+        />
+      )}
       {status.online !== false && <OnboardingModal toast={toast} forceOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} />}
       <DpdpPrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} toast={toast} />
+      <FeedbackModal open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)} toast={toast} />
       <DemoTourModal open={demoTourOpen} onClose={() => setDemoTourOpen(false)} onLaunchVoiceGate={() => setBlindGateOpen(true)} />
       {toastMessage && (
         <div className="app-toast" role="status" aria-live="polite">
