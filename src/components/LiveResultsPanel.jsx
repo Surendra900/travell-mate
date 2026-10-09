@@ -345,7 +345,7 @@ export default function LiveResultsPanel({
           <main className="order-2 min-w-0 lg:order-1 space-y-6">
             {/* Filter Pills */}
             <div className="flex flex-wrap items-center gap-2 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
-              <span className="text-xs font-bold text-slate-400 flex items-center gap-1 mr-1">
+              <span className="text-xs font-bold text-slate-600 flex items-center gap-1 mr-1">
                 <SlidersHorizontal size={13} /> View:
               </span>
               {filterOptions.map((filter) => {

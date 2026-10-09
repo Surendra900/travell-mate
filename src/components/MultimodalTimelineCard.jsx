@@ -225,12 +225,12 @@ export default function MultimodalTimelineCard({ route, onSave }) {
                 </span>
                 <ProvenanceBadge source={leg1Provenance} />
               </div>
-              <span className="text-sm font-extrabold text-slate-900">₹{route.leg1?.fare} <span className="text-[10px] text-slate-400 font-normal">est.</span></span>
+              <span className="text-sm font-extrabold text-slate-900">₹{route.leg1?.fare} <span className="text-[10px] text-slate-600 font-medium">est.</span></span>
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
               <span><b className="text-slate-900">{route.leg1?.depart}</b> {route.leg1?.from}</span>
-              <span className="text-slate-400 font-semibold">── {route.leg1?.duration} ──➔</span>
+              <span className="text-slate-600 font-bold">── {route.leg1?.duration} ──➔</span>
               <span><b className="text-slate-900">{route.leg1?.arrive}</b> {route.leg1?.to}</span>
             </div>
 
@@ -341,12 +341,12 @@ export default function MultimodalTimelineCard({ route, onSave }) {
                 </span>
                 <ProvenanceBadge source={leg2Provenance} />
               </div>
-              <span className="text-sm font-extrabold text-slate-900">₹{route.leg2?.fare} <span className="text-[10px] text-slate-400 font-normal">est.</span></span>
+              <span className="text-sm font-extrabold text-slate-900">₹{route.leg2?.fare} <span className="text-[10px] text-slate-600 font-medium">est.</span></span>
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
               <span><b className="text-slate-900">{route.leg2?.depart}</b> {route.leg2?.from}</span>
-              <span className="text-slate-400 font-semibold">── {route.leg2?.duration} ──➔</span>
+              <span className="text-slate-600 font-bold">── {route.leg2?.duration} ──➔</span>
               <span><b className="text-slate-900">{route.leg2?.arrive}</b> {route.leg2?.to}</span>
             </div>
 
@@ -390,7 +390,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
             <span>Statutory Notice: Unbundled Multi-Ticket Connection (Separate PNRs)</span>
           </div>
           <p className="text-slate-800 text-[11.5px] leading-relaxed">
-            <strong>Separate Contracts:</strong> Leg 1 and Leg 2 are independent, unbundled tickets booked under separate PNRs / transaction IDs across distinct carriers. Under Indian Railways and intercity motor transport rules, each carrier is responsible only for its own segment.
+            <strong>Separate Contracts:</strong> These are independent bookings — Leg 1 and Leg 2 are unbundled tickets booked under separate PNRs / transaction IDs across distinct carriers. Under Indian Railways and intercity motor transport rules, each carrier is responsible only for its own segment.
           </p>
           <p className="mt-1.5 text-slate-800 text-[11.5px] leading-relaxed">
             <strong>Missed Connection & Refund Policy:</strong> If Leg 1 suffers an unexpected delay or cancellation causing a missed connection at {hubCity}, the downstream operator owes zero refund, automatic rescheduling, or compensation.
@@ -437,7 +437,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               href={getWhatsAppShareUrl(route)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-3.5 py-2 text-xs font-bold text-white transition shadow-sm"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 px-3.5 py-2 text-xs font-bold text-white transition shadow-sm"
               title="Share recovered itinerary on WhatsApp"
             >
               <Share2 size={13} />

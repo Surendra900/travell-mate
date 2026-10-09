@@ -22,6 +22,7 @@ import {
   Shield
 } from 'lucide-react'
 import { tatkalRules } from '../data/journeyData'
+import { localDateIso } from '../utils/date'
 import { getCabinOptions, getRouteInputLabels, servicesForMode, transportPlaces } from '../data/transportData'
 import TatkalEmergencyTimer from '../components/TatkalEmergencyTimer'
 import SeatAvailabilityChecker from './SeatAvailabilityChecker'
@@ -314,6 +315,7 @@ export default function EmergencyTatkalPlanner({
                 <input
                   className="input date-input bg-white text-slate-900 border-slate-300 rounded-xl"
                   type="date"
+                  min={localDateIso()}
                   value={plan.date}
                   onChange={(e) => update({ date: e.target.value })}
                 />

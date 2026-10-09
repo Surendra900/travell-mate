@@ -205,6 +205,7 @@ export default function NormalPlanner({
                 <CalendarDays size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="date"
+                  min={localDateIso()}
                   className="input pl-10"
                   data-testid="planner-date-input"
                   value={plan.date}

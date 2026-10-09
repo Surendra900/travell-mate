@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { getOfflinePack, getSavedPlans, saveOfflinePack } from '../utils/storage'
 import { warmOfflineCache } from '../utils/offlineMode'
+import { localDateIso } from '../utils/date'
 import { getCabinOptions, getRouteInputLabels, transportModes, transportPlaces } from '../data/transportData'
 import ServiceOptionsBoard from '../components/ServiceOptionsBoard'
 
@@ -235,7 +236,7 @@ export default function LowNetworkPlanner({ plan, update, onBook, onBookService,
               <Field label="Journey date">
                 <div className="relative">
                   <CalendarDays className="pointer-events-none absolute right-3 top-3 text-cyan-200" size={18} />
-                  <input className="input date-input pr-10" type="date" value={plan.date} onChange={(e) => update({ date: e.target.value })} />
+                  <input className="input date-input pr-10" type="date" min={localDateIso()} value={plan.date} onChange={(e) => update({ date: e.target.value })} />
                 </div>
               </Field>
             </div>

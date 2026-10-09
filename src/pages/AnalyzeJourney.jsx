@@ -91,7 +91,7 @@ export default function AnalyzeJourney({ toast }) {
             <div className="assistant-analysis-grid">
               <label>From<input className="input" value={plan.from} onChange={(e) => update({ from: e.target.value })} placeholder="Origin" /></label>
               <label>To<input className="input" value={plan.to} onChange={(e) => update({ to: e.target.value })} placeholder="Destination" /></label>
-              <label>Departure<input className="input" type="date" value={plan.date} onChange={(e) => update({ date: e.target.value })} /></label>
+              <label>Departure<input className="input" type="date" min={localDateIso()} value={plan.date} onChange={(e) => update({ date: e.target.value })} /></label>
               <label>Transport<select className="input" value={plan.transportMode} onChange={(e) => update({ transportMode: e.target.value, routeCombo: `${e.target.value} only` })}><option>Train</option><option>Bus</option><option>Flight</option></select></label>
             </div>
             <div className="assistant-analysis-result"><strong>Travel score</strong><span>{score}/100</span><button className="btn-primary" onClick={() => navigate(`/planner?from=${encodeURIComponent(plan.from)}&to=${encodeURIComponent(plan.to)}&date=${encodeURIComponent(plan.date)}&transportMode=${encodeURIComponent(plan.transportMode)}`)}>Continue to Planner</button></div>

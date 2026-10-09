@@ -192,6 +192,7 @@ export default function Home({ toast }) {
                     <input
                       id="home-travel-date"
                       type="date"
+                      min={localDateIso()}
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 text-sm sm:text-base transition"
