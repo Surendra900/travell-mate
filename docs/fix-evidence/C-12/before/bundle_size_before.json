@@ -1,0 +1,13 @@
+{
+  "finding": "C-12: 205 KB @clerk/clerk-react bundled in client assets despite auth being disabled",
+  "category": "Performance",
+  "severity": "Medium",
+  "authVendorChunk": {
+    "file": "vendor-auth-DObaHfal.js",
+    "sizeBytes": 210102,
+    "sizeKb": 205.2
+  },
+  "packageJsonDependency": "@clerk/clerk-react",
+  "clerkBundled": true,
+  "timestamp": "2026-10-09T07:38:00.000Z"
+}

@@ -94,7 +94,6 @@ function localServerlessApiPlugin() {
 
 function splitVendorChunk(id) {
   if (!id.includes('node_modules')) return undefined
-  if (id.includes('@clerk')) return 'vendor-auth'
   if (id.includes('leaflet')) return 'vendor-maps'
   if (id.includes('lucide-react')) return 'vendor-icons'
   if (id.includes('react-router')) return 'vendor-router'
