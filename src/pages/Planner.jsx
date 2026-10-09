@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Sparkles, Clock, Ticket } from 'lucide-react'
 import NormalPlanner from '../planner/NormalPlanner'
@@ -29,6 +29,36 @@ const basePlan = {
   readinessScore: 0
 }
 
+function getInitialPlan(search) {
+  try {
+    const params = new URLSearchParams(search)
+    const from = params.get('from') || ''
+    const to = params.get('to') || ''
+    const date = params.get('date') || ''
+    const requestedMode = params.get('transportMode')
+    const urgency = params.get('urgency')
+    const isTonight = urgency === 'Tonight' || params.get('urgent') === '12h'
+    const passengers = Number(params.get('passengers')) || 1
+
+    if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode) || isTonight) {
+      return {
+        ...basePlan,
+        ...(from ? { from } : {}),
+        ...(to ? { to } : {}),
+        ...(date ? { date } : isTonight ? { date: localDateIso() } : {}),
+        ...(isTonight ? { urgency: 'Tonight' } : urgency ? { urgency } : {}),
+        ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? {
+          transportMode: requestedMode,
+          routeCombo: `${requestedMode} only`,
+          classType: getCabinOptions(requestedMode)[0]
+        } : {}),
+        passengers
+      }
+    }
+  } catch {}
+  return basePlan
+}
+
 function selectedServicePatch(service, transport, fallbackSource = 'Saved provider result') {
   const name = service?.serviceName || service?.service || service?.trainName || service?.name || service?.operator || `${transport} option`
   const code = service?.code || service?.trainNo || service?.trainNumber || service?.flightNumber || service?.serviceNumber || ''
@@ -44,8 +74,9 @@ function selectedServicePatch(service, transport, fallbackSource = 'Saved provid
 
 export default function Planner({ status, toast, language = 'en' }) {
   const location = useLocation()
+  const lastSearchedParamsRef = useRef('')
   const [manualMode, setManualMode] = useState('normal')
-  const [plan, setPlan] = useState(basePlan)
+  const [plan, setPlan] = useState(() => getInitialPlan(location.search))
   const [resultsOpen, setResultsOpen] = useState(false)
   const [liveResults, setLiveResults] = useState([])
   const [liveStatus, setLiveStatus] = useState({ loading: false, mode: 'idle', message: '' })
@@ -77,6 +108,7 @@ export default function Planner({ status, toast, language = 'en' }) {
     const demoParam = params.get('demo') === 'true'
     const modeParam = params.get('mode')
     const urgency = params.get('urgency')
+    const passengers = Number(params.get('passengers')) || 1
 
     if (demoParam) setIsDemoMode(true)
     if (modeParam === 'tatkal' || urgency === 'Emergency') {
@@ -86,16 +118,39 @@ export default function Planner({ status, toast, language = 'en' }) {
     }
 
     const isTonight = urgency === 'Tonight' || params.get('urgent') === '12h'
+    const resolvedTransport = ['Train', 'Bus', 'Flight'].includes(requestedMode) ? requestedMode : 'Train'
 
+    let updatedFields = null
     if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode) || isTonight) {
-      setPlan((old) => ({
-        ...old,
+      updatedFields = {
         ...(from ? { from } : {}),
         ...(to ? { to } : {}),
         ...(date ? { date } : isTonight ? { date: localDateIso() } : {}),
-        ...(isTonight ? { urgency: 'Tonight' } : {}),
-        ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? { transportMode: requestedMode, routeCombo: `${requestedMode} only`, classType: getCabinOptions(requestedMode)[0] } : {})
-      }))
+        ...(isTonight ? { urgency: 'Tonight' } : urgency ? { urgency } : {}),
+        ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? { transportMode: requestedMode, routeCombo: `${requestedMode} only`, classType: getCabinOptions(requestedMode)[0] } : {}),
+        ...(passengers ? { passengers } : {})
+      }
+      setPlan((old) => ({ ...old, ...updatedFields }))
+    }
+
+    // Auto-trigger search if both from and to are present in URL params (C-08)
+    if (from.trim() && to.trim()) {
+      const searchKey = `${from.trim()}|${to.trim()}|${date || (isTonight ? localDateIso() : basePlan.date)}|${resolvedTransport}|${urgency || 'Normal'}`
+      if (lastSearchedParamsRef.current !== searchKey) {
+        lastSearchedParamsRef.current = searchKey
+        const searchPlan = {
+          ...basePlan,
+          ...(updatedFields || {}),
+          from: from.trim(),
+          to: to.trim(),
+          date: date || (isTonight ? localDateIso() : basePlan.date),
+          transportMode: resolvedTransport,
+          urgency: isTonight ? 'Tonight' : (urgency || 'Normal'),
+          passengers
+        }
+        setResultsOpen(true)
+        runLiveSearch(searchPlan, { announce: true })
+      }
     }
   }, [location.search])
 
@@ -180,10 +235,14 @@ export default function Planner({ status, toast, language = 'en' }) {
   }, [pendingVoiceAction])
 
   useEffect(() => {
+    const currentKey = `${plan.from?.trim() || ''}|${plan.to?.trim() || ''}|${plan.date || ''}|${plan.transportMode || 'Train'}|${plan.urgency || 'Normal'}`
+    if (lastSearchedParamsRef.current && currentKey === lastSearchedParamsRef.current) {
+      return
+    }
     setLiveResults([])
     setLiveStatus({ loading: false, mode: 'idle', message: '' })
     setResultsOpen(false)
-  }, [plan.transportMode, plan.from, plan.to, plan.date, plan.airline])
+  }, [plan.transportMode, plan.from, plan.to, plan.date, plan.airline, plan.urgency])
 
   useEffect(() => {
     try {
@@ -314,19 +373,25 @@ export default function Planner({ status, toast, language = 'en' }) {
   }
 
   async function handleLiveSearch() {
+    const currentKey = `${enrichedPlan.from?.trim() || ''}|${enrichedPlan.to?.trim() || ''}|${enrichedPlan.date || ''}|${enrichedPlan.transportMode || 'Train'}|${enrichedPlan.urgency || 'Normal'}`
+    lastSearchedParamsRef.current = currentKey
     setResultsOpen(true)
     return runLiveSearch(enrichedPlan)
   }
 
   async function handleTatkalLiveSearch() {
-    return runLiveSearch({
+    const tatkalPlan = {
       ...enrichedPlan,
       transportMode: 'Train',
       routeCombo: 'Train only',
       ticketType: 'Tatkal / Emergency',
       quota: 'Tatkal / Emergency',
       urgency: 'Emergency'
-    })
+    }
+    const currentKey = `${tatkalPlan.from?.trim() || ''}|${tatkalPlan.to?.trim() || ''}|${tatkalPlan.date || ''}|Train|Emergency`
+    lastSearchedParamsRef.current = currentKey
+    setResultsOpen(true)
+    return runLiveSearch(tatkalPlan)
   }
 
   async function handleAssistantPlanApplied(nextPlan) {
@@ -545,10 +610,6 @@ export default function Planner({ status, toast, language = 'en' }) {
         )}
       </section>
 
-      <div className="mt-12">
-        <MasterTrustPanel compact />
-      </div>
-
       <LiveResultsPanel
         open={resultsOpen}
         onClose={() => setResultsOpen(false)}
@@ -561,6 +622,10 @@ export default function Planner({ status, toast, language = 'en' }) {
         onBookBackup={openBackupBooking}
         allowBackup={manualMode !== 'tatkal' && manualMode !== 'emergency'}
       />
+
+      <div className="mt-12">
+        <MasterTrustPanel compact />
+      </div>
 
       <PnrPredictorModal
         open={showPnrModal}
