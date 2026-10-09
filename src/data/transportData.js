@@ -170,12 +170,37 @@ export function normalizePlace(value = '') {
 }
 
 export function findTransportPlace(value) {
-  const needle = normalizePlace(value)
+  const clean = String(value || '').trim()
+  if (!clean) return null
+  const needle = normalizePlace(clean)
   if (!needle) return null
-  return transportPlaces.find((place) => {
+
+  // 1. Exact match against city, train, airport, bus or aliases
+  const exact = transportPlaces.find((place) => {
     const values = [place.city, place.train, place.airport, place.bus, ...(place.aliases || [])]
     return values.some((entry) => normalizePlace(entry) === needle)
-  }) || null
+  })
+  if (exact) return exact
+
+  // 2. Check if input contains station/airport code in parentheses, e.g. "Delhi (NDLS)" -> "NDLS"
+  const codeMatch = clean.match(/\(([A-Za-z0-9]{2,5})\)/)
+  if (codeMatch) {
+    const codeNeedle = normalizePlace(codeMatch[1])
+    const codeFound = transportPlaces.find((place) => {
+      const values = [place.city, place.train, place.airport, place.bus, ...(place.aliases || [])]
+      return values.some((entry) => normalizePlace(entry) === codeNeedle)
+    })
+    if (codeFound) return codeFound
+  }
+
+  // 3. Substring / city-name prefix matching (e.g. "Delhi" in "Delhi (NDLS)")
+  const cityFound = transportPlaces.find((place) => {
+    const cityNorm = normalizePlace(place.city)
+    return needle.startsWith(cityNorm) || cityNorm.startsWith(needle)
+  })
+  if (cityFound) return cityFound
+
+  return null
 }
 
 export function getStationCode(cityName = '') {

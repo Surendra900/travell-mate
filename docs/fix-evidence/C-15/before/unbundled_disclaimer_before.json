@@ -1,0 +1,10 @@
+{
+  "finding": "C-15: Unbundled ticket cancellation and missed connection risk across separate PNRs",
+  "category": "Business / Data Honesty",
+  "severity": "Medium",
+  "status": "FAIL_BEFORE",
+  "cardHasUnbundledDisclaimer": false,
+  "legalDisclaimerHasUnbundledSection": false,
+  "realVsDemoMatrixHasProtectionModel": false,
+  "timestamp": "2026-10-09T07:52:00.000Z"
+}

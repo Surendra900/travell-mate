@@ -73,6 +73,19 @@ export default function LegalDisclaimer() {
             TravelMate AI is an independent software application developed for research, innovation, and traveler convenience. It is not affiliated with, endorsed by, or operated by the Ministry of Railways, Indian Railway Catering and Tourism Corporation (IRCTC), Centre for Railway Information Systems (CRIS), or any state road transport corporation.
           </p>
         </section>
+
+        {/* Unbundled Multi-Ticket & Split-Routing Liability Disclaimer (C-15) */}
+        <section className="border-t border-slate-200 pt-6">
+          <h2 className="text-base font-bold text-slate-900">5. Unbundled Multi-Ticket Bookings & Missed Connection Risk</h2>
+          <p className="mt-2 text-xs text-slate-700 leading-relaxed">
+            Multi-modal itineraries, split-tickets, and junction recovery transfers recommended by TravelMate consist of <strong>unbundled, independent passenger tickets</strong> booked under separate Passenger Name Records (PNRs) or booking transaction references across different transport operators.
+          </p>
+          <ul className="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside">
+            <li><strong>Separate Contracts of Carriage:</strong> Each ticket represents an isolated contract between the passenger and the respective carrier (Indian Railways, state transport corporation, or airline).</li>
+            <li><strong>No Cross-Carrier Delay Liability:</strong> If the primary leg (Leg 1) experiences delays, mechanical breakdowns, or cancellations, downstream carriers (Leg 2) have no statutory obligation to delay departure, offer free rebooking, or provide a refund.</li>
+            <li><strong>Buffer & Insurance Recommendation:</strong> While TravelMate algorithmically enforces Minimum Connection Times (&ge; 45 minutes) and displays statistical delay absorption margins, travelers are advised to allow 90+ minutes buffer during severe weather periods or obtain independent domestic travel insurance.</li>
+          </ul>
+        </section>
       </div>
     </div>
   )

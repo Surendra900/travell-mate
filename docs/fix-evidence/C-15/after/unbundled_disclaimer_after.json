@@ -1,0 +1,8 @@
+{
+  "test": "C-15: Unbundled ticket cancellation and missed connection risk across separate PNRs",
+  "url": "http://127.0.0.1:5173/planner?from=Delhi+(NDLS)&to=Patna+(PNBE)&transportMode=Train&date=2026-10-15",
+  "disclaimerVisible": true,
+  "disclaimerSnippet": "Statutory Notice: Unbundled Multi-Ticket Connection (Separate PNRs)Separate Contracts: Leg 1 and Leg 2 are independent, unbundled tickets booked under separate PNRs / transaction IDs across distinct c...",
+  "verifiedStatus": "FIXED-VERIFIED",
+  "timestamp": "2026-10-09T07:56:38.335Z"
+}

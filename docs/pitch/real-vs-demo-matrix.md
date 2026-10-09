@@ -32,3 +32,12 @@
 | Feature Area | Demo Representation | Why Labeled As Demo |
 | :--- | :--- | :--- |
 | **"See a Demo" Scenario Mode** | Delhi to Howrah Waitlist Bypass scenario with pre-filled waitlisted direct train and Kanpur Junction split alternative. | Labeled with prominent warning banner (`data-testid="demo-mode-banner"`: *"Demo scenario: illustrative availability"*) so judges understand they are seeing an interactive architectural demonstration rather than purchasing a real seat right now. |
+
+---
+
+## 4. Unbundled Ticketing Realities & Passenger Protection (C-15)
+| Feature Area | Policy & Architecture | Truthful Traveler Protection |
+| :--- | :--- | :--- |
+| **Unbundled Independent PNRs** | **Separate Contracts of Carriage** | TravelMate split routes connect independent legs across Indian Railways, state bus corporations (e.g. UPSRTC), and domestic airlines. Each leg carries its own PNR. Carriers owe zero compensation or refunds if Leg 1 delays cause a missed connection on Leg 2. |
+| **MCT & Buffer Enforcement** | **$\ge 45$m Algorithmic Floor** | Engine strictly enforces $\ge 45$m Minimum Connection Time (MCT) and highlights absorbable delay slack. Card displays explicit statutory notice advising travelers to allow 90+ min buffer during fog/monsoon seasons. |
+

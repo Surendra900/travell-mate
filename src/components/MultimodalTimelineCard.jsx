@@ -380,9 +380,24 @@ export default function MultimodalTimelineCard({ route, onSave }) {
           </p>
         </div>
 
-        {/* Statutory Split Booking Disclosure */}
-        <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3 text-[11px] text-slate-600 leading-relaxed">
-          <b className="text-slate-900">Disclosure:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation.
+        {/* Statutory Unbundled Multi-Ticket Disclosure & Missed Connection Protection (C-15) */}
+        <div
+          data-testid="unbundled-ticketing-disclaimer"
+          className="mt-4 rounded-xl border border-amber-300 bg-amber-50/80 p-3.5 text-xs text-amber-950 leading-relaxed shadow-xs"
+        >
+          <div className="flex items-center gap-1.5 font-bold text-amber-900 mb-1">
+            <Info size={14} className="text-amber-700 shrink-0" />
+            <span>Statutory Notice: Unbundled Multi-Ticket Connection (Separate PNRs)</span>
+          </div>
+          <p className="text-slate-800 text-[11.5px] leading-relaxed">
+            <strong>Separate Contracts:</strong> Leg 1 and Leg 2 are independent, unbundled tickets booked under separate PNRs / transaction IDs across distinct carriers. Under Indian Railways and intercity motor transport rules, each carrier is responsible only for its own segment.
+          </p>
+          <p className="mt-1.5 text-slate-800 text-[11.5px] leading-relaxed">
+            <strong>Missed Connection & Refund Policy:</strong> If Leg 1 suffers an unexpected delay or cancellation causing a missed connection at {hubCity}, the downstream operator owes zero refund, automatic rescheduling, or compensation.
+          </p>
+          <p className="mt-1.5 text-amber-900 font-semibold text-[11.5px] leading-relaxed">
+            <strong>Buffer Recommendation:</strong> TravelMate strictly requires a minimum connection time of &ge; {mctMinutes}m (this itinerary includes a {slackMinutes}m transfer buffer with {maxAbsorbableDelay}m absorbable delay). During monsoon or dense fog seasons, we strongly recommend allowing a 90+ minute buffer or acquiring independent travel insurance.
+          </p>
         </div>
 
         {/* Footer Actions */}
