@@ -1,0 +1,44 @@
+{
+  "/": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  },
+  "/planner?from=Delhi+(NDLS)&to=Patna+(PNBE)&date=2026-10-15": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  },
+  "/safety": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  },
+  "/saved": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  },
+  "/privacy": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  },
+  "/terms": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  },
+  "/disclaimer": {
+    "totalViolations": 0,
+    "seriousOrCriticalCount": 0,
+    "colorContrastCount": 0,
+    "violations": []
+  }
+}

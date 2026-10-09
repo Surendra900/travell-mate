@@ -1,0 +1,99 @@
+{
+  "timestamp": "2026-10-09T08:41:49.725Z",
+  "auditTarget": "http://127.0.0.1:5173",
+  "findingsChecked": 15,
+  "prosChecked": 10,
+  "results": {
+    "C-01_cold_gates": {
+      "openModals": 0,
+      "isBackdropPresent": false,
+      "navItemsCount": 4,
+      "pass": true
+    },
+    "C-02_blind_gate_spec": {
+      "autoInvoked": false,
+      "pass": true
+    },
+    "C-03_location_permission": {
+      "autoOpens": false,
+      "pass": true
+    },
+    "C-14_date_picker_min": {
+      "minAttr": "2026-10-09",
+      "expectedMin": "2026-10-09",
+      "rangeUnderflowTriggered": true,
+      "pass": true
+    },
+    "C-08_search_auto_trigger": {
+      "cardsCount": 3,
+      "pass": true
+    },
+    "C-07_inline_results": {
+      "isModalCover": false,
+      "pass": true
+    },
+    "C-11_single_mount": {
+      "bypassContrastMounts": 1,
+      "pass": true
+    },
+    "C-15_unbundled_disclaimer": {
+      "isDisclaimerVisible": true,
+      "containsSeparatePnr": true,
+      "containsBuffer": true,
+      "pass": true
+    },
+    "C-06_deep_links": {
+      "deepLinksFound": 2,
+      "sampleLinks": [
+        "https://www.redbus.in/bus-tickets/lucknow-to-patna?date=2026-10-15",
+        "https://www.google.com/travel/flights?q=flights%20from%20LKO%20to%20PAT%20on%202026-10-15"
+      ],
+      "pass": true
+    },
+    "P-10_safety_hub": {
+      "hotlinesCount": 5,
+      "pass": true
+    },
+    "C-09_accessibility_wcag21aa": {
+      "totalSeriousOrCriticalViolations": 0,
+      "totalColorContrastViolations": 0,
+      "pass": true
+    },
+    "C-04_data_honesty": {
+      "forbiddenClaimsFoundCount": 0,
+      "claims": [],
+      "pass": true
+    },
+    "C-05_timetable_hub_coverage": {
+      "totalTrains": 44,
+      "uniqueStationsCovered": 39,
+      "pass": true
+    },
+    "C-10_security_headers": {
+      "hasCsp": true,
+      "cspValue": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'se...",
+      "hasHsts": true,
+      "pass": true
+    },
+    "C-12_bundle_auth_clerk": {
+      "hasClerkDep": false,
+      "hasClerkChunk": false,
+      "pass": true
+    },
+    "C-13_dependency_vulnerabilities": {
+      "productionVulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 2,
+        "high": 0,
+        "critical": 0,
+        "total": 2
+      },
+      "productionHighAndCritical": 0,
+      "pass": true
+    }
+  },
+  "passedChecks": 16,
+  "failedChecks": 0,
+  "durationMs": 52325
+}
