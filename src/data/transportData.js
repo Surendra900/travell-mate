@@ -227,8 +227,10 @@ export function getProviderDeepLink({
   const cleanTo = String(to || '').trim()
 
   if (mode === 'bus') {
-    const fromCity = cleanFrom.split(/\s+|,|\(/)[0].toLowerCase()
-    const toCity = cleanTo.split(/\s+|,|\(/)[0].toLowerCase()
+    const fromPlace = findTransportPlace(cleanFrom)
+    const toPlace = findTransportPlace(cleanTo)
+    const fromCity = (fromPlace?.city || cleanFrom.split(/\s+|,|\(/)[0]).toLowerCase().replace(/[^a-z0-9]/g, '')
+    const toCity = (toPlace?.city || cleanTo.split(/\s+|,|\(/)[0]).toLowerCase().replace(/[^a-z0-9]/g, '')
     if (fromCity && toCity) {
       const dateParam = date ? `?date=${encodeURIComponent(date)}` : ''
       return `https://www.redbus.in/bus-tickets/${encodeURIComponent(fromCity)}-to-${encodeURIComponent(toCity)}${dateParam}`

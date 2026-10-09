@@ -99,6 +99,121 @@ export function resolveStationCode(input = '') {
 }
 
 /**
+ * Resolves a station code or name to a human city name for bus/intercity links
+ */
+export function resolveStationCity(input = '') {
+  if (!input) return 'hub';
+  const { stations, junctions } = loadData();
+  const query = String(input).trim().toUpperCase();
+
+  // 1. Check exact code match in stations
+  const exactStation = stations?.find(s => s.code === query || s.name?.toUpperCase() === query);
+  if (exactStation?.city) {
+    return exactStation.city.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  // 2. Check exact match in junctions
+  const exactJunction = junctions?.find(j => j.stationCode === query || j.cityName?.toUpperCase() === query);
+  if (exactJunction?.cityName) {
+    return exactJunction.cityName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  // 3. Check reverse of CITY_PRIMARY_STATIONS
+  for (const [cityName, stationCode] of Object.entries(CITY_PRIMARY_STATIONS)) {
+    if (stationCode === query) {
+      return cityName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+  }
+
+  // 4. Substring match in station names
+  const partialStation = stations?.find(s => s.name?.toUpperCase().includes(query) || (s.code && query.includes(s.code)));
+  if (partialStation?.city) {
+    return partialStation.city.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  // 5. Strip parentheses or brackets (e.g., "Patna (PNBE)" -> "patna")
+  const stripped = String(input).split(/[\(\-,]/)[0].trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  return stripped || 'hub';
+}
+
+/**
+ * Resolves a station code or city name to a standard airport IATA code
+ */
+export function resolveStationAirportIata(input = '') {
+  if (!input) return '';
+  const { airports } = loadData();
+  const query = String(input).trim().toUpperCase();
+
+  // 1. Direct IATA code match
+  const directAirport = airports?.find(a => a.iataCode === query);
+  if (directAirport) return directAirport.iataCode;
+
+  // 2. Known station to airport IATA mapping for top trunk hubs
+  const STATION_TO_IATA = {
+    'NDLS': 'DEL',
+    'DLI': 'DEL',
+    'NZM': 'DEL',
+    'ANVT': 'DEL',
+    'MMCT': 'BOM',
+    'CSMT': 'BOM',
+    'BDTS': 'BOM',
+    'PNBE': 'PAT',
+    'HWH': 'CCU',
+    'SDAH': 'CCU',
+    'MAS': 'MAA',
+    'MS': 'MAA',
+    'SBC': 'BLR',
+    'YPR': 'BLR',
+    'SC': 'HYD',
+    'HYB': 'HYD',
+    'ADI': 'AMD',
+    'JP': 'JAI',
+    'LKO': 'LKO',
+    'CNB': 'KNU',
+    'BPL': 'BHO',
+    'NGP': 'NAG',
+    'BSB': 'VNS',
+    'DDU': 'VNS',
+    'GHY': 'GAU',
+    'PUNE': 'PNQ',
+    'BBI': 'BBI',
+    'ASR': 'ATQ',
+    'CDG': 'IXC'
+  };
+
+  if (STATION_TO_IATA[query]) {
+    return STATION_TO_IATA[query];
+  }
+
+  // 3. Resolve city and look up in airports
+  const city = resolveStationCity(input);
+  const airportByCity = airports?.find(a => a.city.toLowerCase().replace(/[^a-z0-9]/g, '') === city);
+  if (airportByCity) return airportByCity.iataCode;
+
+  const COMMON_CITY_IATA = {
+    'delhi': 'DEL',
+    'mumbai': 'BOM',
+    'bengaluru': 'BLR',
+    'bangalore': 'BLR',
+    'kolkata': 'CCU',
+    'chennai': 'MAA',
+    'hyderabad': 'HYD',
+    'patna': 'PAT',
+    'ahmedabad': 'AMD',
+    'pune': 'PNQ',
+    'jaipur': 'JAI',
+    'lucknow': 'LKO',
+    'guwahati': 'GAU',
+    'bhopal': 'BHO',
+    'nagpur': 'NAG',
+    'varanasi': 'VNS',
+    'kanpur': 'KNU'
+  };
+
+  return COMMON_CITY_IATA[city] || city.toUpperCase();
+}
+
+/**
  * Parse 'HH:mm' time string into minutes from midnight
  */
 export function parseTimeToMinutes(timeStr) {
@@ -134,15 +249,21 @@ export function getBookingDeepLink(mode, { fromCode, toCode, date, trainNumber, 
   const cleanDate = date || '2026-10-15';
   
   if (mode === 'train') {
-    return `https://www.confirmtkt.com/rbooking/trains-between-stations?fromStationCode=${encodeURIComponent(fromCode || '')}&toStationCode=${encodeURIComponent(toCode || '')}&date=${encodeURIComponent(cleanDate)}`;
+    const scFrom = resolveStationCode(fromCode) || fromCode || '';
+    const scTo = resolveStationCode(toCode) || toCode || '';
+    return `https://www.confirmtkt.com/rbooking/trains-between-stations?fromStationCode=${encodeURIComponent(scFrom)}&toStationCode=${encodeURIComponent(scTo)}&date=${encodeURIComponent(cleanDate)}`;
   }
   
   if (mode === 'bus') {
-    return `https://www.redbus.in/bus-tickets/${encodeURIComponent(fromCode || 'hub').toLowerCase()}-to-${encodeURIComponent(toCode || 'dest').toLowerCase()}?doj=${encodeURIComponent(cleanDate)}`;
+    const fromCity = resolveStationCity(fromCode);
+    const toCity = resolveStationCity(toCode);
+    return `https://www.redbus.in/bus-tickets/${encodeURIComponent(fromCity)}-to-${encodeURIComponent(toCity)}?doj=${encodeURIComponent(cleanDate)}`;
   }
   
   if (mode === 'flight') {
-    return `https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(fromCode || '')}+to+${encodeURIComponent(toCode || '')}+on+${encodeURIComponent(cleanDate)}`;
+    const fromIata = resolveStationAirportIata(fromCode);
+    const toIata = resolveStationAirportIata(toCode);
+    return `https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(fromIata)}+to+${encodeURIComponent(toIata)}+on+${encodeURIComponent(cleanDate)}`;
   }
 
   return 'https://www.irctc.co.in/';

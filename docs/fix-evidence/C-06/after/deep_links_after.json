@@ -1,0 +1,12 @@
+{
+  "routeEngine": {
+    "busLinkWithStationCodes": "https://www.redbus.in/bus-tickets/kanpur-to-patna?doj=2026-10-15",
+    "busLinkDelhiPatna": "https://www.redbus.in/bus-tickets/delhi-to-patna?doj=2026-10-15",
+    "flightLinkWithStationCodes": "https://www.google.com/travel/flights?q=flights+from+DEL+to+PAT+on+2026-10-15",
+    "flightLinkMumbaiKolkata": "https://www.google.com/travel/flights?q=flights+from+BOM+to+CCU+on+2026-10-15"
+  },
+  "transportData": {
+    "busLinkWithStationCodes": "https://www.redbus.in/bus-tickets/delhi-to-patna?date=2026-10-15",
+    "flightLinkWithStationCodes": "https://www.google.com/travel/flights?q=flights%20from%20DEL%20to%20PAT%20on%202026-10-15"
+  }
+}
