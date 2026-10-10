@@ -1,7 +1,6 @@
 import { emergencyCards, emergencyNumber } from '../data/emergencyData'
 import { calculatePlanQualityScore, scoreBreakdown } from './scoring'
 import { coverageNotice, getServiceOptions, transportPlaces } from '../data/transportData'
-import { getSecureVaultDocumentCount } from './secureVault'
 
 const PLAN_KEY = 'travelmate-plans'
 const OFFLINE_KEY = 'travelmate-offline-pack'
@@ -247,9 +246,8 @@ export function saveOfflinePack() {
       pnrStatus: plan.pnrStatus || null,
       options: getServiceOptions(plan)
     })),
-    secureVaultDocumentCount: getSecureVaultDocumentCount(),
     generatedAt: new Date().toISOString(),
-    notice: 'Offline pack contains emergency guidance and saved-route snapshots only. Encrypted documents stay separately in IndexedDB and are never copied into localStorage.',
+    notice: 'Offline pack contains emergency guidance and saved-route snapshots only.',
     savedAt: new Date().toISOString()
   }
   localStorage.setItem(OFFLINE_KEY, JSON.stringify(payload))

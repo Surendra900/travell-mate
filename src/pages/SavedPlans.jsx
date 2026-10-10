@@ -325,8 +325,8 @@ export default function SavedPlans({ toast }) {
               <strong className="text-lg font-black text-slate-900">{packedExactRoutes}</strong>
             </div>
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Vault Documents</span>
-              <strong className="text-lg font-black text-slate-900">{offline?.secureVaultDocumentCount || 0}</strong>
+              <span className="text-xs font-bold text-slate-500">Offline Pack</span>
+              <strong className="text-lg font-black text-slate-900">{offline ? 'Ready' : 'Pending'}</strong>
             </div>
           </div>
         </section>

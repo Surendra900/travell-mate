@@ -135,6 +135,7 @@ export default function PnrPredictorModal({
 
   const handleShareWhatsApp = () => {
     if (!activeData || !prediction) return
+    const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://travelmate-ai-flowzint.vercel.app'
     const text = `🚆 *IRCTC PNR Status & AI Prediction*
 *PNR:* ${activeData.pnrNumber}
 *Train:* ${activeData.trainNumber} - ${activeData.trainName}
@@ -145,7 +146,7 @@ export default function PnrPredictorModal({
 💡 *Analysis:* ${prediction.summary}
 ${prediction.recommendation}
 
-Verified on TravelMate: https://travelmate-ai-flowzint.vercel.app/`
+Verified on TravelMate: ${origin}/`
 
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank')
   }

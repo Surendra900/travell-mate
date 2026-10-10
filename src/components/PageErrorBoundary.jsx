@@ -1,5 +1,6 @@
 import React from 'react'
 import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
+import { captureException } from '../utils/errorMonitoring'
 
 export default class PageErrorBoundary extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class PageErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     console.error('TravelMate page render failed:', error, info)
+    captureException(error, { componentStack: info?.componentStack })
   }
 
   render() {

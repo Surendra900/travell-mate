@@ -125,8 +125,8 @@ export default function MultimodalTimelineCard({ route, onSave }) {
     }
   }
 
-  const leg1Provenance = route.leg1?.provenance || 'TIMETABLE'
-  const leg2Provenance = route.leg2?.provenance || (route.leg2?.mode === 'Bus' ? 'ESTIMATE' : 'TIMETABLE')
+  const leg1Provenance = route.leg1?.provenance || (route.leg1?.depart ? 'TIMETABLE' : 'ESTIMATE')
+  const leg2Provenance = route.leg2?.provenance || (route.leg2?.depart ? 'TIMETABLE' : 'ESTIMATE')
 
   return (
     <>
@@ -229,10 +229,24 @@ export default function MultimodalTimelineCard({ route, onSave }) {
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
-              <span><b className="text-slate-900">{route.leg1?.depart}</b> {route.leg1?.from}</span>
-              <span className="text-slate-600 font-bold">── {route.leg1?.duration} ──➔</span>
-              <span><b className="text-slate-900">{route.leg1?.arrive}</b> {route.leg1?.to}</span>
+              {route.leg1?.depart && route.leg1?.arrive ? (
+                <>
+                  <span><b className="text-slate-900">{route.leg1.depart}</b> {route.leg1.from}</span>
+                  <span className="text-slate-600 font-bold">── {route.leg1.duration} ──➔</span>
+                  <span><b className="text-slate-900">{route.leg1.arrive}</b> {route.leg1.to}</span>
+                </>
+              ) : (
+                <div className="w-full rounded-lg bg-amber-50/70 border border-amber-200/80 px-2.5 py-1 text-[11px] text-amber-900 flex items-center justify-between">
+                  <span>{route.leg1?.departureEstimate || 'Frequency estimate'} · {route.leg1?.from} ➔ {route.leg1?.to}</span>
+                  <span className="font-bold text-amber-950">~{route.leg1?.duration}</span>
+                </div>
+              )}
             </div>
+            {route.leg1?.scheduleNote && (
+              <p className="text-[11px] text-slate-500 mt-1 italic">
+                * {route.leg1.scheduleNote}
+              </p>
+            )}
 
             <div className="mt-3 flex justify-end">
               <a
@@ -345,12 +359,24 @@ export default function MultimodalTimelineCard({ route, onSave }) {
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
-              <span><b className="text-slate-900">{route.leg2?.depart}</b> {route.leg2?.from}</span>
-              <span className="text-slate-600 font-bold">── {route.leg2?.duration} ──➔</span>
-              <span><b className="text-slate-900">{route.leg2?.arrive}</b> {route.leg2?.to}</span>
+              {route.leg2?.depart && route.leg2?.arrive ? (
+                <>
+                  <span><b className="text-slate-900">{route.leg2.depart}</b> {route.leg2.from}</span>
+                  <span className="text-slate-600 font-bold">── {route.leg2.duration} ──➔</span>
+                  <span><b className="text-slate-900">{route.leg2.arrive}</b> {route.leg2.to}</span>
+                </>
+              ) : (
+                <div className="w-full rounded-lg bg-amber-50/70 border border-amber-200/80 px-2.5 py-1 text-[11px] text-amber-900 flex items-center justify-between">
+                  <span>{route.leg2?.departureEstimate || 'Frequency estimate'} · {route.leg2?.from} ➔ {route.leg2?.to}</span>
+                  <span className="font-bold text-amber-950">~{route.leg2?.duration}</span>
+                </div>
+              )}
             </div>
-
-            {route.leg2?.mode === 'Bus' && (
+            {route.leg2?.scheduleNote ? (
+              <p className="text-[11px] text-slate-500 mt-1 italic">
+                * {route.leg2.scheduleNote}
+              </p>
+            ) : route.leg2?.mode === 'Bus' && (
               <p className="text-[11px] text-slate-500 mt-1 italic">
                 * Buses usually depart every 30 to 60 min. Check the portal for exact boarding point.
               </p>

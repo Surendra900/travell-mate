@@ -94,15 +94,35 @@ export function predictWaitlistConfirmation({
   daysToDeparture = 3,
   chartPrepared = false
 }) {
-  const parsed = parseWaitlistString(currentStatus || bookingStatus)
+  const rawStatus = String(currentStatus || bookingStatus || '').trim()
+  if (!rawStatus) {
+    return {
+      clearanceScore: 0,
+      clearanceIndexFormatted: '0/100',
+      probability: 0,
+      tier: 'insufficient-data',
+      label: 'Insufficient Data',
+      badgeClass: 'bg-slate-500/20 text-slate-300 border border-slate-500/40',
+      color: '#94a3b8',
+      isHeuristicEstimate: true,
+      summary: 'Please provide a valid Indian Railways waitlist status (e.g. GNWL 12, RAC 5).',
+      insights: ['No waitlist position or quota could be identified from the input.'],
+      recommendation: 'Enter your booking or current status from your IRCTC ticket.'
+    }
+  }
+
+  const parsed = parseWaitlistString(rawStatus)
 
   if (parsed.isConfirmed) {
     return {
+      clearanceScore: 100,
+      clearanceIndexFormatted: '100/100',
       probability: 100,
       tier: 'confirmed',
       label: 'Confirmed (CNF)',
       badgeClass: 'bg-emerald-400 text-slate-950',
       color: '#10b981',
+      isHeuristicEstimate: false,
       summary: 'Seat is confirmed. Check coach and berth allocation.',
       insights: [
         'Berth and coach details are confirmed by Indian Railways.',
@@ -120,11 +140,14 @@ export function predictWaitlistConfirmation({
   // If chart is already prepared and still WL, it did not confirm
   if (chartPrepared && !parsed.isRac) {
     return {
+      clearanceScore: 0,
+      clearanceIndexFormatted: '0/100',
       probability: 0,
       tier: 'low',
       label: 'Regret / Chart Prepared',
       badgeClass: 'bg-rose-500/20 text-rose-300 border border-rose-500/40',
       color: '#f43f5e',
+      isHeuristicEstimate: false,
       summary: 'Charting is complete. Waitlisted e-tickets are automatically cancelled by IRCTC.',
       insights: [
         'Chart has been prepared; no further cancellations will clear this ticket.',
@@ -136,11 +159,14 @@ export function predictWaitlistConfirmation({
 
   if (chartPrepared && parsed.isRac) {
     return {
+      clearanceScore: 99,
+      clearanceIndexFormatted: '99/100',
       probability: 99,
       tier: 'high',
       label: 'RAC Confirmed to Board',
       badgeClass: 'bg-emerald-400 text-slate-950 font-black',
       color: '#10b981',
+      isHeuristicEstimate: false,
       summary: 'Chart prepared. You have confirmed boarding rights with side-lower berth allocation.',
       insights: [
         'Board the train legally with your allocated RAC berth.',
@@ -176,20 +202,20 @@ export function predictWaitlistConfirmation({
   }
 
   let tier = 'medium'
-  let label = `${finalProb}% Medium Chance`
+  let label = `${finalProb}/100 Estimated Clearance Index (Heuristic)`
   let badgeClass = 'bg-amber-400/20 text-amber-300 border border-amber-400/40'
   let color = '#f59e0b'
   let recommendation = 'Keep an eye on chart preparation 4 hours before departure. Prepare a backup multimodal option.'
 
   if (finalProb >= 75) {
     tier = 'high'
-    label = `${finalProb}% High Confirmation Chance`
+    label = `${finalProb}/100 High Clearance Index (Heuristic)`
     badgeClass = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
     color = '#10b981'
-    recommendation = 'Strong probability of confirmation. Ticket is expected to clear into RAC or CNF before charting.'
+    recommendation = 'Strong likelihood of clearance. Ticket is expected to clear into RAC or CNF before charting.'
   } else if (finalProb < 45) {
     tier = 'low'
-    label = `${finalProb}% Low Chance of Confirmation`
+    label = `${finalProb}/100 Low Clearance Index (Heuristic)`
     badgeClass = 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
     color = '#f43f5e'
     recommendation = 'High risk of remaining waitlisted. Use TravelMate Multimodal Split or Tatkal Emergency to secure travel.'
@@ -198,19 +224,25 @@ export function predictWaitlistConfirmation({
   const insights = [
     `${quotaMeta.name} (${parsed.quota}): ${quotaMeta.description}`,
     `${classMeta.label}: Average safe clearance threshold is around WL ${classMeta.maxSafeWl}. Current position: ${parsed.isRac ? `RAC ${parsed.currentWl}` : `WL ${parsed.currentWl}`}.`,
-    `Time remaining: ~${daysToDeparture} days until departure. Bulk cancellations typically surge 24–48 hours prior.`
+    `Time remaining: ~${daysToDeparture} days until departure. Bulk cancellations typically surge 24–48 hours prior.`,
+    'Heuristic estimate disclosure: Calculated using a parametric heuristic model based on quota priority, coach class capacity, and charting window. This is an estimated index, not an official IRCTC guarantee.'
   ]
 
   return {
+    clearanceScore: finalProb,
+    clearanceIndexFormatted: `${finalProb}/100`,
     probability: finalProb,
+    isHeuristicEstimate: true,
+    modelName: 'Heuristic Waitlist Clearance Model (Parametric Rules)',
     tier,
     label,
     badgeClass,
     color,
     summary: parsed.isRac
       ? `RAC ${parsed.currentWl} has guaranteed boarding rights with high chance of full berth.`
-      : `${parsed.quota} ${parsed.currentWl} has ~${finalProb}% chance to clear into confirmed or RAC status.`,
+      : `${parsed.quota} ${parsed.currentWl} has ~${finalProb}/100 clearance index into confirmed or RAC status.`,
     insights,
+    methodologyDisclosure: 'Estimated using a heuristic parametric model combining quota priority (GNWL > RLWL > PQWL > TQWL), coach class cancellation velocity, and days remaining before charting. This is a heuristic clearance index, not an official IRCTC probability guarantee.',
     recommendation
   }
 }

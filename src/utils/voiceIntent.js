@@ -197,9 +197,11 @@ export function formatTierSpeechSummary(route) {
   const tierName = String(route.tierLabel || 'Alternative route').replace(/[🟢🔵⚡]/g, '').trim()
   const fare = route.totalFare ? `${route.totalFare} rupees` : 'Standard fare'
   const duration = route.totalDuration || 'calculated duration'
-  const leg1 = route.leg1 ? `Step 1: ${route.leg1.mode} from ${route.leg1.from} to ${route.leg1.to}, departing at ${route.leg1.depart}.` : ''
+  const leg1Timing = route.leg1?.depart ? `, departing at ${route.leg1.depart}` : (route.leg1?.departureEstimate ? `, ${route.leg1.departureEstimate}` : '')
+  const leg1 = route.leg1 ? `Step 1: ${route.leg1.mode} from ${route.leg1.from} to ${route.leg1.to}${leg1Timing}.` : ''
   const transfer = route.transferBuffer ? `Transfer: ${route.transferBuffer} at ${route.hubCity} Junction.` : ''
-  const leg2 = route.leg2 ? `Step 2: ${route.leg2.mode} from ${route.leg2.from} to ${route.leg2.to}, arriving at ${route.leg2.arrive}.` : ''
+  const leg2Timing = route.leg2?.arrive ? `, arriving at ${route.leg2.arrive}` : ''
+  const leg2 = route.leg2 ? `Step 2: ${route.leg2.mode} from ${route.leg2.from} to ${route.leg2.to}${leg2Timing}.` : ''
   const why = route.whyPicked ? `Why picked: ${route.whyPicked}` : ''
 
   return `${tierName}. Total fare is ${fare}, journey duration is ${duration}. ${leg1} ${transfer} ${leg2} ${why}`.trim()

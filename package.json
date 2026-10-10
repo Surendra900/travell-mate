@@ -12,7 +12,6 @@
     "preview": "vite preview",
     "audit": "node scripts/audit.mjs",
     "etl": "node data/etl/runEtl.js",
-    "db:seed": "node prisma/seed.js",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run audit && npm test && npm run build"
   },
@@ -21,7 +20,8 @@
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.6"
+    "react-router-dom": "^6.30.6",
+    "zod": "^4.6.5"
   },
   "overrides": {
     "chokidar": "^4.0.3",

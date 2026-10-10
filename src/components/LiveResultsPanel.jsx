@@ -53,10 +53,10 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
   const fare = item.price || item.fare || item.amount
   const source = item.sourceBadge || 'Live API result'
 
-  const departure = displayValue(item.departure || item.depart || item.departureTime, '10:30 AM')
-  const arrival = displayValue(item.arrival || item.arrive || item.arrivalTime, '06:45 PM')
-  const duration = displayValue(item.duration || item.travelTime, '8h 15m')
-  const statusText = displayValue(item.status || item.availability, 'Available')
+  const departure = displayValue(item.departure || item.depart || item.departureTime, 'Schedule unavailable')
+  const arrival = displayValue(item.arrival || item.arrive || item.arrivalTime, 'Schedule unavailable')
+  const duration = displayValue(item.duration || item.travelTime, '—')
+  const statusText = displayValue(item.status || item.availability, 'Check availability')
   const isAvailable = statusText.toLowerCase().includes('avail') || statusText.toLowerCase().includes('confirm')
 
   const directLink = getProviderDeepLink({
@@ -168,12 +168,12 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
 
 const filterOptions = [
   { id: 'all', label: 'All Options' },
-  { id: 'contrast', label: '⚡ Bypass Contrast' },
-  { id: 'budget', label: '🟢 Under ₹1,000 (Paisa Vasool)' },
-  { id: 'balanced', label: '🔵 Sub-₹2,000 (Balanced)' },
-  { id: 'fastest', label: '⚡ Fastest (< 12h)' },
-  { id: 'map', label: '🗺️ Route Map' },
-  { id: 'simulator', label: '⏱️ Delay Simulator' }
+  { id: 'contrast', label: 'Bypass Contrast' },
+  { id: 'budget', label: 'Under ₹1,000 (Paisa Vasool)' },
+  { id: 'balanced', label: 'Sub-₹2,000 (Balanced)' },
+  { id: 'fastest', label: 'Fastest (< 12h)' },
+  { id: 'map', label: 'Route Map' },
+  { id: 'simulator', label: 'Delay Simulator' }
 ]
 
 export default function LiveResultsPanel({
@@ -192,7 +192,90 @@ export default function LiveResultsPanel({
   const [showPnrModal, setShowPnrModal] = useState(false)
   const [isSpeakingTop, setIsSpeakingTop] = useState(false)
 
-  const multimodalRoutes = useMemo(() => {
+  const [recoveryTiers, setRecoveryTiers] = useState(null)
+  const [recoveryLoading, setRecoveryLoading] = useState(false)
+
+  useEffect(() => {
+    if (!open || !plan?.from || !plan?.to) {
+      setRecoveryTiers(null)
+      return
+    }
+
+    let isSubscribed = true
+    setRecoveryLoading(true)
+
+    const params = new URLSearchParams({
+      from: plan.from,
+      to: plan.to,
+      date: plan.date || '2026-10-15'
+    })
+
+    fetch(`/api/recovery?${params.toString()}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(json => {
+        if (!isSubscribed) return
+        if (json?.ok && Array.isArray(json.data?.rankedTiers) && json.data.rankedTiers.length > 0) {
+          const mapped = json.data.rankedTiers.map(t => ({
+            id: t.id,
+            tier: t.tier,
+            tierLabel: t.tierLabel,
+            tierBadge: t.tier === 'paisa-vasool' ? 'Maximum Savings' : t.tier === 'smart-balanced' ? 'Comfort & Speed' : 'Saves 8+ Hours',
+            totalFare: t.totalFare,
+            fareFormatted: t.fareFormatted,
+            totalDuration: t.totalDurationFormatted,
+            totalDurationMin: t.totalDurationMin,
+            hubCity: t.hubCity,
+            transferBuffer: t.transfer?.durationFormatted ? `${t.transfer.durationFormatted} transfer buffer` : t.slackFormatted,
+            slackMinutes: t.slackMinutes,
+            mctMinutes: t.transfer?.mctMinutes || 45,
+            riskLevel: t.reliability?.riskLevel || 'Safe',
+            whyPicked: t.whyPicked,
+            rationale: t.rationale,
+            leg1: t.leg1 ? {
+              legIndex: 1,
+              mode: t.leg1.mode === 'train' ? 'Train' : t.leg1.mode === 'bus' ? 'Bus' : 'Flight',
+              from: t.leg1.from,
+              to: t.leg1.to,
+              depart: t.leg1.depart,
+              arrive: t.leg1.arrive,
+              duration: t.leg1.durationFormatted,
+              fare: t.leg1.fare,
+              service: t.leg1.vehicleName ? `${t.leg1.vehicleName} (${t.leg1.vehicleNumber || ''})` : `${t.leg1.mode} service`,
+              provenance: t.leg1.provenance || 'TIMETABLE',
+              bookingLink: t.leg1.bookingLink
+            } : null,
+            leg2: t.leg2 ? {
+              legIndex: 2,
+              mode: t.leg2.mode === 'train' ? 'Train' : t.leg2.mode === 'bus' ? 'Bus' : 'Flight',
+              from: t.leg2.from,
+              to: t.leg2.to,
+              depart: t.leg2.depart,
+              arrive: t.leg2.arrive,
+              duration: t.leg2.durationFormatted,
+              fare: t.leg2.fare,
+              service: t.leg2.vehicleName ? `${t.leg2.vehicleName} (${t.leg2.vehicleNumber || ''})` : `${t.leg2.mode} service`,
+              provenance: t.leg2.provenance || (t.leg2.mode === 'train' ? 'TIMETABLE' : 'ESTIMATE'),
+              bookingLink: t.leg2.bookingLink
+            } : null
+          }))
+          setRecoveryTiers(mapped)
+        } else {
+          setRecoveryTiers(null)
+        }
+      })
+      .catch(() => {
+        if (isSubscribed) setRecoveryTiers(null)
+      })
+      .finally(() => {
+        if (isSubscribed) setRecoveryLoading(false)
+      })
+
+    return () => {
+      isSubscribed = false
+    }
+  }, [open, plan?.from, plan?.to, plan?.date])
+
+  const fallbackRoutes = useMemo(() => {
     if (!open) return []
     return generateMultimodalRoutes({
       from: plan?.from,
@@ -201,6 +284,8 @@ export default function LiveResultsPanel({
       passengers: plan?.passengers || 1
     })
   }, [open, plan?.from, plan?.to, plan?.date, plan?.passengers])
+
+  const multimodalRoutes = recoveryTiers && recoveryTiers.length > 0 ? recoveryTiers : fallbackRoutes
 
   const displayedMultimodalRoutes = useMemo(() => {
     if (!multimodalRoutes || multimodalRoutes.length === 0) return []

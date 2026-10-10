@@ -538,11 +538,6 @@ export default function EmergencyToolkit({ toast, compact = false }) {
                 Last prepared: {new Date(offlinePack.generatedAt).toLocaleString()}
               </p>
             )}
-            {offlinePack?.secureVaultDocumentCount > 0 && (
-              <p className="mt-2 text-xs font-bold text-cyan-200">
-                Encrypted vault documents on this device: {offlinePack.secureVaultDocumentCount}. They are not copied into the offline pack.
-              </p>
-            )}
           </div>
         </div>
 

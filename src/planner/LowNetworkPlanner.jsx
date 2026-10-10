@@ -117,14 +117,6 @@ function SavedOfflineSnapshot({ pack }) {
           ) : null}
         </div>
       )}
-      {pack?.secureVaultDocumentCount > 0 && (
-        <div className="mt-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-          <p className="font-black text-white">Encrypted vault available</p>
-          <p className="mt-1">
-            {pack.secureVaultDocumentCount} encrypted document(s) remain in the secure vault. They are not exposed or duplicated in this route snapshot.
-          </p>
-        </div>
-      )}
     </div>
   )
 }

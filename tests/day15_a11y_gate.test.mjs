@@ -14,14 +14,9 @@ test('Day 15: App.jsx provides accessible landmarks and skip-to-content mechanis
   assert.match(app, /tabIndex="-1"/, 'Main landmark must have tabIndex="-1" for reliable programmatic focus')
 })
 
-test('Day 15: BlindVoiceGate.jsx implements complete keyboard focus trapping and restoration', () => {
-  const comp = fs.readFileSync(path.join(root, 'src/components/BlindVoiceGate.jsx'), 'utf8')
-  assert.match(comp, /dialogRef/, 'Must maintain dialogRef for focus bounding')
-  assert.match(comp, /previousFocusRef/, 'Must preserve previous active element for restoration')
-  assert.match(comp, /handleTrapFocus/, 'Must implement handleTrapFocus for Tab and Shift+Tab')
-  assert.match(comp, /ref=\{dialogRef\}/, 'Must attach dialogRef to modal card')
-  assert.match(comp, /aria-live="polite"/, 'Must have aria-live polite on listening status region')
-  assert.match(comp, /role="status"/, 'Must have role status on listening status region')
+test('Day 15 / Master Spec §8: Blocking BlindVoiceGate is excised', () => {
+  const exists = fs.existsSync(path.join(root, 'src/components/BlindVoiceGate.jsx'))
+  assert.equal(exists, false, 'BlindVoiceGate.jsx must not exist per Master Spec §8')
 })
 
 test('Day 15: EmergencyToolkit.jsx complies with accessible labeling and hotline controls', () => {

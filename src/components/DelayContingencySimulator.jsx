@@ -40,24 +40,39 @@ export default function DelayContingencySimulator({
 }) {
   const [delayMinutes, setDelayMinutes] = useState(0)
 
-  // Extract or default itinerary parameters
-  const route = itinerary || {}
-  const leg1 = route.leg1 || {
-    depart: '07:30',
-    arrive: '11:15',
-    from: 'New Delhi (NDLS)',
-    to: 'Kanpur Central (CNB)',
-    service: 'Vande Bharat Express (22436)'
+  // Validate itinerary parameters
+  if (!itinerary || !itinerary.leg1) {
+    return (
+      <div className={`rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center text-slate-600 ${className}`.trim()}>
+        <Clock className="mx-auto text-slate-400 mb-2" size={32} />
+        <h4 className="font-bold text-slate-800 text-sm">Select an Itinerary to Simulate Delay</h4>
+        <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+          Choose a recovered journey option with timetable arrival records to test junction slack and delay contingency alternatives.
+        </p>
+      </div>
+    )
   }
-  const leg2 = route.leg2 || {
-    depart: '13:00',
-    arrive: '20:30',
-    from: 'Kanpur Central (CNB)',
-    to: 'Patna Jn (PNBE)',
-    service: 'Poorva Express (12304)'
+
+  const route = itinerary
+  const leg1 = route.leg1
+  const leg2 = route.leg2 || {}
+
+  // Check if leg 1 has a verified arrival time
+  if (!leg1.arrive) {
+    return (
+      <div className={`rounded-3xl border border-amber-200 bg-amber-50/70 p-6 text-center text-amber-900 ${className}`.trim()}>
+        <AlertTriangle className="mx-auto text-amber-600 mb-2" size={32} />
+        <h4 className="font-bold text-amber-950 text-sm">Timetable Arrival Time Required</h4>
+        <p className="text-xs text-amber-800 mt-1 max-w-md mx-auto">
+          This route uses frequency estimates rather than a fixed timetable arrival time. Real-time delay contingency simulation requires verified scheduled times.
+        </p>
+      </div>
+    )
   }
-  const hubCity = route.hubCity || route.transfer?.hubCity || 'Kanpur Central'
-  const hubCode = route.hubCode || route.transfer?.hubCode || 'CNB'
+
+  const hubCity = route.hubCity || route.transfer?.hubCity || 'Junction'
+  const hubCode = route.hubCode || route.transfer?.hubCode || 'HUB'
+  const destCode = route.destCode || route.leg2?.to || 'DEST'
   const initialSlack = route.slackMinutes || route.transfer?.slackMinutes || 105
   const mct = route.mctMinutes || route.transfer?.mctMinutes || 45
 
@@ -68,7 +83,7 @@ export default function DelayContingencySimulator({
     const isTight = effectiveSlack >= mct && effectiveSlack < 60
     const maxAbsorbable = Math.max(0, initialSlack - mct)
 
-    const arr1Min = parseTimeToMinutes(leg1.arrive || '11:15')
+    const arr1Min = parseTimeToMinutes(leg1.arrive)
     const actualArrivalMin = arr1Min + delayMinutes
     const actualArrivalTime = formatMinutesToTime(actualArrivalMin)
 
@@ -82,27 +97,27 @@ export default function DelayContingencySimulator({
     else if (effectiveSlack < 120) riskLevel = 'Moderate'
     else riskLevel = 'Safe'
 
-    // Compute fallback departures if tight or broken
+    // Compute fallback departure intervals if tight or broken
     const fallbackDepartures = [
       {
         id: 'fb-1',
         type: 'train',
-        name: 'Magadh Express (20802)',
+        name: `Subsequent connecting train from ${hubCity}`,
         depart: formatMinutesToTime(actualArrivalMin + 75),
         arrive: formatMinutesToTime(actualArrivalMin + 75 + 420),
-        duration: '7h 00m',
-        provenance: 'TIMETABLE',
-        bookingUrl: `https://www.confirmtkt.com/rbooking/trains-between-stations?fromStationCode=${hubCode}&toStationCode=PNBE&date=2026-10-15`
+        duration: 'approx. 7h',
+        provenance: 'ESTIMATE',
+        bookingUrl: `https://www.confirmtkt.com/rbooking/trains-between-stations?fromStationCode=${encodeURIComponent(hubCode)}&toStationCode=${encodeURIComponent(destCode)}`
       },
       {
         id: 'fb-2',
         type: 'train',
-        name: 'Brahmaputra Mail (15657)',
+        name: `Later evening train from ${hubCity}`,
         depart: formatMinutesToTime(actualArrivalMin + 135),
         arrive: formatMinutesToTime(actualArrivalMin + 135 + 450),
-        duration: '7h 30m',
-        provenance: 'TIMETABLE',
-        bookingUrl: `https://www.confirmtkt.com/rbooking/trains-between-stations?fromStationCode=${hubCode}&toStationCode=PNBE&date=2026-10-15`
+        duration: 'approx. 7h 30m',
+        provenance: 'ESTIMATE',
+        bookingUrl: `https://www.confirmtkt.com/rbooking/trains-between-stations?fromStationCode=${encodeURIComponent(hubCode)}&toStationCode=${encodeURIComponent(destCode)}`
       },
       {
         id: 'fb-3',
@@ -112,7 +127,7 @@ export default function DelayContingencySimulator({
         arrive: formatMinutesToTime(actualArrivalMin + 60 + 360),
         duration: 'approx. 6h',
         provenance: 'ESTIMATE',
-        bookingUrl: `https://www.redbus.in/bus-tickets/${encodeURIComponent(hubCity.toLowerCase())}-to-patna?doj=2026-10-15`
+        bookingUrl: `https://www.redbus.in/bus-tickets/${encodeURIComponent(hubCity.toLowerCase())}-to-${encodeURIComponent(String(destCode).toLowerCase())}`
       }
     ]
 

@@ -37,7 +37,7 @@ export default function WaitlistBypassContrast({
 
   // Split route defaults / extraction
   const split = splitRoute || {
-    tierLabel: '🟢 Paisa Vasool (Cheapest)',
+    tierLabel: 'Paisa Vasool (Budget)',
     hubCity: 'Kanpur Central',
     totalDuration: '11h 45m',
     totalFare: '₹1,240',
@@ -70,6 +70,7 @@ export default function WaitlistBypassContrast({
     }
   }
 
+  const isDemoScenario = !directRoute && !splitRoute
   const directStatus = direct.status || 'Waitlisted (WL 48)'
   const isDirectWaitlisted = !directStatus.toLowerCase().includes('avail') && !directStatus.toLowerCase().includes('cnf')
 
@@ -94,8 +95,15 @@ export default function WaitlistBypassContrast({
         </div>
 
         <div className="flex items-center gap-2">
-          <ProvenanceBadge source="TIMETABLE" />
+          <ProvenanceBadge source={isDemoScenario ? 'ESTIMATE' : 'TIMETABLE'} />
         </div>
+
+        {isDemoScenario && (
+          <div className="w-full mt-2 rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-xs text-amber-900 flex items-center gap-2">
+            <span className="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded bg-amber-200 text-amber-950">Demo Scenario</span>
+            <span>Illustrative availability for New Delhi ➔ Patna corridor. Run a route search above to view live alternatives.</span>
+          </div>
+        )}
       </div>
 
       {/* Side-by-Side Comparison Grid */}

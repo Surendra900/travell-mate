@@ -16,17 +16,11 @@ describe('C-01 & C-02 & C-03: Cold Visit Unblocked & Spec Compliance Gate', () =
     )
   })
 
-  it('C-01 & C-02: BlindVoiceGate does not auto-open for first-time visitors', async () => {
-    const blindGateContent = await fs.readFile('src/components/BlindVoiceGate.jsx', 'utf8')
-    assert.ok(
-      !blindGateContent.includes("sessionStorage.getItem('travelmate-blind-gate-shown')"),
-      'BlindVoiceGate must not use session auto-prompting on home'
-    )
+  it('C-01 & C-02: BlindVoiceGate is excised per Master Spec §8', async () => {
+    const exists = await fs.stat('src/components/BlindVoiceGate.jsx').then(() => true).catch(() => false)
+    assert.equal(exists, false, 'BlindVoiceGate.jsx must not exist')
     const appContent = await fs.readFile('src/App.jsx', 'utf8')
-    assert.ok(
-      appContent.includes('{blindGateOpen &&') || appContent.includes('blindGateOpen ?'),
-      'BlindVoiceGate must only be rendered conditionally when explicitly triggered'
-    )
+    assert.ok(!appContent.includes('<BlindVoiceGate'), 'App.jsx must not render BlindVoiceGate')
   })
 
 })

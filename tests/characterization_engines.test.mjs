@@ -37,8 +37,13 @@ test('Characterization: multimodalRouter 3-tier route generation contract', () =
     assert.ok(route.transferBuffer, 'Must define transfer buffer text')
     assert.ok(route.whyPicked, 'Must explain why route was picked')
     assert.ok(route.leg1 && route.leg2, 'Must contain leg1 and leg2')
-    assert.ok(route.leg1.depart && route.leg1.arrive, 'Leg1 must have times')
-    assert.ok(route.leg2.depart && route.leg2.arrive, 'Leg2 must have times')
+    for (const leg of [route.leg1, route.leg2]) {
+      if (leg.provenance === 'TIMETABLE' || leg.provenance === 'LIVE') {
+        assert.ok(leg.depart && leg.arrive, 'Timetable legs must have verified clock times')
+      } else {
+        assert.ok(leg.departureEstimate && leg.scheduleNote, 'Estimated legs must have schedule estimate and disclaimer')
+      }
+    }
     assert.ok(route.leg1.bookingLink && route.leg2.bookingLink, 'Legs must have deep links')
   }
 })

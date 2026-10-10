@@ -87,7 +87,7 @@ export function generateMultimodalRoutes({
     routes.push({
       id: `pv-${fromPlace.city}-${primaryHub.city}-${toPlace.city}`,
       tier: 'paisa-vasool',
-      tierLabel: '🟢 Paisa Vasool (Cheapest)',
+      tierLabel: 'Paisa Vasool (Budget)',
       tierBadge: 'Maximum Savings',
       totalFare,
       fareFormatted: `₹${totalFare}`,
@@ -101,11 +101,14 @@ export function generateMultimodalRoutes({
         mode: 'Train',
         from: fromPlace.city,
         to: primaryHub.city,
-        depart: '07:30',
-        arrive: '11:15',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Daily rail service (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
         service: `${fromPlace.city} → ${primaryHub.city} Rail Express`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: fromPlace.city,
@@ -118,11 +121,14 @@ export function generateMultimodalRoutes({
         mode: 'Train',
         from: primaryHub.city,
         to: toPlace.city,
-        depart: '13:00',
-        arrive: '20:30',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Connecting rail service (verify timetable on portal)',
         duration: formatHoursMinutes(leg2DurationMin),
         fare: leg2Fare,
         service: `${primaryHub.city} → ${toPlace.city} Connecting Express`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: primaryHub.city,
@@ -150,7 +156,7 @@ export function generateMultimodalRoutes({
     routes.push({
       id: `sb-${fromPlace.city}-${primaryHub.city}-${toPlace.city}`,
       tier: 'smart-balanced',
-      tierLabel: '🔵 Smart Balanced (Best Value)',
+      tierLabel: 'Smart Balanced',
       tierBadge: 'Comfort & Speed',
       totalFare,
       fareFormatted: `₹${totalFare}`,
@@ -164,11 +170,14 @@ export function generateMultimodalRoutes({
         mode: 'Train',
         from: fromPlace.city,
         to: primaryHub.city,
-        depart: '14:30',
-        arrive: '18:15',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Afternoon connector train (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
         service: `Superfast 3AC Connector to ${primaryHub.city}`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: fromPlace.city,
@@ -181,11 +190,14 @@ export function generateMultimodalRoutes({
         mode: 'Bus',
         from: primaryHub.city,
         to: toPlace.city,
-        depart: '20:15',
-        arrive: '06:30 (+1)',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Frequent overnight departures (every 30–60 min)',
         duration: formatHoursMinutes(leg2DurationMin),
         fare: leg2Fare,
         service: `AC Sleeper Coach to ${toPlace.city}`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Bus',
           from: primaryHub.city,
@@ -213,7 +225,7 @@ export function generateMultimodalRoutes({
     routes.push({
       id: `ee-${fromPlace.city}-${airportHub.city}-${toPlace.city}`,
       tier: 'emergency-express',
-      tierLabel: '⚡ Emergency Express (Fastest)',
+      tierLabel: 'Fastest Route',
       tierBadge: 'Saves 8+ Hours',
       totalFare,
       fareFormatted: `₹${totalFare}`,
@@ -227,11 +239,14 @@ export function generateMultimodalRoutes({
         mode: 'Train',
         from: fromPlace.city,
         to: airportHub.city,
-        depart: '06:00',
-        arrive: '09:45',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Morning express departures (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
         service: `Morning Express to ${airportHub.city}`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: fromPlace.city,
@@ -244,11 +259,14 @@ export function generateMultimodalRoutes({
         mode: 'Flight',
         from: airportHub.city,
         to: toPlace.city,
-        depart: '13:15',
-        arrive: '15:30',
-        duration: '2h 15m',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Direct flights operate daily (verify airline schedule on portal)',
+        duration: '2h 15m (approx. flight)',
         fare: leg2Fare,
         service: `Non-stop Flight (${airportHub.city} → ${toPlace.city})`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Flight schedule estimate only; verify airline portal before booking.',
         bookingLink: getProviderDeepLink({
           transport: 'Flight',
           from: airportHub.city,
@@ -270,6 +288,18 @@ export function formatWhatsAppShareText(route) {
   const l1 = route.leg1
   const l2 = route.leg2
 
+  const l1Timing = (l1?.depart && l1?.arrive)
+    ? `Depart ${l1.depart} (${l1.from}) ➔ Arrive ${l1.arrive} (${l1.to})`
+    : `Schedule: ${l1?.departureEstimate || 'Check operator schedule'} · ~${l1?.duration || 'Duration est.'}`
+
+  const l2Timing = (l2?.depart && l2?.arrive)
+    ? `Depart ${l2.depart} (${l2.from}) ➔ Arrive ${l2.arrive} (${l2.to})`
+    : `Schedule: ${l2?.departureEstimate || 'Check operator schedule'} · ~${l2?.duration || 'Duration est.'}`
+
+  const baseOrigin = typeof window !== 'undefined' && window.location?.origin
+    ? window.location.origin
+    : 'https://travelmate-ai-flowzint.vercel.app'
+
   return [
     `🚆 *TravelMate Recovered Journey Plan*`,
     `📍 *Route:* ${l1?.from} ➔ ${l2?.to}`,
@@ -277,18 +307,18 @@ export function formatWhatsAppShareText(route) {
     `💰 *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
     ``,
     `1️⃣ *Step 1:* ${l1?.service || `${l1?.mode} to ${l1?.to}`}`,
-    `   🕒 Depart ${l1?.depart} (${l1?.from}) ➔ Arrive ${l1?.arrive} (${l1?.to}) · ₹${l1?.fare}`,
+    `   🕒 ${l1Timing} · ₹${l1?.fare}${l1?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
     ``,
     `🔄 *Transfer at ${route.hubCity}:*`,
     `   ⏳ ${route.transferBuffer}`,
     ``,
     `2️⃣ *Step 2:* ${l2?.service || `${l2?.mode} to ${l2?.to}`}`,
-    `   🕒 Depart ${l2?.depart} (${l2?.from}) ➔ Arrive ${l2?.arrive} (${l2?.to}) · ₹${l2?.fare}`,
+    `   🕒 ${l2Timing} · ₹${l2?.fare}${l2?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
     ``,
     `💡 *Why this route:* ${route.whyPicked}`,
     ``,
     `🔗 Stitched automatically by TravelMate AI:`,
-    `https://travelmate-ai-flowzint.vercel.app/planner?from=${encodeURIComponent(l1?.from || '')}&to=${encodeURIComponent(l2?.to || '')}`
+    `${baseOrigin}/planner?from=${encodeURIComponent(l1?.from || '')}&to=${encodeURIComponent(l2?.to || '')}`
   ].join('\n')
 }
 

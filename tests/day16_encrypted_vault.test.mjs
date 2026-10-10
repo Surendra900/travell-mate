@@ -3,37 +3,36 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import {
-  exportEncryptedVaultBackup,
-  importEncryptedVaultBackup,
-  purgeLegacyDocumentStorage,
-  hasLegacyDocumentStorage
-} from '../src/utils/secureVault.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..')
 
-test('Day 16: secureVault.js defines full suite of client-side encryption and backup functions', () => {
-  const fileContent = fs.readFileSync(path.join(root, 'src/utils/secureVault.js'), 'utf8')
-  assert.match(fileContent, /export async function createSecureVault/, 'Must export createSecureVault')
-  assert.match(fileContent, /export async function unlockSecureVault/, 'Must export unlockSecureVault')
-  assert.match(fileContent, /export async function saveSecureDocument/, 'Must export saveSecureDocument')
-  assert.match(fileContent, /export async function listSecureDocuments/, 'Must export listSecureDocuments')
-  assert.match(fileContent, /export async function readSecureDocument/, 'Must export readSecureDocument')
-  assert.match(fileContent, /export async function updateSecureDocument/, 'Must export updateSecureDocument')
-  assert.match(fileContent, /export async function deleteSecureDocument/, 'Must export deleteSecureDocument')
-  assert.match(fileContent, /export async function changeSecureVaultPassphrase/, 'Must export changeSecureVaultPassphrase')
-  assert.match(fileContent, /export async function resetSecureVault/, 'Must export resetSecureVault')
-  assert.match(fileContent, /export async function exportEncryptedVaultBackup/, 'Must export exportEncryptedVaultBackup')
-  assert.match(fileContent, /export async function importEncryptedVaultBackup/, 'Must export importEncryptedVaultBackup')
+test('Day 16 / Master Spec §4: secureVault.js is excised per Master Spec Section 4', () => {
+  const exists = fs.existsSync(path.join(root, 'src/utils/secureVault.js'))
+  assert.equal(exists, false, 'secureVault.js must not exist per Master Spec §4')
 })
 
-test('Day 16: secureVault.js enforces strong cryptographic parameters (AES-GCM 256, PBKDF2 SHA-256, 310k iterations)', () => {
-  const fileContent = fs.readFileSync(path.join(root, 'src/utils/secureVault.js'), 'utf8')
-  assert.match(fileContent, /DEFAULT_ITERATIONS = 310_000/, 'Must specify at least 310k PBKDF2 iterations')
-  assert.match(fileContent, /name:\s*['"]AES-GCM['"],\s*length:\s*256/, 'Must use AES-GCM 256-bit')
-  assert.match(fileContent, /name:\s*['"]PBKDF2['"],\s*hash:\s*['"]SHA-256['"]/, 'Must use PBKDF2 with SHA-256')
-  assert.match(fileContent, /iv = randomBytes\(12\)/, 'Must generate unique 12-byte IV for every encryption')
+test('Day 16 / Master Spec §4: DocumentVault.jsx is excised per Master Spec Section 4', () => {
+  const exists = fs.existsSync(path.join(root, 'src/components/DocumentVault.jsx'))
+  assert.equal(exists, false, 'DocumentVault.jsx must not exist')
+})
+
+test('Day 16: Zero residual references to secureVault in application components and storage', () => {
+  const filesToCheck = [
+    'src/App.jsx',
+    'src/utils/storage.js',
+    'src/components/EmergencyToolkit.jsx',
+    'src/planner/LowNetworkPlanner.jsx',
+    'src/pages/SavedPlans.jsx'
+  ]
+
+  for (const relPath of filesToCheck) {
+    const content = fs.readFileSync(path.join(root, relPath), 'utf8')
+    assert.ok(
+      !content.includes('secureVault') && !content.includes('SecureVault'),
+      `${relPath} must contain zero references to secureVault`
+    )
+  }
 })
 
 test('Day 16: Web Crypto API performs authentic AES-GCM 256 encryption and decryption cycle in runtime environment', async () => {
@@ -55,8 +54,8 @@ test('Day 16: Web Crypto API performs authentic AES-GCM 256 encryption and decry
     ['encrypt', 'decrypt']
   )
 
-  const plaintext = new TextEncoder().encode('AADHAAR-9999-8888-7777-CONFIDENTIAL-TICKET')
-  const additionalData = new TextEncoder().encode('travelmate-meta:aadhaar')
+  const plaintext = new TextEncoder().encode('CONFIDENTIAL-TRANSIT-TOKEN')
+  const additionalData = new TextEncoder().encode('travelmate-meta:transit')
 
   const ciphertext = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv, additionalData },
@@ -72,7 +71,7 @@ test('Day 16: Web Crypto API performs authentic AES-GCM 256 encryption and decry
     aesKey,
     ciphertext
   )
-  assert.equal(new TextDecoder().decode(decrypted), 'AADHAAR-9999-8888-7777-CONFIDENTIAL-TICKET')
+  assert.equal(new TextDecoder().decode(decrypted), 'CONFIDENTIAL-TRANSIT-TOKEN')
 
   // Tampered ciphertext fails authentication
   const tampered = new Uint8Array(ciphertext)
@@ -80,19 +79,4 @@ test('Day 16: Web Crypto API performs authentic AES-GCM 256 encryption and decry
   await assert.rejects(async () => {
     await crypto.subtle.decrypt({ name: 'AES-GCM', iv, additionalData }, aesKey, tampered)
   }, 'AES-GCM must reject tampered ciphertext with tag verification failure')
-})
-
-test('Day 16: importEncryptedVaultBackup rejects invalid or malformed payloads', async () => {
-  await assert.rejects(async () => {
-    await importEncryptedVaultBackup('{}')
-  }, /Invalid or corrupted TravelMate encrypted vault backup format/)
-
-  await assert.rejects(async () => {
-    await importEncryptedVaultBackup({ format: 'other' })
-  }, /Invalid or corrupted TravelMate encrypted vault backup format/)
-})
-
-test('Day 16: DocumentVault is pruned per Master Spec Section 4', () => {
-  const exists = fs.existsSync(path.join(root, 'src/components/DocumentVault.jsx'))
-  assert.equal(exists, false, 'DocumentVault.jsx must not exist')
 })

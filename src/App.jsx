@@ -6,7 +6,6 @@ import VoiceSearchButton from './components/VoiceSearchButton'
 import OnboardingModal from './components/OnboardingModal'
 import OfflineOnlyMode from './components/OfflineOnlyMode'
 import GlobalTranslationLayer from './components/GlobalTranslationLayer'
-import BlindVoiceGate from './components/BlindVoiceGate'
 import PwaInstallBanner from './components/PwaInstallBanner'
 import DpdpPrivacyModal from './components/DpdpPrivacyModal'
 import DemoTourModal from './components/DemoTourModal'
@@ -46,8 +45,6 @@ export default function App({ authEnabled = false }) {
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false)
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
   const [demoTourOpen, setDemoTourOpen] = useState(false)
-  const [blindGateOpen, setBlindGateOpen] = useState(false)
-  const [blindMode, setBlindMode] = useState(false)
   const status = useDeviceStatus()
   const labels = useMemo(() => languages[language].labels, [language])
 
@@ -132,15 +129,17 @@ export default function App({ authEnabled = false }) {
     return { ok: true, message: voice.message }
   }, [location.pathname, navigate, toast, language])
 
+  const handleVoiceGateAssist = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('travelmate:toggle-voice-search'))
+    toast('Voice search ready. Click the microphone or speak.')
+  }, [toast])
+
   const appShell = (
     <div className="min-h-screen pb-24 sm:pb-0">
       <GlobalTranslationLayer language={language} />
-      {blindGateOpen && (
-        <BlindVoiceGate forceOpen={blindGateOpen} onClose={() => setBlindGateOpen(false)} toast={toast} onModeChange={setBlindMode} />
-      )}
       <LocationPermissionGate toast={toast} />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-2 focus:font-black focus:text-slate-950">Skip to main content</a>
-      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} onOpenDemoTour={() => setDemoTourOpen(true)} />}
+      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={handleVoiceGateAssist} onOpenDemoTour={() => setDemoTourOpen(true)} />}
       {status.online === false ? (
         <main id="main-content" tabIndex="-1"><OfflineOnlyMode status={status} toast={toast} /></main>
       ) : (
