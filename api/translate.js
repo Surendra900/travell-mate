@@ -1,5 +1,5 @@
 import { createSambaNovaResponse } from './_sambanova.js'
-import { prepareApiRequest, readJsonBody, providerStatus } from './_security.js'
+import { prepareApiRequest, readJsonBody, providerStatus, publicProviderError } from './_security.js'
 
 const languageNames = {
   en: 'English', hi: 'Hindi', te: 'Telugu', ta: 'Tamil', kn: 'Kannada', ml: 'Malayalam',
@@ -77,11 +77,12 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, language: languageCode, translations })
   } catch (error) {
     const status = Number(error.status || providerStatus(error))
+    const safe = publicProviderError(error, 'Translation service could not respond.')
     return res.status(status).json({
       ok: false,
       mode: error.code === 'SAMBANOVA_NOT_CONFIGURED' ? 'provider-unconfigured' : 'provider-error',
-      message: error.message || 'Translation service could not respond.',
-      error: error.code || 'TRANSLATION_ERROR'
+      message: safe.message,
+      error: safe.error
     })
   }
 }

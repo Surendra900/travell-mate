@@ -1,4 +1,4 @@
-import { prepareApiRequest, providerStatus } from '../_security.js'
+import { prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 import { callRapidRail, dataRows, stationCodes } from './_rapidapiRail.js'
 
 function normalizeTrainRow(row, index, from, to, date) {
@@ -8,6 +8,16 @@ function normalizeTrainRow(row, index, from, to, date) {
   const arrive = row.to_sta || row.arrival_time || row.arrival || row.arr_time || row.end_time || row.sta || 'Check provider'
   const fromStationCode = row.from_station_code || row.fromStationCode || row.from_stn_code || row.source_code || row.src || from
   const toStationCode = row.to_station_code || row.toStationCode || row.to_stn_code || row.destination_code || row.dstn || to
+
+  const hasSchedule = Boolean(depart && arrive && depart !== 'Check provider' && arrive !== 'Check provider')
+  const hasFareOrAvailability = Boolean(row.fare || row.price || row.classes || row.available_classes)
+  let status = 'PROVIDER_VERIFICATION_REQUIRED'
+  if (hasSchedule && hasFareOrAvailability) {
+    status = 'LIVE_PROVIDER_DATA'
+  } else if (hasSchedule) {
+    status = 'LIVE_SCHEDULE_ONLY'
+  }
+
   return {
     id: `${trainNo}-${index}`,
     type: 'train',
@@ -28,7 +38,8 @@ function normalizeTrainRow(row, index, from, to, date) {
     currency: 'INR',
     cabins: row.class_type || row.classes || row.available_classes || ['SL', '3A', '2A'],
     provider: 'RapidAPI IRCTC / irctc1',
-    sourceBadge: 'Live API result',
+    sourceBadge: status,
+    provenance: status,
     verification: `Live route-train response${date ? ` for ${date}` : ''}. This does not confirm Tatkal quota seats; run the separate TQ seat-availability check and verify booking with an authorized provider.`
   }
 }
@@ -98,13 +109,14 @@ export default async function handler(req, res) {
       searchedStationPair: selectedPair ? `${selectedPair[0]}-${selectedPair[1]}` : null
     })
   } catch (error) {
+    const safe = publicProviderError(error, 'Railway provider request failed.')
     return res.status(providerStatus(error)).json({
       ok: false,
       mode: error.code === 'MISSING_RAPIDAPI_KEY' ? 'provider-unconfigured' : 'provider-error',
       provider: 'RapidAPI IRCTC / irctc1',
-      sourceBadge: 'Provider unavailable',
-      message: `${error.message} No synthetic train result was generated.`,
-      error: error.code || 'TRAIN_SEARCH_ERROR',
+      sourceBadge: 'PROVIDER_VERIFICATION_REQUIRED',
+      message: `${safe.message} No synthetic train result was generated.`,
+      error: safe.error,
       results: []
     })
   }

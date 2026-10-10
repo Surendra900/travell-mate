@@ -1,4 +1,4 @@
-import { prepareApiRequest } from './_security.js';
+import { prepareApiRequest, publicProviderError } from './_security.js';
 import { searchRecoveryRoutes } from '../server/services/routeEngine.js';
 import { simulateLeg1Delay } from '../server/services/contingencyEngine.js';
 import { RecoveryQuerySchema, DelaySimulationSchema, validateSchema } from '../shared/schemas.js';
@@ -32,11 +32,12 @@ export default async function handler(req, res) {
         data: simulationResult
       });
     } catch (err) {
+      const safe = publicProviderError(err, 'Failed to simulate delay contingency.');
       return res.status(500).json({
         ok: false,
         mode: 'error',
-        message: 'Failed to simulate delay contingency.',
-        error: err.message
+        message: safe.message,
+        error: safe.error
       });
     }
   }
@@ -70,11 +71,12 @@ export default async function handler(req, res) {
       data: results
     });
   } catch (err) {
+    const safe = publicProviderError(err, 'Failed to compute route recovery graph.');
     return res.status(500).json({
       ok: false,
       mode: 'error',
-      message: 'Failed to compute route recovery graph.',
-      error: err.message
+      message: safe.message,
+      error: safe.error
     });
   }
 }

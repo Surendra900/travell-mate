@@ -22,6 +22,9 @@ const segmentColors = {
   Bus: '#a3e635' // Lime
 };
 
+import { escapeHtml } from '../utils/sanitize.js';
+export { escapeHtml };
+
 function midpoint(a, b, offset = 0) {
   return [(a[0] + b[0]) / 2 + offset, (a[1] + b[1]) / 2 + offset];
 }
@@ -167,19 +170,19 @@ export default function RouteMap({ plan = {} }) {
       popupContent.className = 'text-xs text-slate-900 font-sans p-1 max-w-[200px]';
       popupContent.innerHTML = `
         <div style="font-weight: 800; font-size: 13px; color: #0f172a; margin-bottom: 2px;">
-          ${route.labels[index]}
+          ${escapeHtml(route.labels[index])}
         </div>
         <div style="font-size: 11px; color: #475569; margin-bottom: 4px;">
-          ${place?.station || place?.city || 'Transit Node'}
+          ${escapeHtml(place?.station || place?.city || 'Transit Node')}
         </div>
         ${
           isJunction && route.junctionHub
             ? `
           <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 6px; padding: 4px 6px; font-size: 10px; color: #92400e; margin-top: 4px;">
-            <b>Transfer Hub Tip:</b> ${route.junctionHub.trainTransferTip || 'Direct platform ramp access.'}
+            <b>Transfer Hub Tip:</b> ${escapeHtml(route.junctionHub.trainTransferTip || 'Direct platform ramp access.')}
           </div>
           <div style="font-size: 10px; color: #64748b; margin-top: 4px;">
-            Bus terminal: ${route.junctionHub.busTerminalDistanceKm || '2'} km (Auto: ${route.junctionHub.busAutoFare || '₹50-₹80'})
+            Bus terminal: ${escapeHtml(route.junctionHub.busTerminalDistanceKm || '2')} km (Auto: ${escapeHtml(route.junctionHub.busAutoFare || '₹50-₹80')})
           </div>
         `
             : ''
@@ -187,7 +190,7 @@ export default function RouteMap({ plan = {} }) {
       `;
 
       marker.bindPopup(popupContent);
-      marker.bindTooltip(route.labels[index], {
+      marker.bindTooltip(escapeHtml(route.labels[index]), {
         permanent: false,
         direction: 'top',
         className: 'rounded px-2 py-0.5 text-xs font-bold'

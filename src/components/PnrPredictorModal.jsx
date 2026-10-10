@@ -25,6 +25,7 @@ import {
 } from '../utils/pnrPredictor'
 import { getPNRStatus } from '../services/LiveTransportApi'
 import GlossaryTooltip from './GlossaryTooltip'
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
 
 export default function PnrPredictorModal({
   open,
@@ -37,6 +38,7 @@ export default function PnrPredictorModal({
   const [copied, setCopied] = useState(false)
   const [apiNotice, setApiNotice] = useState('')
   const [showHowWeEstimate, setShowHowWeEstimate] = useState(false)
+  const dialogRef = useDialogFocus({ isOpen: open, onClose })
 
   useEffect(() => {
     if (initialPnr) {
@@ -44,15 +46,6 @@ export default function PnrPredictorModal({
       handleLookup(initialPnr)
     }
   }, [initialPnr])
-
-  useEffect(() => {
-    if (!open) return undefined
-    const handleKey = (e) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
-  }, [open, onClose])
 
   // Calculate prediction for currently active PNR data
   const prediction = useMemo(() => {
@@ -162,7 +155,16 @@ Verified on TravelMate: ${origin}/`
   if (!open) return null
 
   const modalContent = (
-    <div id="pnr-predictor-modal" data-testid="pnr-modal-container" style={{ zIndex: 9999 }} className="fixed inset-0 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="dialog" aria-modal="true">
+    <div
+      id="pnr-predictor-modal"
+      ref={dialogRef}
+      data-testid="pnr-modal-container"
+      style={{ zIndex: 9999 }}
+      className="fixed inset-0 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pnr-modal-title"
+    >
       <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/30 bg-slate-900 p-6 shadow-2xl">
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-800 pb-4">
@@ -174,7 +176,7 @@ Verified on TravelMate: ${origin}/`
               <span className="text-[11px] font-black uppercase tracking-wider text-cyan-400">
                 Railway Status Intelligence
               </span>
-              <h2 className="text-xl font-black text-white sm:text-2xl">
+              <h2 id="pnr-modal-title" className="text-xl font-black text-white sm:text-2xl">
                 <GlossaryTooltip term="PNR">PNR Status</GlossaryTooltip> & Confirmation Estimator
               </h2>
             </div>

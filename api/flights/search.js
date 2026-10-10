@@ -1,4 +1,4 @@
-import { fetchJsonWithTimeout, prepareApiRequest, providerStatus } from '../_security.js'
+import { fetchJsonWithTimeout, prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 
 const airlineAliases = {
   INDIGO: '6E', 'INDIGO AIRLINES': '6E',
@@ -75,7 +75,8 @@ function normalizeRows(payload, dep, arr) {
     currency: 'INR',
     cabins: ['Economy'],
     provider: 'Aviationstack',
-    sourceBadge: 'Live API result',
+    sourceBadge: 'LIVE_SCHEDULE_ONLY',
+    provenance: 'LIVE_SCHEDULE_ONLY',
     verification: 'Live schedule/status data only. Fare, seat inventory and booking require an airline or licensed ticketing provider.'
   }))
 }
@@ -150,7 +151,7 @@ export default async function handler(req, res) {
       ok: true,
       mode: 'live',
       provider: 'Aviationstack',
-      sourceBadge: 'Live API result',
+      sourceBadge: results.length ? 'LIVE_SCHEDULE_ONLY' : 'PROVIDER_VERIFICATION_REQUIRED',
       message,
       count: results.length,
       requestedDate: date || null,
@@ -163,15 +164,16 @@ export default async function handler(req, res) {
     })
   } catch (error) {
     const restricted = /function_access_restricted|access_restricted/i.test(String(error.code || '')) || /subscription plan|does not support this api function/i.test(String(error.message || ''))
+    const safe = publicProviderError(error, 'Flight provider request failed.')
     return res.status(providerStatus(error)).json({
       ok: false,
       mode: restricted ? 'plan-restricted' : 'provider-error',
       provider: 'Aviationstack',
-      sourceBadge: restricted ? 'Provider plan upgrade required' : 'Provider unavailable',
+      sourceBadge: 'PROVIDER_VERIFICATION_REQUIRED',
       message: restricted
         ? 'The API key was accepted, but your Aviationstack subscription does not permit this flight function. Upgrade the provider plan or use an airline/booking API; changing the key alone will not unlock it.'
-        : error.message || 'Flight provider request failed.',
-      error: error.code || 'FLIGHT_PROVIDER_ERROR',
+        : safe.message,
+      error: restricted ? 'PLAN_RESTRICTED' : safe.error,
       results: []
     })
   }

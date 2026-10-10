@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getMinimumConnectionTime, isOvernightTime } from '../config/connectionTimes.js';
+export { isOvernightTime };
 import { evaluateConnectionReliability, RISK_LEVELS } from '../config/reliabilityModel.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -242,11 +243,34 @@ export function formatDurationHoursMinutes(minutes) {
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
+export function todayInIndia() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+
+  const values = Object.fromEntries(
+    parts.map((part) => [part.type, part.value])
+  );
+
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+export function resolveTravelDate(value) {
+  const candidate = String(value || '').trim();
+
+  return /^\d{4}-\d{2}-\d{2}$/.test(candidate)
+    ? candidate
+    : todayInIndia();
+}
+
 /**
  * Generate official, verified portal deep-links without affiliate tags
  */
 export function getBookingDeepLink(mode, { fromCode, toCode, date, trainNumber, busOperator, flightNumber } = {}) {
-  const cleanDate = date || '2026-10-15';
+  const cleanDate = resolveTravelDate(date);
   
   if (mode === 'train') {
     const scFrom = resolveStationCode(fromCode) || fromCode || '';
@@ -289,7 +313,8 @@ export function estimateTrainFare(distanceKm = 0, trainType = 'Superfast') {
 /**
  * Searches for direct train options between two stations
  */
-export function findDirectTrainRoutes(fromInput, toInput, travelDate = '2026-10-15') {
+export function findDirectTrainRoutes(fromInput, toInput, travelDate) {
+  const cleanTravelDate = resolveTravelDate(travelDate);
   const data = loadData();
   const fromCode = resolveStationCode(fromInput);
   const toCode = resolveStationCode(toInput);
@@ -314,8 +339,17 @@ export function findDirectTrainRoutes(fromInput, toInput, travelDate = '2026-10-
 
     // Origin must come before destination in stop sequence
     if (stopFrom && stopTo && stopFrom.stopSequence < stopTo.stopSequence) {
-      const depTime = stopFrom.departTime || '06:00';
-      const arrTime = stopTo.arrivalTime || '18:00';
+      const depTime = typeof stopFrom.departTime === 'string'
+        ? stopFrom.departTime.trim()
+        : '';
+
+      const arrTime = typeof stopTo.arrivalTime === 'string'
+        ? stopTo.arrivalTime.trim()
+        : '';
+
+      if (!depTime || !arrTime) {
+        continue;
+      }
 
       const depMin = parseTimeToMinutes(depTime);
       const arrMin = parseTimeToMinutes(arrTime);
@@ -344,7 +378,7 @@ export function findDirectTrainRoutes(fromInput, toInput, travelDate = '2026-10-
         fareFormatted: `₹${fares.acFare || fares.sleeperFare || 650}`,
         provenance: 'TIMETABLE',
         provenanceNote: 'Official IR timetable schedule as of October 2026',
-        bookingUrl: getBookingDeepLink('train', { fromCode, toCode, date: travelDate, trainNumber: train.number })
+        bookingUrl: getBookingDeepLink('train', { fromCode, toCode, date: cleanTravelDate, trainNumber: train.number })
       });
     }
   }
@@ -356,12 +390,13 @@ export function findDirectTrainRoutes(fromInput, toInput, travelDate = '2026-10-
  * Searches 1-transfer multi-modal and rail itineraries through Top 25 junction hubs
  */
 export function findConnectingRoutes(fromInput, toInput, {
-  travelDate = '2026-10-15',
+  travelDate,
   maxTransfers = 1,
   allowOvernight = false,
   includeHighRisk = false,
   preferredMode = 'all'
 } = {}) {
+  const cleanTravelDate = resolveTravelDate(travelDate);
   const data = loadData();
   const fromCode = resolveStationCode(fromInput);
   const toCode = resolveStationCode(toInput);
@@ -400,8 +435,12 @@ export function findConnectingRoutes(fromInput, toInput, {
       const sFrom = stops.find(s => s.stationCode === fromCode);
       const sHub = stops.find(s => s.stationCode === hubCode);
       if (sFrom && sHub && sFrom.stopSequence < sHub.stopSequence) {
-        const depMin = parseTimeToMinutes(sFrom.departTime || '06:00');
-        const arrMin = parseTimeToMinutes(sHub.arrivalTime || '12:00');
+        const depTime = typeof sFrom.departTime === 'string' ? sFrom.departTime.trim() : '';
+        const arrTime = typeof sHub.arrivalTime === 'string' ? sHub.arrivalTime.trim() : '';
+        if (!depTime || !arrTime) continue;
+
+        const depMin = parseTimeToMinutes(depTime);
+        const arrMin = parseTimeToMinutes(arrTime);
         const dayDiff = (sHub.dayCount || 1) - (sFrom.dayCount || 1);
         const durMin = (dayDiff * 1440) + (arrMin - depMin);
         const distKm = Math.max(40, (sHub.distanceKm || 0) - (sFrom.distanceKm || 0));
@@ -409,8 +448,8 @@ export function findConnectingRoutes(fromInput, toInput, {
           train,
           sFrom,
           sHub,
-          depTime: sFrom.departTime,
-          arrTime: sHub.arrivalTime,
+          depTime,
+          arrTime,
           durMin,
           distKm,
           dayCountArr: sHub.dayCount || 1
@@ -428,8 +467,12 @@ export function findConnectingRoutes(fromInput, toInput, {
       const sHub = stops.find(s => s.stationCode === hubCode);
       const sTo = stops.find(s => s.stationCode === toCode);
       if (sHub && sTo && sHub.stopSequence < sTo.stopSequence) {
-        const depMin = parseTimeToMinutes(sHub.departTime || '14:00');
-        const arrMin = parseTimeToMinutes(sTo.arrivalTime || '20:00');
+        const depTime = typeof sHub.departTime === 'string' ? sHub.departTime.trim() : '';
+        const arrTime = typeof sTo.arrivalTime === 'string' ? sTo.arrivalTime.trim() : '';
+        if (!depTime || !arrTime) continue;
+
+        const depMin = parseTimeToMinutes(depTime);
+        const arrMin = parseTimeToMinutes(arrTime);
         const dayDiff = (sTo.dayCount || 1) - (sHub.dayCount || 1);
         const durMin = (dayDiff * 1440) + (arrMin - depMin);
         const distKm = Math.max(40, (sTo.distanceKm || 0) - (sHub.distanceKm || 0));
@@ -437,8 +480,8 @@ export function findConnectingRoutes(fromInput, toInput, {
           train,
           sHub,
           sTo,
-          depTime: sHub.departTime,
-          arrTime: sTo.arrivalTime,
+          depTime,
+          arrTime,
           durMin,
           distKm
         });
@@ -469,8 +512,9 @@ export function findConnectingRoutes(fromInput, toInput, {
         const isArrOvernight = isOvernightTime(l1.arrTime);
         const isDepOvernight = isOvernightTime(l2.depTime);
         const isOvernightLayover = isArrOvernight || isDepOvernight;
+
         if (isOvernightLayover && !allowOvernight) {
-          // Allowed only with explicit setting or flagged
+          continue;
         }
 
         const reliability = evaluateConnectionReliability({
@@ -776,14 +820,15 @@ export function rankItinerariesIntoTiers(itineraries = []) {
 export function searchRecoveryRoutes({
   from = '',
   to = '',
-  date = '2026-10-15',
+  date = '',
   maxTransfers = 1,
   allowOvernight = false,
   includeHighRisk = false
 } = {}) {
-  const directRoutes = findDirectTrainRoutes(from, to, date);
+  const travelDate = resolveTravelDate(date);
+  const directRoutes = findDirectTrainRoutes(from, to, travelDate);
   const connectingRoutes = findConnectingRoutes(from, to, {
-    travelDate: date,
+    travelDate,
     maxTransfers,
     allowOvernight,
     includeHighRisk
@@ -794,7 +839,7 @@ export function searchRecoveryRoutes({
   return {
     origin: resolveStationCode(from),
     destination: resolveStationCode(to),
-    date,
+    date: travelDate,
     directCount: directRoutes.length,
     directRoutes,
     splitRoutesCount: connectingRoutes.length,

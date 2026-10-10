@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AlertTriangle,
@@ -34,7 +34,9 @@ import { generateStationHopperHacks } from '../utils/stationHopper'
 import PnrPredictorModal from './PnrPredictorModal'
 import WaitlistBypassContrast from './WaitlistBypassContrast'
 import DelayContingencySimulator from './DelayContingencySimulator'
-import RouteMap from './RouteMap'
+import { localDateIso } from '../utils/date'
+
+const RouteMap = lazy(() => import('./RouteMap'))
 
 const transportMeta = {
   Train: { icon: Train, label: 'Train' },
@@ -207,7 +209,7 @@ export default function LiveResultsPanel({
     const params = new URLSearchParams({
       from: plan.from,
       to: plan.to,
-      date: plan.date || '2026-10-15'
+      date: plan.date || localDateIso()
     })
 
     fetch(`/api/recovery?${params.toString()}`)
@@ -466,7 +468,9 @@ export default function LiveResultsPanel({
             {/* Route Map View Tab */}
             {activeFilter === 'map' && (
               <div className="my-2">
-                <RouteMap plan={plan} />
+                <Suspense fallback={<div className="h-[340px] rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 text-sm">Loading route visualizer...</div>}>
+                  <RouteMap plan={plan} />
+                </Suspense>
               </div>
             )}
 

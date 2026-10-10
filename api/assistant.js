@@ -1,5 +1,5 @@
 import { createSambaNovaResponse } from './_sambanova.js'
-import { prepareApiRequest, readJsonBody, providerStatus } from './_security.js'
+import { prepareApiRequest, readJsonBody, providerStatus, publicProviderError } from './_security.js'
 
 const languageNames = {
   en: 'English', hi: 'Hindi', te: 'Telugu', ta: 'Tamil', kn: 'Kannada', ml: 'Malayalam',
@@ -388,12 +388,13 @@ export default async function handler(req, res) {
     }
 
     const status = Number(error.status || providerStatus(error))
+    const safe = publicProviderError(error, 'The AI assistant could not respond.')
     return res.status(status).json({
       ok: false,
       mode: error.code === 'SAMBANOVA_NOT_CONFIGURED' ? 'provider-unconfigured' : 'provider-error',
       provider: 'SambaNova',
-      message: error.message || 'The AI assistant could not respond.',
-      error: error.code || 'SAMBANOVA_ASSISTANT_ERROR'
+      message: safe.message,
+      error: safe.error
     })
   }
 }

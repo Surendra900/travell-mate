@@ -176,7 +176,14 @@ export default function App({ authEnabled = false }) {
       {status.online !== false && <OnboardingModal toast={toast} forceOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} />}
       <DpdpPrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} toast={toast} />
       <FeedbackModal open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)} toast={toast} />
-      <DemoTourModal open={demoTourOpen} onClose={() => setDemoTourOpen(false)} onLaunchVoiceGate={() => setBlindGateOpen(true)} />
+      <DemoTourModal
+        open={demoTourOpen}
+        onClose={() => setDemoTourOpen(false)}
+        onLaunchVoiceGate={() => {
+          setDemoTourOpen(false)
+          handleVoiceGateAssist()
+        }}
+      />
       {toastMessage && (
         <div className="app-toast" role="status" aria-live="polite">
           {toastMessage}

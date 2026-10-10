@@ -6,7 +6,7 @@
 
 import { getMinimumConnectionTime } from '../config/connectionTimes.js';
 import { classifySlackRisk, RISK_LEVELS } from '../config/reliabilityModel.js';
-import { parseTimeToMinutes, formatMinutesToTime, formatDurationHoursMinutes, getBookingDeepLink } from './routeEngine.js';
+import { parseTimeToMinutes, formatMinutesToTime, formatDurationHoursMinutes, getBookingDeepLink, resolveTravelDate } from './routeEngine.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,7 +32,8 @@ function getTimetableData() {
  * @param {string} travelDate - Travel date YYYY-MM-DD
  * @returns {Array} List of viable onward departures
  */
-export function findAlternativeHubDepartures(hubCode, destCode, minDepartureMinutes, travelDate = '2026-10-15') {
+export function findAlternativeHubDepartures(hubCode, destCode, minDepartureMinutes, travelDate) {
+  const cleanTravelDate = resolveTravelDate(travelDate);
   const { trains, stops } = getTimetableData();
 
   const stopsByTrain = {};
@@ -50,8 +51,10 @@ export function findAlternativeHubDepartures(hubCode, destCode, minDepartureMinu
     const sDest = route.find(s => s.stationCode === destCode);
 
     if (sHub && sDest && sHub.stopSequence < sDest.stopSequence) {
-      const depTime = sHub.departTime || '12:00';
-      const arrTime = sDest.arrivalTime || '18:00';
+      const depTime = typeof sHub.departTime === 'string' ? sHub.departTime.trim() : '';
+      const arrTime = typeof sDest.arrivalTime === 'string' ? sDest.arrivalTime.trim() : '';
+      if (!depTime || !arrTime) continue;
+
       const depMin = parseTimeToMinutes(depTime);
       const arrMin = parseTimeToMinutes(arrTime);
 
@@ -65,7 +68,7 @@ export function findAlternativeHubDepartures(hubCode, destCode, minDepartureMinu
           departTime: depTime,
           arriveTime: arrTime,
           durationFormatted: formatDurationHoursMinutes(durMin),
-          bookingUrl: getBookingDeepLink('train', { fromCode: hubCode, toCode: destCode, date: travelDate, trainNumber: train.number }),
+          bookingUrl: getBookingDeepLink('train', { fromCode: hubCode, toCode: destCode, date: cleanTravelDate, trainNumber: train.number }),
           provenance: 'TIMETABLE'
         });
       }

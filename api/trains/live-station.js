@@ -1,4 +1,4 @@
-import { prepareApiRequest, providerStatus } from '../_security.js'
+import { prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 import { callRapidRail, dataRows, stationCode } from './_rapidapiRail.js'
 
 function normalizeStationRow(row, index, fromStationCode, toStationCode) {
@@ -38,6 +38,7 @@ export default async function handler(req, res) {
     const results = normalizeRows(payload, fromStationCode, toStationCode)
     return res.status(200).json({ ok: true, mode: 'live', provider: 'RapidAPI IRCTC / irctc1', sourceBadge: 'Live API result', message: results.length ? `Live station data loaded for ${fromStationCode}.` : `No live station rows returned for ${fromStationCode}.`, count: results.length, results })
   } catch (error) {
-    return res.status(providerStatus(error)).json({ ok: false, mode: 'provider-error', provider: 'RapidAPI IRCTC / irctc1', sourceBadge: 'Provider unavailable', message: error.message, error: error.code || 'LIVE_STATION_ERROR', results: [] })
+    const safe = publicProviderError(error, 'Live station data unavailable.')
+    return res.status(providerStatus(error)).json({ ok: false, mode: 'provider-error', provider: 'RapidAPI IRCTC / irctc1', sourceBadge: 'Provider unavailable', message: safe.message, error: safe.error, results: [] })
   }
 }

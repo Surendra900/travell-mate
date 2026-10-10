@@ -16,6 +16,8 @@ import {
   X
 } from 'lucide-react'
 
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
+
 const modeIcons = {
   Train: Train,
   Bus: Bus,
@@ -25,6 +27,7 @@ const modeIcons = {
 export default function OfflineTravelerPassModal({ route, onClose }) {
   const [copied, setCopied] = useState(false)
   const [offlineCached, setOfflineCached] = useState(false)
+  const dialogRef = useDialogFocus({ isOpen: Boolean(route), onClose })
 
   useEffect(() => {
     if (!route) return
@@ -83,7 +86,13 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div
+      ref={dialogRef}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="offline-pass-modal-title"
+    >
       <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/40 bg-slate-950 p-6 shadow-2xl text-slate-100 print:max-h-none print:w-full print:border-none print:bg-white print:text-black print:p-0">
         
         {/* Header */}
@@ -99,7 +108,7 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
                 </span>
               )}
             </div>
-            <h2 className="mt-2 text-2xl font-black text-white print:text-black">
+            <h2 id="offline-pass-modal-title" className="mt-2 text-2xl font-black text-white print:text-black">
               {route.leg1?.from} ➔ {route.leg2?.to}
             </h2>
             <p className="text-xs text-slate-400 print:text-slate-600">

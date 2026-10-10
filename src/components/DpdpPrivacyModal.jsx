@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { CheckCircle2, Database, Globe, Mic, ShieldAlert, ShieldCheck, Trash2, X } from 'lucide-react'
 import { getDpdpConsent, purgeAllUserData, updateDpdpConsent } from '../utils/dpdpConsent'
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
 
 export default function DpdpPrivacyModal({ open, onClose, toast }) {
   const [consent, setConsent] = useState(getDpdpConsent())
   const [purging, setPurging] = useState(false)
+  const dialogRef = useDialogFocus({ isOpen: open, onClose })
 
   useEffect(() => {
     if (open) {
@@ -42,6 +44,7 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="dpdp-modal-title"

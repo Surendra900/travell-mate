@@ -62,7 +62,28 @@ export async function enforceDistributedRateLimit(key, limit, windowMs) {
   }
 }
 
+export function publicProviderError(
+  error,
+  fallback = 'The provider is temporarily unavailable.'
+) {
+  const code = String(error?.code || '').trim()
+
+  const safeMessages = new Map([
+    ['PROVIDER_TIMEOUT', 'The provider timed out. Please try again.'],
+    ['MISSING_PROVIDER_CONFIG', 'This provider is not configured.'],
+    ['MISSING_RAPIDAPI_KEY', 'The railway provider is not configured.'],
+    ['SAMBANOVA_NOT_CONFIGURED', 'The assistant provider is not configured.'],
+    ['RATE_LIMITED', 'Too many requests. Please try again later.']
+  ])
+
+  return {
+    message: safeMessages.get(code) || fallback,
+    error: code || 'PROVIDER_ERROR'
+  }
+}
+
 export async function enforceRateLimit(req, res, limit, windowMs) {
+  const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL)
   const now = Date.now()
   const pathname = String(req?.url || req?.query?.path || 'api').split('?')[0]
   const key = `${clientIp(req)}:${pathname}`
@@ -82,7 +103,18 @@ export async function enforceRateLimit(req, res, limit, windowMs) {
     return true
   }
 
-  // 2. Fallback to local in-memory store
+  // In production or on Vercel, rate limiter must be distributed (Upstash Redis)
+  if (isProduction) {
+    res.status(503).json({
+      ok: false,
+      mode: 'error',
+      message: 'Rate limiting is temporarily unavailable. Please try again later.',
+      error: 'RATE_LIMITER_UNAVAILABLE'
+    })
+    return false
+  }
+
+  // 2. Fallback to local in-memory store for development
   let record = RATE_LIMIT_STORE.get(key)
   if (!record || record.resetAt <= now) record = { count: 0, resetAt: now + windowMs }
   record.count += 1

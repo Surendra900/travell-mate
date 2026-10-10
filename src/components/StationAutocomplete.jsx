@@ -98,9 +98,11 @@ export default function StationAutocomplete({
           data-testid={inputTestId || rest['data-testid']}
           type="text"
           role="combobox"
+          aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-autocomplete="list"
           aria-controls={`${id}-listbox`}
+          aria-activedescendant={isOpen && highlightedIndex >= 0 ? `${id}-item-${highlightedIndex}` : undefined}
           value={query}
           onChange={handleInputChange}
           onFocus={() => setIsOpen(true)}
@@ -116,6 +118,7 @@ export default function StationAutocomplete({
         <ul
           id={`${id}-listbox`}
           role="listbox"
+          aria-label={label || 'Station suggestions'}
           className="absolute z-50 left-0 right-0 mt-1 max-h-64 overflow-y-auto bg-white rounded-xl border border-slate-200 shadow-xl py-1 text-sm animate-in fade-in slide-in-from-top-1"
         >
           {suggestions.map((station, idx) => {

@@ -13,13 +13,14 @@ import {
 } from 'lucide-react'
 import { RiskBadge } from './ui/RiskBadge'
 import { ProvenanceBadge } from './ui/ProvenanceBadge'
+import { localDateIso } from '../utils/date'
 
 export default function WaitlistBypassContrast({
   directRoute = null,
   splitRoute = null,
   from = 'New Delhi',
   to = 'Patna Jn',
-  date = '2026-10-15',
+  date = localDateIso(),
   onSelectSplitRoute = null,
   className = ''
 }) {

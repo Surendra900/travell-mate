@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import {
   ArrowRight,
   ArrowLeftRight,
@@ -19,8 +19,8 @@ import {
 } from 'lucide-react'
 import BackupPlan from '../components/BackupPlan'
 import TrainRunningStatus from './TrainRunningStatus'
-import WeatherDisruptionAlert from '../components/WeatherDisruptionAlert'
-import RouteMap from '../components/RouteMap'
+// import RouteMap from '../components/RouteMap'
+const RouteMap = lazy(() => import('../components/RouteMap'))
 import StationAutocomplete from '../components/StationAutocomplete'
 import WaitlistBypassContrast from '../components/WaitlistBypassContrast'
 import DelayContingencySimulator from '../components/DelayContingencySimulator'
@@ -386,7 +386,9 @@ export default function NormalPlanner({
         {/* Tab Panels */}
         <div className="mt-6">
           <div className={activeInsightTab === 'map' ? 'block' : 'hidden'}>
-            <RouteMap plan={plan} />
+            <Suspense fallback={<div className="h-[340px] rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 text-sm">Loading route visualizer...</div>}>
+              <RouteMap plan={plan} />
+            </Suspense>
           </div>
 
           <div className={activeInsightTab === 'contrast' ? 'block' : 'hidden'}>

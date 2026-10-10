@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { MessageSquare, Star, X, CheckCircle2, ShieldCheck } from 'lucide-react'
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
 
 export default function FeedbackModal({ open, onClose, toast }) {
   const [rating, setRating] = useState(5)
   const [category, setCategory] = useState('route_accuracy')
   const [comments, setComments] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const dialogRef = useDialogFocus({ isOpen: open, onClose })
 
   if (!open) return null
 
@@ -35,6 +37,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="feedback-modal-title"

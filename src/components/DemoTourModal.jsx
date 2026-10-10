@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 import { TOUR_STEPS } from '../data/demoTourData.js';
+import { useDialogFocus } from '../hooks/useDialogFocus.js';
 
 const ICON_MAP = {
   'route': Route,
@@ -30,13 +31,12 @@ export { TOUR_STEPS };
 export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const dialogRef = useDialogFocus({ isOpen: open, onClose });
 
   useEffect(() => {
     function handleKeyDown(e) {
       if (!open) return;
-      if (e.key === 'Escape') {
-        onClose();
-      } else if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight') {
         handleNext();
       } else if (e.key === 'ArrowLeft') {
         handlePrev();
@@ -79,6 +79,7 @@ export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="demo-tour-title"
