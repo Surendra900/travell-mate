@@ -132,7 +132,7 @@ export default function PNRTracker({ plan = {}, onPlanSaved, toast }) {
             <div className="mt-3 space-y-2">
               {result.passengers.map((passenger) => (
                 <p key={passenger.serial} className="rounded-xl border border-slate-800 bg-slate-900/80 p-3 text-xs">
-                  <b>Passenger {passenger.serial}:</b> booking {passenger.bookingStatus} → current {passenger.currentStatus}{passenger.coach ? ` · Coach ${passenger.coach}` : ''}{passenger.berth ? ` · Berth ${passenger.berth}` : ''}
+                  <b>Passenger {passenger.serial}:</b> booking {passenger.bookingStatus} to current {passenger.currentStatus}{passenger.coach ? ` · Coach ${passenger.coach}` : ''}{passenger.berth ? ` · Berth ${passenger.berth}` : ''}
                 </p>
               ))}
             </div>

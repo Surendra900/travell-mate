@@ -71,7 +71,7 @@ export default function SeatAvailabilityChecker({ plan, selectedService = null, 
     setToStationCode('BVI')
     setClassType('2A')
     setQuota('GN')
-    setMessage('Provider test example filled: 19038 ST → BVI 2A GN. Click Check.')
+    setMessage('Provider test example filled: 19038 ST to BVI 2A GN. Click Check.')
   }
 
   async function checkSeats() {
@@ -134,7 +134,7 @@ export default function SeatAvailabilityChecker({ plan, selectedService = null, 
       {result && (
         <div className="mt-4 rounded-2xl border border-slate-700/70 bg-slate-950/70 p-4 text-sm text-slate-300">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="font-black text-white"><TicketCheck className="mr-2 inline text-cyan-300" size={18} />{result.trainNo || trainNo} · {result.fromStationCode} → {result.toStationCode}</p>
+            <p className="font-black text-white"><TicketCheck className="mr-2 inline text-cyan-300" size={18} />{result.trainNo || trainNo} · {result.fromStationCode} to {result.toStationCode}</p>
             <SourceBadge label={result.sourceBadge || (mode === 'live' ? 'Live API result' : 'Provider verification required')} />
           </div>
           <p className="mt-2"><b className="text-cyan-100">Class/quota/date:</b> {result.classType || classType} · {forceTatkal ? 'TQ' : result.quota || quota} · {result.date || plan.date || 'Selected date'}</p>

@@ -11,6 +11,8 @@ const prompts = [
   ['Help me choose a route', 'Compare practical options without clutter']
 ]
 
+const PROMPT_ICONS = [Ticket, MessageCircle, CalendarDays, MapPin]
+
 export default function AnalyzeJourney({ toast }) {
   const navigate = useNavigate()
   const [plan, setPlan] = useState({
@@ -41,17 +43,20 @@ export default function AnalyzeJourney({ toast }) {
       </aside>
 
       <section className="assistant-main">
-        <div className="assistant-orb"><Sparkles size={24} /></div>
-        <h1>How can I help you today?</h1>
-        <p className="assistant-subtitle">I'm your personal travel assistant. Ask me anything about routes, destinations, packing, translations, or your upcoming journey.</p>
+        <div className="inline-flex items-center justify-center rounded-lg bg-sky-950/60 p-2 text-sky-400 border border-sky-800/60 mb-3"><MessageCircle size={22} /></div>
+        <h1 className="text-2xl font-black text-white">Analyze your travel route</h1>
+        <p className="assistant-subtitle">Check connection buffers, verify junction interchange safety, and compare realistic transit recovery options.</p>
 
         <div className="assistant-prompt-grid">
-          {prompts.map(([title, sub], i) => (
-            <button key={title} className="assistant-prompt-card" onClick={() => toast?.(`${title} is ready in the TravelMate assistant.`)}>
-              {[Ticket, MessageCircle, CalendarDays, MapPin][i]({ size: 21 })}
-              <span><strong>{title}</strong><small>{sub}</small></span>
-            </button>
-          ))}
+          {prompts.map(([title, sub], i) => {
+            const Icon = PROMPT_ICONS[i] || MessageCircle
+            return (
+              <button key={title} className="assistant-prompt-card" onClick={() => toast?.(`${title} is ready in the TravelMate assistant.`)}>
+                <Icon size={21} />
+                <span><strong>{title}</strong><small>{sub}</small></span>
+              </button>
+            )
+          })}
         </div>
 
         <div className="assistant-composer-static">

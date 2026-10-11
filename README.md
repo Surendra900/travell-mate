@@ -35,11 +35,11 @@ TravelMate provides:
 
 ## What makes the project different
 
-1. **Honest source labelling** — every result is identified as live API data, local planning data, an estimate, or provider verification required.
-2. **Emergency-first planning** — safety sharing and Tatkal workflows are treated as core features rather than add-ons.
-3. **Natural interaction** — typed and spoken requests can update the planner without forcing a rigid command format.
-4. **Inclusive design** — multilingual content, mobile support, low-network handling, and accessibility-oriented controls are built into the same experience.
-5. **Safe demo booking** — the prototype demonstrates a realistic booking journey while refusing to collect card numbers, CVV, UPI PIN, OTP, bank passwords, or identity-document numbers.
+1. **Honest source labelling** :  every result is identified as live API data, local planning data, an estimate, or provider verification required.
+2. **Emergency-first planning** :  safety sharing and Tatkal workflows are treated as core features rather than add-ons.
+3. **Natural interaction** :  typed and spoken requests can update the planner without forcing a rigid command format.
+4. **Inclusive design** :  multilingual content, mobile support, low-network handling, and accessibility-oriented controls are built into the same experience.
+5. **Safe demo booking** :  the prototype demonstrates a realistic booking journey while refusing to collect card numbers, CVV, UPI PIN, OTP, bank passwords, or identity-document numbers.
 
 ## Important prototype limitation
 

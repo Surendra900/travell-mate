@@ -6,10 +6,10 @@ export const adminMetrics = [
 ]
 
 export const routeRisks = [
-  { route: 'Hyderabad → Delhi', risk: 'Medium', reason: 'Long route; backup train recommended' },
-  { route: 'Mumbai → Pune', risk: 'Low', reason: 'Multiple backup modes available' },
-  { route: 'Delhi → Jaipur', risk: 'Low', reason: 'Short route with frequent services' },
-  { route: 'Chennai → Bengaluru', risk: 'Medium', reason: 'Peak demand can affect urgent booking' }
+  { route: 'Hyderabad to Delhi', risk: 'Medium', reason: 'Long route; backup train recommended' },
+  { route: 'Mumbai to Pune', risk: 'Low', reason: 'Multiple backup modes available' },
+  { route: 'Delhi to Jaipur', risk: 'Low', reason: 'Short route with frequent services' },
+  { route: 'Chennai to Bengaluru', risk: 'Medium', reason: 'Peak demand can affect urgent booking' }
 ]
 
 export const bookingFailureAnalysis = [

@@ -118,7 +118,7 @@ export default function Home({ toast }) {
                     role="tab"
                     aria-selected={active}
                     onClick={() => setTransportMode(id)}
-                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm transition-all ${
                       active
                         ? 'bg-sky-700 text-white shadow-md shadow-sky-700/25 scale-[1.01]'
                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80 hover:text-slate-950'
@@ -164,7 +164,7 @@ export default function Home({ toast }) {
                     type="button"
                     onClick={handleSwap}
                     aria-label="Swap origin and destination"
-                    className="w-10 h-10 rounded-full border border-slate-300 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 text-slate-600 flex items-center justify-center transition shadow-sm"
+                    className="w-10 h-10 rounded-lg border border-slate-300 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 text-slate-600 flex items-center justify-center transition shadow-sm"
                   >
                     <ArrowLeftRight size={16} />
                   </button>
@@ -243,7 +243,7 @@ export default function Home({ toast }) {
                 <button
                   type="submit"
                   data-testid="home-search-btn"
-                  className="w-full sm:flex-1 h-14 rounded-2xl bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition transform active:scale-[0.99]"
+                  className="w-full sm:flex-1 h-14 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition transform active:scale-[0.99]"
                 >
                   <span>Search Recovery Routes</span>
                   <ArrowRight size={20} />
@@ -252,7 +252,7 @@ export default function Home({ toast }) {
                 <button
                   type="button"
                   onClick={handleLaunchDemo}
-                  className="w-full sm:w-auto h-14 px-6 rounded-2xl border border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold text-sm flex items-center justify-center gap-2 transition"
+                  className="w-full sm:w-auto h-14 px-6 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold text-sm flex items-center justify-center gap-2 transition"
                 >
                   <Sparkles size={16} className="text-sky-600" />
                   <span>See a Demo</span>
@@ -295,7 +295,7 @@ export default function Home({ toast }) {
               id="open-pnr-banner-btn"
               data-testid="home-pnr-status-btn"
               onClick={() => setShowPnrModal(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-300 hover:border-sky-400 bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-bold text-xs transition whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 hover:border-sky-400 bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-bold text-xs transition whitespace-nowrap"
             >
               <span>Check PNR Status & Odds</span>
               <ArrowRight size={14} />

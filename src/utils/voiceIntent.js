@@ -18,7 +18,7 @@ const CITY_ALIASES = {
 
 function cleanText(value = '') {
   return String(value)
-    .replace(/[–—→➡➜]/g, ' to ')
+    .replace(new RegExp('[\\u2013' + String.fromCharCode(8212) + '\\u2192\\u27A1\\u279C]', 'g'), ' to ')
     .replace(/\b(?:fron|frm|froom)\b/gi, 'from')
     .replace(/\b(?:too|2)\b/gi, 'to')
     .replace(/\b(?:tiketd|tikets?|tickts?|tikt|tikcet|tickit|ticktes)\b/gi, 'ticket')
@@ -194,7 +194,7 @@ export function speakRouteConfirmation(parsedIntent, options = {}) {
 
 export function formatTierSpeechSummary(route) {
   if (!route) return ''
-  const tierName = String(route.tierLabel || 'Alternative route').replace(/[🟢🔵⚡]/g, '').trim()
+  const tierName = String(route.tierLabel || 'Alternative route').replace(/[\u{1F7E2}\u{1F535}\u26A1]/gu, '').trim()
   const fare = route.totalFare ? `${route.totalFare} rupees` : 'Standard fare'
   const duration = route.totalDuration || 'calculated duration'
   const leg1Timing = route.leg1?.depart ? `, departing at ${route.leg1.depart}` : (route.leg1?.departureEstimate ? `, ${route.leg1.departureEstimate}` : '')

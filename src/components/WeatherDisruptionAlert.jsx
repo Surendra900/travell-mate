@@ -125,7 +125,7 @@ export default function WeatherDisruptionAlert({ plan = {}, compact = false }) {
             title="Refresh Live Junction Weather"
             aria-label="Refresh Live Junction Weather"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'opacity-50' : ''}`} />
           </button>
         </div>
       </div>
@@ -146,7 +146,7 @@ export default function WeatherDisruptionAlert({ plan = {}, compact = false }) {
               : 'border border-slate-700 bg-slate-800 text-slate-200 hover:border-slate-600'
           }`}
         >
-          🌫️ Delhi Winter Fog (&lt;250m)
+          Delhi Winter Fog (&lt;250m)
         </button>
         <button
           type="button"
@@ -161,7 +161,7 @@ export default function WeatherDisruptionAlert({ plan = {}, compact = false }) {
               : 'border border-slate-700 bg-slate-800 text-slate-200 hover:border-slate-600'
           }`}
         >
-          🌧️ Mumbai Monsoon (26mm/h)
+          Mumbai Monsoon (26mm/h)
         </button>
         <button
           type="button"
@@ -176,7 +176,7 @@ export default function WeatherDisruptionAlert({ plan = {}, compact = false }) {
               : 'border border-slate-700 bg-slate-800 text-slate-200 hover:border-slate-600'
           }`}
         >
-          🌀 Cyclone Gale (72 km/h)
+          Cyclone Gale (72 km/h)
         </button>
         <button
           type="button"
@@ -188,7 +188,7 @@ export default function WeatherDisruptionAlert({ plan = {}, compact = false }) {
               : 'border border-slate-700 bg-slate-800 text-slate-200 hover:border-slate-600'
           }`}
         >
-          📡 Real-Time Open-Meteo
+          Real-Time Open-Meteo
         </button>
       </div>
 
@@ -242,11 +242,11 @@ export default function WeatherDisruptionAlert({ plan = {}, compact = false }) {
 
         <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3">
           <div className="flex items-center gap-1.5 text-xs text-slate-300">
-            <Wind className="h-3.5 w-3.5 text-indigo-400" />
+            <Wind className="h-3.5 w-3.5 text-cyan-400" />
             <span>Wind Velocity</span>
           </div>
           <p className="mt-1 text-base font-extrabold text-white">
-            {current?.wind_speed_10m !== undefined ? `${current.wind_speed_10m} km/h` : '--'}
+            {current?.wind_speed_10m !== undefined ? `${current.wind_speed_10m} km/h` : 'Not available'}
           </p>
           <span className="text-[10px] text-slate-300">
             {Number(current?.wind_speed_10m) > 50 ? 'Gale cautions' : 'Light breeze'}

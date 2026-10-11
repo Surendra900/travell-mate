@@ -24,7 +24,7 @@ export const TOUR_STEPS = [
     iconKey: 'volume-2',
     iconColor: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
     summary:
-      'Empowers visually impaired and blind travelers across Bharat through a full-screen spoken onboarding gate ("Are you blind?"), phonetic Indian city alias resolution, and hands-free spoken route summaries.',
+      'Assists visually impaired and blind travelers across Bharat through a full-screen spoken onboarding gate ("Are you blind?"), phonetic Indian city alias resolution, and hands-free spoken route summaries.',
     highlights: [
       'Instant Alt+B keyboard shortcut for instant hands-free activation',
       'Agentic tool-use: speaks route options and filters by voice',
@@ -39,11 +39,11 @@ export const TOUR_STEPS = [
     kicker: 'CITIZEN PRIVACY & DIGITAL GOVERNANCE',
     badge: 'National Innovation #3',
     iconKey: 'lock',
-    iconColor: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+    iconColor: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
     summary:
       'Zero-server client-side security architecture powered by Web Crypto API AES-GCM 256-bit encryption with PBKDF2 (310k iterations). Fully aligned with India\'s Digital Personal Data Protection (DPDP) Act 2023.',
     highlights: [
-      'Encrypted offline Boarding Pass generation with Quick-PIN unlock',
+      'Encrypted offline Boarding Pass generation with Quick-PIN verification',
       'Zero credential transmission to remote backends',
       'Granular consent management & 1-tap statutory Right to Erasure'
     ],

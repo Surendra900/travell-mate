@@ -1,7 +1,7 @@
 /**
- * TravelMate AI - Station Hopper Engine
+ * TravelMate Station Hopper Engine
  * 
- * Unlocks the "Same Train, Alternate Station Quota Hack" for Indian Railways.
+ * Evaluates the "Same Train, Alternate Station Quota Hack" for Indian Railways.
  * When direct origin-destination tickets are Waitlisted, booking from 1 station earlier
  * (with changed boarding point) or 1 station further (dropping off early) taps into
  * larger General Quota (GN) pools with confirmed berths.
@@ -9,7 +9,7 @@
 
 // Major Indian Railway corridor sequences
 export const RAIL_CORRIDOR_CHAINS = [
-  // North - East Corridor
+  // North to East Corridor
   {
     name: 'Northern & Eastern Trunk Corridor',
     stations: [
@@ -25,7 +25,7 @@ export const RAIL_CORRIDOR_CHAINS = [
       { code: 'HWH', name: 'Howrah Junction', city: 'Kolkata' }
     ]
   },
-  // North - West - Mumbai Corridor
+  // North to West to Mumbai Corridor
   {
     name: 'Western Trunk Corridor',
     stations: [
@@ -39,7 +39,7 @@ export const RAIL_CORRIDOR_CHAINS = [
       { code: 'MMCT', name: 'Mumbai Central', city: 'Mumbai' }
     ]
   },
-  // North - Central - South Corridor
+  // North to Central to South Corridor
   {
     name: 'Grand Trunk / Central Corridor',
     stations: [
@@ -56,7 +56,7 @@ export const RAIL_CORRIDOR_CHAINS = [
       { code: 'SBC', name: 'KSR Bengaluru', city: 'Bengaluru' }
     ]
   },
-  // South - West Corridor
+  // South to West Corridor
   {
     name: 'Deccan & Konkan Corridor',
     stations: [
@@ -154,7 +154,7 @@ export function generateStationHopperHacks({ from = '', to = '', date = '', trai
       alternateTo: nextStn.name,
       actualBoarding: origStn.city,
       actualDeboarding: destStn.city,
-      estimatedExtraFare: Math.floor(Math.random() * 80) + 140, // ₹140 - ₹220
+      estimatedExtraFare: Math.floor(Math.random() * 80) + 140, // ₹140 to ₹220
       confirmedProbability: 89,
       legalRule: '100% Legal: Railway rules permit passengers to terminate their journey early at any intermediate stop without forfeiture of baggage or identity.',
       actionLabel: `Book to ${nextStn.code} on ConfirmTkt ↗`,
@@ -163,7 +163,7 @@ export function generateStationHopperHacks({ from = '', to = '', date = '', trai
   }
 
   // Hack 2: Book from Previous Station (Change Boarding Point)
-  const prevIdx = fromIdx - step
+  const prevIdx = fromIdx-step
   if (prevIdx >= 0 && prevIdx < corridor.stations.length) {
     const prevStn = corridor.stations[prevIdx]
     const origStn = corridor.stations[fromIdx]
@@ -179,7 +179,7 @@ export function generateStationHopperHacks({ from = '', to = '', date = '', trai
       alternateTo: destStn.name,
       actualBoarding: origStn.city,
       actualDeboarding: destStn.city,
-      estimatedExtraFare: Math.floor(Math.random() * 60) + 120, // ₹120 - ₹180
+      estimatedExtraFare: Math.floor(Math.random() * 60) + 120, // ₹120 to ₹180
       confirmedProbability: 92,
       legalRule: 'Official IRCTC Feature: Boarding point can be chosen at checkout or updated online up to 4 hours before chart preparation.',
       actionLabel: `Book from ${prevStn.code} with Boarding Change ↗`,

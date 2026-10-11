@@ -31,7 +31,7 @@ export default function LegalDisclaimer() {
         {/* Emergency Services */}
         <section className="rounded-2xl border border-red-200 bg-red-50 p-5">
           <div className="flex items-center gap-2 text-red-800 font-black text-base">
-            <Phone size={20} className="animate-pulse text-red-700" /> 1. Emergency Services & Public Safety
+            <Phone size={20} className="text-red-700" /> 1. Emergency Services & Public Safety
           </div>
           <p className="mt-2 text-xs text-red-950 font-bold leading-relaxed">
             TravelMate is not an emergency service. In an emergency call 112.

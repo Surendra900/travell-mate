@@ -1,5 +1,5 @@
 /**
- * TravelMate AI - IRCTC Waitlist Confirmation Probability Engine
+ * TravelMate AI to IRCTC Waitlist Confirmation Probability Engine
  * 
  * Analyzes quota types (GNWL, RLWL, PQWL, TQWL, RAC), coach class,
  * days until departure, and historical cancellation velocity to calculate
@@ -130,7 +130,7 @@ export function predictWaitlistConfirmation({
           ? 'Reservation chart is prepared. Board with valid Govt ID.'
           : 'Final coach and berth number will be printed when chart is prepared 4 hours before departure.'
       ],
-      recommendation: 'Pack your bags! Your journey is confirmed.'
+      recommendation: 'Your journey is confirmed. Board with valid government photo ID.'
     }
   }
 
@@ -224,7 +224,7 @@ export function predictWaitlistConfirmation({
   const insights = [
     `${quotaMeta.name} (${parsed.quota}): ${quotaMeta.description}`,
     `${classMeta.label}: Average safe clearance threshold is around WL ${classMeta.maxSafeWl}. Current position: ${parsed.isRac ? `RAC ${parsed.currentWl}` : `WL ${parsed.currentWl}`}.`,
-    `Time remaining: ~${daysToDeparture} days until departure. Bulk cancellations typically surge 24–48 hours prior.`,
+    `Time remaining: ~${daysToDeparture} days until departure. Bulk cancellations typically surge 24 to 48 hours prior.`,
     'Heuristic estimate disclosure: Calculated using a parametric heuristic model based on quota priority, coach class capacity, and charting window. This is an estimated index, not an official IRCTC guarantee.'
   ]
 
@@ -254,7 +254,7 @@ export const SAMPLE_PNR_PRESETS = [
   {
     pnrNumber: '4523819204',
     trainNumber: '12952',
-    trainName: 'New Delhi - Mumbai Central Tejas Rajdhani Express',
+    trainName: 'New Delhi to Mumbai Central Tejas Rajdhani Express',
     from: 'NDLS (New Delhi)',
     to: 'MMCT (Mumbai Central)',
     journeyDate: 'Tomorrow · 16:55',

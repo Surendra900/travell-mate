@@ -232,12 +232,12 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               {route.leg1?.depart && route.leg1?.arrive ? (
                 <>
                   <span><b className="text-slate-900">{route.leg1.depart}</b> {route.leg1.from}</span>
-                  <span className="text-slate-600 font-bold">── {route.leg1.duration} ──➔</span>
+                  <span className="text-slate-600 font-bold">Duration: {route.leg1.duration}</span>
                   <span><b className="text-slate-900">{route.leg1.arrive}</b> {route.leg1.to}</span>
                 </>
               ) : (
                 <div className="w-full rounded-lg bg-amber-50/70 border border-amber-200/80 px-2.5 py-1 text-[11px] text-amber-900 flex items-center justify-between">
-                  <span>{route.leg1?.departureEstimate || 'Frequency estimate'} · {route.leg1?.from} ➔ {route.leg1?.to}</span>
+                  <span>{route.leg1?.departureEstimate || 'Frequency estimate'} · {route.leg1?.from} to {route.leg1?.to}</span>
                   <span className="font-bold text-amber-950">~{route.leg1?.duration}</span>
                 </div>
               )}
@@ -317,7 +317,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
                     {hubGuide.transferType}
                   </span>
                   <span className="text-[11px] font-bold text-emerald-700">
-                    🟢 {hubGuide.safetyScore || 92}% Safe Connection Score
+                    {hubGuide.safetyScore || 92}% Safe Connection Score
                   </span>
                 </div>
 
@@ -326,7 +326,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
                 </p>
 
                 <p className="text-xs text-amber-950">
-                  💡 <b>Pro-Tip:</b> {hubGuide.modeSpecificTip}
+                  <b>Pro-Tip:</b> {hubGuide.modeSpecificTip}
                 </p>
 
                 {hubGuide.amenities && (
@@ -334,7 +334,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
                     <span className="text-[10px] text-slate-500 mr-1 flex items-center font-bold">Hub Amenities:</span>
                     {hubGuide.amenities.map((item) => (
                       <span key={item} className="rounded-lg bg-white px-2 py-0.5 text-[10px] text-slate-700 border border-slate-200 shadow-sm">
-                        ✓ {item}
+                        {item}
                       </span>
                     ))}
                   </div>
@@ -362,12 +362,12 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               {route.leg2?.depart && route.leg2?.arrive ? (
                 <>
                   <span><b className="text-slate-900">{route.leg2.depart}</b> {route.leg2.from}</span>
-                  <span className="text-slate-600 font-bold">── {route.leg2.duration} ──➔</span>
+                  <span className="text-slate-600 font-bold">Duration: {route.leg2.duration}</span>
                   <span><b className="text-slate-900">{route.leg2.arrive}</b> {route.leg2.to}</span>
                 </>
               ) : (
                 <div className="w-full rounded-lg bg-amber-50/70 border border-amber-200/80 px-2.5 py-1 text-[11px] text-amber-900 flex items-center justify-between">
-                  <span>{route.leg2?.departureEstimate || 'Frequency estimate'} · {route.leg2?.from} ➔ {route.leg2?.to}</span>
+                  <span>{route.leg2?.departureEstimate || 'Frequency estimate'} · {route.leg2?.from} to {route.leg2?.to}</span>
                   <span className="font-bold text-amber-950">~{route.leg2?.duration}</span>
                 </div>
               )}
@@ -416,7 +416,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
             <span>Statutory Notice: Unbundled Multi-Ticket Connection (Separate PNRs)</span>
           </div>
           <p className="text-slate-800 text-[11.5px] leading-relaxed">
-            <strong>Separate Contracts:</strong> These are independent bookings — Leg 1 and Leg 2 are unbundled tickets booked under separate PNRs / transaction IDs across distinct carriers. Under Indian Railways and intercity motor transport rules, each carrier is responsible only for its own segment.
+            <strong>Separate Contracts:</strong> These are independent bookings :  Leg 1 and Leg 2 are unbundled tickets booked under separate PNRs / transaction IDs across distinct carriers. Under Indian Railways and intercity motor transport rules, each carrier is responsible only for its own segment.
           </p>
           <p className="mt-1.5 text-slate-800 text-[11.5px] leading-relaxed">
             <strong>Missed Connection & Refund Policy:</strong> If Leg 1 suffers an unexpected delay or cancellation causing a missed connection at {hubCity}, the downstream operator owes zero refund, automatic rescheduling, or compensation.
@@ -478,7 +478,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
               title="Copy itinerary summary"
             >
               {copied ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-              {copied ? 'Copied!' : 'Copy'}
+              {copied ? 'Copied' : 'Copy'}
             </button>
 
             {/* Save to My Trips */}

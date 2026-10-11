@@ -102,7 +102,7 @@ export default function WaitlistBypassContrast({
         {isDemoScenario && (
           <div className="w-full mt-2 rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-xs text-amber-900 flex items-center gap-2">
             <span className="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded bg-amber-200 text-amber-950">Demo Scenario</span>
-            <span>Illustrative availability for New Delhi ➔ Patna corridor. Run a route search above to view live alternatives.</span>
+            <span>Illustrative availability for New Delhi to Patna corridor. Run a route search above to view live alternatives.</span>
           </div>
         )}
       </div>
@@ -131,7 +131,7 @@ export default function WaitlistBypassContrast({
                 {direct.trainNumber && <span className="text-xs text-slate-500 ml-1.5">({direct.trainNumber})</span>}
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                {from} → {to} · Direct Route
+                {from} to {to} · Direct Route
               </p>
             </div>
 
@@ -156,7 +156,7 @@ export default function WaitlistBypassContrast({
 
             {/* Direct Disruption Assessment */}
             <div className="rounded-xl bg-red-100/70 border border-red-200 p-3 text-xs text-red-950 space-y-1">
-              <p className="font-bold">❌ Bottleneck Identified:</p>
+              <p className="font-bold">Bottleneck Identified:</p>
               <p className="text-[11px] leading-relaxed">
                 Direct tickets for this corridor are heavily oversubscribed. High probability of remaining waitlisted without berth allotment on chart preparation.
               </p>
@@ -221,7 +221,7 @@ export default function WaitlistBypassContrast({
                 </div>
                 <div className="mt-1 flex items-center justify-between text-slate-600 text-[11px]">
                   <span>{split.leg1?.depart || '06:00'} ({split.leg1?.from || from})</span>
-                  <span>──➔</span>
+                  <span>──to</span>
                   <span>{split.leg1?.arrive || '10:08'} ({split.leg1?.to || split.hubCity})</span>
                 </div>
               </div>
@@ -250,7 +250,7 @@ export default function WaitlistBypassContrast({
                 </div>
                 <div className="mt-1 flex items-center justify-between text-slate-600 text-[11px]">
                   <span>{split.leg2?.depart || '11:53'} ({split.leg2?.from || split.hubCity})</span>
-                  <span>──➔</span>
+                  <span>──to</span>
                   <span>{split.leg2?.arrive || '17:45'} ({split.leg2?.to || to})</span>
                 </div>
               </div>

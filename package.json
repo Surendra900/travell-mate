@@ -13,6 +13,7 @@
     "audit": "node scripts/audit.mjs",
     "etl": "node data/etl/runEtl.js",
     "test": "node --test tests/*.test.mjs",
+    "launch-check": "node scripts/launch-checks/run-all.mjs",
     "check": "npm run audit && npm test && npm run build"
   },
   "dependencies": {

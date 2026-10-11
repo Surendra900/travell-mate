@@ -44,7 +44,7 @@ const transportMeta = {
   Bus: { icon: Bus, label: 'Bus' }
 }
 
-function displayValue(value, fallback = '—') {
+function displayValue(value, fallback = ': ') {
   if (value === null || value === undefined || value === '') return fallback
   return value
 }
@@ -57,7 +57,7 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
 
   const departure = displayValue(item.departure || item.depart || item.departureTime, 'Schedule unavailable')
   const arrival = displayValue(item.arrival || item.arrive || item.arrivalTime, 'Schedule unavailable')
-  const duration = displayValue(item.duration || item.travelTime, '—')
+  const duration = displayValue(item.duration || item.travelTime, ': ')
   const statusText = displayValue(item.status || item.availability, 'Check availability')
   const isAvailable = statusText.toLowerCase().includes('avail') || statusText.toLowerCase().includes('confirm')
 

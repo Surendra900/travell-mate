@@ -42,12 +42,12 @@ function locationSmsMessage(plan, service, location) {
   const serviceName = serviceValue(service, 'serviceName', 'service', 'trainName', 'name', 'operator')
   const serviceCode = serviceValue(service, 'code', 'trainNumber', 'trainNo', 'flightNumber', 'serviceNumber')
   const locationLine = location
-    ? `${Number(location.latitude).toFixed(6)}, ${Number(location.longitude).toFixed(6)} — ${formatEmergencyLocation(location)}`
+    ? `${Number(location.latitude).toFixed(6)}, ${Number(location.longitude).toFixed(6)} :  ${formatEmergencyLocation(location)}`
     : 'GPS location unavailable. Please call me and ask for my nearest landmark.'
 
   return [
     'TRAVELMATE LOCATION SHARE',
-    plan ? `Journey: ${plan.from || 'Origin'} → ${plan.to || 'Destination'}` : 'Journey: No saved route available',
+    plan ? `Journey: ${plan.from || 'Origin'} to ${plan.to || 'Destination'}` : 'Journey: No saved route available',
     plan?.date ? `Travel date: ${plan.date}` : '',
     serviceName ? `Saved service: ${serviceName}${serviceCode ? ` (${serviceCode})` : ''}` : '',
     plan?.pnrNumber ? `PNR: ${plan.pnrNumber}` : '',
@@ -119,7 +119,7 @@ export default function OfflineOnlyMode({ status, toast }) {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-lime-200">Saved journey snapshot</p>
-                <h2 className="mt-2 text-3xl font-black text-white">{plan.from} → {plan.to}</h2>
+                <h2 className="mt-2 text-3xl font-black text-white">{plan.from} to {plan.to}</h2>
                 <p className="mt-2 text-lime-100/90">Destination: {plan.to} · Journey mode: {plan.transportMode || 'Train'} · Date: {plan.date || 'Saved date'}</p>
                 <p className="mt-1 text-sm text-lime-100/85">PNR: {plan.pnrNumber || (plan.bookingStatus ? 'No real PNR issued by demo booking' : 'Waiting for authorized booking provider')}</p>
                 {plan.bookingReference && <p className="mt-1 text-sm text-lime-100/85">Booking reference: {plan.bookingReference}</p>}
@@ -131,8 +131,8 @@ export default function OfflineOnlyMode({ status, toast }) {
             {service ? (
               <div className="mt-5 rounded-2xl border border-lime-300/20 bg-slate-950/80 p-4 text-sm text-lime-50">
                 <p><b className="text-white">Exact saved service:</b> {serviceName || 'Provider service'} ({serviceCode || 'Code unavailable'})</p>
-                <p className="mt-1"><b className="text-white">Path:</b> {serviceValue(service, 'from', 'source') || plan.from} → {serviceValue(service, 'to', 'destination') || plan.to}</p>
-                <p className="mt-1"><b className="text-white">Timing:</b> {departure || 'Check provider'} → {arrival || 'Check provider'} · {serviceValue(service, 'duration', 'travelTime') || 'Duration unavailable'}</p>
+                <p className="mt-1"><b className="text-white">Path:</b> {serviceValue(service, 'from', 'source') || plan.from} to {serviceValue(service, 'to', 'destination') || plan.to}</p>
+                <p className="mt-1"><b className="text-white">Timing:</b> {departure || 'Check provider'} to {arrival || 'Check provider'} · {serviceValue(service, 'duration', 'travelTime') || 'Duration unavailable'}</p>
                 <p className="mt-1"><b className="text-white">Fare estimate:</b> {fare ? `₹${fare}` : 'Check provider'} · {serviceValue(service, 'status', 'availability') || 'Provider verification required'}</p>
                 <p className="mt-1"><b className="text-white">Provider:</b> {service.provider || plan.selectedProvider || 'Provider verification required'}</p>
                 <p className="mt-2 text-xs text-yellow-100/90">This is the last saved provider result and PNR snapshot. Final live availability and current PNR status still need official verification.</p>
@@ -150,7 +150,7 @@ export default function OfflineOnlyMode({ status, toast }) {
               <div className="mt-4 space-y-3">
                 <p className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 font-black text-cyan-100">{backup.label}</p>
                 {backup.legs.map((leg) => (
-                  <p key={`${backup.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300"><b className="text-white">{leg.mode}:</b> {leg.service} · {leg.depart} → {leg.arrive} · ₹{leg.fare}</p>
+                  <p key={`${backup.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300"><b className="text-white">{leg.mode}:</b> {leg.service} · {leg.depart} to {leg.arrive} · ₹{leg.fare}</p>
                 ))}
               </div>
             ) : <p className="mt-3 text-slate-300">No backup stored. Prepare the offline pack after saving an exact provider service.</p>}

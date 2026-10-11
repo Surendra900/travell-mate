@@ -29,7 +29,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
               key={to}
               to={to}
               className={({ isActive }) =>
-                `tm-nav-link px-3.5 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition ${
+                `tm-nav-link px-3.5 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition ${
                   isActive
                     ? 'bg-sky-50 text-sky-700 font-extrabold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -46,7 +46,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <button
             type="button"
             onClick={onOpenDemoTour}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
             title="See a Demo scenario"
             aria-label="See a Demo"
             data-testid="navbar-demo-tour-btn"
@@ -58,7 +58,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <button
             type="button"
             onClick={onOpenVoiceGate}
-            className="flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 bg-white text-slate-700 hover:text-sky-600 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm transition"
+            className="flex items-center justify-center w-9 h-9 rounded-md border border-slate-300 bg-white text-slate-700 hover:text-sky-600 hover:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm transition"
             title="Voice Accessibility Mode (Alt+B)"
             aria-label="Voice Accessibility Mode (Alt+B)"
             data-testid="navbar-voice-gate-btn"
@@ -87,7 +87,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
               to={to}
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition ${
+                `flex items-center gap-3 px-4 py-3 rounded-md text-sm font-bold transition ${
                   isActive ? 'bg-sky-50 text-sky-700' : 'text-slate-700 hover:bg-slate-100'
                 }`
               }
@@ -105,7 +105,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
                 onOpenDemoTour?.()
               }}
               data-testid="mobile-navbar-demo-tour-btn"
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold"
+              className="flex items-center gap-2 px-3 py-2 rounded-md bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold"
             >
               <Sparkles size={14} className="text-sky-600" />
               <span>See a Demo</span>

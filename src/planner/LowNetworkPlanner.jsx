@@ -74,7 +74,7 @@ function SavedOfflineSnapshot({ pack }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-lime-200">Offline saved plan</p>
-          <h3 className="mt-1 text-2xl font-black text-white">{saved.from} → {saved.to}</h3>
+          <h3 className="mt-1 text-2xl font-black text-white">{saved.from} to {saved.to}</h3>
           <p className="mt-1 text-sm text-lime-100/85">
             Destination: {saved.to} · Journey mode: {saved.transportMode || 'Train'} · Date: {saved.date || 'Saved date'}
           </p>
@@ -89,10 +89,10 @@ function SavedOfflineSnapshot({ pack }) {
             <b>Saved service:</b> {serviceValue(selectedService, 'serviceName', 'service', 'trainName', 'name') || 'Provider service'} ({serviceValue(selectedService, 'code', 'trainNumber', 'trainNo') || 'Code unavailable'})
           </p>
           <p className="mt-1">
-            <b>Path:</b> {serviceValue(selectedService, 'from', 'source') || saved.from} → {serviceValue(selectedService, 'to', 'destination') || saved.to}
+            <b>Path:</b> {serviceValue(selectedService, 'from', 'source') || saved.from} to {serviceValue(selectedService, 'to', 'destination') || saved.to}
           </p>
           <p className="mt-1">
-            <b>Timing:</b> {serviceValue(selectedService, 'departure', 'depart') || 'Check provider'} → {serviceValue(selectedService, 'arrival', 'arrive') || 'Check provider'} · {serviceValue(selectedService, 'duration', 'travelTime') || 'Duration unavailable'}
+            <b>Timing:</b> {serviceValue(selectedService, 'departure', 'depart') || 'Check provider'} to {serviceValue(selectedService, 'arrival', 'arrive') || 'Check provider'} · {serviceValue(selectedService, 'duration', 'travelTime') || 'Duration unavailable'}
           </p>
           <p className="mt-1">
             <b>Fare estimate:</b> {serviceValue(selectedService, 'fare', 'price', 'amount') ? `₹${serviceValue(selectedService, 'fare', 'price', 'amount')}` : 'Check provider'} · {serviceValue(selectedService, 'status', 'availability') || 'Provider verification required'}

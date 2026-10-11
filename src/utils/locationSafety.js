@@ -97,7 +97,7 @@ export function getCurrentTripContext() {
     const to = String(plan.to || '').trim()
     if (!from && !to) return ''
     const mode = String(plan.transportMode || 'Travel').trim()
-    return `${mode}: ${from || 'Not set'} → ${to || 'Not set'}`
+    return `${mode}: ${from || 'Not set'} to ${to || 'Not set'}`
   } catch {
     return ''
   }

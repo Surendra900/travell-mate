@@ -119,7 +119,7 @@ export default function NormalPlanner({
                   role="tab"
                   aria-selected={active}
                   onClick={() => handleTransportChange(item)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition ${
                     active
                       ? 'bg-sky-700 text-white shadow-sm'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -174,7 +174,7 @@ export default function NormalPlanner({
                 type="button"
                 onClick={() => update({ from: plan.to, to: plan.from })}
                 aria-label="Swap route"
-                className="w-10 h-10 rounded-full border border-slate-300 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 text-slate-600 flex items-center justify-center transition shadow-sm"
+                className="w-10 h-10 rounded-lg border border-slate-300 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 text-slate-600 flex items-center justify-center transition shadow-sm"
               >
                 <ArrowLeftRight size={16} />
               </button>
@@ -302,7 +302,7 @@ export default function NormalPlanner({
               type="button"
               data-testid="planner-search-btn"
               onClick={() => (onFindTicket ? onFindTicket() : toast('Enter route details first.'))}
-              className="w-full h-13 rounded-2xl bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition active:scale-[0.99]"
+              className="w-full h-13 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition active:scale-[0.99]"
             >
               <Ticket size={18} />
               <span>Search Available {plan.transportMode} Options</span>
@@ -321,7 +321,7 @@ export default function NormalPlanner({
               Active Selection
             </span>
             <h3 className="text-base font-extrabold text-slate-900">
-              {plan.from || 'Origin'} → {plan.to || 'Destination'}
+              {plan.from || 'Origin'} to {plan.to || 'Destination'}
             </h3>
             <p className="text-xs text-slate-500 mt-1">
               {plan.date} · {plan.transportMode}
@@ -331,7 +331,7 @@ export default function NormalPlanner({
               <button
                 type="button"
                 onClick={onOpenLiveResults}
-                className="mt-4 w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition"
+                className="mt-4 w-full h-11 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition"
               >
                 <span>View Latest Search Results</span>
                 <ArrowRight size={15} />
@@ -371,7 +371,7 @@ export default function NormalPlanner({
                 role="tab"
                 aria-selected={activeInsightTab === id}
                 onClick={() => setActiveInsightTab(id)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
                   activeInsightTab === id
                     ? 'bg-slate-900 text-white shadow-sm'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'

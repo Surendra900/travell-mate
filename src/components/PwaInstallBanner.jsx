@@ -98,13 +98,13 @@ export default function PwaInstallBanner() {
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-cyan-600 text-slate-950 shadow-md">
             <Sparkles size={22} />
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="text-sm font-black text-white">Install TravelMate AI</h3>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-950 px-2 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
+              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-950 px-2 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
                 <WifiOff size={10} /> 100% Offline Ready
               </span>
             </div>
@@ -118,7 +118,7 @@ export default function PwaInstallBanner() {
           aria-label="Dismiss install banner"
           data-testid="pwa-dismiss-button"
           onClick={dismiss}
-          className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white"
+          className="rounded-md p-1 text-slate-400 hover:bg-slate-800 hover:text-white"
         >
           <X size={16} />
         </button>
@@ -128,7 +128,7 @@ export default function PwaInstallBanner() {
         <button
           type="button"
           onClick={dismiss}
-          className="rounded-xl px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white transition"
+          className="rounded-md px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white transition"
         >
           Maybe Later
         </button>
@@ -137,9 +137,9 @@ export default function PwaInstallBanner() {
           data-testid="pwa-install-button"
           onClick={handleInstallClick}
           disabled={installing}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-1.5 text-xs font-bold text-white shadow-md hover:bg-indigo-500 active:scale-95 transition"
+          className="inline-flex items-center gap-1.5 rounded-md bg-cyan-600 px-4 py-1.5 text-xs font-bold text-slate-950 shadow-md hover:bg-cyan-500 active:scale-95 transition"
         >
-          <Download size={14} /> {installing ? 'Installing…' : 'Install App'}
+          <Download size={14} /> {installing ? 'Installing...' : 'Install App'}
         </button>
       </div>
     </aside>

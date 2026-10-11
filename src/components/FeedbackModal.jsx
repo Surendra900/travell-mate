@@ -27,7 +27,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
     } catch {}
 
     setSubmitted(true)
-    toast?.('Thank you for your feedback! It helps improve route accuracy.')
+    toast?.('Thank you for your feedback. It helps improve route accuracy.')
     setTimeout(() => {
       setSubmitted(false)
       setComments('')
@@ -50,7 +50,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
           onClick={onClose}
           aria-label="Close feedback modal"
           data-testid="feedback-close-btn"
-          className="absolute right-4 top-4 rounded-full p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+          className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
         >
           <X size={20} />
         </button>
@@ -72,7 +72,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
         {submitted ? (
           <div className="mt-8 py-8 text-center" data-testid="feedback-success-state">
             <CheckCircle2 size={48} className="mx-auto text-emerald-400" />
-            <h3 className="mt-3 text-lg font-bold text-white">Feedback Received!</h3>
+            <h3 className="mt-3 text-lg font-bold text-white">Feedback Received</h3>
             <p className="mt-1 text-xs text-slate-300">Your insights help keep junction transfer slack realistic.</p>
           </div>
         ) : (
@@ -89,7 +89,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
                     type="button"
                     onClick={() => setRating(star)}
                     className="p-1 text-amber-400 hover:scale-110 transition-transform focus:outline-none"
-                    aria-label={`${star} Star${star > 1 ? 's' : ''}`}
+                    aria-label={`Score ${star} of 5`}
                   >
                     <Star
                       size={24}
@@ -97,7 +97,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
                     />
                   </button>
                 ))}
-                <span className="ml-2 text-xs font-bold text-slate-300">{rating} / 5 Stars</span>
+                <span className="ml-2 text-xs font-bold text-slate-300">{rating} / 5</span>
               </div>
             </div>
 

@@ -103,7 +103,7 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
             type="button"
             onClick={handleVoiceInput}
             aria-label="Voice input query"
-            className={`p-2 rounded-xl transition ${isListening ? 'bg-red-500 text-white animate-pulse' : 'text-slate-500 hover:text-sky-700 hover:bg-sky-100'}`}
+            className={`p-2 rounded-lg transition ${isListening ? 'bg-red-500 text-white animate-pulse' : 'text-slate-500 hover:text-sky-700 hover:bg-sky-100'}`}
           >
             <Mic size={16} />
           </button>
@@ -111,7 +111,7 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
             type="submit"
             disabled={loading || !query.trim()}
             data-testid="ai-parse-btn"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-700 hover:bg-sky-800 disabled:opacity-50 text-white text-xs font-bold transition shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 disabled:opacity-50 text-white text-xs font-bold transition shrink-0"
           >
             {loading ? <LoaderCircle size={14} className="animate-spin" /> : <span>Parse</span>}
           </button>
@@ -173,7 +173,7 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
             <button
               type="button"
               onClick={() => setParsedData(null)}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition"
             >
               Cancel
             </button>
@@ -181,7 +181,7 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
               type="button"
               onClick={handleApply}
               data-testid="apply-ai-chips-btn"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-700 hover:bg-sky-800 text-white text-xs font-extrabold shadow-sm transition"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white text-xs font-extrabold shadow-sm transition"
             >
               <span>Apply to Form</span>
               <ArrowRight size={14} />

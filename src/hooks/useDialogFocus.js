@@ -19,9 +19,9 @@ const FOCUSABLE_SELECTOR = [
  * and restoring focus to the opening element upon close.
  *
  * @param {Object} options
- * @param {boolean} options.isOpen - Whether the dialog is currently visible
- * @param {Function} [options.onClose] - Callback when Escape key is pressed
- * @param {import('react').RefObject} [options.initialFocusRef] - Optional element to receive initial focus
+ * @param {boolean} options.isOpen: Whether the dialog is currently visible
+ * @param {Function} [options.onClose]: Callback when Escape key is pressed
+ * @param {import('react').RefObject} [options.initialFocusRef]: Optional element to receive initial focus
  * @returns {import('react').RefObject} Ref to attach to the dialog container element
  */
 export function useDialogFocus({ isOpen = false, onClose, initialFocusRef } = {}) {
@@ -71,7 +71,7 @@ export function useDialogFocus({ isOpen = false, onClose, initialFocusRef } = {}
       }
 
       const firstElement = focusable[0]
-      const lastElement = focusable[focusable.length - 1]
+      const lastElement = focusable.at(-1)
 
       if (event.shiftKey) {
         if (document.activeElement === firstElement || !container.contains(document.activeElement)) {

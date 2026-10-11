@@ -18,7 +18,7 @@ export default function StationHopperCard({ hacks = [], from = '', to = '' }) {
               IRCTC Quota Hack Engine
             </span>
             <h4 className="text-base font-black text-slate-950">
-              Same Train, Higher-Quota Seat Bypass 💡
+              Same Train, Higher-Quota Seat Bypass 
             </h4>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function StationHopperCard({ hacks = [], from = '', to = '' }) {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <span className="text-xs font-bold text-emerald-700">
-                    🟢 ~{hack.confirmedProbability}% Historical Clearance Rate
+                    ~{hack.confirmedProbability}% Historical Clearance Rate
                   </span>
                   <span className="rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-xs font-bold text-slate-700">
                     +₹{hack.estimatedExtraFare} extra

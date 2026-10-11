@@ -151,9 +151,9 @@ export default function SavedPlans({ toast }) {
           <button
             type="button"
             onClick={() => navigate('/planner')}
-            className="btn-primary h-12 px-5 rounded-2xl text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/20"
+            className="btn-primary h-12 px-5 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/20"
           >
-            <span>＋ Plan a New Trip</span>
+            <span>Plan a New Trip</span>
           </button>
         </div>
       </section>
@@ -179,7 +179,7 @@ export default function SavedPlans({ toast }) {
                 When you find an optimal route recovery option in the planner, save it here to access it instantly offline with 1-click boarding passes.
               </p>
               <div className="mt-5 flex justify-center">
-                <Link to="/planner" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold shadow-md shadow-sky-600/20">
+                <Link to="/planner" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold shadow-md shadow-sky-600/20">
                   <span>Explore Route Recovery</span>
                   <ArrowRight size={14} />
                 </Link>
@@ -236,7 +236,7 @@ export default function SavedPlans({ toast }) {
                       <div>
                         <span className="text-slate-400 block font-semibold mb-0.5">Timings</span>
                         <strong className="text-slate-900 font-bold">
-                          {departure || '—'} {arrival ? `→ ${arrival}` : ''}
+                          {departure || 'Pending'} {arrival ? `to ${arrival}` : ''}
                         </strong>
                       </div>
                     </div>
@@ -258,7 +258,7 @@ export default function SavedPlans({ toast }) {
                         type="button"
                         data-testid={`view-pass-${plan.id}`}
                         onClick={() => setPassPlan(plan)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
+                        className="px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
                       >
                         <ShieldCheck size={14} className="text-emerald-600" />
                         <span>Boarding Pass</span>
@@ -267,7 +267,7 @@ export default function SavedPlans({ toast }) {
                       <button
                         type="button"
                         onClick={() => setBookingPlan(plan)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
+                        className="px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
                       >
                         <Ticket size={14} className="text-sky-600" />
                         <span>Booking</span>
@@ -363,7 +363,7 @@ export default function SavedPlans({ toast }) {
                             'Custom Route Plan'}
                         </h4>
                         <p className="text-xs text-slate-500">
-                          {plan.from} → {plan.to} · {planVerdict(score)} (Score: {score}/100)
+                          {plan.from} to {plan.to} · {planVerdict(score)} (Score: {score}/100)
                         </p>
                       </div>
                     </div>

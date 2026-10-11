@@ -23,33 +23,33 @@ export default function PrivacyPolicy({ toast }) {
       </div>
 
       {/* Header */}
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-800">
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800">
             <ShieldCheck size={14} /> India DPDP Act 2023 Compliant
           </span>
           <span className="text-xs text-slate-600 font-semibold">Effective: October 2026</span>
         </div>
         <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-          Privacy Policy & Data Protection
+          Privacy Policy and Data Protection
         </h1>
         <p className="mt-3 text-base text-slate-700 leading-relaxed max-w-3xl">
-          TravelMate is designed on strict principles of <strong>Data Minimization</strong> and <strong>Zero-ID architecture</strong> under the Digital Personal Data Protection (DPDP) Act, 2023 of India. We prioritize traveler autonomy and zero tracking.
+          TravelMate Technologies (New Delhi, India) operates this application on strict principles of <strong>Data Minimization</strong> and <strong>Zero-ID architecture</strong> under the Digital Personal Data Protection (DPDP) Act, 2023 of India. We prioritize traveler autonomy and zero tracking.
         </p>
       </div>
 
       {/* Core Privacy Principles Grid */}
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 text-sky-800 font-bold text-sm">
             <Lock size={18} /> Zero-ID Storage Policy
           </div>
           <p className="mt-2 text-xs text-slate-700 leading-relaxed">
-            TravelMate strictly <strong>never requests, processes, or stores</strong> government identity numbers (Aadhaar, Passport, PAN, Voter ID) or payment card credentials anywhere in local storage or on servers.
+            TravelMate Technologies strictly <strong>never requests, processes, or stores</strong> government identity numbers (Aadhaar, Passport, PAN, Voter ID) or payment card credentials anywhere in local storage or on servers.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
             <ShieldCheck size={18} /> Explicit Action Consent
           </div>
@@ -58,7 +58,7 @@ export default function PrivacyPolicy({ toast }) {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
             <Trash2 size={18} /> Instant Right to Erasure
           </div>
@@ -69,9 +69,9 @@ export default function PrivacyPolicy({ toast }) {
       </div>
 
       {/* Detailed Provisions */}
-      <div className="mt-8 space-y-6 text-sm text-slate-700 leading-relaxed rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="mt-8 space-y-6 text-sm text-slate-700 leading-relaxed rounded-xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
         <section>
-          <h2 className="text-lg font-bold text-slate-900">1. Purpose Limitation & Data Categories</h2>
+          <h2 className="text-lg font-bold text-slate-900">1. Purpose Limitation and Data Categories</h2>
           <p className="mt-2">
             We only process transient information necessary to compute multimodal itineraries and assist with emergency preparation:
           </p>
@@ -99,7 +99,7 @@ export default function PrivacyPolicy({ toast }) {
               type="button"
               data-testid="dpdp-erase-all-btn"
               onClick={handlePurge}
-              className="inline-flex items-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 px-4 py-2.5 text-xs font-bold text-white shadow-md transition-colors"
+              className="inline-flex items-center gap-2 rounded-md bg-red-600 hover:bg-red-700 px-4 py-2.5 text-xs font-bold text-white shadow-md transition-colors"
             >
               <Trash2 size={16} /> Erase All Local Device Data
             </button>
@@ -112,9 +112,9 @@ export default function PrivacyPolicy({ toast }) {
         </section>
 
         <section className="border-t border-slate-200 pt-6">
-          <h2 className="text-lg font-bold text-slate-900">4. Data Protection Officer & Inquiries</h2>
+          <h2 className="text-lg font-bold text-slate-900">4. Data Protection Officer and Contact</h2>
           <p className="mt-2 text-xs">
-            For questions regarding privacy practices or technical compliance under the DPDP Act 2023, contact our designated privacy desk at <span className="font-mono text-sky-800 font-semibold">privacy@travelmate.in</span>.
+            For questions regarding privacy practices or technical compliance under the DPDP Act 2023, contact our designated privacy desk at TravelMate Technologies: <span className="font-mono text-sky-800 font-semibold">support@travelmate.in</span>. Governing jurisdiction: New Delhi, India.
           </p>
         </section>
       </div>

@@ -104,7 +104,7 @@ export default function LocationPermissionGate({ toast }) {
             </div>
           )}
           {status === 'denied' && (
-            <div className="rounded-2xl border border-red-400/25 bg-red-400/10 p-4 text-red-100">Location is blocked. Use the lock icon beside the website address → Site settings → Location → Allow, then reload.</div>
+            <div className="rounded-2xl border border-red-400/25 bg-red-400/10 p-4 text-red-100">Location is blocked. Use the lock icon beside the website address to open Site settings, select Location, choose Allow, and reload.</div>
           )}
         </div>
 

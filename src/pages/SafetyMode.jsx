@@ -105,8 +105,8 @@ export default function SafetyMode({ toast }) {
 
   function handleCopyPass(route) {
     const text = [
-      `🎫 TRAVELMATE OFFLINE BOARDING PASS`,
-      `Route: ${route.leg1?.from} ➔ ${route.leg2?.to}`,
+      `TRAVELMATE OFFLINE BOARDING PASS`,
+      `Route: ${route.leg1?.from} to ${route.leg2?.to}`,
       `Total Fare: ${route.fareFormatted} | Duration: ${route.totalDuration}`,
       `----------------------------------------`,
       `STEP 1: ${route.leg1?.service} (${route.leg1?.mode})`,
@@ -197,7 +197,7 @@ export default function SafetyMode({ toast }) {
             <button
               type="button"
               onClick={() => setActiveTab('passes')}
-              className="btn-primary h-12 px-6 rounded-2xl text-sm font-extrabold flex items-center gap-2 shadow-lg shadow-sky-600/25"
+              className="btn-primary h-12 px-6 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/25"
             >
               <Ticket size={18} />
               <span>Offline Boarding Passes</span>
@@ -206,7 +206,7 @@ export default function SafetyMode({ toast }) {
             <button
               type="button"
               onClick={openEmergencyActions}
-              className="btn-danger h-12 px-6 rounded-2xl text-sm font-extrabold flex items-center gap-2 shadow-lg shadow-red-600/25"
+              className="btn-danger h-12 px-6 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-red-600/25"
             >
               <Siren size={18} />
               <span>Transit Helplines (112 / 139)</span>
@@ -233,7 +233,7 @@ export default function SafetyMode({ toast }) {
                 data-testid={testId}
                 aria-selected={active}
                 onClick={() => setActiveTab(id)}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition ${
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-md font-bold text-sm transition ${
                   active
                     ? 'bg-slate-900 text-white shadow-sm'
                     : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -273,10 +273,10 @@ export default function SafetyMode({ toast }) {
                 data-testid="sync-offline-pack-btn"
                 onClick={handleSyncOfflinePack}
                 disabled={syncingOffline}
-                className="btn-soft inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold text-sky-800 bg-white border border-sky-300 hover:bg-sky-50 shadow-sm"
+                className="btn-soft inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-xs font-bold text-sky-800 bg-white border border-sky-300 hover:bg-sky-50 shadow-sm"
               >
                 <RefreshCw size={14} className={syncingOffline ? 'animate-spin text-sky-600' : 'text-sky-600'} />
-                <span>{syncingOffline ? 'Caching Assets…' : 'Sync / Refresh Offline Cache'}</span>
+                <span>{syncingOffline ? 'Caching Assets...' : 'Sync / Refresh Offline Cache'}</span>
               </button>
             </div>
 
@@ -290,7 +290,7 @@ export default function SafetyMode({ toast }) {
                   </p>
                 </div>
                 {savedPlans.length === 0 && (
-                  <span className="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+                  <span className="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-md">
                     Illustrative Sample Pass
                   </span>
                 )}
@@ -300,12 +300,12 @@ export default function SafetyMode({ toast }) {
                 {displayRoutes.map((route) => (
                   <div
                     key={route.id}
-                    className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:border-slate-300 transition"
+                    className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:border-slate-300 transition"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-100 pb-4">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-sky-100 text-sky-800 border border-sky-200">
+                          <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">
                             {route.tierLabel}
                           </span>
                           <span className="text-xs font-bold text-slate-500">
@@ -313,7 +313,7 @@ export default function SafetyMode({ toast }) {
                           </span>
                         </div>
                         <h3 className="text-xl font-black text-slate-950 mt-2">
-                          {route.leg1.from} ➔ {route.leg2.to}
+                          {route.leg1.from} to {route.leg2.to}
                         </h3>
                         <p className="text-xs text-slate-500 mt-0.5">
                           Total duration: <strong className="text-slate-800">{route.totalDuration}</strong> · Estimated fare: <strong className="text-slate-800">{route.fareFormatted}</strong>
@@ -325,7 +325,7 @@ export default function SafetyMode({ toast }) {
                           type="button"
                           data-testid="view-offline-pass-btn"
                           onClick={() => setSelectedPassRoute(route)}
-                          className="btn-primary inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm"
+                          className="btn-primary inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-xs font-bold shadow-sm"
                         >
                           <QrCode size={14} />
                           <span>View Digital Pass</span>
@@ -335,7 +335,7 @@ export default function SafetyMode({ toast }) {
                           type="button"
                           data-testid="print-pass-btn"
                           onClick={() => handlePrintPass(route)}
-                          className="btn-soft inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold"
+                          className="btn-soft inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold"
                           title="Print or Save PDF"
                         >
                           <Printer size={14} />
@@ -346,7 +346,7 @@ export default function SafetyMode({ toast }) {
                           type="button"
                           data-testid="copy-pass-summary-btn"
                           onClick={() => handleCopyPass(route)}
-                          className="btn-soft inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold"
+                          className="btn-soft inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold"
                           title="Copy Pass text summary"
                         >
                           {copiedSummary ? <CheckCircle2 size={14} className="text-emerald-600" /> : <Copy size={14} />}
@@ -357,25 +357,25 @@ export default function SafetyMode({ toast }) {
 
                     {/* Legs preview strip */}
                     <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center shrink-0">
+                      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-md bg-sky-100 text-sky-800 flex items-center justify-center shrink-0">
                           <TrainFront size={18} />
                         </div>
                         <div className="min-w-0">
                           <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Leg 1: Trunk</div>
                           <div className="text-xs font-black text-slate-900 truncate">{route.leg1.service}</div>
-                          <div className="text-[11px] text-slate-600 font-semibold">{route.leg1.depart} {route.leg1.from} ➔ {route.leg1.arrive} {route.hubCity}</div>
+                          <div className="text-[11px] text-slate-600 font-semibold">{route.leg1.depart} {route.leg1.from} to {route.leg1.arrive} {route.hubCity}</div>
                         </div>
                       </div>
 
-                      <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
                           <TrainFront size={18} />
                         </div>
                         <div className="min-w-0">
                           <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Leg 2: Connecting</div>
                           <div className="text-xs font-black text-slate-900 truncate">{route.leg2.service}</div>
-                          <div className="text-[11px] text-slate-600 font-semibold">{route.leg2.depart} {route.hubCity} ➔ {route.leg2.arrive} {route.leg2.to}</div>
+                          <div className="text-[11px] text-slate-600 font-semibold">{route.leg2.depart} {route.hubCity} to {route.leg2.arrive} {route.leg2.to}</div>
                         </div>
                       </div>
                     </div>

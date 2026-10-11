@@ -4,7 +4,7 @@
  */
 
 export const colors = {
-  primary: '#0369a1',       // Sky 700 - trustworthy, high contrast
+  primary: '#0369a1',       // Sky 700: trustworthy, high contrast
   primaryHover: '#0284c7',  // Sky 600
   primaryActive: '#075985', // Sky 800
 

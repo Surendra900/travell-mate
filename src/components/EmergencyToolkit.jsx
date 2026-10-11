@@ -328,7 +328,7 @@ export default function EmergencyToolkit({ toast, compact = false }) {
           onClick={handleCall112}
           aria-label="Call 112 National Emergency"
         >
-          <Phone size={22} className="animate-pulse" /> Call 112 now
+          <Phone size={22} /> Call 112 now
         </button>
       </div>
 

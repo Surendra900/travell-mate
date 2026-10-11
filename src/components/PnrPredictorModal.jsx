@@ -104,7 +104,7 @@ export default function PnrPredictorModal({
         setActiveData({
           pnrNumber: pnr,
           trainNumber: '12424',
-          trainName: 'New Delhi - Dibrugarh Rajdhani Express',
+          trainName: 'New Delhi to Dibrugarh Rajdhani Express',
           from: 'NDLS (New Delhi)',
           to: 'GHY (Guwahati)',
           journeyDate: 'In 2 Days · 16:20',
@@ -129,14 +129,14 @@ export default function PnrPredictorModal({
   const handleShareWhatsApp = () => {
     if (!activeData || !prediction) return
     const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://travelmate-ai-flowzint.vercel.app'
-    const text = `🚆 *IRCTC PNR Status & AI Prediction*
+    const text = `*IRCTC PNR Status & AI Prediction*
 *PNR:* ${activeData.pnrNumber}
-*Train:* ${activeData.trainNumber} - ${activeData.trainName}
-*Route:* ${activeData.from} ➔ ${activeData.to}
+*Train:* ${activeData.trainNumber} · ${activeData.trainName}
+*Route:* ${activeData.from} to ${activeData.to}
 *Status:* ${activeData.currentStatus} (${activeData.chartStatus})
 *AI Confirmation Chance:* ${prediction.label}
 
-💡 *Analysis:* ${prediction.summary}
+*Analysis:* ${prediction.summary}
 ${prediction.recommendation}
 
 Verified on TravelMate: ${origin}/`
@@ -239,9 +239,9 @@ Verified on TravelMate: ${origin}/`
                     : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-white'
                 }`}
               >
-                {idx === 0 && '🟢 RAC 6 (High)'}
-                {idx === 1 && '🔴 PQWL 18 (Low)'}
-                {idx === 2 && '🎫 Confirmed'}
+                {idx === 0 && 'RAC 6 (High)'}
+                {idx === 1 && 'PQWL 18 (Low)'}
+                {idx === 2 && 'Confirmed'}
               </button>
             ))}
           </div>
@@ -264,10 +264,10 @@ Verified on TravelMate: ${origin}/`
                     PNR: {activeData.pnrNumber} · Class: {activeData.classType || '3A'}
                   </span>
                   <h3 className="text-base font-black text-white">
-                    {activeData.trainNumber} - {activeData.trainName}
+                    {activeData.trainNumber} · {activeData.trainName}
                   </h3>
                   <p className="mt-1 text-xs text-cyan-200">
-                    {activeData.from} ──➔ {activeData.to}
+                    {activeData.from} to {activeData.to}
                   </p>
                 </div>
                 <div className="text-right">
@@ -350,7 +350,7 @@ Verified on TravelMate: ${origin}/`
               </div>
 
               <p className="mt-2.5 text-xs font-bold text-cyan-200">
-                💡 <b>Strategic Next Step:</b> {prediction.recommendation}
+                <b>Strategic Next Step:</b> {prediction.recommendation}
               </p>
             </div>
 

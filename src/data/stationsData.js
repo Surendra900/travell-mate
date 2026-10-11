@@ -16,8 +16,8 @@ const SEARCH_INDEX = STATIONS.map(s => ({
 
 /**
  * Searches stations by code, name, or city with junction priority
- * @param {string} query - Search query
- * @param {number} limit - Maximum results to return
+ * @param {string} query: Search query
+ * @param {number} limit: Maximum results to return
  * @returns {Array} List of matching station records
  */
 export function searchStations(query = '', limit = 10) {

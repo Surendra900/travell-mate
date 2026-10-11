@@ -30,8 +30,8 @@ export default function OfflineModeBanner({ status, toast }) {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link className="rounded-full bg-lime-300 px-4 py-2 text-sm font-black text-slate-950" to="/planner">Open Offline Planner</Link>
-          <Link className="rounded-full border border-red-300 px-4 py-2 text-sm font-bold text-red-900" to="/safety"><ShieldAlert size={16} className="inline" /> Safety Mode</Link>
+          <Link className="rounded-md bg-lime-300 px-4 py-2 text-sm font-black text-slate-950" to="/planner">Open Offline Planner</Link>
+          <Link className="rounded-md border border-red-300 px-4 py-2 text-sm font-bold text-red-900" to="/safety"><ShieldAlert size={16} className="inline" /> Safety Mode</Link>
         </div>
       </div>
     </div>

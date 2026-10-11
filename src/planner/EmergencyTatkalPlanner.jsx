@@ -89,7 +89,7 @@ export default function EmergencyTatkalPlanner({
   const routeLabels = getRouteInputLabels('Train')
   const [targetTrainKey, setTargetTrainKey] = useState('')
 
-  // 1-Click Master Data Passenger Auto-Fill State (Local Device Only - Zero IDs)
+  // 1-Click Master Data Passenger Auto-Fill State (Local Device Only: Zero IDs)
   const [passengers, setPassengers] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('travelmate-tatkal-master-list'))
@@ -220,7 +220,7 @@ export default function EmergencyTatkalPlanner({
     const formatted = valid.map(p => `${p.name.trim()}, ${p.age || '30'}, ${p.gender}, ${p.berth}`).join(' | ')
     try {
       await navigator.clipboard.writeText(formatted)
-      toast?.('Master Passenger List copied! Ready for rapid IRCTC paste.')
+      toast?.('Master Passenger List copied. Ready for rapid IRCTC paste.')
       setChecklist(prev => ({ ...prev, clipboardReady: true }))
     } catch {
       toast?.('Failed to copy to clipboard.')
@@ -380,7 +380,7 @@ export default function EmergencyTatkalPlanner({
             </div>
 
             <div className="mt-5 flex flex-wrap gap-3">
-              <button className="btn-primary inline-flex items-center gap-2 font-bold" onClick={() => bookSelectedTrain()}><Ticket size={18} />Prepare selected train →</button>
+              <button className="btn-primary inline-flex items-center gap-2 font-bold" onClick={() => bookSelectedTrain()}><Ticket size={18} />Prepare selected train</button>
               {bestTatkalTrain && (
                 <button className="btn-soft text-xs font-bold text-slate-700" onClick={() => { const index = displayTrains.indexOf(bestTatkalTrain); setTargetTrainKey(trainKey(bestTatkalTrain, index)); toast?.(`${bestTatkalTrain.service || bestTatkalTrain.serviceName} selected.`) }}>
                   <TrainFront size={14} className="mr-1 inline text-sky-600" /> Select first/best result
@@ -418,7 +418,7 @@ export default function EmergencyTatkalPlanner({
                           <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-amber-950 text-[10px] font-bold">TQ Eligible</span>
                         </div>
                         <h4 className="font-extrabold text-slate-900">{item.service || item.serviceName || 'Train option'}</h4>
-                        <p className="mt-1 text-xs text-slate-500 font-medium">{item.from || plan.from} → {item.to || plan.to}</p>
+                        <p className="mt-1 text-xs text-slate-500 font-medium">{item.from || plan.from} to {item.to || plan.to}</p>
                       </div>
                       <span className="rounded-full bg-sky-50 text-sky-900 border border-sky-200 px-3 py-1 text-xs font-black">{displayFare(item)}</span>
                     </div>
@@ -430,7 +430,7 @@ export default function EmergencyTatkalPlanner({
                     </div>
                     <div className="mt-3 flex flex-wrap gap-2">
                       <button className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${selected ? 'bg-sky-600 text-white' : 'border border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'}`} onClick={() => setTargetTrainKey(key)}>
-                        {selected ? '✓ Selected Train' : 'Select Train'}
+                        {selected ? 'Selected Train' : 'Select Train'}
                       </button>
                       <a
                         href="https://www.irctc.co.in/nget/train-search"
@@ -459,7 +459,7 @@ export default function EmergencyTatkalPlanner({
 
         {/* Right Column: Tatkal Auto-Fill Master Data & Pre-Tatkal Checklist */}
         <div className="space-y-6">
-          {/* 1-Click Master Data Passenger Auto-Fill Assistant (Local Device Only - Zero IDs) */}
+          {/* 1-Click Master Data Passenger Auto-Fill Assistant (Local Device Only: Zero IDs) */}
           <div className="rounded-3xl border border-sky-200 bg-white p-5 sm:p-6 shadow-sm">
             <div className="flex flex-wrap items-center justify-between border-b border-sky-100 pb-3 gap-2">
               <div>
@@ -598,7 +598,7 @@ export default function EmergencyTatkalPlanner({
               {[
                 { key: 'login', text: 'Log in to IRCTC portal at 09:55 AM (AC) or 10:55 AM (Non-AC) to prevent captcha session expiration.' },
                 { key: 'masterList', text: 'Verify Passenger Master List is pre-saved in your IRCTC profile under "My Profile".' },
-                { key: 'upiReady', text: 'Payment App (Paytm / GPay / IRCTC iMobi) unlocked on your phone for rapid 1-tap OTP approval.' },
+                { key: 'upiReady', text: 'Payment App (Paytm / GPay / IRCTC iMobi) open and ready on your phone for rapid 1-tap OTP approval.' },
                 { key: 'clipboardReady', text: 'Master passenger details copied to clipboard using the Auto-Fill tool above.' },
                 { key: 'backupRoute', text: 'Multimodal backup route or station hopper alternative identified in TravelMate.' }
               ].map(({ key, text }) => {

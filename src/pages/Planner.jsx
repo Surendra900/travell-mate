@@ -481,7 +481,7 @@ export default function Planner({ status, toast, language = 'en' }) {
             type="button"
             data-testid="planner-pnr-status-btn"
             onClick={() => setShowPnrModal(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-xs"
           >
             <Ticket size={14} className="text-sky-600" />
             <span>Check PNR Status</span>
@@ -499,7 +499,7 @@ export default function Planner({ status, toast, language = 'en' }) {
                   key={value}
                   type="button"
                   data-testid={`planner-tab-${value}`}
-                  className={`min-h-11 rounded-xl px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
+                  className={`min-h-11 rounded-lg px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
                     active
                       ? isTatkalTab
                         ? 'bg-amber-600 text-white shadow-sm'

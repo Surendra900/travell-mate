@@ -308,26 +308,26 @@ const directServiceFixtures = [
     from: ['Rajahmundry', 'RJY', 'Rajamahendravaram'],
     to: ['Delhi', 'New Delhi', 'NDLS'],
     trains: [
-      { service: 'AP EXPRESS (20805)', code: '20805', from: 'RAJAHMUNDRY (RJY)', to: 'NEW DELHI (NDLS)', depart: '00:45', arrive: '05:40 +1', duration: '28h 55m', fare: 925, availability: 'Refresh on official portal', classes: ['SL', '3A', '2A', '1A'], reliability: 78, status: 'Local timetable snapshot · check NTES before boarding', note: 'Matches the screenshot-style Rajahmundry → New Delhi long-distance option.' },
+      { service: 'AP EXPRESS (20805)', code: '20805', from: 'RAJAHMUNDRY (RJY)', to: 'NEW DELHI (NDLS)', depart: '00:45', arrive: '05:40 +1', duration: '28h 55m', fare: 925, availability: 'Refresh on official portal', classes: ['SL', '3A', '2A', '1A'], reliability: 78, status: 'Local timetable snapshot · check NTES before boarding', note: 'Matches the screenshot-style Rajahmundry to New Delhi long-distance option.' },
       { service: 'ANDHRA PRADESH AC SF EXP (22415)', code: '22415', from: 'VIJAYAWADA/BZA transfer', to: 'NEW DELHI (NDLS)', depart: '21:00', arrive: '05:30 +2', duration: '32h 30m', fare: 1850, availability: 'Backup via Vijayawada', classes: ['3A', '2A', '1A'], reliability: 74, status: 'Local backup snapshot', note: 'Backup if direct AP Express is unavailable.' }
     ],
     buses: [
-      { service: 'APSRTC Rajahmundry → Vijayawada Connector', code: 'APSRTC-RJY-BZA', from: 'Rajahmundry Bus Station', to: 'Vijayawada PNBS', depart: '06:30', arrive: '10:30', duration: '4h', fare: 420, availability: 'Connector leg', classes: ['AC Seater', 'Non-AC'], reliability: 72, status: 'Local route snapshot', note: 'Use as first leg before a train/flight from Vijayawada.' }
+      { service: 'APSRTC Rajahmundry to Vijayawada Connector', code: 'APSRTC-RJY-BZA', from: 'Rajahmundry Bus Station', to: 'Vijayawada PNBS', depart: '06:30', arrive: '10:30', duration: '4h', fare: 420, availability: 'Connector leg', classes: ['AC Seater', 'Non-AC'], reliability: 72, status: 'Local route snapshot', note: 'Use as first leg before a train/flight from Vijayawada.' }
     ],
     flights: [
-      { service: '6E Rajahmundry → Delhi via Hyderabad', code: '6E-RJA-HYD-DEL', from: 'Rajahmundry Airport (RJA)', to: 'Delhi Airport (DEL)', depart: '09:15', arrive: '15:10', duration: '5h 55m', fare: 6900, availability: 'Check airline portal', classes: ['Economy'], reliability: 77, status: 'Local route snapshot', note: 'Fast backup; baggage and connection rules apply.' }
+      { service: '6E Rajahmundry to Delhi via Hyderabad', code: '6E-RJA-HYD-DEL', from: 'Rajahmundry Airport (RJA)', to: 'Delhi Airport (DEL)', depart: '09:15', arrive: '15:10', duration: '5h 55m', fare: 6900, availability: 'Check airline portal', classes: ['Economy'], reliability: 77, status: 'Local route snapshot', note: 'Fast backup; baggage and connection rules apply.' }
     ]
   },
   {
     from: ['Hyderabad', 'Secunderabad', 'HYD', 'SC'],
     to: ['Delhi', 'New Delhi', 'NDLS'],
     trains: [
-      { service: 'TELANGANA EXPRESS (12723)', code: '12723', from: 'HYDERABAD DECAN/SECUNDERABAD', to: 'NEW DELHI (NDLS)', depart: '06:25', arrive: '07:40 +1', duration: '25h 15m', fare: 810, availability: 'Check IRCTC', classes: ['SL', '3A', '2A', '1A'], reliability: 82, status: 'Local route snapshot', note: 'Good budget route for Hyderabad → Delhi.' },
+      { service: 'TELANGANA EXPRESS (12723)', code: '12723', from: 'HYDERABAD DECAN/SECUNDERABAD', to: 'NEW DELHI (NDLS)', depart: '06:25', arrive: '07:40 +1', duration: '25h 15m', fare: 810, availability: 'Check IRCTC', classes: ['SL', '3A', '2A', '1A'], reliability: 82, status: 'Local route snapshot', note: 'Good budget route for Hyderabad to Delhi.' },
       { service: 'DAKSHIN EXPRESS (12721)', code: '12721', from: 'SECUNDERABAD (SC)', to: 'HAZRAT NIZAMUDDIN (NZM)', depart: '23:00', arrive: '04:00 +2', duration: '29h', fare: 760, availability: 'Check IRCTC', classes: ['SL', '3A', '2A'], reliability: 76, status: 'Local backup snapshot', note: 'Backup if first train is full.' }
     ],
     flights: [
-      { service: 'Indigo 6E HYD → DEL', code: '6E-HYD-DEL', from: 'Hyderabad Airport (HYD)', to: 'Delhi Airport (DEL)', depart: '08:10', arrive: '10:30', duration: '2h 20m', fare: 5200, availability: 'Check airline portal', classes: ['Economy'], reliability: 85, status: 'Local route snapshot', note: 'Fastest normal option if budget permits.' },
-      { service: 'Air India AI HYD → DEL', code: 'AI-HYD-DEL', from: 'Hyderabad Airport (HYD)', to: 'Delhi Airport (DEL)', depart: '17:40', arrive: '20:00', duration: '2h 20m', fare: 5900, availability: 'Check airline portal', classes: ['Economy', 'Business'], reliability: 81, status: 'Local backup snapshot', note: 'Backup flight option.' }
+      { service: 'Indigo 6E HYD to DEL', code: '6E-HYD-DEL', from: 'Hyderabad Airport (HYD)', to: 'Delhi Airport (DEL)', depart: '08:10', arrive: '10:30', duration: '2h 20m', fare: 5200, availability: 'Check airline portal', classes: ['Economy'], reliability: 85, status: 'Local route snapshot', note: 'Fastest normal option if budget permits.' },
+      { service: 'Air India AI HYD to DEL', code: 'AI-HYD-DEL', from: 'Hyderabad Airport (HYD)', to: 'Delhi Airport (DEL)', depart: '17:40', arrive: '20:00', duration: '2h 20m', fare: 5900, availability: 'Check airline portal', classes: ['Economy', 'Business'], reliability: 81, status: 'Local backup snapshot', note: 'Backup flight option.' }
     ],
     buses: [
       { service: 'Long-distance bus not recommended', code: 'NO-DIRECT-BUS', from: 'Hyderabad', to: 'Delhi', depart: 'N/A', arrive: 'N/A', duration: '40h+', fare: 2500, availability: 'Use only as emergency fallback', classes: ['Sleeper Bus'], reliability: 42, status: 'Local caution note', note: 'Too long; use train/flight instead.' }
@@ -343,12 +343,12 @@ const directServiceFixtures = [
       { service: 'Korba–Kochuveli SF Express connector', code: '22647/CONNECT', from: 'RAJAHMUNDRY (RJY)', to: 'ERNAKULAM / KOTTAYAM SIDE', depart: 'Morning window', arrive: 'Next day evening', duration: '26h–30h', fare: 840, availability: 'Check IRCTC live', classes: ['SL', '3A', '2A'], reliability: 69, status: 'Curated snapshot · verify official timing', note: 'Connector-style option; exact station pairing should be checked before demo claims.' }
     ],
     buses: [
-      { service: 'APSRTC Rajahmundry → Vijayawada connector', code: 'APSRTC-RJY-BZA', from: 'Rajahmundry Bus Station', to: 'Vijayawada PNBS', depart: '06:30', arrive: '10:30', duration: '4h', fare: 420, availability: 'Connector leg', classes: ['AC Seater', 'Non-AC'], reliability: 72, status: 'Local route snapshot', note: 'Use as first leg to reach a stronger train/flight hub.' },
-      { service: 'Private sleeper coach RJY → Bengaluru/Cochin connector', code: 'BUS-RJY-KERALA-CONNECT', from: 'Rajahmundry Bus Station', to: 'Kerala corridor connector', depart: '18:30', arrive: 'Next day', duration: '18h–24h', fare: 1600, availability: 'Check bus portal live', classes: ['Sleeper', 'AC Sleeper'], reliability: 58, status: 'Curated local snapshot', note: 'Long bus route; use only if rail options fail.' }
+      { service: 'APSRTC Rajahmundry to Vijayawada connector', code: 'APSRTC-RJY-BZA', from: 'Rajahmundry Bus Station', to: 'Vijayawada PNBS', depart: '06:30', arrive: '10:30', duration: '4h', fare: 420, availability: 'Connector leg', classes: ['AC Seater', 'Non-AC'], reliability: 72, status: 'Local route snapshot', note: 'Use as first leg to reach a stronger train/flight hub.' },
+      { service: 'Private sleeper coach RJY to Bengaluru/Cochin connector', code: 'BUS-RJY-KERALA-CONNECT', from: 'Rajahmundry Bus Station', to: 'Kerala corridor connector', depart: '18:30', arrive: 'Next day', duration: '18h to 24h', fare: 1600, availability: 'Check bus portal live', classes: ['Sleeper', 'AC Sleeper'], reliability: 58, status: 'Curated local snapshot', note: 'Long bus route; use only if rail options fail.' }
     ],
     flights: [
-      { service: 'Indigo 6E Rajahmundry → Kochi via Hyderabad', code: '6E-RJA-HYD-COK', from: 'Rajahmundry Airport (RJA)', to: 'Cochin Airport (COK)', depart: '09:15', arrive: '14:40', duration: '5h 25m', fare: 6200, availability: 'Check airline live', classes: ['Economy'], reliability: 78, status: 'Curated local snapshot', note: 'Fast route to Kerala hub; baggage rules depend on airline/fare.' },
-      { service: 'Air India Express RJA → COK via Bengaluru', code: 'IX-RJA-BLR-COK', from: 'Rajahmundry Airport (RJA)', to: 'Cochin Airport (COK)', depart: '13:20', arrive: '20:10', duration: '6h 50m', fare: 6800, availability: 'Check airline live', classes: ['Economy'], reliability: 72, status: 'Curated local snapshot', note: 'Backup flight if Hyderabad connection is not suitable.' }
+      { service: 'Indigo 6E Rajahmundry to Kochi via Hyderabad', code: '6E-RJA-HYD-COK', from: 'Rajahmundry Airport (RJA)', to: 'Cochin Airport (COK)', depart: '09:15', arrive: '14:40', duration: '5h 25m', fare: 6200, availability: 'Check airline live', classes: ['Economy'], reliability: 78, status: 'Curated local snapshot', note: 'Fast route to Kerala hub; baggage rules depend on airline/fare.' },
+      { service: 'Air India Express RJA to COK via Bengaluru', code: 'IX-RJA-BLR-COK', from: 'Rajahmundry Airport (RJA)', to: 'Cochin Airport (COK)', depart: '13:20', arrive: '20:10', duration: '6h 50m', fare: 6800, availability: 'Check airline live', classes: ['Economy'], reliability: 72, status: 'Curated local snapshot', note: 'Backup flight if Hyderabad connection is not suitable.' }
     ]
   },
   {
@@ -361,25 +361,25 @@ const directServiceFixtures = [
       { service: 'Evening Kerala connector', code: 'KRL-EVE-CONNECT', from: 'ERNAKULAM', to: 'KARUNAGAPPALLI (KPY)', depart: '17:45', arrive: '21:05', duration: '3h 20m', fare: 110, availability: 'Check railway live', classes: ['2S', 'SL'], reliability: 70, status: 'Curated local snapshot', note: 'Backup if user reaches Ernakulam later in the day.' }
     ],
     buses: [
-      { service: 'KSRTC Ernakulam/Vyttila → Karunagappalli', code: 'KSRTC-ERS-KPY-1', from: 'Vyttila Mobility Hub', to: 'KSRTC Karunagappalli', depart: '06:00', arrive: '10:30', duration: '4h 30m', fare: 230, availability: 'Check KSRTC/live portal', classes: ['Super Fast', 'Fast Passenger'], reliability: 76, status: 'Curated local snapshot', note: 'Useful last-mile backup if train timing does not match.' },
+      { service: 'KSRTC Ernakulam/Vyttila to Karunagappalli', code: 'KSRTC-ERS-KPY-1', from: 'Vyttila Mobility Hub', to: 'KSRTC Karunagappalli', depart: '06:00', arrive: '10:30', duration: '4h 30m', fare: 230, availability: 'Check KSRTC/live portal', classes: ['Super Fast', 'Fast Passenger'], reliability: 76, status: 'Curated local snapshot', note: 'Useful last-mile backup if train timing does not match.' },
       { service: 'KSRTC Fast Passenger evening connector', code: 'KSRTC-ERS-KPY-2', from: 'Vyttila Mobility Hub', to: 'KSRTC Karunagappalli', depart: '18:15', arrive: '22:50', duration: '4h 35m', fare: 240, availability: 'Check KSRTC/live portal', classes: ['Fast Passenger'], reliability: 70, status: 'Curated local snapshot', note: 'Backup bus after a late flight or train arrival.' }
     ],
     flights: [
-      { service: 'No practical flight for this short leg', code: 'NO-FLIGHT-ERS-KPY', from: 'Cochin Airport (COK)', to: 'Nearest: TRV/COK then surface', depart: 'N/A', arrive: 'N/A', duration: 'Surface connector recommended', fare: 0, availability: 'Use train/bus', classes: ['N/A'], reliability: 20, status: 'Not recommended', note: 'For Ernakulam → Karunagappalli, train/bus is the correct last-mile mode.' }
+      { service: 'No practical flight for this short leg', code: 'NO-FLIGHT-ERS-KPY', from: 'Cochin Airport (COK)', to: 'Nearest: TRV/COK then surface', depart: 'N/A', arrive: 'N/A', duration: 'Surface connector recommended', fare: 0, availability: 'Use train/bus', classes: ['N/A'], reliability: 20, status: 'Not recommended', note: 'For Ernakulam to Karunagappalli, train/bus is the correct last-mile mode.' }
     ]
   },
   {
     from: ['Rajahmundry', 'RJY', 'Rajamahendravaram', 'RJA'],
     to: ['Karunagappalli', 'Karunagapalli', 'KPY', 'Karunagappally'],
     trains: [
-      { service: 'RJY → ERS → KPY rail connection', code: '13351 + 16302', from: 'RAJAHMUNDRY (RJY)', to: 'KARUNAGAPPALLI (KPY)', depart: '17:05', arrive: '08:45 +2', duration: '39h 40m incl. transfer', fare: 815, availability: 'Check IRCTC live for both legs', classes: ['SL + 2S', '3A + CC'], reliability: 78, status: 'Connection snapshot · verify live', note: 'Best budget route when the user accepts a Kerala hub transfer.' },
-      { service: 'RJY → ERS → KPY backup rail connection', code: '18189 + KRL-MEMU', from: 'RAJAHMUNDRY (RJY)', to: 'KARUNAGAPPALLI (KPY)', depart: '23:10', arrive: '15:50 +2', duration: '40h 40m incl. transfer', fare: 830, availability: 'Check IRCTC live for both legs', classes: ['SL + 2S'], reliability: 72, status: 'Local backup snapshot', note: 'Backup if the first train combination is unavailable.' }
+      { service: 'RJY to ERS to KPY rail connection', code: '13351 + 16302', from: 'RAJAHMUNDRY (RJY)', to: 'KARUNAGAPPALLI (KPY)', depart: '17:05', arrive: '08:45 +2', duration: '39h 40m incl. transfer', fare: 815, availability: 'Check IRCTC live for both legs', classes: ['SL + 2S', '3A + CC'], reliability: 78, status: 'Connection snapshot · verify live', note: 'Best budget route when the user accepts a Kerala hub transfer.' },
+      { service: 'RJY to ERS to KPY backup rail connection', code: '18189 + KRL-MEMU', from: 'RAJAHMUNDRY (RJY)', to: 'KARUNAGAPPALLI (KPY)', depart: '23:10', arrive: '15:50 +2', duration: '40h 40m incl. transfer', fare: 830, availability: 'Check IRCTC live for both legs', classes: ['SL + 2S'], reliability: 72, status: 'Local backup snapshot', note: 'Backup if the first train combination is unavailable.' }
     ],
     buses: [
-      { service: 'RJY → Vijayawada → Kerala corridor bus backup', code: 'BUS-RJY-KPY-CONNECT', from: 'Rajahmundry Bus Station', to: 'Karunagappalli Bus Station', depart: '18:30', arrive: 'Next day / +2', duration: '24h+', fare: 1900, availability: 'Check live bus portals', classes: ['Sleeper', 'AC Sleeper'], reliability: 52, status: 'Local caution note', note: 'Long bus backup only; not the optimized recommendation.' }
+      { service: 'RJY to Vijayawada to Kerala corridor bus backup', code: 'BUS-RJY-KPY-CONNECT', from: 'Rajahmundry Bus Station', to: 'Karunagappalli Bus Station', depart: '18:30', arrive: 'Next day / +2', duration: '24h+', fare: 1900, availability: 'Check live bus portals', classes: ['Sleeper', 'AC Sleeper'], reliability: 52, status: 'Local caution note', note: 'Long bus backup only; not the optimized recommendation.' }
     ],
     flights: [
-      { service: 'RJA → COK flight + surface connector', code: '6E-RJA-HYD-COK + KSRTC', from: 'Rajahmundry Airport (RJA)', to: 'Cochin Airport / Karunagappalli', depart: '09:15', arrive: '19:10', duration: '9h 55m incl. bus/train', fare: 6430, availability: 'Check airline + KSRTC/rail live', classes: ['Economy + bus/train'], reliability: 76, status: 'Offline connection', note: 'Best emergency route if budget allows and rail time is too slow.' }
+      { service: 'RJA to COK flight + surface connector', code: '6E-RJA-HYD-COK + KSRTC', from: 'Rajahmundry Airport (RJA)', to: 'Cochin Airport / Karunagappalli', depart: '09:15', arrive: '19:10', duration: '9h 55m incl. bus/train', fare: 6430, availability: 'Check airline + KSRTC/rail live', classes: ['Economy + bus/train'], reliability: 76, status: 'Offline connection', note: 'Best emergency route if budget allows and rail time is too slow.' }
     ]
   },
   {
@@ -389,10 +389,10 @@ const directServiceFixtures = [
       { service: 'KERALA EXPRESS connector via Kollam/TVC', code: '12625/CONNECT', from: 'KARUNAGAPPALLI (KPY)', to: 'NEW DELHI (NDLS)', depart: 'Transfer window', arrive: 'Approx +2 days', duration: '45h+', fare: 1120, availability: 'Check IRCTC', classes: ['SL', '3A', '2A'], reliability: 70, status: 'Local route snapshot', note: 'Small station route; verify exact train/station pairing on IRCTC.' }
     ],
     buses: [
-      { service: 'KSRTC Karunagappalli → Thiruvananthapuram', code: 'KSRTC-KPY-TRV', from: 'Karunagappalli Bus Station', to: 'Thampanoor Bus Station', depart: '05:30', arrive: '07:45', duration: '2h 15m', fare: 180, availability: 'Connector leg', classes: ['Fast Passenger', 'Super Fast'], reliability: 74, status: 'Local route snapshot', note: 'Useful first leg for flight via TRV.' }
+      { service: 'KSRTC Karunagappalli to Thiruvananthapuram', code: 'KSRTC-KPY-TRV', from: 'Karunagappalli Bus Station', to: 'Thampanoor Bus Station', depart: '05:30', arrive: '07:45', duration: '2h 15m', fare: 180, availability: 'Connector leg', classes: ['Fast Passenger', 'Super Fast'], reliability: 74, status: 'Local route snapshot', note: 'Useful first leg for flight via TRV.' }
     ],
     flights: [
-      { service: 'TRV → DEL flight after bus connector', code: 'TRV-DEL-CONNECT', from: 'Trivandrum Airport (TRV)', to: 'Delhi Airport (DEL)', depart: '12:00', arrive: '15:20', duration: '3h 20m + connector', fare: 6500, availability: 'Check airline portal', classes: ['Economy'], reliability: 76, status: 'Local route snapshot', note: 'Best emergency option from Karunagappalli if train seats are not available.' }
+      { service: 'TRV to DEL flight after bus connector', code: 'TRV-DEL-CONNECT', from: 'Trivandrum Airport (TRV)', to: 'Delhi Airport (DEL)', depart: '12:00', arrive: '15:20', duration: '3h 20m + connector', fare: 6500, availability: 'Check airline portal', classes: ['Economy'], reliability: 76, status: 'Local route snapshot', note: 'Best emergency option from Karunagappalli if train seats are not available.' }
     ]
   }
 ]
@@ -466,7 +466,7 @@ function fallbackServices(plan, fromPlace, toPlace) {
     const [depart, arrive] = timedSlot(index, 'Train')
     const fare = Math.max(60, Math.round(estimateFallbackFare('Train', budget) * (0.72 + index * 0.08)))
     return {
-      service: `${from} → ${to} ${name}`,
+      service: `${from} to ${to} ${name}`,
       code: `${code}-${index + 1}`,
       from: fromTrain,
       to: toTrain,
@@ -486,7 +486,7 @@ function fallbackServices(plan, fromPlace, toPlace) {
     const [depart, arrive] = timedSlot(index, 'Flight')
     const fare = Math.max(2200, Math.round(estimateFallbackFare('Flight', budget) * (0.85 + index * 0.08)))
     return {
-      service: `${from} → ${to} ${name}`,
+      service: `${from} to ${to} ${name}`,
       code: `${code}-${index + 1}`,
       from: fromAirport,
       to: toAirport,
@@ -506,7 +506,7 @@ function fallbackServices(plan, fromPlace, toPlace) {
     const [depart, arrive] = timedSlot(index, 'Bus')
     const fare = Math.max(120, Math.round(estimateFallbackFare('Bus', budget) * (0.65 + index * 0.12)))
     return {
-      service: `${from} → ${to} ${name}`,
+      service: `${from} to ${to} ${name}`,
       code: `${code}-${index + 1}`,
       from: fromBus,
       to: toBus,
@@ -734,14 +734,14 @@ export const demoRunningStatus = {
     { service: '12051 Jan Shatabdi Express', from: 'Mumbai', to: 'Madgaon', status: 'API test train · verify live', platform: 'PF check required', updated: 'Live API-ready' }
   ],
   Bus: [
-    { service: 'KSRTC Karunagappalli → TVC', from: 'Karunagappalli', to: 'Thiruvananthapuram', status: 'Catalogue: Frequent service', platform: 'Bay check required', updated: 'Local simulation' },
-    { service: 'TSRTC Hyderabad → Vijayawada', from: 'Hyderabad', to: 'Vijayawada', status: 'Catalogue: Boarding soon', platform: 'Bay 12', updated: 'Local simulation' },
-    { service: 'KSRTC Bengaluru → Mysuru', from: 'Bengaluru', to: 'Mysuru', status: 'Catalogue: 10 min delay', platform: 'Bay 4', updated: 'Local simulation' },
-    { service: 'MSRTC Mumbai → Pune', from: 'Mumbai', to: 'Pune', status: 'Catalogue: On time', platform: 'Bay 8', updated: 'Local simulation' }
+    { service: 'KSRTC Karunagappalli to TVC', from: 'Karunagappalli', to: 'Thiruvananthapuram', status: 'Catalogue: Frequent service', platform: 'Bay check required', updated: 'Local simulation' },
+    { service: 'TSRTC Hyderabad to Vijayawada', from: 'Hyderabad', to: 'Vijayawada', status: 'Catalogue: Boarding soon', platform: 'Bay 12', updated: 'Local simulation' },
+    { service: 'KSRTC Bengaluru to Mysuru', from: 'Bengaluru', to: 'Mysuru', status: 'Catalogue: 10 min delay', platform: 'Bay 4', updated: 'Local simulation' },
+    { service: 'MSRTC Mumbai to Pune', from: 'Mumbai', to: 'Pune', status: 'Catalogue: On time', platform: 'Bay 8', updated: 'Local simulation' }
   ],
   Flight: [
-    { service: '6E 6E HYD → DEL', from: 'Hyderabad', to: 'Delhi', status: 'Catalogue: Check-in open', platform: 'Gate TBA', updated: 'Local simulation' },
-    { service: '6E 6E RJA → DEL via HYD', from: 'Rajahmundry', to: 'Delhi', status: 'Catalogue: Connection route', platform: 'Gate TBA', updated: 'Local simulation' },
-    { service: 'AI BOM → BLR', from: 'Mumbai', to: 'Bengaluru', status: 'Catalogue: Boarding in 45 min', platform: 'Gate 22', updated: 'Local simulation' }
+    { service: '6E 6E HYD to DEL', from: 'Hyderabad', to: 'Delhi', status: 'Catalogue: Check-in open', platform: 'Gate TBA', updated: 'Local simulation' },
+    { service: '6E 6E RJA to DEL via HYD', from: 'Rajahmundry', to: 'Delhi', status: 'Catalogue: Connection route', platform: 'Gate TBA', updated: 'Local simulation' },
+    { service: 'AI BOM to BLR', from: 'Mumbai', to: 'Bengaluru', status: 'Catalogue: Boarding in 45 min', platform: 'Gate 22', updated: 'Local simulation' }
   ]
 }

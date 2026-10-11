@@ -70,7 +70,7 @@ export function generateMultimodalRoutes({
 
   const routes = []
 
-  // 1. TIER 1: PAISA VASOOL (Cheapest Budget Hack - Train + Train or Bus + Train)
+  // 1. TIER 1: PAISA VASOOL (Cheapest Budget Hack Train + Train or Bus + Train)
   if (primaryHub) {
     const leg1Km = haversineDistanceKm(fromPlace, primaryHub) || 200
     const leg2Km = haversineDistanceKm(primaryHub, toPlace) || 300
@@ -106,7 +106,7 @@ export function generateMultimodalRoutes({
         departureEstimate: 'Daily rail service (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
-        service: `${fromPlace.city} → ${primaryHub.city} Rail Express`,
+        service: `${fromPlace.city} to ${primaryHub.city} Rail Express`,
         provenance: 'ESTIMATE',
         scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
@@ -126,7 +126,7 @@ export function generateMultimodalRoutes({
         departureEstimate: 'Connecting rail service (verify timetable on portal)',
         duration: formatHoursMinutes(leg2DurationMin),
         fare: leg2Fare,
-        service: `${primaryHub.city} → ${toPlace.city} Connecting Express`,
+        service: `${primaryHub.city} to ${toPlace.city} Connecting Express`,
         provenance: 'ESTIMATE',
         scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
@@ -139,7 +139,7 @@ export function generateMultimodalRoutes({
     })
   }
 
-  // 2. TIER 2: SMART BALANCED (Best Value - Superfast Train + AC Sleeper Bus / Train)
+  // 2. TIER 2: SMART BALANCED (Best Value Superfast Train + AC Sleeper Bus / Train)
   if (primaryHub) {
     const leg1Km = haversineDistanceKm(fromPlace, primaryHub) || 200
     const leg2Km = haversineDistanceKm(primaryHub, toPlace) || 300
@@ -208,7 +208,7 @@ export function generateMultimodalRoutes({
     })
   }
 
-  // 3. TIER 3: EMERGENCY EXPRESS (Fastest Route - Train/Cab to Airport Hub + Flight)
+  // 3. TIER 3: EMERGENCY EXPRESS (Fastest Route Train/Cab to Airport Hub + Flight)
   if (airportHub) {
     const leg1Km = haversineDistanceKm(fromPlace, airportHub) || 200
     const leg2Km = haversineDistanceKm(airportHub, toPlace) || 600
@@ -264,7 +264,7 @@ export function generateMultimodalRoutes({
         departureEstimate: 'Direct flights operate daily (verify airline schedule on portal)',
         duration: '2h 15m (approx. flight)',
         fare: leg2Fare,
-        service: `Non-stop Flight (${airportHub.city} → ${toPlace.city})`,
+        service: `Non-stop Flight (${airportHub.city} to ${toPlace.city})`,
         provenance: 'ESTIMATE',
         scheduleNote: 'Flight schedule estimate only; verify airline portal before booking.',
         bookingLink: getProviderDeepLink({
@@ -289,11 +289,11 @@ export function formatWhatsAppShareText(route) {
   const l2 = route.leg2
 
   const l1Timing = (l1?.depart && l1?.arrive)
-    ? `Depart ${l1.depart} (${l1.from}) ➔ Arrive ${l1.arrive} (${l1.to})`
+    ? `Depart ${l1.depart} (${l1.from}) to Arrive ${l1.arrive} (${l1.to})`
     : `Schedule: ${l1?.departureEstimate || 'Check operator schedule'} · ~${l1?.duration || 'Duration est.'}`
 
   const l2Timing = (l2?.depart && l2?.arrive)
-    ? `Depart ${l2.depart} (${l2.from}) ➔ Arrive ${l2.arrive} (${l2.to})`
+    ? `Depart ${l2.depart} (${l2.from}) to Arrive ${l2.arrive} (${l2.to})`
     : `Schedule: ${l2?.departureEstimate || 'Check operator schedule'} · ~${l2?.duration || 'Duration est.'}`
 
   const baseOrigin = typeof window !== 'undefined' && window.location?.origin
@@ -301,23 +301,23 @@ export function formatWhatsAppShareText(route) {
     : 'https://travelmate-ai-flowzint.vercel.app'
 
   return [
-    `🚆 *TravelMate Recovered Journey Plan*`,
-    `📍 *Route:* ${l1?.from} ➔ ${l2?.to}`,
-    `🏷 *Plan:* ${route.tierLabel || route.tier} (${route.tierBadge})`,
-    `💰 *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
+    ` *TravelMate Recovered Journey Plan*`,
+    ` *Route:* ${l1?.from} to ${l2?.to}`,
+    ` *Plan:* ${route.tierLabel || route.tier} (${route.tierBadge})`,
+    ` *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
     ``,
-    `1️⃣ *Step 1:* ${l1?.service || `${l1?.mode} to ${l1?.to}`}`,
-    `   🕒 ${l1Timing} · ₹${l1?.fare}${l1?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
+    `Step 1: *Step 1:* ${l1?.service || `${l1?.mode} to ${l1?.to}`}`,
+    `    ${l1Timing} · ₹${l1?.fare}${l1?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
     ``,
-    `🔄 *Transfer at ${route.hubCity}:*`,
+    ` *Transfer at ${route.hubCity}:*`,
     `   ⏳ ${route.transferBuffer}`,
     ``,
-    `2️⃣ *Step 2:* ${l2?.service || `${l2?.mode} to ${l2?.to}`}`,
-    `   🕒 ${l2Timing} · ₹${l2?.fare}${l2?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
+    `Step 2: *Step 2:* ${l2?.service || `${l2?.mode} to ${l2?.to}`}`,
+    `    ${l2Timing} · ₹${l2?.fare}${l2?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
     ``,
-    `💡 *Why this route:* ${route.whyPicked}`,
+    ` *Why this route:* ${route.whyPicked}`,
     ``,
-    `🔗 Stitched automatically by TravelMate AI:`,
+    ` Stitched automatically by TravelMate:`,
     `${baseOrigin}/planner?from=${encodeURIComponent(l1?.from || '')}&to=${encodeURIComponent(l2?.to || '')}`
   ].join('\n')
 }

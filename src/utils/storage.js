@@ -240,7 +240,7 @@ export function saveOfflinePack() {
     serviceCoverageNotice: coverageNotice,
     transportPlaces: transportPlaces.map(({ city, train, airport, bus, aliases }) => ({ city, train, airport, bus, aliases })),
     currentRouteServices: savedRoutes.slice(0, 6).map((plan) => ({
-      route: `${plan.from} → ${plan.to}`,
+      route: `${plan.from} to ${plan.to}`,
       selectedService: plan.selectedService || null,
       pnrNumber: plan.pnrNumber || '',
       pnrStatus: plan.pnrStatus || null,

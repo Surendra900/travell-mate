@@ -1,5 +1,5 @@
 /**
- * TravelMate AI - Live Train Running Status & Delay Prediction Heuristics
+ * TravelMate: Live Train Running Status & Delay Prediction Heuristics
  */
 
 export function parseDelayMinutes(delay) {
@@ -45,10 +45,10 @@ export function calculateDelaySeverity(delay) {
 }
 
 export const POPULAR_TRAIN_PRESETS = [
-  { code: '12952', name: 'Mumbai Rajdhani Express', route: 'NDLS → BCT' },
-  { code: '22436', name: 'Vande Bharat Express', route: 'NDLS → BSB' },
-  { code: '12004', name: 'Lucknow Shatabdi Express', route: 'NDLS → LKO' },
-  { code: '12302', name: 'Kolkata Rajdhani Express', route: 'NDLS → HWH' }
+  { code: '12952', name: 'Mumbai Rajdhani Express', route: 'NDLS to BCT' },
+  { code: '22436', name: 'Vande Bharat Express', route: 'NDLS to BSB' },
+  { code: '12004', name: 'Lucknow Shatabdi Express', route: 'NDLS to LKO' },
+  { code: '12302', name: 'Kolkata Rajdhani Express', route: 'NDLS to HWH' }
 ]
 
 export const POPULAR_STATION_PRESETS = [

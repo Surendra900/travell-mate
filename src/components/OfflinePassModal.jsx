@@ -11,7 +11,6 @@ import {
   QrCode,
   ShieldCheck,
   TrainFront,
-  Unlock,
   X
 } from 'lucide-react'
 import {
@@ -32,7 +31,7 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
   const [pin, setPin] = useState('')
   const [pinSetupMode, setPinSetupMode] = useState(false)
   const [newPin, setNewPin] = useState('')
-  const [unlocked, setUnlocked] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
   const [error, setError] = useState('')
   const [hasPin, setHasPin] = useState(false)
   const [authMethod, setAuthMethod] = useState('')
@@ -40,7 +39,7 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
   useEffect(() => {
     if (open) {
       setHasPin(hasQuickPinSet())
-      setUnlocked(false)
+      setIsVerified(false)
       setPin('')
       setError('')
       setPinSetupMode(false)
@@ -63,13 +62,13 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
       await setQuickPin(newPin)
       setHasPin(true)
       setPinSetupMode(false)
-      setUnlocked(true)
+      setIsVerified(true)
       setAuthMethod('quick-pin-setup')
       toast?.('Offline Quick-PIN configured.')
     } else {
       const valid = await verifyQuickPin(pin)
       if (valid) {
-        setUnlocked(true)
+        setIsVerified(true)
         setAuthMethod('quick-pin')
         toast?.('Pass verified with Quick-PIN.')
       } else {
@@ -82,7 +81,7 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
     setError('')
     const res = await authenticateBiometricSimulation()
     if (res.success) {
-      setUnlocked(true)
+      setIsVerified(true)
       setAuthMethod(res.method)
       toast?.('Identity verified via Device Biometric.')
     } else {
@@ -97,23 +96,23 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
       aria-labelledby="pass-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm"
     >
-      <div className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-indigo-500/30 bg-slate-950 p-6 text-white shadow-2xl">
+      <div className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl">
         <button
           type="button"
           aria-label="Close boarding pass modal"
           onClick={onClose}
-          className="absolute right-5 top-5 rounded-full p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+          className="absolute right-5 top-5 rounded-md p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
         >
           <X size={20} />
         </button>
 
         {/* Modal Header */}
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600/30 text-indigo-400">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/20 text-cyan-400">
             <ModeIcon size={24} />
           </div>
           <div>
-            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-950/60 px-2.5 py-0.5 text-xs font-bold text-emerald-300">
+            <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/40 bg-emerald-950/60 px-2.5 py-0.5 text-xs font-bold text-emerald-300">
               <ShieldCheck size={12} /> 100% Offline Boarding Pass
             </span>
             <h2 id="pass-modal-title" className="text-xl font-black text-white">
@@ -123,37 +122,37 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
         </div>
 
         {/* Digital Boarding Pass Ticket */}
-        <div className="mt-5 overflow-hidden rounded-2xl border border-indigo-400/30 bg-slate-900/90 shadow-inner">
-          <div className="bg-gradient-to-r from-indigo-900/80 to-purple-900/80 p-4 text-white">
-            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-indigo-200">
+        <div className="mt-5 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/90 shadow-inner">
+          <div className="bg-slate-900 border-b border-slate-800 p-4 text-white">
+            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-cyan-300">
               <span>{pass.transportMode} Boarding Document</span>
               <span>Pass #{pass.passId}</span>
             </div>
             <div className="mt-3 flex items-center justify-between">
               <div>
                 <p className="text-2xl font-black">{pass.from}</p>
-                <p className="text-xs text-indigo-300">Depart {pass.departure}</p>
+                <p className="text-xs text-slate-400">Depart {pass.departure}</p>
               </div>
               <div className="flex flex-col items-center px-4">
-                <span className="text-xs text-indigo-300">Direct</span>
-                <span className="h-0.5 w-16 bg-indigo-400/60 my-1" />
-                <ModeIcon size={16} className="text-indigo-200" />
+                <span className="text-xs text-slate-400">Direct</span>
+                <span className="h-0.5 w-16 bg-cyan-400/60 my-1" />
+                <ModeIcon size={16} className="text-cyan-300" />
               </div>
               <div className="text-right">
                 <p className="text-2xl font-black">{pass.to}</p>
-                <p className="text-xs text-indigo-300">Arrive {pass.arrival}</p>
+                <p className="text-xs text-slate-400">Arrive {pass.arrival}</p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 border-b border-indigo-900/40 p-4 text-xs">
+          <div className="grid grid-cols-3 gap-3 border-b border-slate-800 p-4 text-xs">
             <div>
               <span className="text-slate-400">Passenger</span>
               <p className="font-bold text-white">{pass.passengerName}</p>
             </div>
             <div>
               <span className="text-slate-400">Seat / Berth</span>
-              <p className="font-bold text-indigo-300">{pass.berthSeat}</p>
+              <p className="font-bold text-cyan-300">{pass.berthSeat}</p>
             </div>
             <div>
               <span className="text-slate-400">Class</span>
@@ -166,28 +165,28 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
               <span className="text-slate-400">PNR / Ticket No.</span>
               <p className="font-mono text-base font-black tracking-widest text-cyan-300">{pass.pnr}</p>
             </div>
-            <div className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-2.5 py-1 text-slate-300">
-              <QrCode size={18} className="text-indigo-400" />
+            <div className="flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/80 px-2.5 py-1 text-slate-300">
+              <QrCode size={18} className="text-cyan-400" />
               <span className="font-mono text-[10px]">TICKET-GATE-VERIFIED</span>
             </div>
           </div>
         </div>
 
         {/* Security & Document Decryption Section */}
-        <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+        <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
           <div className="flex items-center justify-between">
             <h3 className="flex items-center gap-2 text-sm font-bold text-white">
-              {unlocked ? <Unlock size={16} className="text-emerald-400" /> : <Lock size={16} className="text-amber-400" />}
-              {unlocked ? 'Gate Security Verified' : 'Fast Gate Unlock (PIN / Biometric)'}
+              {isVerified ? <CheckCircle size={16} className="text-emerald-400" /> : <Lock size={16} className="text-amber-400" />}
+              {isVerified ? 'Gate Security Verified' : 'Fast Gate Access (PIN / Biometric)'}
             </h3>
-            {unlocked && (
-              <span className="rounded-full bg-emerald-950 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
+            {isVerified && (
+              <span className="rounded-md bg-emerald-950 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
                 Verified ({authMethod})
               </span>
             )}
           </div>
 
-          {!unlocked ? (
+          {!isVerified ? (
             <div className="mt-3">
               {error && <p className="mb-3 text-xs font-bold text-red-400">{error}</p>}
 
@@ -201,12 +200,12 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
                       value={pin}
                       onChange={(e) => setPin(e.target.value)}
                       placeholder="Enter 4-6 digit Quick-PIN"
-                      className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500"
+                      className="flex-1 rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500"
                     />
                     <button
                       type="submit"
                       data-testid="submit-quick-pin"
-                      className="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-500"
+                      className="inline-flex items-center gap-1 rounded-md bg-cyan-600 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-cyan-500"
                     >
                       <KeyRound size={14} /> Verify
                     </button>
@@ -216,9 +215,9 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
                       type="button"
                       onClick={handleBiometricAuth}
                       data-testid="biometric-unlock-btn"
-                      className="inline-flex items-center gap-1 font-bold text-indigo-400 hover:text-indigo-300"
+                      className="inline-flex items-center gap-1 font-bold text-cyan-400 hover:text-cyan-300"
                     >
-                      <Fingerprint size={15} /> 1-Tap Biometric Unlock
+                      <Fingerprint size={15} /> 1-Tap Biometric Verification
                     </button>
                     <button
                       type="button"
@@ -242,23 +241,23 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
                       value={newPin}
                       onChange={(e) => setNewPin(e.target.value)}
                       placeholder="Create 4-6 digit Quick-PIN"
-                      className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500"
+                      className="flex-1 rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500"
                     />
                     <button
                       type="submit"
                       data-testid="setup-quick-pin"
-                      className="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-500"
+                      className="inline-flex items-center gap-1 rounded-md bg-cyan-600 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-cyan-500"
                     >
-                      Set PIN & Unlock
+                      Set PIN and Open
                     </button>
                   </div>
                   <button
                     type="button"
                     onClick={handleBiometricAuth}
                     data-testid="biometric-unlock-btn"
-                    className="inline-flex items-center gap-1 text-xs font-bold text-indigo-400 hover:text-indigo-300"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-cyan-400 hover:text-cyan-300"
                   >
-                    <Fingerprint size={15} /> Or unlock directly with Biometric
+                    <Fingerprint size={15} /> Or verify directly with Biometric
                   </button>
                 </form>
               )}
@@ -278,7 +277,7 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
         {/* Emergency Transit Hotlines */}
         <div className="mt-4 flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-2.5 text-xs text-slate-400">
           <span className="font-bold text-slate-300">Crisis Hotlines:</span>
-          <div className="flex gap-3 font-mono font-bold text-indigo-300">
+          <div className="flex gap-3 font-mono font-bold text-cyan-300">
             <span>Rail: 139</span>
             <span>SOS: 112</span>
             <span>Medical: 108</span>

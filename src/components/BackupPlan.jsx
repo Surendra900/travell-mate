@@ -149,7 +149,7 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
                   <p className="mt-0.5 text-slate-300">
                     <strong className="text-white">{opt.carrier}</strong> ({opt.code}) · Depart: {opt.depart} · Fare: ₹{opt.fare}
                   </p>
-                  <p className="mt-0.5 text-[11px] text-emerald-300 font-medium">✓ {opt.riskReduction}</p>
+                  <p className="mt-0.5 text-[11px] text-emerald-300 font-medium"> {opt.riskReduction}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <button
@@ -200,7 +200,7 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
               const providerName = leg.mode === 'Bus' ? 'RedBus' : leg.mode === 'Flight' ? 'Google Flights' : 'ConfirmTkt'
               return (
                 <div key={`${best.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300">
-                  <p><b className="text-cyan-100">Leg {leg.leg} · {leg.mode}:</b> {leg.service} ({leg.code}) · {leg.depart} → {leg.arrive} · ₹{leg.fare}</p>
+                  <p><b className="text-cyan-100">Leg {leg.leg} · {leg.mode}:</b> {leg.service} ({leg.code}) · {leg.depart} to {leg.arrive} · ₹{leg.fare}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     <button className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-xs font-black text-cyan-100 hover:bg-cyan-400/20" onClick={() => bookLeg(best, leg)}>
                       <TicketCheck className="mr-1 inline" size={14} /> {legBookLabel(leg.mode)}

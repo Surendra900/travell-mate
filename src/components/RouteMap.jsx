@@ -258,12 +258,12 @@ export default function RouteMap({ plan = {} }) {
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
               Interactive Route Map
             </span>
-            <span className="rounded-full border border-slate-700 bg-slate-800/80 px-2 py-0.5 text-[10px] text-slate-300">
+            <span className="rounded-md border border-slate-700 bg-slate-800/80 px-2 py-0.5 text-[10px] text-slate-300">
               Leaflet &middot; OpenStreetMap
             </span>
           </div>
           <h3 className="text-xl font-black text-white sm:text-2xl">
-            {route ? `${route.labels[0]} \u2192 ${route.labels.at(-1)}` : 'India Transit Corridor Visualizer'}
+            {route ? `${route.labels[0]} to ${route.labels.at(-1)}` : 'India Transit Corridor Visualizer'}
           </h3>
         </div>
 
@@ -273,7 +273,7 @@ export default function RouteMap({ plan = {} }) {
             type="button"
             data-testid="map-zoom-fit"
             onClick={handleZoomFit}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/90 px-3 py-1.5 text-xs font-bold text-slate-200 hover:border-slate-500 hover:text-white"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/90 px-3 py-1.5 text-xs font-bold text-slate-200 hover:border-slate-500 hover:text-white"
             title="Zoom to Fit Full Route"
           >
             <Maximize2 size={13} />
@@ -284,7 +284,7 @@ export default function RouteMap({ plan = {} }) {
               type="button"
               data-testid="map-focus-junction"
               onClick={handleFocusJunction}
-              className="flex items-center gap-1.5 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-300 hover:bg-amber-500/20"
+              className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-300 hover:bg-amber-500/20"
               title="Focus on Intermediate Junction"
             >
               <GitCommit size={13} />
@@ -326,7 +326,7 @@ export default function RouteMap({ plan = {} }) {
               <span className="h-2 w-2 rounded-full bg-lime-400" /> Bus / Highway
             </span>
             <span className="flex items-center gap-1 text-[11px] font-bold text-amber-300">
-              <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" /> Junction Transfer
+              <span className="h-2 w-2 rounded-full bg-amber-400" /> Junction Transfer
             </span>
           </div>
         </div>

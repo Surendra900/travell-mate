@@ -83,7 +83,7 @@ export function publicProviderError(
 }
 
 export async function enforceRateLimit(req, res, limit, windowMs) {
-  const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL)
+  const isProduction = Boolean(process.env.VERCEL_REGION) && (process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL))
   const now = Date.now()
   const pathname = String(req?.url || req?.query?.path || 'api').split('?')[0]
   const key = `${clientIp(req)}:${pathname}`
