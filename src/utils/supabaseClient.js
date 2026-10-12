@@ -11,8 +11,8 @@ const getEnv = (key) => {
   }
 }
 
-const supabaseUrl = (getEnv('VITE_SUPABASE_URL') || getEnv('SUPABASE_URL') || '').replace(/"/g, '').trim()
-const supabaseAnonKey = (getEnv('VITE_SUPABASE_ANON_KEY') || getEnv('SUPABASE_ANON_KEY') || '').replace(/"/g, '').trim()
+const supabaseUrl = (getEnv('VITE_SUPABASE_URL') || getEnv('SUPABASE_URL') || getEnv('VITESUPABASE_URL') || '').replace(/"/g, '').trim()
+const supabaseAnonKey = (getEnv('VITE_SUPABASE_ANON_KEY') || getEnv('SUPABASE_ANON_KEY') || getEnv('VITESUPABASE_ANON_KEY') || '').replace(/"/g, '').trim()
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&

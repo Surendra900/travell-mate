@@ -104,6 +104,7 @@ function splitVendorChunk(id) {
 export default defineConfig(({ mode }) => {
   applyServerEnv(loadEnv(mode, process.cwd(), ''))
   return {
+    envPrefix: ['VITE_', 'VITESUPABASE_'],
     plugins: [react(), localServerlessApiPlugin()],
     server: { host: '127.0.0.1' },
     preview: { host: '127.0.0.1' },
