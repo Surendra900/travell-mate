@@ -12,6 +12,7 @@ import PnrPredictorModal from '../components/PnrPredictorModal'
 import { getPNRStatus, searchLiveTransport } from '../services/LiveTransportApi'
 import { localDateIso } from '../utils/date'
 import { getCabinOptions, getProviderDeepLink } from '../data/transportData'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 const basePlan = {
   from: '',
@@ -73,6 +74,11 @@ function selectedServicePatch(service, transport, fallbackSource = 'Saved provid
 }
 
 export default function Planner({ status, toast, language = 'en' }) {
+  usePageMetadata({
+    title: 'Route Finder & Tatkal Desk | TravelMate',
+    description: 'Multimodal split route discovery across trains, buses, and flights with verified connection buffers and Tatkal countdown assistance.'
+  })
+
   const location = useLocation()
   const lastSearchedParamsRef = useRef('')
   const [manualMode, setManualMode] = useState('normal')

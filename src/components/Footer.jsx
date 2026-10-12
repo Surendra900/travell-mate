@@ -15,7 +15,7 @@ export default function Footer({ onOpenPrivacy, onOpenFeedback }) {
             The Multimodal Disruption & Route Recovery Engine. Navigating complex journeys with algorithmic precision.
           </p>
           <small className="block mt-3 text-xs text-slate-400">
-            © 2026 TravelMate AI. Built for India transit recovery.
+            © {new Date().getFullYear()} TravelMate AI. Built for India transit recovery.
           </small>
         </div>
         <div className="tm-footer-col flex flex-col gap-2.5 text-sm">
@@ -28,6 +28,9 @@ export default function Footer({ onOpenPrivacy, onOpenFeedback }) {
           </NavLink>
           <NavLink to="/disclaimer" data-testid="footer-disclaimer-link" className="text-slate-300 hover:text-white transition-colors">
             Statutory Disclaimers
+          </NavLink>
+          <NavLink to="/cookies" data-testid="footer-cookies-link" className="text-slate-300 hover:text-white transition-colors">
+            Cookie & Storage Policy
           </NavLink>
           <button
             type="button"

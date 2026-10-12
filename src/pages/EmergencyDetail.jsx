@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Copy, MapPin, MessageCircle, Phone, Send } from 'lucide-react'
 import { emergencyFlows, emergencyNumber } from '../data/emergencyData'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 const CONTACT_KEY = 'travelmate-emergency-contacts'
 
@@ -21,6 +22,11 @@ function normalizeIndianPhone(phone = '') {
 export default function EmergencyDetail({ toast }) {
   const { id } = useParams()
   const flow = emergencyFlows[id]
+
+  usePageMetadata({
+    title: flow?.title ? `${flow.title} | TravelMate Emergency Guide` : 'Emergency Guide | TravelMate',
+    description: 'Emergency step-by-step assistance, official helpline dialers, and coordinate sharing.'
+  })
 
   if (!flow) {
     return (

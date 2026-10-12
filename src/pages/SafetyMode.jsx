@@ -25,6 +25,7 @@ import OfflineTravelerPassModal from '../components/OfflineTravelerPassModal'
 import { emergencyCards } from '../data/emergencyData'
 import { getSavedPlans, getOfflinePack, saveOfflinePack } from '../utils/storage'
 import { warmOfflineCache } from '../utils/offlineMode'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 const SAMPLE_OFFLINE_ROUTE = {
   id: 'sample-pass-ndls-hwh',
@@ -60,6 +61,11 @@ const SAMPLE_OFFLINE_ROUTE = {
 }
 
 export default function SafetyMode({ toast }) {
+  usePageMetadata({
+    title: 'Passes & Safety Hub | TravelMate',
+    description: 'Emergency dialers, SOS coordination, offline digital travel passes, and passenger safety guides for Indian transit journeys.'
+  })
+
   const [activeTab, setActiveTab] = useState('passes')
   const [savedPlans, setSavedPlans] = useState([])
   const [offlinePack, setOfflinePack] = useState(null)

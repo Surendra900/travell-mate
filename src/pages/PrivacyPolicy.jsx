@@ -2,8 +2,14 @@ import { useState } from 'react'
 import { ShieldCheck, Lock, Trash2, CheckCircle2, ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { purgeAllUserData } from '../utils/dpdpConsent'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 export default function PrivacyPolicy({ toast }) {
+  usePageMetadata({
+    title: 'Privacy Policy & DPDP Data Protection | TravelMate',
+    description: 'Zero-ID architecture, data minimization principles, and 1-click erasure under the Digital Personal Data Protection Act 2023.'
+  })
+
   const [purged, setPurged] = useState(false)
 
   const handlePurge = () => {
@@ -22,19 +28,25 @@ export default function PrivacyPolicy({ toast }) {
         </Link>
       </div>
 
+      {/* Draft Review Banner */}
+      <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 font-medium leading-relaxed">
+        <p className="font-bold text-amber-900 mb-1">DRAFT POLICY (PRE-LAUNCH REVIEW)</p>
+        <p>This draft privacy policy describes actual technical data flows and zero-ID client architecture. It requires owner review and qualification by legal counsel before public commercial deployment. Placeholders are marked in brackets.</p>
+      </div>
+
       {/* Header */}
       <div className="rounded-xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800">
             <ShieldCheck size={14} /> India DPDP Act 2023 Compliant
           </span>
-          <span className="text-xs text-slate-600 font-semibold">Effective: October 2026</span>
+          <span className="text-xs text-slate-600 font-semibold">Effective date: [PLACEHOLDER: effective date]</span>
         </div>
         <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
           Privacy Policy and Data Protection
         </h1>
         <p className="mt-3 text-base text-slate-700 leading-relaxed max-w-3xl">
-          TravelMate Technologies (New Delhi, India) operates this application on strict principles of <strong>Data Minimization</strong> and <strong>Zero-ID architecture</strong> under the Digital Personal Data Protection (DPDP) Act, 2023 of India. We prioritize traveler autonomy and zero tracking.
+          [PLACEHOLDER: legal business name] ([PLACEHOLDER: business address]) operates this application on strict principles of <strong>Data Minimization</strong> and <strong>Zero-ID architecture</strong> under the Digital Personal Data Protection (DPDP) Act, 2023 of India. We prioritize traveler autonomy and zero tracking.
         </p>
       </div>
 
@@ -45,7 +57,7 @@ export default function PrivacyPolicy({ toast }) {
             <Lock size={18} /> Zero-ID Storage Policy
           </div>
           <p className="mt-2 text-xs text-slate-700 leading-relaxed">
-            TravelMate Technologies strictly <strong>never requests, processes, or stores</strong> government identity numbers (Aadhaar, Passport, PAN, Voter ID) or payment card credentials anywhere in local storage or on servers.
+            [PLACEHOLDER: legal business name] strictly <strong>never requests, processes, or stores</strong> government identity numbers (Aadhaar, Passport, PAN, Voter ID) or payment card credentials anywhere in local storage or on servers.
           </p>
         </div>
 
@@ -114,7 +126,7 @@ export default function PrivacyPolicy({ toast }) {
         <section className="border-t border-slate-200 pt-6">
           <h2 className="text-lg font-bold text-slate-900">4. Data Protection Officer and Contact</h2>
           <p className="mt-2 text-xs">
-            For questions regarding privacy practices or technical compliance under the DPDP Act 2023, contact our designated privacy desk at TravelMate Technologies: <span className="font-mono text-sky-800 font-semibold">support@travelmate.in</span>. Governing jurisdiction: New Delhi, India.
+            For questions regarding privacy practices or technical compliance under the DPDP Act 2023, contact our designated privacy desk at [PLACEHOLDER: legal business name]: <span className="font-mono text-sky-800 font-semibold">[PLACEHOLDER: privacy contact email]</span>. Governing jurisdiction: [PLACEHOLDER: applicable jurisdiction].
           </p>
         </section>
       </div>

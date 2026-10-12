@@ -100,7 +100,8 @@ export default async function handler(req, res) {
       for (const [fromStationCode, toStationCode] of candidatePairs(fromCodes, toCodes)) {
         let payload
         if (isNewTrainApi) {
-          const parts = date ? date.split('-') : new Date().toISOString().slice(0, 10).split('-')
+          const defaultDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
+          const parts = (date || defaultDate).split('-')
           const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`
           payload = await callRapidRail('/api/v1/trains-between-stations', {
             startStationCode: fromStationCode,

@@ -32,6 +32,7 @@ import {
 } from '../utils/storage'
 import { calculatePlanQualityScore, planVerdict, scoreBreakdown } from '../utils/scoring'
 import { getPNRStatus } from '../services/LiveTransportApi'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 function serviceValue(service, ...keys) {
   for (const key of keys) {
@@ -47,6 +48,11 @@ function iconFor(mode) {
 }
 
 export default function SavedPlans({ toast }) {
+  usePageMetadata({
+    title: 'Saved Trips & Offline Passes | TravelMate',
+    description: 'View saved itineraries, offline digital passes, connection readiness scores, and PNR tracking.'
+  })
+
   const [plans, setPlans] = useState([])
   const [bookingPlan, setBookingPlan] = useState(null)
   const [passPlan, setPassPlan] = useState(null)

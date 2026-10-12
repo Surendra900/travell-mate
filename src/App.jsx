@@ -28,6 +28,8 @@ const AnalyzeJourney = lazy(() => import('./pages/AnalyzeJourney'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 const LegalDisclaimer = lazy(() => import('./pages/LegalDisclaimer'))
+const CookiePolicy = lazy(() => import('./pages/CookiePolicy'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App({ authEnabled = false }) {
   const navigate = useNavigate()
@@ -159,6 +161,8 @@ export default function App({ authEnabled = false }) {
                 <Route path="/privacy" element={<PrivacyPolicy toast={toast} />} />
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/disclaimer" element={<LegalDisclaimer />} />
+                <Route path="/cookies" element={<CookiePolicy toast={toast} />} />
+                <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
             </PageErrorBoundary>

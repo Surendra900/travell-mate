@@ -23,6 +23,7 @@ import { localDateIso } from '../utils/date'
 import StationAutocomplete from '../components/StationAutocomplete'
 import PnrPredictorModal from '../components/PnrPredictorModal'
 import NaturalLanguageQueryInput from '../components/NaturalLanguageQueryInput'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 const modes = [
   { id: 'Multimodal', label: 'All Combinations', icon: Compass, desc: 'Train + Bus & Train + Flight split routes' },
@@ -39,6 +40,11 @@ const popularCorridors = [
 ]
 
 export default function Home({ toast }) {
+  usePageMetadata({
+    title: 'TravelMate: Multimodal Disruption & Route Recovery Engine',
+    description: 'Independent multimodal route discovery and recovery engine for Indian transit disruptions, Tatkal countdown assistance, and offline digital travel passes.'
+  })
+
   const navigate = useNavigate()
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
@@ -332,7 +338,7 @@ export default function Home({ toast }) {
             </div>
             <h3 className="text-base font-bold text-slate-900 mb-2">Bypass Waitlists via Hubs</h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              If direct tickets are waitlisted, our engine finds 1-transfer split routes via Top 25 junction hubs with verified layovers ($\ge 45$m).
+              If direct tickets are waitlisted, our engine finds 1-transfer split routes via Top 25 junction hubs with verified layovers (45 minutes or more).
             </p>
           </div>
 
@@ -398,7 +404,7 @@ export default function Home({ toast }) {
         <div className="p-4 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs flex flex-wrap items-center justify-between gap-4 text-center sm:text-left">
           <div className="flex items-center gap-2 mx-auto sm:mx-0">
             <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-            <span>Official IR timetable data as of October 2026 · No scraping · No captcha bypass</span>
+            <span>Indian Railways community timetable snapshot (circa 2016, CC0) & live feeds · No scraping · No captcha bypass</span>
           </div>
           <div className="flex items-center gap-4 mx-auto sm:mx-0 font-medium">
             <span>Zero personal data stored</span>

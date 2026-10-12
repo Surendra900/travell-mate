@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle2, Save, UserRound } from 'lucide-react'
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
 
 const PROFILE_KEY = 'travelmate-user-profile'
 
@@ -16,6 +17,13 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
   const [saved, setSaved] = useState(false)
   const [profile, setProfile] = useState({ name: '', phone: '', email: '', irctcUsername: '', emergencyContact: '' })
 
+  function close() {
+    setOpen(false)
+    onClose?.()
+  }
+
+  const dialogRef = useDialogFocus({ isOpen: open, onClose: close })
+
   useEffect(() => {
     if (!forceOpen) return
     const existing = getUserProfile()
@@ -29,11 +37,6 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
     (!profile.phone || /^[0-9]{10}$/.test(profile.phone.trim())) &&
     (!profile.email || /.+@.+\..+/.test(profile.email.trim()))
   ), [profile])
-
-  function close() {
-    setOpen(false)
-    onClose?.()
-  }
 
   function handleSave() {
     if (!validProfile) {
@@ -49,7 +52,13 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-[90] grid place-items-start bg-slate-950/85 p-3 pt-4 backdrop-blur-md sm:place-items-center sm:p-4" role="dialog" aria-modal="true" aria-label="Edit local TravelMate profile">
+    <div
+      ref={dialogRef}
+      className="fixed inset-0 z-[90] grid place-items-start bg-slate-950/85 p-3 pt-4 backdrop-blur-md sm:place-items-center sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Edit local TravelMate profile"
+    >
       <div className="glass max-h-[calc(100dvh-1rem)] w-full max-w-2xl overflow-y-auto rounded-3xl p-4 pb-8 shadow-glow sm:max-h-[92vh] sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <div>

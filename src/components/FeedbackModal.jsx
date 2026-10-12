@@ -70,7 +70,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
         </div>
 
         {submitted ? (
-          <div className="mt-8 py-8 text-center" data-testid="feedback-success-state">
+          <div className="mt-8 py-8 text-center" role="status" aria-live="polite" data-testid="feedback-success-state">
             <CheckCircle2 size={48} className="mx-auto text-emerald-400" />
             <h3 className="mt-3 text-lg font-bold text-white">Feedback Received</h3>
             <p className="mt-1 text-xs text-slate-300">Your insights help keep junction transfer slack realistic.</p>

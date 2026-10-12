@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { Menu, Search, TrainFront, ShieldAlert, Bookmark, X, Volume2, Sparkles, Clock } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import LanguageSelector from './LanguageSelector'
 import AccountMenu from './AccountMenu'
 
@@ -13,6 +13,16 @@ const nav = [
 
 export default function Navbar({ language, onLanguageChange, authEnabled, onOpenProfile, onOpenVoiceGate, onOpenDemoTour }) {
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (!open) return
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [open])
+
   return (
     <header className="tm-nav bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
       <div className="tm-nav-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
@@ -23,7 +33,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <span className="font-extrabold text-slate-900 tracking-tight">TravelMate</span>
         </NavLink>
 
-        <nav className="tm-nav-links hidden md:flex items-center gap-1.5 grid-cols-4 lg:max-w-4xl" aria-label="Primary navigation">
+        <nav className="tm-nav-links hidden md:flex items-center gap-1.5 lg:max-w-4xl" aria-label="Primary navigation">
           {nav.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -70,9 +80,11 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <AccountMenu authEnabled={authEnabled} onOpenProfile={onOpenProfile} compact />
 
           <button
-            className="tm-menu md:hidden p-2 text-slate-700 hover:text-slate-950"
+            className="tm-menu md:hidden p-2 text-slate-700 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-md"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Open menu"
+            aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -80,7 +92,12 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
       </div>
 
       {open && (
-        <div className="tm-mobile-menu md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-2 grid-cols-4 shadow-xl animate-in fade-in slide-in-from-top-2">
+        <div
+          id="mobile-navigation"
+          role="navigation"
+          aria-label="Mobile navigation"
+          className="tm-mobile-menu md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-2 shadow-xl animate-in fade-in slide-in-from-top-2"
+        >
           {nav.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}

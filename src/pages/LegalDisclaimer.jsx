@@ -1,7 +1,13 @@
 import { AlertTriangle, ArrowLeft, ShieldAlert, Database, Phone } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 export default function LegalDisclaimer() {
+  usePageMetadata({
+    title: 'Legal & Statutory Disclaimers | TravelMate',
+    description: 'Mandatory statutory emergency disclosures, mathematical prediction limitations, and open data licensing attributions.'
+  })
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-slate-900" data-testid="legal-disclaimer-page">
       <div className="mb-6">
@@ -10,13 +16,19 @@ export default function LegalDisclaimer() {
         </Link>
       </div>
 
+      {/* Draft Review Banner */}
+      <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 font-medium leading-relaxed">
+        <p className="font-bold text-amber-900 mb-1">DRAFT DISCLOSURE (PRE-LAUNCH REVIEW)</p>
+        <p>This draft disclosure outlines statutory safety limits and dataset sources. It requires owner review and qualification by legal counsel before public commercial deployment. Placeholders are marked in brackets.</p>
+      </div>
+
       {/* Header */}
       <div className="rounded-3xl border border-red-200 bg-white p-6 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-red-300 bg-red-50 px-3 py-1 text-xs font-black uppercase tracking-wider text-red-800">
             <ShieldAlert size={14} /> Mandatory Statutory Disclosure
           </span>
-          <span className="text-xs text-slate-600 font-semibold">October 2026</span>
+          <span className="text-xs text-slate-600 font-semibold">Effective date: [PLACEHOLDER: effective date]</span>
         </div>
         <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
           Legal & Statutory Disclaimers
@@ -60,7 +72,7 @@ export default function LegalDisclaimer() {
             TravelMate utilizes transparent, publicly licensed open datasets and APIs:
           </p>
           <ul className="mt-2 space-y-2 text-xs text-slate-700 list-disc list-inside">
-            <li><strong>Indian Railways Timetables:</strong> Open data sources published under the Government Open Data License (GODL-India) and Open Database License (ODbL). Timetable data is current as of October 2026.</li>
+            <li><strong>Indian Railways Timetables:</strong> Open data sources published under the Government Open Data License (GODL-India) and Open Database License (ODbL). Timetable schedules derived from the Datameet Indian Railways community snapshot (circa 2016, CC0) and live provider feeds where available.</li>
             <li><strong>Geographic & Map Imagery:</strong> Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer" className="text-sky-700 hover:text-sky-800 underline font-semibold">OpenStreetMap</a> contributors, licensed under the Open Database License.</li>
             <li><strong>Atmospheric & Weather Observations:</strong> Weather alerts powered by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="text-sky-700 hover:text-sky-800 underline font-semibold">Open-Meteo</a> under the Creative Commons Attribution 4.0 International (CC BY 4.0) license.</li>
           </ul>

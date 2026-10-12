@@ -3,6 +3,7 @@ import { CalendarDays, CheckCircle2, MapPin, MessageCircle, Send, Sparkles, Tick
 import { useNavigate } from 'react-router-dom'
 import { localDateIso } from '../utils/date'
 import { calculateTravelScore } from '../utils/scoring'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 const prompts = [
   ['Find a cafe in my destination', 'Quiet places, food and local recommendations'],
@@ -13,7 +14,18 @@ const prompts = [
 
 const PROMPT_ICONS = [Ticket, MessageCircle, CalendarDays, MapPin]
 
+const sampleQueries = [
+  'Delhi to Patna via Kanpur transfer slack',
+  'Howrah to Chennai bypass routes',
+  'Bengaluru to Hyderabad Tatkal timing'
+]
+
 export default function AnalyzeJourney({ toast }) {
+  usePageMetadata({
+    title: 'Journey Analysis & Route Assistant | TravelMate',
+    description: 'Analyze connection buffers, verify junction interchange safety, and get structured route recovery rationale.'
+  })
+
   const navigate = useNavigate()
   const [plan, setPlan] = useState({
     from: '', to: '', date: localDateIso(), transportMode: 'Train',
@@ -35,11 +47,28 @@ export default function AnalyzeJourney({ toast }) {
   return (
     <main className="assistant-page">
       <aside className="assistant-sidebar">
-        <div className="assistant-sidebar-title">RECENT CHATS</div>
-        {['Tokyo Itinerary Adjustments', 'Paris Packing List', 'Flight options to Bali'].map((item, i) => (
-          <button key={item} className={`assistant-chat-item ${i === 0 ? 'active' : ''}`}><MessageCircle size={18} /><span>{item}<small>{i === 0 ? 'Just now' : i === 1 ? 'Yesterday' : '3 days ago'}</small></span></button>
+        <div className="assistant-sidebar-title">SAMPLE RECOVERY QUERIES</div>
+        {sampleQueries.map((item, i) => (
+          <button
+            key={item}
+            type="button"
+            onClick={() => setQueryInput(item)}
+            className={`assistant-chat-item ${i === 0 ? 'active' : ''}`}
+          >
+            <MessageCircle size={18} />
+            <span>{item}<small>{i === 0 ? 'High traffic' : i === 1 ? 'Junction hub' : 'Tatkal window'}</small></span>
+          </button>
         ))}
-        <button className="assistant-new"><Plus size={18} /> New Conversation</button>
+        <button
+          type="button"
+          className="assistant-new"
+          onClick={() => {
+            setQueryInput('')
+            toast?.('Started new query session.')
+          }}
+        >
+          <Plus size={18} /> New Conversation
+        </button>
       </aside>
 
       <section className="assistant-main">
