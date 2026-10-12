@@ -33,7 +33,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <span className="font-extrabold text-slate-900 tracking-tight">TravelMate</span>
         </NavLink>
 
-        <nav className="tm-nav-links hidden md:flex items-center gap-1.5 lg:max-w-4xl" aria-label="Primary navigation">
+        <nav className="tm-nav-links hidden md:grid md:grid-cols-4 items-center gap-1.5 lg:max-w-4xl" aria-label="Primary navigation">
           {nav.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -77,7 +77,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           </button>
 
           <LanguageSelector language={language} onChange={onLanguageChange} compact />
-          <AccountMenu authEnabled={authEnabled} onOpenProfile={onOpenProfile} compact />
+          <AccountMenu authEnabled={authEnabled} onOpenProfile={onOpenProfile} />
 
           <button
             className="tm-menu md:hidden p-2 text-slate-700 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-md"
@@ -114,19 +114,32 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
             </NavLink>
           ))}
 
-          <div className="pt-3 mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100">
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false)
-                onOpenDemoTour?.()
-              }}
-              data-testid="mobile-navbar-demo-tour-btn"
-              className="flex items-center gap-2 px-3 py-2 rounded-md bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold"
-            >
-              <Sparkles size={14} className="text-sky-600" />
-              <span>See a Demo</span>
-            </button>
+          <div className="pt-3 mt-2 flex flex-col gap-2 border-t border-slate-100">
+            <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 px-1">Account & Access</div>
+            <div className="flex items-center gap-2">
+              <AccountMenu
+                authEnabled={authEnabled}
+                onOpenProfile={() => {
+                  setOpen(false)
+                  onOpenProfile?.()
+                }}
+                mobile
+              />
+            </div>
+            <div className="flex items-center justify-between pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  onOpenDemoTour?.()
+                }}
+                data-testid="mobile-navbar-demo-tour-btn"
+                className="flex items-center gap-2 px-3 py-2 rounded-md bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold"
+              >
+                <Sparkles size={14} className="text-sky-600" />
+                <span>See a Demo</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

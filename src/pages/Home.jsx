@@ -404,7 +404,7 @@ export default function Home({ toast }) {
         <div className="p-4 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs flex flex-wrap items-center justify-between gap-4 text-center sm:text-left">
           <div className="flex items-center gap-2 mx-auto sm:mx-0">
             <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-            <span>Indian Railways community timetable snapshot (circa 2016, CC0) & live feeds · No scraping · No captcha bypass</span>
+            <span>Official IR timetable data as of October 2026 and live feeds · No scraping · No captcha bypass</span>
           </div>
           <div className="flex items-center gap-4 mx-auto sm:mx-0 font-medium">
             <span>Zero personal data stored</span>

@@ -8,7 +8,10 @@ import { initErrorMonitoring } from './utils/errorMonitoring'
 
 initErrorMonitoring()
 
-const clerkPublishableKey = String(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '').trim()
+const clerkPublishableKey = String(
+  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ||
+  'pk_test_d2VsY29tZS1za3lsYXJrLTE0LmNsZXJrLmFjY291bnRzLmRldiQ'
+).trim()
 const authEnabled = /^pk_(test|live)_/.test(clerkPublishableKey)
 
 const appTree = (
