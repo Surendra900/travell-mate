@@ -52,24 +52,28 @@ async function callSambaNova(messages, options = {}) {
 /**
  * Call Google Gemini API
  */
+let cachedWorkingModel = null;
+
 export async function callGemini(promptText, options = {}) {
   const apiKey = String(process.env.GEMINI_API_KEY || '').trim();
   if (!apiKey || apiKey.startsWith('[SENSITIVE') || apiKey.startsWith('[')) {
     throw new Error('GEMINI_API_KEY not configured or is a placeholder');
   }
 
-  const candidateModels = [
+  const candidateModels = Array.from(new Set([
+    cachedWorkingModel,
     process.env.GEMINI_MODEL,
     'gemini-1.5-flash',
     'gemini-2.0-flash',
     'gemini-1.5-flash-latest',
+    'gemini-1.5-pro',
     'gemini-pro'
-  ].filter(Boolean);
+  ].filter(Boolean)));
 
   const timeoutMs = options.timeout ?? 9000;
   let lastError = null;
 
-  for (const model of candidateModels) {
+  async function tryModel(model) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -97,30 +101,60 @@ export async function callGemini(promptText, options = {}) {
         else if (res.status === 403) errorClass = 'PERMISSION_DENIED';
         else if (res.status === 404) {
           errorClass = 'MODEL_NOT_FOUND';
-          lastError = new Error(`Gemini model ${model} not found: ${errorText}`);
-          continue;
+          return { ok: false, error: new Error(`Gemini model ${model} not found: ${errorText}`), is404: true };
         } else if (res.status === 429) {
           errorClass = 'RATE_LIMIT_EXCEEDED';
         }
         const err = new Error(`Gemini API error (${res.status} ${errorClass}): ${errorText}`);
         err.status = res.status;
         err.code = errorClass;
-        throw err;
+        return { ok: false, error: err, is404: false };
       }
 
       const data = await res.json();
       const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
-      if (content) return content;
+      if (content) {
+        cachedWorkingModel = model;
+        return { ok: true, content };
+      }
+      return { ok: false, error: new Error('Empty Gemini response content') };
     } catch (err) {
       clearTimeout(timer);
       if (err.name === 'AbortError') {
         const timeoutErr = new Error(`Gemini API request timed out after ${timeoutMs}ms`);
         timeoutErr.code = 'TIMEOUT';
-        throw timeoutErr;
+        return { ok: false, error: timeoutErr };
       }
-      lastError = err;
+      return { ok: false, error: err };
     }
   }
+
+  for (const model of candidateModels) {
+    const res = await tryModel(model);
+    if (res.ok) return res.content;
+    lastError = res.error;
+    if (res.error?.code === 'RATE_LIMIT_EXCEEDED' || res.error?.code === 'PERMISSION_DENIED') {
+      throw res.error;
+    }
+  }
+
+  // If candidate models returned 404, query dynamic available models for this specific API key
+  try {
+    const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
+    if (listRes.ok) {
+      const listData = await listRes.json();
+      const dynamicModels = (listData.models || [])
+        .filter((m) => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+        .map((m) => String(m.name || '').replace(/^models\//, ''))
+        .filter((m) => !candidateModels.includes(m));
+
+      for (const model of dynamicModels.slice(0, 5)) {
+        const res = await tryModel(model);
+        if (res.ok) return res.content;
+        lastError = res.error;
+      }
+    }
+  } catch {}
 
   throw lastError || new Error('All Gemini model candidates failed.');
 }
@@ -144,7 +178,7 @@ export async function testGeminiConnectivity(customKey = null) {
       return { ok: false, code: 'UNKNOWN_API_ERROR', status: listRes.status, message: `Google API returned status ${listRes.status}` };
     }
 
-    let candidatesToTry = [model];
+    let candidatesToTry = [cachedWorkingModel, model].filter(Boolean);
     let discoveredModels = [];
     try {
       const listData = await listRes.json();
@@ -156,7 +190,7 @@ export async function testGeminiConnectivity(customKey = null) {
       if (discoveredModels.length > 0) {
         candidatesToTry = [
           ...discoveredModels.filter(m => m.includes('1.5-flash')),
-          ...discoveredModels.filter(m => m.includes('1.5-pro')),
+          ...discoveredModels.filter(m => m.includes('2.0-flash')),
           ...discoveredModels.filter(m => m.includes('flash')),
           ...discoveredModels
         ];
@@ -176,6 +210,7 @@ export async function testGeminiConnectivity(customKey = null) {
 
       if (pingRes.ok) {
         successfulModel = testModel;
+        cachedWorkingModel = testModel;
         break;
       } else {
         const errText = await pingRes.text().catch(() => '');
