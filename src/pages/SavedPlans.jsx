@@ -33,6 +33,7 @@ import {
 import { calculatePlanQualityScore, planVerdict, scoreBreakdown } from '../utils/scoring'
 import { getPNRStatus } from '../services/LiveTransportApi'
 import { usePageMetadata } from '../hooks/usePageMetadata'
+import { isSupabaseConfigured, syncSavedPlans, getCurrentUserId } from '../utils/supabaseClient'
 
 function serviceValue(service, ...keys) {
   for (const key of keys) {
@@ -63,8 +64,18 @@ export default function SavedPlans({ toast }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setPlans(getSavedPlans())
+    const local = getSavedPlans()
+    setPlans(local)
     setOffline(getOfflinePack())
+
+    if (isSupabaseConfigured) {
+      const uid = getCurrentUserId()
+      syncSavedPlans(uid, local).then((synced) => {
+        if (Array.isArray(synced) && synced.length) {
+          setPlans(synced)
+        }
+      }).catch(() => {})
+    }
   }, [])
 
   useEffect(() => {
@@ -172,7 +183,15 @@ export default function SavedPlans({ toast }) {
               <CalendarDays size={20} className="text-sky-600" />
               <span>Upcoming Journeys</span>
             </h2>
-            <span className="text-xs font-semibold text-slate-500">{plans.length} total saved</span>
+            <div className="flex items-center gap-2">
+              {isSupabaseConfigured && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                  <CheckCircle2 size={12} className="text-emerald-600" />
+                  <span>Cloud Synced</span>
+                </span>
+              )}
+              <span className="text-xs font-semibold text-slate-500">{plans.length} total saved</span>
+            </div>
           </div>
 
           {plans.length === 0 ? (

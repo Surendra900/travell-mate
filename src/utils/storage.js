@@ -1,6 +1,7 @@
 import { emergencyCards, emergencyNumber } from '../data/emergencyData'
 import { calculatePlanQualityScore, scoreBreakdown } from './scoring'
 import { coverageNotice, getServiceOptions, transportPlaces } from '../data/transportData'
+import { getCurrentUserId, saveRemotePlan, deleteRemotePlan, isSupabaseConfigured } from './supabaseClient'
 
 const PLAN_KEY = 'travelmate-plans'
 const OFFLINE_KEY = 'travelmate-offline-pack'
@@ -175,6 +176,9 @@ export function savePlan(plan) {
   }
 
   localStorage.setItem(PLAN_KEY, JSON.stringify([normalized, ...current.filter((item) => item.id !== normalized.id)].slice(0, 20)))
+  if (isSupabaseConfigured) {
+    saveRemotePlan(getCurrentUserId(), normalized).catch(() => {})
+  }
   return normalized
 }
 
@@ -208,6 +212,9 @@ export function attachPnrStatus(plan = {}, result = {}) {
 export function deletePlan(id) {
   const updated = getSavedPlans().filter((plan) => plan.id !== id)
   localStorage.setItem(PLAN_KEY, JSON.stringify(updated))
+  if (isSupabaseConfigured) {
+    deleteRemotePlan(getCurrentUserId(), id).catch(() => {})
+  }
   return updated
 }
 

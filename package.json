@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.61.10",
+    "@supabase/supabase-js": "^2.117.3",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
