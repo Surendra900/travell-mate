@@ -4,8 +4,8 @@ import { useEffect } from 'react'
  * Updates document.title and the meta[name="description"] tag.
  *
  * @param {Object} options
- * @param {string} options.title - The page title
- * @param {string} [options.description] - The meta description
+ * @param {string} options.title: The page title
+ * @param {string} [options.description]: The meta description
  */
 export function usePageMetadata({ title, description } = {}) {
   useEffect(() => {
