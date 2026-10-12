@@ -103,8 +103,8 @@ export async function enforceRateLimit(req, res, limit, windowMs) {
     return true
   }
 
-  // In production or on Vercel, rate limiter must be distributed (Upstash Redis)
-  if (isProduction) {
+  // In production with Upstash configured, rate limiter must be distributed
+  if (isProduction && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN && !distributed) {
     res.status(503).json({
       ok: false,
       mode: 'error',

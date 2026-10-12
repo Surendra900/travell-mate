@@ -1,0 +1,10 @@
+train_number,seq,station_code,station_name,day_offset,arrival,departure,halt
+12727,1,VSKP,Visakhapatnam,0,,17:20,0
+12727,2,RJY,Rajahmundry,0,19:48,19:50,2
+12727,3,BZA,Vijayawada,0,23:05,23:20,15
+12727,4,SC,Secunderabad,1,05:10,05:15,5
+12727,5,HYB,Hyderabad Deccan,1,06:15,,0
+20833,1,VSKP,Visakhapatnam,0,,05:45,0
+20833,2,RJY,Rajahmundry,0,07:53,07:55,2
+20833,3,BZA,Vijayawada,0,09:50,09:55,5
+20833,4,SC,Secunderabad,0,14:15,,0

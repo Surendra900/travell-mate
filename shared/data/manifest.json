@@ -47,5 +47,25 @@
       "provenance": "ESTIMATE",
       "count": 24
     }
-  }
+  },
+  "datameet": {
+    "id": "ver_datameet_e0c538a1",
+    "source": "datameet/railways",
+    "license": "CC0 1.0 Universal",
+    "sourceReference": "https://github.com/datameet/railways/tree/e0c538a1e41ae5eace454d2818902e1065608e16",
+    "checksum": "105d63816acb177eac30a7d156eb2d312625a42ddebd273edee810d2989878ec",
+    "checksums": {
+      "stations": "9bd5e1da3a859e5359a95f40b6009aa468efb177da4faac57ffdcd7daeb4df18",
+      "trains": "e434d9c56016ccdf2291ccd446586ef87a7fab101084efa5f68871ab27800167",
+      "schedules": "105d63816acb177eac30a7d156eb2d312625a42ddebd273edee810d2989878ec"
+    },
+    "rowCounts": {
+      "stations": 8995,
+      "trains": 5208,
+      "stopRows": 417080,
+      "scheduledTrains": 5208
+    },
+    "importedAt": "2026-10-12T11:49:02.128Z"
+  },
+  "updatedAt": "2026-10-12T11:49:02.386Z"
 }

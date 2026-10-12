@@ -1,0 +1,4 @@
+train_number,train_name,runs_days,origin,destination
+12727,GODAVARI EXPRESS,Daily,VSKP,HYB
+12728,GODAVARI EXPRESS,Daily,HYB,VSKP
+20833,VANDE BHARAT EXPRESS,"Mon,Tue,Wed,Thu,Fri,Sat",VSKP,SC

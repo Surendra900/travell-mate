@@ -1,5 +1,6 @@
 import { prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 import { callRapidRail, dataRows, extractStationCode, getRapidConfig, stationCodes } from './_rapidapiRail.js'
+import { findDirectTrainRoutes } from '../../server/services/routeEngine.js'
 
 function normalizeTrainRow(row, index, from, to, date) {
   const trainNo = row.trainNumber || row.train_number || row.trainNo || row.train_no || row.number || row.code || row.train_num || 'N/A'
@@ -118,6 +119,46 @@ export default async function handler(req, res) {
       rows = dataRows(await callRapidRail(searchEndpoint, { query: searchText }))
     }
 
+    if (!rows.length && fromCodes.length && toCodes.length) {
+      const offlineDirect = findDirectTrainRoutes(fromCodes[0], toCodes[0], date)
+      if (offlineDirect.length) {
+        const offlineResults = offlineDirect.slice(0, 30).map((t, index) => ({
+          id: `${t.trainNumber}-${index}`,
+          type: 'train',
+          serviceName: `${t.trainName} (${t.trainNumber})`,
+          service: `${t.trainName} (${t.trainNumber})`,
+          code: String(t.trainNumber),
+          fromStationCode: t.originCode,
+          toStationCode: t.destCode,
+          from: t.originCode,
+          to: t.destCode,
+          departure: t.departTime,
+          depart: t.departTime,
+          arrival: t.arriveTime,
+          arrive: t.arriveTime,
+          duration: t.durationFormatted,
+          runningDays: 'Running days unknown. Check before you travel',
+          price: t.estimatedFare,
+          currency: 'INR',
+          cabins: ['SL', '3A', '2A', '1A'],
+          provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+          sourceBadge: 'TIMETABLE (circa 2016)',
+          provenance: 'TIMETABLE',
+          verification: 'Offline timetable schedule (community snapshot, circa 2016). Running days unknown. Check before you travel.'
+        }))
+        return res.status(200).json({
+          ok: true,
+          mode: 'timetable',
+          provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+          sourceBadge: 'TIMETABLE (circa 2016)',
+          message: `Timetable schedule loaded (${offlineResults.length} direct trains). Community snapshot circa 2016.`,
+          count: offlineResults.length,
+          results: offlineResults,
+          searchedStationPair: `${fromCodes[0]}-${toCodes[0]}`
+        })
+      }
+    }
+
     const fromLabel = selectedPair?.[0] || from || ''
     const toLabel = selectedPair?.[1] || to || ''
     const results = rows.slice(0, 30).map((row, index) => normalizeTrainRow(row, index, fromLabel, toLabel, date))
@@ -132,6 +173,47 @@ export default async function handler(req, res) {
       searchedStationPair: selectedPair ? `${selectedPair[0]}-${selectedPair[1]}` : null
     })
   } catch (error) {
+    if (fromCodes.length && toCodes.length) {
+      try {
+        const offlineDirect = findDirectTrainRoutes(fromCodes[0], toCodes[0], date)
+        if (offlineDirect.length) {
+          const offlineResults = offlineDirect.slice(0, 30).map((t, index) => ({
+            id: `${t.trainNumber}-${index}`,
+            type: 'train',
+            serviceName: `${t.trainName} (${t.trainNumber})`,
+            service: `${t.trainName} (${t.trainNumber})`,
+            code: String(t.trainNumber),
+            fromStationCode: t.originCode,
+            toStationCode: t.destCode,
+            from: t.originCode,
+            to: t.destCode,
+            departure: t.departTime,
+            depart: t.departTime,
+            arrival: t.arriveTime,
+            arrive: t.arriveTime,
+            duration: t.durationFormatted,
+            runningDays: 'Running days unknown. Check before you travel',
+            price: t.estimatedFare,
+            currency: 'INR',
+            cabins: ['SL', '3A', '2A', '1A'],
+            provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+            sourceBadge: 'TIMETABLE (circa 2016)',
+            provenance: 'TIMETABLE',
+            verification: 'Offline timetable schedule (community snapshot, circa 2016). Running days unknown. Check before you travel.'
+          }))
+          return res.status(200).json({
+            ok: true,
+            mode: 'timetable',
+            provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+            sourceBadge: 'TIMETABLE (circa 2016)',
+            message: `Timetable schedule loaded (${offlineResults.length} direct trains). Community snapshot circa 2016.`,
+            count: offlineResults.length,
+            results: offlineResults,
+            searchedStationPair: `${fromCodes[0]}-${toCodes[0]}`
+          })
+        }
+      } catch (_) {}
+    }
     const safe = publicProviderError(error, 'Railway provider request failed.')
     return res.status(providerStatus(error)).json({
       ok: false,

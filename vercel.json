@@ -48,6 +48,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/health/llm",
+      "destination": "/api/assistant?health=1"
+    },
+    {
       "source": "/api/trains/by-station",
       "destination": "/api/trains/live-station"
     },

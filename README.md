@@ -181,3 +181,70 @@ Choose the existing Vercel project when prompted. Environment-variable updates a
 - Emergency messages are prepared for WhatsApp/SMS; the user must manually tap Send.
 - The local document vault uses browser-side encryption, but judges should use sample documents only.
 - Public production deployments should add durable rate limiting and provider-specific monitoring.
+
+## Data pipeline
+
+The authentic timetable data pipeline ingests datasets from `datameet/railways` (CC0 public domain, pinned commit `e0c538a1e41ae5eace454d2818902e1065608e16`) and optionally merges NTES enquiry extracts from `tools/railpull` (MIT license).
+
+### Windows execution (PowerShell)
+
+1. Ingest Datameet timetable baseline:
+   ```powershell
+   npm.cmd run etl:datameet
+   ```
+   Dry-run mode (validates records without writing):
+   ```powershell
+   node data/etl/import-datameet.mjs --dry-run
+   ```
+
+2. Test railpull fixture ingestion:
+   ```powershell
+   npm.cmd run etl:railpull
+   ```
+
+3. Run Gemini connectivity and model diagnostic check:
+   ```powershell
+   node scripts/check-gemini.mjs
+   ```
+
+4. Run the 12-corridor battery verification:
+   ```powershell
+   node scripts/corridor_battery.mjs
+   ```
+
+5. Poll delays snapshot (single on-demand execution, 15-minute TTL):
+   ```powershell
+   python tools/railpull/ntes/poll_delays.py --window 2 --out data/out/delays.json
+   ```
+
+### macOS and Linux execution (Bash)
+
+1. Ingest Datameet timetable baseline:
+   ```bash
+   npm run etl:datameet
+   ```
+   Dry-run mode:
+   ```bash
+   node data/etl/import-datameet.mjs --dry-run
+   ```
+
+2. Test railpull fixture ingestion:
+   ```bash
+   npm run etl:railpull
+   ```
+
+3. Run Gemini connectivity and model diagnostic check:
+   ```bash
+   node scripts/check-gemini.mjs
+   ```
+
+4. Run the 12-corridor battery verification:
+   ```bash
+   node scripts/corridor_battery.mjs
+   ```
+
+5. Poll delays snapshot:
+   ```bash
+   python3 tools/railpull/ntes/poll_delays.py --window 2 --out data/out/delays.json
+   ```
+

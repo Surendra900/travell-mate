@@ -24,3 +24,6 @@ model_capabilities.yaml
 scripts/search_repo.*
 scripts/setup_search.*
 scripts/validate-*
+data/raw/
+data/out/
+tools/railpull/data/

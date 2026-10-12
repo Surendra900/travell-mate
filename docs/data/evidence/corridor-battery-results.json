@@ -1,0 +1,185 @@
+[
+  {
+    "name": "RJY to BZA",
+    "from": "RJY",
+    "to": "BZA",
+    "durationMs": 4372,
+    "directCount": 70,
+    "splitCount": 41,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "BZA to RJY",
+    "from": "BZA",
+    "to": "RJY",
+    "durationMs": 4494,
+    "directCount": 70,
+    "splitCount": 26,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "RJY to VSKP",
+    "from": "RJY",
+    "to": "VSKP",
+    "durationMs": 2489,
+    "directCount": 56,
+    "splitCount": 73,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "BZA to SC",
+    "from": "BZA",
+    "to": "SC",
+    "durationMs": 2621,
+    "directCount": 29,
+    "splitCount": 117,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "MAS to HWH",
+    "from": "MAS",
+    "to": "HWH",
+    "durationMs": 1104,
+    "directCount": 6,
+    "splitCount": 77,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "NDLS to PNBE",
+    "from": "NDLS",
+    "to": "PNBE",
+    "durationMs": 1229,
+    "directCount": 10,
+    "splitCount": 69,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "SBC to SC",
+    "from": "SBC",
+    "to": "SC",
+    "durationMs": 468,
+    "directCount": 2,
+    "splitCount": 72,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "CSMT to PUNE",
+    "from": "CSMT",
+    "to": "PUNE",
+    "durationMs": 263,
+    "directCount": 24,
+    "splitCount": 72,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "DDU to PNBE (Renamed DDU/MGS)",
+    "from": "DDU",
+    "to": "PNBE",
+    "durationMs": 1127,
+    "directCount": 58,
+    "splitCount": 72,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "PRYJ to CNB (Renamed PRYJ/ALD)",
+    "from": "PRYJ",
+    "to": "CNB",
+    "durationMs": 620,
+    "directCount": 72,
+    "splitCount": 18,
+    "sampleDirect": [
+      "undefined undefined",
+      "undefined undefined",
+      "undefined undefined"
+    ],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016)",
+    "status": "PASS"
+  },
+  {
+    "name": "Same Station (NDLS to NDLS)",
+    "from": "NDLS",
+    "to": "NDLS",
+    "durationMs": 0,
+    "directCount": 0,
+    "splitCount": 0,
+    "sampleDirect": [],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016) · Map data © OpenStreetMap contributors · Weather data by Open-Meteo",
+    "status": "PASS"
+  },
+  {
+    "name": "Unknown Station (XYZ999 to NDLS)",
+    "from": "XYZ999",
+    "to": "NDLS",
+    "durationMs": 11,
+    "directCount": 0,
+    "splitCount": 0,
+    "sampleDirect": [],
+    "detourForbiddenPresent": false,
+    "provenance": "Timetable data (community snapshot, about 2016) · Map data © OpenStreetMap contributors · Weather data by Open-Meteo",
+    "status": "PASS"
+  }
+]

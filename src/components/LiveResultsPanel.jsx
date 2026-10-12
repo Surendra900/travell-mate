@@ -108,7 +108,7 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
         </div>
 
         <div className="text-center px-2">
-          <div className="text-xs font-semibold text-slate-400 mb-1 flex items-center justify-center gap-1">
+          <div className="text-xs font-semibold text-slate-600 mb-1 flex items-center justify-center gap-1">
             <Clock size={12} />
             <span>{duration}</span>
           </div>
@@ -116,7 +116,7 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
             <div className="w-full h-0.5 bg-slate-200"></div>
             <div className="absolute w-2 h-2 rounded-full bg-sky-600"></div>
           </div>
-          <div className="text-[11px] font-bold text-slate-400 mt-1">Direct</div>
+          <div className="text-[11px] font-bold text-slate-600 mt-1">Direct</div>
         </div>
 
         <div className="text-right">

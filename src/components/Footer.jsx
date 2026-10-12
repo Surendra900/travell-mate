@@ -57,7 +57,7 @@ export default function Footer({ onOpenPrivacy, onOpenFeedback }) {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 pt-4 pb-6 border-t border-slate-800 text-center text-xs text-slate-300">
-        <p>Timetable data as of October 2026 · Map data © OpenStreetMap contributors · Weather data by Open-Meteo</p>
+        <p>Timetable data: Indian Railways community snapshot (circa 2016, CC0) and live provider feeds. Map data © OpenStreetMap contributors under ODbL. Weather data by Open-Meteo.</p>
         <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed max-w-3xl mx-auto">
           TravelMate is an independent multimodal route discovery and recovery engine. Tickets are finalized directly on official operator portals. In an emergency, dial 112 or 139.
         </p>

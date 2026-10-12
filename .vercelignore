@@ -5,6 +5,11 @@ node_modules
 dist
 tests
 scripts
+docs
+tools
+data/raw
+data/out
+data/processed
 *.md
 .DS_Store
 npm-debug.log*

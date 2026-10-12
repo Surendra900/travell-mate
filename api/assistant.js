@@ -250,6 +250,40 @@ function generalLocalFallbackReply(message, currentPlan, error) {
 }
 
 export default async function handler(req, res) {
+  // Support /api/health/llm endpoint without exceeding Vercel 12-function cap
+  if (req.method === 'GET' && (req.query?.health || req.url?.includes('/health') || req.url?.includes('health='))) {
+    if (!await prepareApiRequest(req, res, { methods: ['GET'], rateLimit: 60, useGlobalAuth: false })) return;
+    const { getActiveAiProvider, testGeminiConnectivity } = await import('../server/adapters/aiProvider.js');
+    const activeProvider = getActiveAiProvider();
+    const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('['));
+    const hasSambaNovaKey = Boolean(process.env.SAMBANOVA_API_KEY && !process.env.SAMBANOVA_API_KEY.startsWith('['));
+
+    const geminiHealth = await testGeminiConnectivity();
+
+    const report = {
+      timestamp: new Date().toISOString(),
+      activeProvider,
+      configured: {
+        gemini: hasGeminiKey,
+        sambanova: hasSambaNovaKey
+      },
+      gemini: {
+        status: geminiHealth.ok ? 'OK' : 'ERROR',
+        code: geminiHealth.code,
+        message: geminiHealth.message
+      },
+      fallbackMode: 'deterministic-heuristic'
+    };
+
+    const isHealthy = geminiHealth.ok || hasSambaNovaKey;
+
+    return res.status(isHealthy ? 200 : 503).json({
+      ok: isHealthy,
+      mode: isHealthy ? 'healthy' : 'degraded',
+      data: report
+    });
+  }
+
   if (!await prepareApiRequest(req, res, { methods: ['POST'], rateLimit: 18, useGlobalAuth: false })) return
 
   let message = ''

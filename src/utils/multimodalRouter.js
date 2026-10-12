@@ -29,7 +29,7 @@ export function findTransitHubs(fromCity, toCity, maxDetourRatio = 1.35) {
     const totalDist = d1 + d2
     const ratio = totalDist / directDist
 
-    if (ratio <= maxDetourRatio) {
+    if (ratio <= maxDetourRatio && d2 < directDist) {
       candidates.push({
         place,
         city: place.city,

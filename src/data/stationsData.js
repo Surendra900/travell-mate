@@ -9,10 +9,19 @@ import stationsData from '../../shared/data/stations.json' with { type: 'json' }
 export const STATIONS = Array.isArray(stationsData) ? stationsData : [];
 
 // Index stations for fast prefix & substring search
-const SEARCH_INDEX = STATIONS.map(s => ({
-  ...s,
-  searchText: `${s.code} ${s.name} ${s.city} ${s.state}`.toUpperCase()
-}));
+const SEARCH_INDEX = STATIONS.map(s => {
+  const code = String(s.code || '').toUpperCase();
+  const name = String(s.name || '').toUpperCase();
+  const city = String(s.city || '').toUpperCase();
+  const state = String(s.state || '').toUpperCase();
+  return {
+    ...s,
+    code,
+    name: s.name || s.code,
+    city: s.city || s.name || s.code,
+    searchText: `${code} ${name} ${city} ${state}`
+  };
+});
 
 /**
  * Searches stations by code, name, or city with junction priority
@@ -35,18 +44,33 @@ export function searchStations(query = '', limit = 10) {
   for (const s of SEARCH_INDEX) {
     if (s.code === q) {
       exactCodeMatches.push(s);
-    } else if (s.code.startsWith(q) || s.city.toUpperCase().startsWith(q) || s.name.toUpperCase().startsWith(q)) {
+    } else if (s.code.startsWith(q) || (s.city && s.city.toUpperCase().startsWith(q)) || (s.name && s.name.toUpperCase().startsWith(q))) {
       startsWithMatches.push(s);
     } else if (s.searchText.includes(q)) {
       containsMatches.push(s);
     }
   }
 
-  // Sort startsWith matches: junctions first
+  // Sort startsWith matches: exact city match, coordinates, then junctions first
   startsWithMatches.sort((a, b) => {
+    const aCityExact = a.city && a.city.toUpperCase() === q;
+    const bCityExact = b.city && b.city.toUpperCase() === q;
+    if (aCityExact && !bCityExact) return -1;
+    if (!aCityExact && bCityExact) return 1;
+
+    const aNameExact = a.name && a.name.toUpperCase() === q;
+    const bNameExact = b.name && b.name.toUpperCase() === q;
+    if (aNameExact && !bNameExact) return -1;
+    if (!aNameExact && bNameExact) return 1;
+
+    const aHasCoords = a.latitude !== null && a.longitude !== null;
+    const bHasCoords = b.latitude !== null && b.longitude !== null;
+    if (aHasCoords && !bHasCoords) return -1;
+    if (!aHasCoords && bHasCoords) return 1;
+
     if (a.isJunction && !b.isJunction) return -1;
     if (!a.isJunction && b.isJunction) return 1;
-    return a.city.localeCompare(b.city);
+    return String(a.city || '').localeCompare(String(b.city || ''));
   });
 
   const combined = [...exactCodeMatches, ...startsWithMatches, ...containsMatches];

@@ -1,5 +1,10 @@
 const styles = {
   'Live API result': 'border-emerald-500/50 bg-emerald-950 text-emerald-200',
+  'LIVE_PROVIDER_DATA': 'border-emerald-500/50 bg-emerald-950 text-emerald-200',
+  'LIVE_SCHEDULE_ONLY': 'border-sky-500/50 bg-sky-950 text-sky-200',
+  'TIMETABLE (circa 2016)': 'border-indigo-500/50 bg-indigo-950 text-indigo-200',
+  'Timetable (community snapshot, about 2016)': 'border-indigo-500/50 bg-indigo-950 text-indigo-200',
+  'Live delay unavailable': 'border-slate-500/50 bg-slate-900 text-slate-300',
   'Local planning dataset': 'border-cyan-500/50 bg-cyan-950 text-cyan-200',
   'Local planning estimate': 'border-amber-500/50 bg-amber-950 text-amber-200',
   'Provider verification required': 'border-orange-500/50 bg-orange-950 text-orange-200',

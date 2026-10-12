@@ -50,31 +50,129 @@ async function callSambaNova(messages, options = {}) {
 /**
  * Call Google Gemini API
  */
-async function callGemini(promptText, options = {}) {
+export async function callGemini(promptText, options = {}) {
   const apiKey = String(process.env.GEMINI_API_KEY || '').trim();
-  if (!apiKey) throw new Error('GEMINI_API_KEY not configured');
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: promptText }] }],
-      generationConfig: {
-        temperature: options.temperature ?? 0.1,
-        maxOutputTokens: options.max_tokens ?? 250
-      }
-    })
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Gemini API error (${res.status}): ${errorText}`);
+  if (!apiKey || apiKey.startsWith('[SENSITIVE') || apiKey.startsWith('[')) {
+    throw new Error('GEMINI_API_KEY not configured or is a placeholder');
   }
 
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+  const model = String(process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim();
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  const timeoutMs = options.timeout ?? 8000;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: promptText }] }],
+        generationConfig: {
+          temperature: options.temperature ?? 0.1,
+          maxOutputTokens: options.max_tokens ?? 250
+        }
+      })
+    });
+
+    clearTimeout(timer);
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      let errorClass = 'UNKNOWN_ERROR';
+      if (res.status === 400) errorClass = 'API_KEY_INVALID';
+      else if (res.status === 403) errorClass = 'PERMISSION_DENIED';
+      else if (res.status === 404) errorClass = 'MODEL_NOT_FOUND';
+      else if (res.status === 429) errorClass = 'RATE_LIMIT_EXCEEDED';
+      const err = new Error(`Gemini API error (${res.status} ${errorClass}): ${errorText}`);
+      err.status = res.status;
+      err.code = errorClass;
+      throw err;
+    }
+
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+  } catch (err) {
+    clearTimeout(timer);
+    if (err.name === 'AbortError') {
+      const timeoutErr = new Error(`Gemini API request timed out after ${timeoutMs}ms`);
+      timeoutErr.code = 'TIMEOUT';
+      throw timeoutErr;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Diagnostic helper to test Gemini connectivity without leaking keys
+ */
+export async function testGeminiConnectivity(customKey = null) {
+  const key = customKey || String(process.env.GEMINI_API_KEY || '').trim();
+  if (!key || key.startsWith('[SENSITIVE') || key.startsWith('[')) {
+    return { ok: false, code: 'KEY_UNCONFIGURED_OR_PLACEHOLDER', message: 'GEMINI_API_KEY is not configured or contains placeholder text.' };
+  }
+
+  let model = String(process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim();
+  try {
+    const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
+    if (!listRes.ok) {
+      if (listRes.status === 400) return { ok: false, code: 'API_KEY_INVALID', status: 400, message: 'Google rejected the API key as invalid.' };
+      if (listRes.status === 403) return { ok: false, code: 'PERMISSION_DENIED', status: 403, message: 'API key permission denied or generative language API not enabled.' };
+      if (listRes.status === 429) return { ok: false, code: 'RATE_LIMIT_EXCEEDED', status: 429, message: 'Google Gemini free-tier rate limit or quota exceeded.' };
+      return { ok: false, code: 'UNKNOWN_API_ERROR', status: listRes.status, message: `Google API returned status ${listRes.status}` };
+    }
+
+    let candidatesToTry = [model];
+    let discoveredModels = [];
+    try {
+      const listData = await listRes.json();
+      discoveredModels = (listData.models || [])
+        .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+        .map(m => String(m.name || '').replace(/^models\//, ''))
+        .filter(Boolean);
+
+      if (discoveredModels.length > 0) {
+        candidatesToTry = [
+          ...discoveredModels.filter(m => m.includes('1.5-flash')),
+          ...discoveredModels.filter(m => m.includes('1.5-pro')),
+          ...discoveredModels.filter(m => m.includes('flash')),
+          ...discoveredModels
+        ];
+        candidatesToTry = Array.from(new Set(candidatesToTry));
+      }
+    } catch (_) {}
+
+    let lastError = null;
+    let successfulModel = null;
+
+    for (const testModel of candidatesToTry.slice(0, 6)) {
+      const pingRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(testModel)}:generateContent?key=${encodeURIComponent(key)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: 'ping' }] }] })
+      });
+
+      if (pingRes.ok) {
+        successfulModel = testModel;
+        break;
+      } else {
+        const errText = await pingRes.text().catch(() => '');
+        lastError = { status: pingRes.status, errText, model: testModel };
+      }
+    }
+
+    if (successfulModel) {
+      return { ok: true, code: 'OK', model: successfulModel, message: 'Gemini API is healthy and responsive.' };
+    }
+
+    if (lastError?.status === 404) return { ok: false, code: 'MODEL_NOT_FOUND', status: 404, message: `Model ${lastError.model} was not found.`, discoveredModels: discoveredModels.slice(0, 5) };
+    if (lastError?.status === 429) return { ok: false, code: 'RATE_LIMIT_EXCEEDED', status: 429, message: 'Google Gemini rate limit exceeded.' };
+    return { ok: false, code: 'GENERATE_CONTENT_ERROR', status: lastError?.status, message: `GenerateContent failed: ${lastError?.errText?.substring(0, 100)}` };
+  } catch (err) {
+    return { ok: false, code: 'NETWORK_ERROR', message: err.message };
+  }
 }
 
 /**
