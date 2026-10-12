@@ -48,7 +48,7 @@ function normalizeAliasKey(value = '') {
     .replace(/\s+/g, ' ')
 }
 
-function extractStationCode(label = '') {
+export function extractStationCode(label = '') {
   const match = String(label || '').toUpperCase().match(/\(([A-Z0-9]{2,5})\)/)
   return match ? match[1] : ''
 }

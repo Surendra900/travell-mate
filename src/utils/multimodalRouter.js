@@ -64,8 +64,86 @@ export function generateMultimodalRoutes({
   const directDist = haversineDistanceKm(fromPlace, toPlace) || 500
   const candidateHubs = findTransitHubs(from, to)
 
-  // Pick primary hub and secondary hub
-  const primaryHub = candidateHubs[0]?.place || transportPlaces.find(p => ['Vijayawada', 'Nagpur', 'Hyderabad', 'Kanpur', 'Pune', 'Bhopal'].includes(p.city)) || candidateHubs[0]?.place
+  // Direct corridor priority: for corridors under 250 km or where no reasonable intermediate hub exists
+  if (directDist <= 250 || candidateHubs.length === 0) {
+    const trainDurationMin = Math.round((directDist / 60) * 60)
+    const busDurationMin = Math.round((directDist / 45) * 60)
+
+    const trainFare = Math.max(90, Math.round(directDist * 0.65)) * passengers
+    const busFare = Math.max(120, Math.round(directDist * 0.95)) * passengers
+
+    return [
+      {
+        id: `direct-train-${fromPlace.city}-${toPlace.city}`,
+        tier: 'paisa-vasool',
+        tierLabel: 'Direct Rail Express',
+        tierBadge: 'Direct Route',
+        totalFare: trainFare,
+        fareFormatted: `₹${trainFare}`,
+        totalDuration: formatHoursMinutes(trainDurationMin),
+        totalDurationMin: trainDurationMin,
+        hubCity: 'Direct (No Transfers)',
+        transferBuffer: 'No intermediate transfer required',
+        whyPicked: `Direct railway corridor (${Math.round(directDist)} km). Frequent express and superfast trains connect these cities directly.`,
+        leg1: {
+          legIndex: 1,
+          mode: 'Train',
+          from: fromPlace.city,
+          to: toPlace.city,
+          depart: null,
+          arrive: null,
+          departureEstimate: 'Frequent daily services',
+          duration: formatHoursMinutes(trainDurationMin),
+          fare: trainFare,
+          service: `${fromPlace.city} to ${toPlace.city} Direct Express`,
+          provenance: 'ESTIMATE',
+          scheduleNote: 'Direct corridor route; check live portal for seat availability.',
+          bookingLink: getProviderDeepLink({
+            transport: 'Train',
+            from: fromPlace.city,
+            to: toPlace.city,
+            date
+          })
+        }
+      },
+      {
+        id: `direct-bus-${fromPlace.city}-${toPlace.city}`,
+        tier: 'smart-balanced',
+        tierLabel: 'Direct State or Private Bus',
+        tierBadge: 'Frequent Departure',
+        totalFare: busFare,
+        fareFormatted: `₹${busFare}`,
+        totalDuration: formatHoursMinutes(busDurationMin),
+        totalDurationMin: busDurationMin,
+        hubCity: 'Direct Highway Corridor',
+        transferBuffer: 'No transfer required',
+        whyPicked: `Direct highway connection via national highway. Non-stop express buses run at regular intervals.`,
+        leg1: {
+          legIndex: 1,
+          mode: 'Bus',
+          from: fromPlace.city,
+          to: toPlace.city,
+          depart: null,
+          arrive: null,
+          departureEstimate: 'Every 30 to 60 minutes',
+          duration: formatHoursMinutes(busDurationMin),
+          fare: busFare,
+          service: `${fromPlace.city} to ${toPlace.city} Highway Express Bus`,
+          provenance: 'ESTIMATE',
+          scheduleNote: 'Frequent highway service; board at central bus station.',
+          bookingLink: getProviderDeepLink({
+            transport: 'Bus',
+            from: fromPlace.city,
+            to: toPlace.city,
+            date
+          })
+        }
+      }
+    ]
+  }
+
+  // Pick primary hub and secondary hub from candidate hubs
+  const primaryHub = candidateHubs[0]?.place || null
   const airportHub = candidateHubs.find(h => ['Hyderabad', 'Bengaluru', 'Delhi', 'Mumbai', 'Kolkata', 'Chennai'].includes(h.city))?.place || primaryHub
 
   const routes = []

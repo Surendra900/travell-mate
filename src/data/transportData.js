@@ -157,8 +157,11 @@ const corePlaces = [
   ['Salem', 11.6643, 78.146, 'Salem Junction (SA)', 'Nearest airport: Salem Airport (SXV)', 'Salem Central Bus Stand', ['SA', 'SXV']],
   ['Erode', 11.341, 77.7172, 'Erode Junction (ED)', 'Nearest airport: Coimbatore Airport (CJB)', 'Erode Bus Stand', ['ED']],
   ['Tiruchirappalli', 10.7905, 78.7047, 'Tiruchirappalli Junction (TPJ)', 'Tiruchirappalli Airport (TRZ)', 'Central Bus Stand Trichy', ['Trichy', 'TPJ', 'TRZ']],
-  ['Thoothukudi', 8.7642, 78.1348, 'Tuticorin Railway Station (TN)', 'Tuticorin Airport (TCR)', 'Thoothukudi Bus Stand', ['Tuticorin', 'TN', 'TCR']],
-  ['Nellore', 14.4426, 79.9865, 'Nellore Railway Station (NLR)', 'Nearest airport: Tirupati Airport (TIR)', 'Nellore RTC Bus Station', ['NLR']]
+  ['Nellore', 14.4426, 79.9865, 'Nellore Railway Station (NLR)', 'Nearest airport: Tirupati Airport (TIR)', 'Nellore RTC Bus Station', ['NLR']],
+  ['Rajahmundry', 17.0005, 81.8040, 'Rajahmundry Railway Station (RJY)', 'Rajahmundry Airport (RJA)', 'Rajahmundry RTC Complex', ['RJY', 'Rajamahendravaram', 'RJA']],
+  ['Samalkot', 17.0531, 82.1695, 'Samalkot Junction (SLO)', 'Nearest airport: Rajahmundry Airport (RJA)', 'Samalkot Bus Stand', ['SLO', 'Samalkota']],
+  ['Kakinada', 16.9891, 82.2475, 'Kakinada Town (CCT)', 'Nearest airport: Rajahmundry Airport (RJA)', 'Kakinada RTC Complex', ['CCT', 'COA', 'Kakinada Port']],
+  ['Eluru', 16.7107, 81.0952, 'Eluru Railway Station (EE)', 'Nearest airport: Vijayawada Airport (VGA)', 'Eluru Old Bus Stand', ['EE']]
 ]
 
 export const transportPlaces = corePlaces.map(([city, lat, lng, train, airport, bus, aliases = []]) => ({ city, lat, lng, train, airport, bus, aliases }))
