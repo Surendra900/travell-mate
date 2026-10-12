@@ -7,10 +7,12 @@ import { TravelQuerySchema, RouteFactsSchema } from '../schemas/querySchema.js';
  */
 
 export function getActiveAiProvider() {
-  const preferred = (process.env.AI_PROVIDER || 'sambanova').toLowerCase();
-  if (preferred === 'gemini' && process.env.GEMINI_API_KEY) return 'gemini';
-  if (process.env.SAMBANOVA_API_KEY) return 'sambanova';
-  if (process.env.GEMINI_API_KEY) return 'gemini';
+  const preferred = (process.env.AI_PROVIDER || '').toLowerCase();
+  if (preferred === 'sambanova' && process.env.SAMBANOVA_API_KEY && !process.env.SAMBANOVA_API_KEY.startsWith('[')) return 'sambanova';
+  if (preferred === 'gemini' && process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('[')) return 'gemini';
+  // Use Gemini if configured (Google AI Studio key)
+  if (process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('[')) return 'gemini';
+  if (process.env.SAMBANOVA_API_KEY && !process.env.SAMBANOVA_API_KEY.startsWith('[')) return 'sambanova';
   return 'template-fallback';
 }
 
@@ -56,53 +58,71 @@ export async function callGemini(promptText, options = {}) {
     throw new Error('GEMINI_API_KEY not configured or is a placeholder');
   }
 
-  const model = String(process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const candidateModels = [
+    process.env.GEMINI_MODEL,
+    'gemini-1.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash-latest',
+    'gemini-pro'
+  ].filter(Boolean);
 
-  const timeoutMs = options.timeout ?? 8000;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const timeoutMs = options.timeout ?? 9000;
+  let lastError = null;
 
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: controller.signal,
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: promptText }] }],
-        generationConfig: {
-          temperature: options.temperature ?? 0.1,
-          maxOutputTokens: options.max_tokens ?? 250
+  for (const model of candidateModels) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }],
+          generationConfig: {
+            temperature: options.temperature ?? 0.1,
+            maxOutputTokens: options.max_tokens ?? 350
+          }
+        })
+      });
+
+      clearTimeout(timer);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        let errorClass = 'UNKNOWN_ERROR';
+        if (res.status === 400) errorClass = 'API_KEY_INVALID';
+        else if (res.status === 403) errorClass = 'PERMISSION_DENIED';
+        else if (res.status === 404) {
+          errorClass = 'MODEL_NOT_FOUND';
+          lastError = new Error(`Gemini model ${model} not found: ${errorText}`);
+          continue;
+        } else if (res.status === 429) {
+          errorClass = 'RATE_LIMIT_EXCEEDED';
         }
-      })
-    });
+        const err = new Error(`Gemini API error (${res.status} ${errorClass}): ${errorText}`);
+        err.status = res.status;
+        err.code = errorClass;
+        throw err;
+      }
 
-    clearTimeout(timer);
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      let errorClass = 'UNKNOWN_ERROR';
-      if (res.status === 400) errorClass = 'API_KEY_INVALID';
-      else if (res.status === 403) errorClass = 'PERMISSION_DENIED';
-      else if (res.status === 404) errorClass = 'MODEL_NOT_FOUND';
-      else if (res.status === 429) errorClass = 'RATE_LIMIT_EXCEEDED';
-      const err = new Error(`Gemini API error (${res.status} ${errorClass}): ${errorText}`);
-      err.status = res.status;
-      err.code = errorClass;
-      throw err;
+      const data = await res.json();
+      const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+      if (content) return content;
+    } catch (err) {
+      clearTimeout(timer);
+      if (err.name === 'AbortError') {
+        const timeoutErr = new Error(`Gemini API request timed out after ${timeoutMs}ms`);
+        timeoutErr.code = 'TIMEOUT';
+        throw timeoutErr;
+      }
+      lastError = err;
     }
-
-    const data = await res.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
-  } catch (err) {
-    clearTimeout(timer);
-    if (err.name === 'AbortError') {
-      const timeoutErr = new Error(`Gemini API request timed out after ${timeoutMs}ms`);
-      timeoutErr.code = 'TIMEOUT';
-      throw timeoutErr;
-    }
-    throw err;
   }
+
+  throw lastError || new Error('All Gemini model candidates failed.');
 }
 
 /**
@@ -175,61 +195,181 @@ export async function testGeminiConnectivity(customKey = null) {
   }
 }
 
+export const CITY_ALIASES = {
+  delh: 'Delhi',
+  deli: 'Delhi',
+  dilli: 'Delhi',
+  ndls: 'Delhi',
+  dli: 'Delhi',
+  nzm: 'Delhi',
+  bombay: 'Mumbai',
+  cstm: 'Mumbai',
+  bct: 'Mumbai',
+  bangalore: 'Bengaluru',
+  blr: 'Bengaluru',
+  sbc: 'Bengaluru',
+  ypr: 'Bengaluru',
+  calcutta: 'Kolkata',
+  hwh: 'Kolkata',
+  sda: 'Kolkata',
+  madras: 'Chennai',
+  mas: 'Chennai',
+  hydrabad: 'Hyderabad',
+  hyd: 'Hyderabad',
+  secunderabad: 'Hyderabad',
+  sc: 'Hyderabad',
+  banaras: 'Varanasi',
+  kashi: 'Varanasi',
+  bsb: 'Varanasi',
+  cochin: 'Kochi',
+  ernakulam: 'Kochi',
+  ers: 'Kochi',
+  trivandrum: 'Thiruvananthapuram',
+  tvm: 'Thiruvananthapuram',
+  vizag: 'Visakhapatnam',
+  vskp: 'Visakhapatnam',
+  vijaywada: 'Vijayawada',
+  vijayawada: 'Vijayawada',
+  bza: 'Vijayawada',
+  poona: 'Pune',
+  amdavad: 'Ahmedabad',
+  adi: 'Ahmedabad',
+  bbsr: 'Bhubaneswar',
+  pnbe: 'Patna',
+  patna: 'Patna',
+  cnb: 'Kanpur',
+  kanpur: 'Kanpur',
+  lko: 'Lucknow',
+  lucknow: 'Lucknow',
+  jp: 'Jaipur',
+  jaipur: 'Jaipur'
+};
+
+export function titleCase(value = '') {
+  return String(value)
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+export function resolveCityAlias(name = '') {
+  const clean = String(name || '').trim().toLowerCase();
+  return CITY_ALIASES[clean] || titleCase(name);
+}
+
 /**
  * Deterministic heuristic query parser fallback (used when providers are unavailable or schema invalid)
  */
 export function heuristicParseQuery(queryText = '') {
-  const text = String(queryText).trim();
-  let origin = '';
-  let destination = '';
-  let mode = 'Any';
+  const raw = String(queryText).trim();
   let passengers = 1;
-  let date = '';
   let budget;
 
-  // Extract mode
-  if (/\b(flight|air|plane)\b/i.test(text)) mode = 'Flight';
-  else if (/\b(bus|volvo)\b/i.test(text)) mode = 'Bus';
-  else if (/\b(train|rail)\b/i.test(text)) mode = 'Train';
-
-  // Extract passengers
-  const passMatch = text.match(/(\d+)\s*(?:people|passengers|pax|persons|tickets)/i);
+  // Extract passengers before word replacement
+  const passMatch = raw.match(/(\d+)\s*(?:people|passengers|pax|persons|tickets?)/i);
   if (passMatch) {
     passengers = Math.min(6, Math.max(1, parseInt(passMatch[1], 10)));
   }
 
-  // Extract budget
-  const budgetMatch = text.match(/(?:under|below|budget|within|max)\s*(?:rs\.?|inr|₹)?\s*(\d+)/i) || text.match(/(?:rs\.?|inr|₹)\s*(\d+)/i);
+  // Extract budget before word replacement
+  const budgetMatch = raw.match(/(?:under|below|budget|within|max)\s*(?:rs\.?|inr|₹)?\s*(\d+)/i) || raw.match(/(?:rs\.?|inr|₹)\s*(\d+)/i);
   if (budgetMatch) {
     budget = parseInt(budgetMatch[1], 10);
   }
 
+  const text = raw
+    .replace(new RegExp('[\\u2013' + String.fromCharCode(8212) + '\\u2192\\u27A1\\u279C]', 'g'), ' to ')
+    .replace(/\b(?:fron|frm|froom)\b/gi, 'from')
+    .replace(/\b(?:too|2(?!\s*(?:passengers?|people|pax|persons?|tickets?|seats?)))\b/gi, 'to')
+    .replace(/\b(?:tiketd|tikets?|tickts?|tikt|tikcet|tickit|ticktes)\b/gi, 'ticket')
+    .replace(/\b(?:bok|boook|buk|boking|bookng)\b/gi, 'book')
+    .replace(/[^a-zA-Z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  let origin = '';
+  let destination = '';
+  let mode = 'Any';
+  let date = '';
+
+  // Extract mode
+  if (/\b(flight|air|plane|airline|fly)\b/i.test(text)) mode = 'Flight';
+  else if (/\b(bus|volvo|coach)\b/i.test(text)) mode = 'Bus';
+  else if (/\b(train|rail|railway|tatkal)\b/i.test(text)) mode = 'Train';
+
   // Extract date
-  if (/\btomorrow\b/i.test(text)) {
+  if (/\bday\s+after\s+tomorrow\b/i.test(text)) {
+    const d = new Date();
+    d.setDate(d.getDate() + 2);
+    date = d.toISOString().split('T')[0];
+  } else if (/\btomorrow\b/i.test(text)) {
     const d = new Date();
     d.setDate(d.getDate() + 1);
     date = d.toISOString().split('T')[0];
   } else if (/\b(today|tonight)\b/i.test(text)) {
     date = new Date().toISOString().split('T')[0];
+  } else {
+    // Day of week
+    const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    for (let i = 0; i < daysOfWeek.length; i++) {
+      const dayName = daysOfWeek[i];
+      if (new RegExp(`\\b(?:next\\s+)?${dayName}\\b`, 'i').test(text)) {
+        const d = new Date();
+        const currentDay = d.getDay();
+        let diff = i - currentDay;
+        if (diff <= 0) diff += 7;
+        d.setDate(d.getDate() + diff);
+        date = d.toISOString().split('T')[0];
+        break;
+      }
+    }
+    // Explicit ISO date (YYYY-MM-DD)
+    const isoMatch = text.match(/\b(\d{4}-\d{2}-\d{2})\b/);
+    if (isoMatch) {
+      date = isoMatch[1];
+    } else {
+      // Month name date e.g. "15 Oct" or "15th October"
+      const monthMatch = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b/i);
+      if (monthMatch) {
+        const months = { jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06', jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12' };
+        const day = String(monthMatch[1]).padStart(2, '0');
+        const month = months[monthMatch[2].toLowerCase().slice(0, 3)] || '10';
+        const year = new Date().getFullYear();
+        date = `${year}-${month}-${day}`;
+      }
+    }
   }
 
-  // Extract from ... to ... or ... to ...
-  const explicitFromTo = text.match(/\bfrom\s+([A-Za-z\s]+?)\s+(?:to|->|—|–)\s+([A-Za-z\s]+?)(?:\s+(?:by|on|for|under|tomorrow|today|tonight|$))/i);
+  // Extract from ... to ...
+  const explicitFromTo = text.match(/\bfrom\s+([A-Za-z\s]+?)\s+(?:to|->|towards|into)\s+([A-Za-z\s]+?)(?:\s*(?:by|on|for|under|tomorrow|today|tonight|$))/i);
   if (explicitFromTo) {
     origin = explicitFromTo[1].trim();
     destination = explicitFromTo[2].trim();
   } else {
-    const simpleTo = text.match(/([A-Za-z\s]+?)\s+(?:to|->|—|–)\s+([A-Za-z\s]+?)(?:\s+(?:by|on|for|under|tomorrow|today|tonight|$))/i);
-    if (simpleTo) {
-      origin = simpleTo[1].replace(/\b(need|want|book|travel|find|take|tickets?|train|flight|bus|tomorrow|today|tonight)\b/gi, '').trim();
-      destination = simpleTo[2].trim();
+    // to <dest> from <orig>
+    const toFrom = text.match(/\b(?:to|towards|into)\s+([A-Za-z\s]+?)\s+from\s+([A-Za-z\s]+?)(?:\s*(?:by|on|for|under|tomorrow|today|tonight|$))/i);
+    if (toFrom) {
+      destination = toFrom[1].trim();
+      origin = toFrom[2].trim();
+    } else {
+      // <origin> to <destination>
+      const simpleTo = text.match(/(?:^|\b(?:need|want|find|give|show|search|book|take|tickets?|train|flight|bus))\s*([A-Za-z\s]+?)\s+(?:to|->)\s+([A-Za-z\s]+?)(?:\s*(?:by|on|for|under|tomorrow|today|tonight|$))/i);
+      if (simpleTo) {
+        origin = simpleTo[1].replace(/\b(need|want|book|travel|find|take|tickets?|train|flight|bus|tomorrow|today|tonight)\b/gi, '').trim();
+        destination = simpleTo[2].trim();
+      }
     }
   }
 
+  // Clean and resolve city aliases
+  if (origin) origin = resolveCityAlias(origin);
+  if (destination) destination = resolveCityAlias(destination);
+
   return {
-    origin: origin || 'Delhi',
-    destination: destination || 'Patna',
-    date: date || '2026-10-15',
+    origin: origin || '',
+    destination: destination || '',
+    date: date || '',
     budget,
     modePreferences: mode,
     passengers

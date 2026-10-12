@@ -7,9 +7,9 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
   const [parsedData, setParsedData] = useState(null)
   const [isListening, setIsListening] = useState(false)
 
-  async function handleParse(e) {
-    e?.preventDefault()
-    if (!query.trim()) return
+  async function executeParse(queryText) {
+    const text = String(queryText || '').trim()
+    if (!text) return
 
     setLoading(true)
     try {
@@ -18,14 +18,14 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'parse_query',
-          query: query.trim()
+          query: text
         })
       })
 
       const data = await res.json()
       if (data.ok && data.data) {
         setParsedData(data.data)
-        toast?.('Query parsed successfully. Review the understood parameters below.')
+        toast?.(`Parsed route: ${data.data.origin} to ${data.data.destination}`)
       } else {
         toast?.('Could not extract complete route. Please use the form fields below.')
       }
@@ -35,6 +35,12 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
     } finally {
       setLoading(false)
     }
+  }
+
+  async function handleParse(e) {
+    e?.preventDefault()
+    if (!query.trim()) return
+    executeParse(query)
   }
 
   function handleApply() {
@@ -55,7 +61,7 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
   function handleVoiceInput() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognition) {
-      toast?.('Speech recognition not supported in this browser.')
+      toast?.('Speech recognition is not supported in this browser.')
       return
     }
 
@@ -64,17 +70,28 @@ export default function NaturalLanguageQueryInput({ onApplyPlan, toast }) {
       recognition.lang = 'en-IN'
       recognition.interimResults = false
 
-      recognition.onstart = () => setIsListening(true)
+      recognition.onstart = () => {
+        setIsListening(true)
+        toast?.('Listening... Speak your journey, e.g. "tickets from Vijayawada to Delhi"')
+      }
       recognition.onend = () => setIsListening(false)
-      recognition.onerror = () => {
+      recognition.onerror = (e) => {
         setIsListening(false)
-        toast?.('Voice input error. Please type your query.')
+        const code = String(e?.error || '')
+        if (code === 'not-allowed' || code === 'service-not-allowed') {
+          toast?.('Microphone permission is blocked. Please allow mic access in your browser.')
+        } else if (code === 'no-speech') {
+          toast?.('No speech detected. Please speak closer to the microphone.')
+        } else {
+          toast?.(`Voice input stopped: ${code || 'browser error'}. Please type your query.`)
+        }
       }
       recognition.onresult = (event) => {
         const transcript = event.results?.[0]?.[0]?.transcript || ''
         if (transcript) {
           setQuery(transcript)
           toast?.(`Voice heard: "${transcript}"`)
+          executeParse(transcript)
         }
       }
 
