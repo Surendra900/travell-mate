@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App.jsx'
 import './index.css'
 import { initErrorMonitoring } from './utils/errorMonitoring'
@@ -10,11 +11,21 @@ initErrorMonitoring()
 const clerkPublishableKey = String(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '').trim()
 const authEnabled = /^pk_(test|live)_/.test(clerkPublishableKey)
 
+const appTree = (
+  <BrowserRouter>
+    <App authEnabled={authEnabled} />
+  </BrowserRouter>
+)
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App authEnabled={authEnabled} />
-    </BrowserRouter>
+    {authEnabled ? (
+      <ClerkProvider publishableKey={clerkPublishableKey}>
+        {appTree}
+      </ClerkProvider>
+    ) : (
+      appTree
+    )}
   </React.StrictMode>
 )
 
