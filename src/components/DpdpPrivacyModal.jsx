@@ -51,7 +51,7 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
       data-testid="dpdp-privacy-modal"
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm"
     >
-      <div className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl">
+      <div className="relative max-h-[calc(100dvh-2rem)] w-full max-w-xl overflow-y-auto rounded-xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl">
         <button
           type="button"
           aria-label="Close privacy modal"

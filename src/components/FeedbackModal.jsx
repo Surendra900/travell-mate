@@ -44,7 +44,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
       data-testid="feedback-modal"
       className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-fade-in"
     >
-      <div className="relative w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6 text-slate-100 shadow-2xl">
+      <div className="relative w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-slate-700 bg-slate-900 p-6 text-slate-100 shadow-2xl">
         <button
           type="button"
           onClick={onClose}

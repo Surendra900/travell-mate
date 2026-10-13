@@ -93,7 +93,7 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
       aria-modal="true"
       aria-labelledby="offline-pass-modal-title"
     >
-      <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/40 bg-slate-950 p-6 shadow-2xl text-slate-100 print:max-h-none print:w-full print:border-none print:bg-white print:text-black print:p-0">
+      <div className="relative max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/40 bg-slate-950 p-6 shadow-2xl text-slate-100 print:max-h-none print:w-full print:border-none print:bg-white print:text-black print:p-0">
         
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-800 pb-4 print:border-black">

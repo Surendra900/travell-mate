@@ -86,7 +86,7 @@ export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
       data-testid="demo-tour-modal"
       className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-md transition-all"
     >
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-700/80 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+      <div className="relative w-full max-w-2xl max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-slate-700/80 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
         {/* Close Button */}
         <button
           onClick={onClose}
