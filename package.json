@@ -15,8 +15,9 @@
     "etl:datameet": "node data/etl/import-datameet.mjs",
     "etl:railpull": "node data/etl/import-railpull.mjs",
     "test": "node --test tests/*.test.mjs",
+    "test:mobile": "node tests/mobile/run-suite.mjs",
     "launch-check": "node scripts/launch-checks/run-all.mjs",
-    "check": "npm run audit && npm test && npm run build"
+    "check": "npm run audit && npm test && npm run test:mobile && npm run build"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.61.10",
