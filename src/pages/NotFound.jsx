@@ -30,21 +30,21 @@ export default function NotFound() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white px-5 py-2.5 text-sm font-bold shadow-sm transition"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white px-5 py-2.5 text-sm font-bold shadow-sm transition"
           >
             <ArrowLeft size={16} /> Back to TravelMate Home
           </Link>
 
           <Link
             to="/planner"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 hover:border-sky-400 bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-800 px-5 py-2.5 text-sm font-bold shadow-sm transition"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 hover:border-sky-400 bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-800 px-5 py-2.5 text-sm font-bold shadow-sm transition"
           >
             <Search size={16} /> Open Route Finder
           </Link>
 
           <Link
             to="/safety"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 hover:border-red-400 bg-white hover:bg-red-50 text-slate-800 hover:text-red-700 px-5 py-2.5 text-sm font-bold shadow-sm transition"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 hover:border-red-400 bg-white hover:bg-red-50 text-slate-800 hover:text-red-700 px-5 py-2.5 text-sm font-bold shadow-sm transition"
           >
             <ShieldAlert size={16} /> Passes & Safety Hub
           </Link>

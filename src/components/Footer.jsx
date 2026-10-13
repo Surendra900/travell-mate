@@ -18,41 +18,41 @@ export default function Footer({ onOpenPrivacy, onOpenFeedback }) {
             © {new Date().getFullYear()} TravelMate AI. Built for India transit recovery.
           </small>
         </div>
-        <div className="tm-footer-col flex flex-col gap-2.5 text-sm">
+        <div className="tm-footer-col flex flex-col gap-1 text-sm">
           <strong className="text-white font-bold mb-1">Compliance & Legal</strong>
-          <NavLink to="/privacy" data-testid="footer-privacy-link" className="text-slate-300 hover:text-white transition-colors">
+          <NavLink to="/privacy" data-testid="footer-privacy-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
             Privacy Policy (DPDP)
           </NavLink>
-          <NavLink to="/terms" data-testid="footer-terms-link" className="text-slate-300 hover:text-white transition-colors">
+          <NavLink to="/terms" data-testid="footer-terms-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
             Terms of Service
           </NavLink>
-          <NavLink to="/disclaimer" data-testid="footer-disclaimer-link" className="text-slate-300 hover:text-white transition-colors">
+          <NavLink to="/disclaimer" data-testid="footer-disclaimer-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
             Statutory Disclaimers
           </NavLink>
-          <NavLink to="/cookies" data-testid="footer-cookies-link" className="text-slate-300 hover:text-white transition-colors">
+          <NavLink to="/cookies" data-testid="footer-cookies-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
             Cookie & Storage Policy
           </NavLink>
           <button
             type="button"
             data-testid="footer-dpdp-modal-btn"
-            className="text-left cursor-pointer hover:underline text-xs text-slate-300 hover:text-white transition-colors"
+            className="text-left cursor-pointer hover:underline text-xs text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center"
             onClick={onOpenPrivacy}
           >
             Manage DPDP Consent
           </button>
         </div>
-        <div className="tm-footer-col flex flex-col gap-2.5 text-sm">
+        <div className="tm-footer-col flex flex-col gap-1 text-sm">
           <strong className="text-white font-bold mb-1">Resources & Support</strong>
-          <NavLink to="/safety" className="text-slate-300 hover:text-white transition-colors">
+          <NavLink to="/safety" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
             Passes & Safety Hub
           </NavLink>
-          <NavLink to="/planner?mode=tatkal" className="text-slate-300 hover:text-white transition-colors">
+          <NavLink to="/planner?mode=tatkal" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
             Tatkal Desk
           </NavLink>
           <button
             type="button"
             data-testid="footer-feedback-btn"
-            className="text-left cursor-pointer hover:underline text-sky-400 hover:text-sky-300 font-bold text-sm transition-colors"
+            className="text-left cursor-pointer hover:underline text-sky-400 hover:text-sky-300 font-bold text-sm transition-colors py-2 min-h-[44px] flex items-center"
             onClick={onOpenFeedback}
           >
             Give Feedback

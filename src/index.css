@@ -55,7 +55,14 @@
   box-sizing: border-box;
 }
 
-html,body,#root{min-width:320px;min-height:100%;overflow-x:hidden}
+html, body, #root {
+  min-width:320px;
+  min-height: 100%;
+}
+
+.overflow-x-guard {
+  overflow-x:hidden;
+}
 
 body {
   background-color: var(--tm-bg);
@@ -190,7 +197,7 @@ a {
   border: 1px solid var(--tm-border-strong);
   background-color: #ffffff;
   color: var(--tm-ink);
-  font-size: 15px;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -374,6 +381,7 @@ a {
   bottom: 24px;
   transform: translateX(-50%);
   z-index: 95;
+  pointer-events: none;
   max-width: min(90vw, 540px);
   padding: 12px 20px;
   border-radius: var(--tm-radius-pill);
@@ -537,8 +545,88 @@ a {
   }
 }
 
-/* Touch targets */
-button, a.btn, input, select { min-height: 44px; }
+/* Touch targets and mobile platform rules */
+button, a.btn, input, select, textarea { min-height: 44px; }
+button, a, input, select, textarea { touch-action: manipulation; }
+
+/* Language Selector Control */
+.language-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 8px;
+  border: 1px solid var(--tm-border);
+  border-radius: var(--tm-radius);
+  background-color: #ffffff;
+  color: var(--tm-ink);
+  font-size: 14px;
+}
+.language-control select {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: inherit;
+  cursor: pointer;
+  min-height: 38px;
+}
+
+/* Voice Search Panel Overlay */
+.voice-panel {
+  position: fixed;
+  inset: 16px;
+  margin: auto;
+  z-index: 100;
+  max-width: 480px;
+  height: fit-content;
+  max-height: calc(100dvh - 32px);
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: var(--tm-radius-lg);
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dialog-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dialog-close-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: var(--tm-radius);
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.dialog-close-button:hover {
+  color: #ffffff;
+  background-color: #1e293b;
+}
+
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Ensure dialog containers fit inside dynamic viewport on phones */
+  [role="dialog"] > div {
+    max-height: calc(100dvh - 2rem) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
 
 /* Mobile & Responsive Rules */
 @media (max-width: 1024px) {
@@ -552,13 +640,13 @@ button, a.btn, input, select { min-height: 44px; }
     display: none;
   }
   .tm-menu {
-    display: block;
+    display: flex;
   }
 }
 
 @media (max-width: 640px) {
   .assistant-panel {
-    height: 100dvh;
+    height: calc(100dvh - 1rem);
   }
   .assistant-launcher{right:16px;bottom:calc(96px + env(safe-area-inset-bottom, 0px));z-index:75}
   .floating-sos{right:12px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:70}
@@ -583,6 +671,13 @@ button, a.btn, input, select { min-height: 44px; }
 }
 
 .mobile-safe-dock { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Universal input and select sizing for legibility and iOS Safari auto-zoom prevention */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+select,
+textarea {
+  font-size: 16px !important;
+}
 
 /* RTL Support */
 [dir="rtl"] {
