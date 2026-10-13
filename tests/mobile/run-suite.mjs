@@ -21,7 +21,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const ROOT = path.resolve(__dirname, '../..')
 const BASE_URL = process.env.BASE_URL || 'http://127.0.0.1:5173'
-const CAPTURE_DIR = process.env.CAPTURE_MODE === 'after' ? 'after' : 'before'
+const CAPTURE_DIR = process.env.CAPTURE_MODE === 'before' ? 'before' : 'after'
 
 async function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
@@ -104,13 +104,11 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
             }
           }
 
-          // 1. Capture visual evidence
           const screenshotName = `${route.id}.png`
           const screenshotPath = path.resolve(devDir, screenshotName)
           const relScreenshotPath = `docs/mobile/screenshots/${CAPTURE_DIR}/${dev.id}/${screenshotName}`
-          await page.screenshot({ path: screenshotPath, fullPage: true })
 
-          // 2. Run Horizontal Overflow Detector
+          // 1. Run Horizontal Overflow Detector
           const overflow = await detectHorizontalOverflow(page)
           if (overflow.hasOverflow) {
             const offenderNames = overflow.offenders.map(o => o.selector).join(', ')
@@ -126,7 +124,7 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
             })
           }
 
-          // 3. Run Obscured Interactive Controls Detector
+          // 2. Run Obscured Interactive Controls Detector
           const obscured = await detectObscuredControls(page)
           if (obscured.length > 0) {
             for (const item of obscured.slice(0, 3)) {
@@ -143,7 +141,7 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
             }
           }
 
-          // 4. Run Touch Target Detector
+          // 3. Run Touch Target Detector
           const targetViolations = await detectTouchTargetViolations(page)
           if (targetViolations.length > 0) {
             const under24 = targetViolations.filter(v => v.type === 'under_wcag_24px')
@@ -161,7 +159,7 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
             }
           }
 
-          // 5. Run Typography and Input Font Size Detector
+          // 4. Run Typography and Input Font Size Detector
           const typoViolations = await detectTypographyViolations(page)
           const inputFontViolations = typoViolations.filter(v => v.type === 'input_font_under_16px')
           if (inputFontViolations.length > 0) {
@@ -177,7 +175,7 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
             })
           }
 
-          // 6. Run Viewport & Fixed Elements Detector
+          // 5. Run Viewport & Fixed Elements Detector
           const fixedViolations = await detectViewportFixedViolations(page)
           if (fixedViolations.length > 0) {
             for (const v of fixedViolations) {
@@ -194,7 +192,7 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
             }
           }
 
-          // 7. A11y & Structural Scan (Sample primary devices)
+          // 6. A11y & Structural Scan (Sample primary devices)
           if (dev.id === 'mobile-360' || dev.id === 'mobile-390') {
             const a11yErrors = await runA11yScan(page)
             if (a11yErrors.length > 0) {
@@ -212,6 +210,9 @@ export async function runMobileSuite({ captureOnly = false, engine = 'chromium' 
               }
             }
           }
+
+          // 7. Capture visual evidence
+          await page.screenshot({ path: screenshotPath, fullPage: true })
 
           process.stdout.write('.')
         } catch (err) {

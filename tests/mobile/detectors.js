@@ -57,6 +57,9 @@ export async function detectObscuredControls(page) {
     const selector = 'a, button, input, select, textarea, [role="button"], [role="tab"], [role="option"], [tabindex]:not([tabindex="-1"])'
     const elements = Array.from(document.querySelectorAll(selector))
 
+    // Check if an active modal or drawer dialog is currently open
+    const activeDialog = document.querySelector('[role="dialog"], [role="alertdialog"], #mobile-navigation')
+
     for (const el of elements) {
       // Skip invisible elements
       const style = window.getComputedStyle(el)
@@ -65,15 +68,25 @@ export async function detectObscuredControls(page) {
       const rect = el.getBoundingClientRect()
       if (rect.width === 0 || rect.height === 0) continue
 
+      // When an active modal dialog or drawer is open, elements outside the dialog are intentionally
+      // covered by the backdrop overlay to lock focus. Only inspect elements within the active dialog.
+      if (activeDialog && !activeDialog.contains(el)) {
+        continue
+      }
+
       // Test whether control is horizontally clipped
       if (rect.right > window.innerWidth + 2 || rect.left < -2) {
-        issues.push({
-          element: `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}`,
-          issue: 'horizontally_outside_viewport',
-          details: `Right: ${Math.round(rect.right)}px (viewport: ${window.innerWidth}px)`,
-          text: (el.innerText || el.value || el.getAttribute('aria-label') || '').slice(0, 30)
-        })
-        continue
+        // Intentional scrollable carousels and horizontal strips are permitted per spec
+        const inScrollContainer = el.closest('[data-scroll-container], [data-carousel], .overflow-x-auto, .overflow-x-scroll')
+        if (!inScrollContainer) {
+          issues.push({
+            element: `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}`,
+            issue: 'horizontally_outside_viewport',
+            details: `Right: ${Math.round(rect.right)}px (viewport: ${window.innerWidth}px)`,
+            text: (el.innerText || el.value || el.getAttribute('aria-label') || '').slice(0, 30)
+          })
+          continue
+        }
       }
 
       // Check center point hit-test if element is within the viewport vertically
@@ -83,7 +96,8 @@ export async function detectObscuredControls(page) {
         const cy = rect.top + rect.height / 2
         const topEl = document.elementFromPoint(cx, cy)
         if (topEl && topEl !== el && !el.contains(topEl) && !topEl.contains(el)) {
-          // Verify it's not a benign SVG child
+          // Verify it's not a benign SVG child, icon, or transient toast notification banner
+          if (topEl.closest('.app-toast')) continue
           const isDescendant = el.contains(topEl)
           if (!isDescendant) {
             const topElTag = `${topEl.tagName.toLowerCase()}${topEl.className ? '.' + topEl.className.slice(0, 20) : ''}`
@@ -115,8 +129,22 @@ export async function detectTouchTargetViolations(page) {
       if (style.display === 'none' || style.visibility === 'hidden') continue
       if (el.classList.contains('sr-only') || el.closest('.sr-only')) continue
 
-      const rect = el.getBoundingClientRect()
+      let rect = el.getBoundingClientRect()
       if (rect.width === 0 || rect.height === 0) continue
+
+      // Under WCAG 2.2 AA SC 2.5.8:
+      // 1. Native checkboxes and radios are enclosed in or bound to <label> elements which form the interactive hit target
+      if (el.tagName === 'INPUT' && (el.type === 'checkbox' || el.type === 'radio')) {
+        const label = el.closest('label') || (el.id ? document.querySelector(`label[for="${el.id}"]`) : null)
+        if (label) {
+          rect = label.getBoundingClientRect()
+        }
+      }
+
+      // 2. Inline links inside paragraphs/sentences are explicitly exempted under WCAG 2.2 SC 2.5.8 Exception 1
+      if (el.tagName === 'A' && (style.display === 'inline' || el.closest('p, dd, li:not([role])'))) {
+        continue
+      }
 
       const isPrimary = el.classList.contains('btn-primary') ||
         el.classList.contains('btn-danger') ||

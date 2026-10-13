@@ -248,3 +248,22 @@ The authentic timetable data pipeline ingests datasets from `datameet/railways` 
    python3 tools/railpull/ntes/poll_delays.py --window 2 --out data/out/delays.json
    ```
 
+## Mobile testing
+
+TravelMate includes an automated mobile regression and layout detector suite powered by Playwright and axe-core. It evaluates 13 screen viewports (320px to 1440px) across all 16 application routes and states.
+
+Run the mobile detector suite:
+```bash
+npm run test:mobile
+```
+
+The suite automatically checks for:
+- Horizontal overflow spillage (`document.documentElement.scrollWidth > clientWidth`)
+- Cut-off, hidden, or obscured interactive controls
+- Touch target sizing (minimum 24px per WCAG 2.2 AA SC 2.5.8, 44px primary standard)
+- Input font sizing (minimum 16px to prevent iOS Safari automatic zoom)
+- Modal dynamic viewport constraints (`calc(100dvh - safe-area)`)
+- Accessibility compliance via `@axe-core/playwright`
+
+Visual regression evidence is captured side by side in `docs/mobile/screenshots/index.html`.
+
