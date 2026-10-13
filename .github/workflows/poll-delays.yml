@@ -23,9 +23,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: setup-python@v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -33,9 +38,11 @@ jobs:
           pip install -r tools/railpull/requirements.txt
 
       - name: Run delay poller snapshot
+        continue-on-error: true
         run: |
-          python tools/railpull/ntes/poll_delays.py --window ${{ github.event.inputs.windowHours || '2' }}
+          python tools/railpull/ntes/poll_delays.py --hours ${{ github.event.inputs.windowHours || '2' }} --stations 20
 
       - name: Import delay snapshot
+        continue-on-error: true
         run: |
-          node data/etl/import-railpull.mjs
+          node data/etl/import-railpull.mjs --dir tools/railpull/data/out
