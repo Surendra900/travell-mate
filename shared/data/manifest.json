@@ -26,11 +26,12 @@
       "count": 22
     },
     "airports": {
-      "source": "OurAirports Open Database / DGCA India",
-      "license": "Creative Commons Zero (CC0) / Public Domain",
-      "retrievedAt": "2026-10-01",
+      "source": "OurAirports Open Database / mwgg Airports",
+      "license": "Creative Commons Zero (CC0) / MIT",
+      "retrievedAt": "2026-10-13",
       "provenance": "TIMETABLE",
-      "count": 17
+      "count": 147,
+      "checksum": "19d720f14cd94ffba3bd5c58bbf92166cab0bfd2516c1d55ec694b365aae60d3"
     },
     "trainsAndStops": {
       "source": "Indian Railways Timetable Dataset / Open Rail Data Commons",
@@ -67,5 +68,14 @@
     },
     "importedAt": "2026-10-12T11:49:02.128Z"
   },
-  "updatedAt": "2026-10-12T11:49:02.386Z"
+  "updatedAt": "2026-10-12T11:49:02.386Z",
+  "ourairports": {
+    "id": "ver_ourairports_2026",
+    "source": "davidmegginson/ourairports-data",
+    "secondarySource": "mwgg/Airports",
+    "license": "CC0 1.0 Universal / MIT",
+    "sourceReference": "https://github.com/davidmegginson/ourairports-data",
+    "checksum": "19d720f14cd94ffba3bd5c58bbf92166cab0bfd2516c1d55ec694b365aae60d3",
+    "airportCount": 147
+  }
 }

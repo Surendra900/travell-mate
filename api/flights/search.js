@@ -17,15 +17,30 @@ export function airlineIataCode(value = '') {
 
 const airportAliases = {
   HYDERABAD: 'HYD', SECUNDERABAD: 'HYD', DELHI: 'DEL', 'NEW DELHI': 'DEL',
-  RAJAHMUNDRY: 'RJA', RAJAMAHENDRAVARAM: 'RJA', MUMBAI: 'BOM',
-  BENGALURU: 'BLR', BANGALORE: 'BLR', CHENNAI: 'MAA', KOCHI: 'COK',
-  ERNAKULAM: 'COK', VIJAYAWADA: 'VGA', PUNE: 'PNQ', KOLKATA: 'CCU',
-  GOA: 'GOI', VISAKHAPATNAM: 'VTZ', VIZAG: 'VTZ', TIRUPATI: 'TIR'
+  RAJAHMUNDRY: 'RJA', RAJAMAHENDRAVARAM: 'RJA', MUMBAI: 'BOM', BOMBAY: 'BOM',
+  BENGALURU: 'BLR', BANGALORE: 'BLR', CHENNAI: 'MAA', MADRAS: 'MAA',
+  KOCHI: 'COK', COCHIN: 'COK', ERNAKULAM: 'COK', VIJAYAWADA: 'VGA',
+  PUNE: 'PNQ', KOLKATA: 'CCU', CALCUTTA: 'CCU', GOA: 'GOI', 'GOA DABOLIM': 'GOI',
+  'GOA MOPA': 'GOX', VISAKHAPATNAM: 'VTZ', VIZAG: 'VTZ', TIRUPATI: 'TIR',
+  AHMEDABAD: 'AMD', JAIPUR: 'JAI', LUCKNOW: 'LKO', PATNA: 'PAT',
+  GUWAHATI: 'GAU', CHANDIGARH: 'IXC', BHUBANESWAR: 'BBI', VARANASI: 'VNS',
+  SRINAGAR: 'SXR', JAMMU: 'IXJ', AMRITSAR: 'ATQ', INDORE: 'IDR',
+  BHOPAL: 'BHO', NAGPUR: 'NAG', COIMBATORE: 'CJB', TRICHY: 'TRZ',
+  TIRUCHIRAPPALLI: 'TRZ', MADURAI: 'IXM', KOZHIKODE: 'CCJ', CALICUT: 'CCJ',
+  KANNUR: 'CNN', MANGALURU: 'IXE', MANGALORE: 'IXE', HUBBALLI: 'HBX',
+  MYSURU: 'MYQ', MYSORE: 'MYQ', SURAT: 'STV', VADODARA: 'BDQ',
+  RAJKOT: 'RAJ', UDAIPUR: 'UDR', JODHPUR: 'JDH', JAISALMER: 'JSA',
+  DEHRADUN: 'DED', AYODHYA: 'AYJ', GWALIOR: 'GWL', JABALPUR: 'JLR',
+  RAIPUR: 'RPR', RANCHI: 'IXR', BAGDOGRA: 'IXB', SILIGURI: 'IXB',
+  IMPHAL: 'IMF', AIZAWL: 'AJL', DIMAPUR: 'DMU', SHILLONG: 'SHL',
+  AGARTALA: 'IXA', SILCHAR: 'IXS', DIBRUGARH: 'DIB', 'PORT BLAIR': 'IXZ'
 }
 
 export function airportCode(value = '') {
   const normalized = String(value || '').trim().toUpperCase().replace(/\s+/g, ' ')
   if (/^[A-Z]{3}$/.test(normalized)) return normalized
+  const codeInParen = normalized.match(/\(([A-Z]{3})\)/)
+  if (codeInParen && /^[A-Z]{3}$/.test(codeInParen[1])) return codeInParen[1]
   return airportAliases[normalized] || ''
 }
 
@@ -50,7 +65,7 @@ export function isPlanRestriction(payload) {
     message.includes('does not support this api function')
 }
 
-async function requestFlights(baseUrl, params) {
+async function requestAviationstack(baseUrl, params) {
   return fetchJsonWithTimeout(
     `${baseUrl.replace(/\/$/, '')}/flights?${params.toString()}`,
     { headers: { Accept: 'application/json' }, cache: 'no-store' },
@@ -58,7 +73,77 @@ async function requestFlights(baseUrl, params) {
   )
 }
 
-function normalizeRows(payload, dep, arr) {
+async function requestSkyscanner(host, key, origin, destination, date) {
+  const today = new Date().toISOString().slice(0, 10)
+  const searchDate = (date && date >= today) ? date : today
+  const url = `https://${host}/api/v1/search?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&date=${encodeURIComponent(searchDate)}&currency=INR&market=IN&locale=en-GB`
+  return fetchJsonWithTimeout(
+    url,
+    {
+      headers: {
+        'x-rapidapi-key': key,
+        'x-rapidapi-host': host,
+        Accept: 'application/json'
+      },
+      cache: 'no-store'
+    },
+    15_000
+  )
+}
+
+function normalizeSkyscannerRows(payload, dep, arr, requestedAirline, airlineIata) {
+  const results = Array.isArray(payload?.results) ? payload.results : []
+  const currency = payload?.currency || 'INR'
+  const filterByAirline = Boolean(airlineIata && requestedAirline && !/^(all|all airlines|any|other)$/i.test(requestedAirline))
+
+  const mapped = []
+  for (let index = 0; index < results.length; index++) {
+    const item = results[index]
+    const leg = item.legs?.[0] || {}
+    const firstSegment = leg.segments?.[0] || {}
+    const carrierName = item.carriers?.[0] || 'Airline'
+    const flightCode = firstSegment.flight || item.id?.split('-')?.[0] || `FLIGHT-${index + 1}`
+
+    if (filterByAirline) {
+      const matchName = carrierName.toLowerCase().includes(requestedAirline.toLowerCase())
+      const matchCode = flightCode.toUpperCase().startsWith(airlineIata.toUpperCase())
+      if (!matchName && !matchCode) continue
+    }
+
+    const durMin = leg.dur_min || firstSegment.dur_min || 0
+    const hours = Math.floor(durMin / 60)
+    const mins = durMin % 60
+    const durationStr = durMin ? `${hours ? `${hours}h ` : ''}${mins}m` : 'Direct'
+    const stopsStr = leg.stops === 0 ? 'Non-stop' : `${leg.stops} stop${leg.stops > 1 ? 's' : ''}`
+
+    const depTime = leg.dep ? leg.dep.replace(/.*T(\d{2}:\d{2}).*/, '$1') : 'Check airline'
+    const arrTime = leg.arr ? leg.arr.replace(/.*T(\d{2}:\d{2}).*/, '$1') : 'Check airline'
+
+    mapped.push({
+      id: item.id || `skyscanner-${index}`,
+      type: 'flight',
+      serviceName: `${carrierName} ${flightCode}`.trim(),
+      code: flightCode,
+      from: `${leg.from || dep} (${leg.from || dep})`,
+      to: `${leg.to || arr} (${leg.to || arr})`,
+      departure: depTime,
+      arrival: arrTime,
+      duration: durationStr,
+      stops: stopsStr,
+      price: item.price_raw || (typeof item.price === 'number' ? item.price : null),
+      priceFormatted: item.price || (item.price_raw ? `₹${item.price_raw.toLocaleString('en-IN')}` : null),
+      currency: currency,
+      cabins: ['Economy'],
+      provider: 'Skyscanner Flights (RapidAPI)',
+      sourceBadge: 'LIVE_PRICE_SCHEDULE',
+      provenance: 'LIVE_OTA_AGGREGATOR',
+      verification: 'Live airfare and schedule from Skyscanner Flights network. Fares subject to live seat inventory.'
+    })
+  }
+  return mapped
+}
+
+function normalizeAviationstackRows(payload, dep, arr) {
   const rows = Array.isArray(payload?.data) ? payload.data : []
   return rows.map((item, index) => ({
     id: item.flight?.iata || item.flight?.number || `aviationstack-${index}`,
@@ -99,25 +184,60 @@ export default async function handler(req, res) {
   if (!wantsAllAirlines && !airlineIata) return res.status(400).json({ ok: false, mode: 'invalid', message: 'Choose All airlines or a supported airline/IATA code.', results: [] })
   if (!validDate(date)) return res.status(400).json({ ok: false, mode: 'invalid', message: 'Date must use YYYY-MM-DD format.', results: [] })
 
-  const apiKey = String(process.env.AVIATIONSTACK_API_KEY || '').trim()
-  const baseUrl = process.env.AVIATIONSTACK_BASE_URL || 'https://api.aviationstack.com/v1'
-  if (!apiKey || /^(your_|replace_|example|demo)/i.test(apiKey)) {
+  const rapidFlightHost = String(process.env.RAPIDAPI_FLIGHT_HOST || '').trim()
+  const rapidFlightKey = String(process.env.RAPIDAPI_FLIGHT_KEY || process.env.RAPIDAPI_KEY || '').trim()
+  const hasRapidFlight = Boolean(rapidFlightHost && rapidFlightKey && !/^(your_|replace_|example|demo)/i.test(rapidFlightKey))
+
+  const aviationApiKey = String(process.env.AVIATIONSTACK_API_KEY || '').trim()
+  const aviationBaseUrl = process.env.AVIATIONSTACK_BASE_URL || 'https://api.aviationstack.com/v1'
+  const hasAviation = Boolean(aviationApiKey && !/^(your_|replace_|example|demo)/i.test(aviationApiKey))
+
+  // 1. Primary: RapidAPI Skyscanner Flights if configured
+  if (hasRapidFlight) {
+    try {
+      const { response, payload } = await requestSkyscanner(rapidFlightHost, rapidFlightKey, dep, arr, date)
+      if (response.ok && payload?.success !== false && Array.isArray(payload?.results)) {
+        const results = normalizeSkyscannerRows(payload, dep, arr, requestedAirline, airlineIata)
+        return res.status(200).json({
+          ok: true,
+          mode: 'live',
+          provider: 'Skyscanner Flights',
+          sourceBadge: results.length ? 'LIVE_PRICE_SCHEDULE' : 'PROVIDER_VERIFICATION_REQUIRED',
+          message: results.length
+            ? `Live flight fares and schedules loaded for ${wantsAllAirlines ? 'all airlines' : requestedAirline}.`
+            : 'Skyscanner returned no matching flight itineraries for this route and date.',
+          count: results.length,
+          requestedDate: date || null,
+          requestedAirline: wantsAllAirlines ? 'All airlines' : requestedAirline,
+          airlineIata: airlineIata || null,
+          airlineFilterApplied: Boolean(airlineIata),
+          dateFilterApplied: Boolean(date),
+          results
+        })
+      }
+    } catch (_err) {
+      // Fall through to Aviationstack if available
+    }
+  }
+
+  // 2. Secondary / Fallback: Aviationstack
+  if (!hasAviation) {
     return res.status(503).json({
       ok: false,
       mode: 'provider-unconfigured',
-      provider: 'Aviationstack',
+      provider: 'Flight Provider',
       sourceBadge: 'Provider configuration required',
-      message: 'AVIATIONSTACK_API_KEY is not configured in this deployment. Add it to the same Vercel project and environment, then redeploy.',
+      message: 'Flight search provider (RAPIDAPI_FLIGHT_HOST or AVIATIONSTACK_API_KEY) is not configured in this deployment. Add credentials in environment settings, then redeploy.',
       results: []
     })
   }
 
   try {
-    const params = new URLSearchParams({ access_key: apiKey, dep_iata: dep, arr_iata: arr, limit: wantsAllAirlines ? '50' : '25' })
+    const params = new URLSearchParams({ access_key: aviationApiKey, dep_iata: dep, arr_iata: arr, limit: wantsAllAirlines ? '50' : '25' })
     if (date) params.set('flight_date', date)
     if (airlineIata) params.set('airline_iata', airlineIata)
 
-    let { response, payload } = await requestFlights(baseUrl, params)
+    let { response, payload } = await requestAviationstack(aviationBaseUrl, params)
     let dateFilterApplied = Boolean(date)
     let planRestrictionBypassed = false
 
@@ -126,7 +246,7 @@ export default async function handler(req, res) {
     // honest current-status check instead of a generic failure.
     if ((!response.ok || payload?.error) && date && isPlanRestriction(payload)) {
       params.delete('flight_date')
-      const retry = await requestFlights(baseUrl, params)
+      const retry = await requestAviationstack(aviationBaseUrl, params)
       response = retry.response
       payload = retry.payload
       dateFilterApplied = false
@@ -135,7 +255,7 @@ export default async function handler(req, res) {
 
     if (!response.ok || payload?.error) throw aviationError(payload, response)
 
-    const results = normalizeRows(payload, dep, arr)
+    const results = normalizeAviationstackRows(payload, dep, arr)
     let message
     if (planRestrictionBypassed) {
       message = results.length

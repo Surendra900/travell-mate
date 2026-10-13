@@ -154,6 +154,7 @@ export default function NormalPlanner({
             <div>
               <StationAutocomplete
                 id="planner-from-autocomplete"
+                mode={plan.transportMode}
                 label={routeLabels.from}
                 value={plan.from}
                 inputTestId="planner-from-input"
@@ -183,6 +184,7 @@ export default function NormalPlanner({
             <div>
               <StationAutocomplete
                 id="planner-to-autocomplete"
+                mode={plan.transportMode}
                 label={routeLabels.to}
                 value={plan.to}
                 inputTestId="planner-to-input"

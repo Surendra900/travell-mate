@@ -301,6 +301,51 @@ test('flight handler uses the server-side key and returns normalized live rows',
   }
 })
 
+test('flight handler queries RapidAPI Skyscanner Flights when configured', async () => {
+  const originalFetch = globalThis.fetch
+  const origHost = process.env.RAPIDAPI_FLIGHT_HOST
+  const origKey = process.env.RAPIDAPI_FLIGHT_KEY
+  try {
+    process.env.RAPIDAPI_FLIGHT_HOST = 'skyscanner-flights4.p.rapidapi.com'
+    process.env.RAPIDAPI_FLIGHT_KEY = 'test-rapid-key'
+    globalThis.fetch = async () => new Response(JSON.stringify({
+      success: true,
+      currency: 'INR',
+      results: [
+        {
+          id: 'itin-101',
+          price_raw: 5400,
+          price: '₹5,400',
+          carriers: ['IndiGo'],
+          legs: [{
+            from: 'DEL',
+            to: 'BOM',
+            dep: '2026-10-30T10:00:00',
+            arr: '2026-10-30T12:15:00',
+            dur_min: 135,
+            stops: 0,
+            segments: [{ flight: '6E204', from: 'DEL', to: 'BOM' }]
+          }]
+        }
+      ]
+    }), { status: 200, headers: { 'content-type': 'application/json' } })
+
+    const { default: handler } = await import('../api/flights/search.js')
+    const output = await callHandler(handler, { from: 'Delhi', to: 'Mumbai', date: '2026-10-30' })
+    assert.equal(output.status, 200)
+    assert.equal(output.body.mode, 'live')
+    assert.equal(output.body.provider, 'Skyscanner Flights')
+    assert.equal(output.body.count, 1)
+    assert.equal(output.body.results[0].code, '6E204')
+    assert.equal(output.body.results[0].price, 5400)
+    assert.equal(output.body.results[0].stops, 'Non-stop')
+  } finally {
+    globalThis.fetch = originalFetch
+    restoreEnv('RAPIDAPI_FLIGHT_HOST', origHost)
+    restoreEnv('RAPIDAPI_FLIGHT_KEY', origKey)
+  }
+})
+
 test('All airlines omits airline_iata while a selected airline sends the provider filter', async () => {
   const originalFetch = globalThis.fetch
   const originalKey = process.env.AVIATIONSTACK_API_KEY
