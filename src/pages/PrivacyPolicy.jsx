@@ -23,7 +23,7 @@ export default function PrivacyPolicy({ toast }) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-slate-900" data-testid="privacy-policy-page">
       <div className="mb-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors">
+        <Link to="/" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors py-2 px-1">
           <ArrowLeft size={16} /> Back to TravelMate Home
         </Link>
       </div>

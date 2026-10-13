@@ -19,7 +19,7 @@ export default function CookiePolicy({ toast }) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-slate-900" data-testid="cookie-policy-page">
       <div className="mb-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors">
+        <Link to="/" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors py-2 px-1">
           <ArrowLeft size={16} /> Back to TravelMate Home
         </Link>
       </div>
@@ -83,7 +83,7 @@ export default function CookiePolicy({ toast }) {
           <p className="mt-2 text-xs">
             The application stores functional data directly on your device via the HTML5 LocalStorage and Service Worker Cache APIs:
           </p>
-          <div className="mt-3 overflow-x-auto">
+          <div className="mt-3 overflow-x-auto focus:outline-none focus:ring-1 focus:ring-sky-500 rounded-lg" tabIndex={0} role="region" aria-label="Storage keys and retention details">
             <table className="w-full text-left text-xs border border-slate-200 rounded-lg">
               <thead className="bg-slate-50 text-slate-900 border-b border-slate-200 font-bold">
                 <tr>
