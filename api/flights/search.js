@@ -33,15 +33,89 @@ const airportAliases = {
   DEHRADUN: 'DED', AYODHYA: 'AYJ', GWALIOR: 'GWL', JABALPUR: 'JLR',
   RAIPUR: 'RPR', RANCHI: 'IXR', BAGDOGRA: 'IXB', SILIGURI: 'IXB',
   IMPHAL: 'IMF', AIZAWL: 'AJL', DIMAPUR: 'DMU', SHILLONG: 'SHL',
-  AGARTALA: 'IXA', SILCHAR: 'IXS', DIBRUGARH: 'DIB', 'PORT BLAIR': 'IXZ'
+  AGARTALA: 'IXA', SILCHAR: 'IXS', DIBRUGARH: 'DIB', 'PORT BLAIR': 'IXZ',
+  VIZIANAGARAM: 'VTZ', KOLLAM: 'TRV', QUILON: 'TRV'
 }
+
+// Maps Indian Railways station codes to their corresponding or nearest commercial civil airport IATA codes
+const railwayToAirportMap = {
+  RJY: 'RJA', // Rajahmundry railway station (RJY) -> Rajahmundry Airport (RJA)
+  NDLS: 'DEL', DLI: 'DEL', NZM: 'DEL', ANVT: 'DEL', DEE: 'DEL',
+  BCT: 'BOM', MMCT: 'BOM', CSMT: 'BOM', CSTM: 'BOM', LTT: 'BOM', BDTS: 'BOM',
+  MAS: 'MAA', MS: 'MAA', TBM: 'MAA',
+  SBC: 'BLR', YPR: 'BLR', SMVB: 'BLR',
+  HYB: 'HYD', SC: 'HYD', KCG: 'HYD',
+  HWH: 'CCU', SDAH: 'CCU', KOAA: 'CCU', SHM: 'CCU',
+  PNBE: 'PAT', DNR: 'PAT', RJPB: 'PAT',
+  BZA: 'VGA', // Vijayawada railway station (BZA) -> Vijayawada Airport (VGA)
+  VSKP: 'VTZ', // Visakhapatnam railway station (VSKP) -> Visakhapatnam Airport (VTZ)
+  VZM: 'VTZ', // Vizianagaram railway station (VZM) -> nearest airport Visakhapatnam (VTZ)
+  QLN: 'TRV', // Kollam railway station (QLN) -> nearest airport Thiruvananthapuram (TRV)
+  TVC: 'TRV', KCVL: 'TRV',
+  ERS: 'COK', ERN: 'COK',
+  ADI: 'AMD',
+  PUNE: 'PNQ',
+  BSB: 'VNS', DDU: 'VNS',
+  CNB: 'KNU',
+  ASR: 'ATQ',
+  JAT: 'IXJ',
+  MYS: 'MYQ',
+  GKP: 'GOP',
+  NGP: 'NAG',
+  TPTY: 'TIR', RU: 'TIR',
+  CBE: 'CJB',
+  MDU: 'IXM',
+  CLT: 'CCJ',
+  MAQ: 'IXE',
+  ST: 'STV',
+  BRC: 'BDQ',
+  RJT: 'RAJ',
+  UDZ: 'UDR',
+  JU: 'JDH',
+  JSM: 'JSA',
+  DDN: 'DED',
+  AY: 'AYJ', AYC: 'AYJ',
+  GWL: 'GWL',
+  JBP: 'JLR',
+  R: 'RPR',
+  RNC: 'IXR'
+}
+
+const VERIFIED_IATA_SET = new Set([
+  'DEL', 'BOM', 'BLR', 'MAA', 'HYD', 'CCU', 'AMD', 'PNQ', 'COK', 'GOI', 'GOX',
+  'VGA', 'VTZ', 'TIR', 'RJA', 'PAT', 'GAU', 'TRV', 'BBI', 'IXC', 'VNS', 'IXR',
+  'SXR', 'IXJ', 'ATQ', 'IDR', 'BHO', 'NAG', 'CJB', 'TRZ', 'IXM', 'CCJ', 'CNN',
+  'IXE', 'HBX', 'MYQ', 'STV', 'BDQ', 'RAJ', 'UDR', 'JDH', 'JSA', 'DED', 'AYJ',
+  'GWL', 'JLR', 'RPR', 'IXB', 'IMF', 'AJL', 'DMU', 'SHL', 'IXA', 'IXS', 'DIB',
+  'IXZ', 'DXB', 'SIN', 'DOH', 'LHR', 'BKK', 'KUL'
+])
 
 export function airportCode(value = '') {
   const normalized = String(value || '').trim().toUpperCase().replace(/\s+/g, ' ')
-  if (/^[A-Z]{3}$/.test(normalized)) return normalized
-  const codeInParen = normalized.match(/\(([A-Z]{3})\)/)
-  if (codeInParen && /^[A-Z]{3}$/.test(codeInParen[1])) return codeInParen[1]
-  return airportAliases[normalized] || ''
+  if (!normalized) return ''
+
+  // 1. Check parenthesized codes: e.g. "Rajahmundry (RJY)" or "India (QLN)"
+  const codeInParen = normalized.match(/\(([A-Z0-9]{2,4})\)/)
+  if (codeInParen) {
+    const extracted = codeInParen[1]
+    if (railwayToAirportMap[extracted]) return railwayToAirportMap[extracted]
+    if (VERIFIED_IATA_SET.has(extracted)) return extracted
+    const cityPrefix = normalized.replace(/\s*\([A-Z0-9]{2,4}\)\s*/, '').trim()
+    if (airportAliases[cityPrefix]) return airportAliases[cityPrefix]
+  }
+
+  // 2. Check direct railway-to-airport mapping
+  if (railwayToAirportMap[normalized]) return railwayToAirportMap[normalized]
+
+  // 3. Check city/region aliases
+  if (airportAliases[normalized]) return airportAliases[normalized]
+
+  // 4. Exact 3-letter IATA code
+  if (/^[A-Z]{3}$/.test(normalized)) {
+    if (VERIFIED_IATA_SET.has(normalized)) return normalized
+  }
+
+  return ''
 }
 
 function validDate(value = '') {

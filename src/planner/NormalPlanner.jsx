@@ -64,7 +64,7 @@ export default function NormalPlanner({
 
   function handleTransportChange(value) {
     const nextClass = getCabinOptions(value)[0]
-    update({
+    const patch = {
       transportMode: value,
       classType: nextClass,
       ticketType: 'Normal',
@@ -73,7 +73,18 @@ export default function NormalPlanner({
       selectedService: null,
       selectedServiceName: '',
       selectedServiceCode: ''
-    })
+    }
+
+    if (value === 'Flight') {
+      if (plan.from && /RJY/i.test(plan.from)) {
+        patch.from = 'Rajahmundry (RJA)'
+      }
+      if (plan.to && (/VZM/i.test(plan.to) || /India/i.test(plan.to))) {
+        patch.to = 'Visakhapatnam (VTZ)'
+      }
+    }
+
+    update(patch)
   }
 
   const icons = { Train: TrainFront, Bus: BusFront, Flight: Plane }
