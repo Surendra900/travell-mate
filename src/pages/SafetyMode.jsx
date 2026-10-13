@@ -199,11 +199,11 @@ export default function SafetyMode({ toast }) {
             Offline digital boarding passes, 24/7 national transit helplines (112 & 139), live GPS telemetry sharing with explicit consent, and zero-network station guides.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md mx-auto sm:max-w-none">
             <button
               type="button"
               onClick={() => setActiveTab('passes')}
-              className="btn-primary h-12 px-6 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/25"
+              className="btn-primary min-h-12 px-6 rounded-md text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-sky-600/25 w-full sm:w-auto"
             >
               <Ticket size={18} />
               <span>Offline Boarding Passes</span>
@@ -212,7 +212,7 @@ export default function SafetyMode({ toast }) {
             <button
               type="button"
               onClick={openEmergencyActions}
-              className="btn-danger h-12 px-6 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-red-600/25"
+              className="btn-danger min-h-12 px-6 rounded-md text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-red-600/25 w-full sm:w-auto"
             >
               <Siren size={18} />
               <span>Transit Helplines (112 / 139)</span>

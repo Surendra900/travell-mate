@@ -383,22 +383,22 @@ export default function LiveResultsPanel({
     <div id="live-results-section" className="live-results-workspace mt-8 mb-12 max-w-6xl mx-auto" aria-labelledby="live-results-title">
       <section className="bg-slate-50 rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         {/* Results Header */}
-        <header className="live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+        <header className="live-results-header bg-white border-b border-slate-200 px-4 sm:px-6 py-4 sm:py-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition"
+            className="inline-flex items-center gap-2 min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition"
           >
             <ArrowLeft size={16} />
             <span>Back to planner</span>
           </button>
 
-          <div className="flex-1 min-w-[240px]">
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-bold uppercase tracking-wider text-sky-700 mb-0.5">Dedicated provider-results workspace</p>
-            <h2 id="live-results-title" className="text-xl sm:text-2xl font-black text-slate-950 flex items-center gap-2">
-              <MetaIcon size={22} className="text-sky-600" />
+            <h2 id="live-results-title" className="text-xl sm:text-2xl font-black text-slate-950 flex flex-wrap items-center gap-2">
+              <MetaIcon size={22} className="text-sky-600 shrink-0" />
               <span>{plan.from || 'Origin'}</span>
-              <ArrowRight size={18} className="text-slate-400" />
+              <ArrowRight size={18} className="text-slate-400 shrink-0" />
               <span>{plan.to || 'Destination'}</span>
             </h2>
             <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -410,7 +410,7 @@ export default function LiveResultsPanel({
             <button
               type="button"
               onClick={() => setShowPnrModal(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold hover:bg-sky-100 transition"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold hover:bg-sky-100 transition"
             >
               <Sparkles size={14} className="text-sky-600" />
               <span>Check PNR</span>
@@ -419,7 +419,7 @@ export default function LiveResultsPanel({
               type="button"
               onClick={onRetry}
               disabled={loading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition"
             >
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
               <span>{loading ? 'Refreshing…' : 'Refresh'}</span>
@@ -431,27 +431,29 @@ export default function LiveResultsPanel({
         <div className={`live-results-layout p-4 sm:p-8 grid gap-8 ${allowBackup ? "lg:grid-cols-[1fr,360px]" : "grid-cols-1"}`}>
           <main className="order-2 min-w-0 lg:order-1 space-y-6">
             {/* Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
-              <span className="text-xs font-bold text-slate-600 flex items-center gap-1 mr-1">
+            <div className="flex items-center gap-2 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto max-w-full">
+              <span className="text-xs font-bold text-slate-600 flex items-center gap-1 shrink-0 mr-1">
                 <SlidersHorizontal size={13} /> View:
               </span>
-              {filterOptions.map((filter) => {
-                const isSelected = activeFilter === filter.id
-                return (
-                  <button
-                    key={filter.id}
-                    type="button"
-                    onClick={() => setActiveFilter(filter.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                      isSelected
-                        ? 'bg-sky-700 text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
-                    }`}
-                  >
-                    {filter.label}
-                  </button>
-                )
-              })}
+              <div className="flex items-center gap-2 shrink-0">
+                {filterOptions.map((filter) => {
+                  const isSelected = activeFilter === filter.id
+                  return (
+                    <button
+                      key={filter.id}
+                      type="button"
+                      onClick={() => setActiveFilter(filter.id)}
+                      className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center shrink-0 transition ${
+                        isSelected
+                          ? 'bg-sky-700 text-white shadow-sm font-extrabold'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                      }`}
+                    >
+                      {filter.label}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
             {/* Waitlist Bypass Contrast View */}

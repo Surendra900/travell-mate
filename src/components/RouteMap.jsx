@@ -309,13 +309,14 @@ export default function RouteMap({ plan = {} }) {
         <div className="relative">
           <div
             ref={mapContainerRef}
+            style={{ touchAction: 'pan-y' }}
             className="h-[340px] w-full overflow-hidden rounded-2xl border border-cyan-400/20 bg-slate-950 shadow-inner"
             aria-label="Interactive Leaflet route map"
             data-testid="leaflet-map-canvas"
           />
 
           {/* Quick Legend Overlay */}
-          <div className="absolute bottom-3 left-3 z-[400] flex flex-wrap gap-1.5 rounded-xl border border-slate-800/90 bg-slate-950/85 p-2 backdrop-blur-md">
+          <div className="absolute bottom-3 left-3 z-[400] max-w-[calc(100%-24px)] flex flex-wrap gap-1.5 rounded-xl border border-slate-800/90 bg-slate-950/85 p-2 backdrop-blur-md">
             <span className="flex items-center gap-1 text-[11px] font-bold text-cyan-400">
               <span className="h-2 w-2 rounded-full bg-cyan-400" /> Train Line
             </span>

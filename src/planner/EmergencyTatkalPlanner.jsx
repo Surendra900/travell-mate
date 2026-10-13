@@ -322,7 +322,8 @@ export default function EmergencyTatkalPlanner({
               </Field>
               <Field label="Quota Class">
                 <select
-                  className="input bg-white text-slate-900 border-slate-300 rounded-xl"
+                  className="input min-h-[44px] text-base bg-white text-slate-900 border-slate-300 rounded-xl"
+                  aria-label="Quota Class"
                   value={emergencyClass}
                   onChange={(e) => update({ classType: e.target.value })}
                 >
@@ -332,7 +333,8 @@ export default function EmergencyTatkalPlanner({
               </Field>
               <Field label="Passengers (Max 4 for Tatkal)">
                 <select
-                  className="input bg-white text-slate-900 border-slate-300 rounded-xl"
+                  className="input min-h-[44px] text-base bg-white text-slate-900 border-slate-300 rounded-xl"
+                  aria-label="Number of passengers"
                   value={Number(plan.passengers || 1)}
                   onChange={(e) => update({ passengers: Number(e.target.value) })}
                 >
@@ -528,23 +530,26 @@ export default function EmergencyTatkalPlanner({
                   </div>
                   <div className="grid gap-2 sm:grid-cols-2">
                     <input
-                      className="input py-1 text-xs bg-white text-slate-900 border-slate-300"
+                      className="input min-h-[44px] text-base bg-white text-slate-900 border-slate-300"
                       placeholder="Full Name (as per ticket)"
+                      aria-label={`Passenger ${idx + 1} full name`}
                       value={p.name}
                       onChange={(e) => updatePassenger(p.id, 'name', e.target.value)}
                     />
                     <div className="grid grid-cols-2 gap-1.5">
                       <input
-                        className="input py-1 text-xs bg-white text-slate-900 border-slate-300"
+                        className="input min-h-[44px] text-base bg-white text-slate-900 border-slate-300"
                         placeholder="Age"
                         type="number"
                         min="1"
                         max="120"
+                        aria-label={`Passenger ${idx + 1} age`}
                         value={p.age}
                         onChange={(e) => updatePassenger(p.id, 'age', e.target.value)}
                       />
                       <select
-                        className="input py-1 text-xs bg-white text-slate-900 border-slate-300"
+                        className="input min-h-[44px] text-base bg-white text-slate-900 border-slate-300"
+                        aria-label={`Passenger ${idx + 1} gender`}
                         value={p.gender}
                         onChange={(e) => updatePassenger(p.id, 'gender', e.target.value)}
                       >
@@ -556,7 +561,8 @@ export default function EmergencyTatkalPlanner({
                   </div>
                   <div className="mt-2">
                     <select
-                      className="input py-1 text-xs bg-white text-slate-900 border-slate-300"
+                      className="input min-h-[44px] text-base bg-white text-slate-900 border-slate-300"
+                      aria-label={`Passenger ${idx + 1} berth preference`}
                       value={p.berth}
                       onChange={(e) => updatePassenger(p.id, 'berth', e.target.value)}
                     >

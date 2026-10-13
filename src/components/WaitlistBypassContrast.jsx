@@ -219,15 +219,15 @@ export default function WaitlistBypassContrast({
                   </span>
                   <span className="text-emerald-700">{split.leg1?.status || 'Available'}</span>
                 </div>
-                <div className="mt-1 flex items-center justify-between text-slate-600 text-[11px]">
+                <div className="mt-1 flex flex-wrap items-center justify-between text-slate-600 text-[11px] gap-1">
                   <span>{split.leg1?.depart || '06:00'} ({split.leg1?.from || from})</span>
-                  <span>──to</span>
+                  <span className="text-slate-600 font-medium">to</span>
                   <span>{split.leg1?.arrive || '10:08'} ({split.leg1?.to || split.hubCity})</span>
                 </div>
               </div>
 
               {/* Transfer buffer & Risk Badge */}
-              <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-emerald-100/60 border border-emerald-200 text-xs">
+              <div className="flex flex-wrap items-center justify-between px-3 py-1.5 rounded-lg bg-emerald-100/60 border border-emerald-200 text-xs gap-1">
                 <span className="font-bold text-emerald-950 flex items-center gap-1">
                   <Clock size={12} />
                   <span>Transfer Buffer: {split.slackMinutes || 105}m</span>
@@ -248,9 +248,9 @@ export default function WaitlistBypassContrast({
                   </span>
                   <span className="text-emerald-700">{split.leg2?.status || 'Available'}</span>
                 </div>
-                <div className="mt-1 flex items-center justify-between text-slate-600 text-[11px]">
+                <div className="mt-1 flex flex-wrap items-center justify-between text-slate-600 text-[11px] gap-1">
                   <span>{split.leg2?.depart || '11:53'} ({split.leg2?.from || split.hubCity})</span>
-                  <span>──to</span>
+                  <span className="text-slate-600 font-medium">to</span>
                   <span>{split.leg2?.arrive || '17:45'} ({split.leg2?.to || to})</span>
                 </div>
               </div>

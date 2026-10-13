@@ -88,9 +88,10 @@ export default function AnalyzeJourney({ toast }) {
           })}
         </div>
 
-        <div className="assistant-composer-static">
-          <MessageCircle size={20} />
+        <div className="assistant-composer-static flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/90 p-1.5 shadow-inner">
+          <MessageCircle size={20} className="text-slate-400 shrink-0 ml-2" />
           <input
+            className="flex-1 bg-transparent text-white text-base placeholder-slate-400 focus:outline-none min-h-[44px] px-2"
             aria-label="Ask TravelMate"
             placeholder="Ask about destinations, trains, buses, flights or language..."
             value={queryInput}
@@ -102,6 +103,8 @@ export default function AnalyzeJourney({ toast }) {
             }}
           />
           <button
+            type="button"
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg bg-sky-600 hover:bg-sky-500 text-white shrink-0 transition-colors"
             onClick={() => {
               if (queryInput.trim()) {
                 navigate(`/planner?query=${encodeURIComponent(queryInput.trim())}`)
@@ -109,7 +112,7 @@ export default function AnalyzeJourney({ toast }) {
                 toast?.('Enter a travel query first.')
               }
             }}
-            aria-label="Send"
+            aria-label="Send travel query"
           >
             <Send size={20} />
           </button>

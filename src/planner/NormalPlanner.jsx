@@ -346,7 +346,7 @@ export default function NormalPlanner({
       </div>
 
       {/* Contextual Journey Intelligence Tabs */}
-      <section className="mt-12 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+      <section className="mt-12 bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-8 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
           <div>
             <h3 className="text-xl font-black text-slate-950">
@@ -357,7 +357,7 @@ export default function NormalPlanner({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2" role="tablist">
+          <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-1 sm:flex-wrap w-full sm:w-auto" role="tablist" data-scroll-container="true">
             {[
               { id: 'map', label: 'Route Map', icon: Compass },
               { id: 'contrast', label: 'Bypass Contrast', icon: Zap },
@@ -371,7 +371,7 @@ export default function NormalPlanner({
                 role="tab"
                 aria-selected={activeInsightTab === id}
                 onClick={() => setActiveInsightTab(id)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
+                className={`inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-bold shrink-0 transition ${
                   activeInsightTab === id
                     ? 'bg-slate-900 text-white shadow-sm'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
