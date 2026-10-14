@@ -81,7 +81,15 @@ export default function Planner({ status, toast, language = 'en' }) {
 
   const location = useLocation()
   const lastSearchedParamsRef = useRef('')
-  const [manualMode, setManualMode] = useState('normal')
+  const [manualMode, setManualMode] = useState(() => {
+    try {
+      const p = new URLSearchParams(location.search)
+      if (p.get('mode') === 'tatkal' || p.get('mode') === 'emergency' || p.get('urgency') === 'Emergency') {
+        return 'emergency'
+      }
+    } catch {}
+    return 'normal'
+  })
   const [plan, setPlan] = useState(() => getInitialPlan(location.search))
   const [resultsOpen, setResultsOpen] = useState(false)
   const [liveResults, setLiveResults] = useState([])
@@ -117,10 +125,12 @@ export default function Planner({ status, toast, language = 'en' }) {
     const passengers = Number(params.get('passengers')) || 1
 
     if (demoParam) setIsDemoMode(true)
-    if (modeParam === 'tatkal' || urgency === 'Emergency') {
-      setManualMode('tatkal')
+    if (modeParam === 'tatkal' || modeParam === 'emergency' || urgency === 'Emergency') {
+      setManualMode('emergency')
     } else if (modeParam === 'pnr') {
       setShowPnrModal(true)
+    } else if (!modeParam && !urgency) {
+      setManualMode('normal')
     }
 
     const isTonight = urgency === 'Tonight' || params.get('urgent') === '12h'
@@ -354,7 +364,7 @@ export default function Planner({ status, toast, language = 'en' }) {
       return missingRoute
     }
 
-    setLiveStatus({ loading: true, mode: 'checking', message: `Checking ${transport} provider endpoint...` })
+    setLiveStatus({ loading: true, mode: 'checking', message: `Checking ${transport} provider endpoint...`, error: '' })
     const data = await searchLiveTransport({
       transport,
       from,
@@ -370,6 +380,7 @@ export default function Planner({ status, toast, language = 'en' }) {
       loading: false,
       mode: data.mode || (data.ok ? 'ready' : 'fallback'),
       message: data.message || `${transport} provider checked.`,
+      error: data.ok === false ? (data.message || `${transport} provider request failed.`) : '',
       sourceBadge: data.sourceBadge
     })
     if (announce) {

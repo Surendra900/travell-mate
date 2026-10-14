@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { Menu, Search, TrainFront, ShieldAlert, Bookmark, X, Volume2, Sparkles, Clock } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import LanguageSelector from './LanguageSelector'
@@ -13,18 +13,57 @@ const nav = [
 
 export default function Navbar({ language, onLanguageChange, authEnabled, onOpenProfile, onOpenVoiceGate, onOpenDemoTour }) {
   const [open, setOpen] = useState(false)
+  const location = useLocation()
+
+  function isItemActive(to) {
+    const [path, query] = to.split('?')
+    if (location.pathname !== path) return false
+    const currentParams = new URLSearchParams(location.search)
+    if (query) {
+      const targetParams = new URLSearchParams(query)
+      for (const [key, val] of targetParams.entries()) {
+        if (currentParams.get(key) !== val) return false
+      }
+      return true
+    }
+    if (path === '/planner') {
+      return currentParams.get('mode') !== 'tatkal' && currentParams.get('mode') !== 'emergency'
+    }
+    return true
+  }
 
   useEffect(() => {
     if (!open) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+
     function handleKeyDown(e) {
       if (e.key === 'Escape') setOpen(false)
     }
+
+    const mql = window.matchMedia('(min-width: 768px)')
+    function handleMediaChange(e) {
+      if (e.matches) setOpen(false)
+    }
+    if (mql.matches) {
+      setOpen(false)
+    }
+
+    if (mql.addEventListener) {
+      mql.addEventListener('change', handleMediaChange)
+    } else {
+      mql.addListener(handleMediaChange)
+    }
+
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       document.body.style.overflow = prevOverflow
       window.removeEventListener('keydown', handleKeyDown)
+      if (mql.removeEventListener) {
+        mql.removeEventListener('change', handleMediaChange)
+      } else {
+        mql.removeListener(handleMediaChange)
+      }
     }
   }, [open])
 
@@ -39,22 +78,26 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
         </NavLink>
 
         <nav className="tm-nav-links hidden md:grid md:grid-cols-4 items-center gap-1.5 lg:max-w-4xl" aria-label="Primary navigation">
-          {nav.map(({ to, label, icon: Icon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) =>
-                `tm-nav-link px-3.5 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition ${
-                  isActive
-                    ? 'bg-sky-50 text-sky-700 font-extrabold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                }`
-              }
-            >
-              <Icon size={16} />
-              <span>{label}</span>
-            </NavLink>
-          ))}
+          {nav.map(({ to, label, icon: Icon }) => {
+            const active = isItemActive(to)
+            return (
+              <NavLink
+                key={to}
+                to={to}
+                aria-current={active ? 'page' : null}
+                className={
+                  `tm-nav-link px-3.5 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition ${
+                    active
+                      ? 'bg-sky-50 text-sky-700 font-extrabold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`
+                }
+              >
+                <Icon size={16} />
+                <span>{label}</span>
+              </NavLink>
+            )
+          })}
         </nav>
 
         <div className="tm-nav-actions flex items-center gap-1.5 sm:gap-2">
@@ -107,21 +150,25 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           className="tm-mobile-menu md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-3 shadow-xl max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] animate-in fade-in slide-in-from-top-2"
         >
           <div className="space-y-1">
-            {nav.map(({ to, label, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold min-h-[44px] transition ${
-                    isActive ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-700 hover:bg-slate-100'
-                  }`
-                }
-              >
-                <Icon size={18} className="text-slate-500 shrink-0" />
-                <span>{label}</span>
-              </NavLink>
-            ))}
+            {nav.map(({ to, label, icon: Icon }) => {
+              const active = isItemActive(to)
+              return (
+                <NavLink
+                  key={to}
+                  to={to}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? 'page' : null}
+                  className={
+                    `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold min-h-[44px] transition ${
+                      active ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-700 hover:bg-slate-100'
+                    }`
+                  }
+                >
+                  <Icon size={18} className="text-slate-500 shrink-0" />
+                  <span>{label}</span>
+                </NavLink>
+              )
+            })}
           </div>
 
           <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">

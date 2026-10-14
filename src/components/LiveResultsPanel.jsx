@@ -375,6 +375,7 @@ export default function LiveResultsPanel({
   if (!open) return null
 
   const transport = plan.transportMode || 'Train'
+  const transportPlural = transport === 'Flight' ? 'flights' : transport === 'Bus' ? 'buses' : 'trains'
   const MetaIcon = transportMeta[transport]?.icon || Train
   const loading = Boolean(status.loading)
   const hasResults = results.length > 0
@@ -613,7 +614,7 @@ export default function LiveResultsPanel({
                       No direct {transport.toLowerCase()} seats available
                     </h4>
                     <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
-                      No direct {transport.toLowerCase()}s found. {multimodalRoutes.length > 0 ? `TravelMate found ${multimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
+                      No direct {transportPlural} found. {displayedMultimodalRoutes.length > 0 ? `TravelMate found ${displayedMultimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
                     </p>
                   </div>
                 )}
@@ -629,7 +630,7 @@ export default function LiveResultsPanel({
               data-testid="statutory-split-disclosure"
               className="rounded-2xl border border-slate-200 bg-slate-100/80 p-4 text-xs text-slate-600 leading-relaxed"
             >
-              <b className="text-slate-900">Statutory Booking Notice:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation. Always maintain safe transfer buffers.
+              <b className="text-slate-900">Independent Booking Notice:</b> Treat each selected leg as a separate booking. A delay on one leg may cause you to miss the next leg. Refund, rebooking, and compensation rights depend on the provider, ticket terms, and applicable law; TravelMate does not guarantee those remedies. Maintain a safe transfer buffer and confirm each provider&apos;s terms.
             </div>
           </main>
 
