@@ -406,6 +406,10 @@ test('Multilingual Switch: Regional transit phrases include Flight Gate and Bus 
     assert.equal(lPhrases.flightGate, flightGateItem[lang], `languages[${lang}].phrases.flightGate must match phraseTranslations`)
     assert.equal(lPhrases.busStand, busStandItem[lang], `languages[${lang}].phrases.busStand must match phraseTranslations`)
   }
+
+  // 3. Strict Urdu character verification (CodeRabbit review feedback: U+0679 Urdu Tteh vs U+0A1F Gurmukhi Tta)
+  assert.ok(flightGateItem.ur.includes('\u0679'), 'Urdu flightGate must use correct Urdu character U+0679 (ٹ)')
+  assert.ok(!flightGateItem.ur.includes('\u0A1F'), 'Urdu flightGate must not contain Gurmukhi character U+0A1F (ਟ)')
 })
 
 test('Multilingual Switch Regression: Train translations and functionality preserved across all languages', () => {

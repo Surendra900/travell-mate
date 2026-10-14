@@ -307,8 +307,9 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
           if (runIdRef.current !== runId) return
           Object.assign(cache, received)
           writeCache(language, cache)
-          // Progressively apply newly arrived translations
-          renderTargets(targets, cache)
+          // Progressively apply newly arrived translations to all current elements
+          const live = collect()
+          renderTargets(live.targets, cache)
         } catch (error) {
           if (error?.name === 'AbortError') return
           hadFailure = true
@@ -319,8 +320,10 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
         }
       }
 
-      renderTargets(targets, cache)
-      const untranslated = strings.some((text) => !cache[text])
+      // Re-collect to catch any DOM nodes mounted while async network requests were in flight
+      const latest = collect()
+      renderTargets(latest.targets, cache)
+      const untranslated = latest.strings.some((text) => !cache[text])
       setState(hadFailure || untranslated ? 'partial' : 'idle')
     }
 

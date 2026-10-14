@@ -440,10 +440,37 @@ export default function LiveResultsPanel({
                 <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
               </div>
 
+              {status.error && (
+                <div data-testid="results-error-state" className="rounded-2xl border border-red-300 bg-red-50 p-6 text-center mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-700 mx-auto flex items-center justify-center mb-3">
+                    <AlertTriangle size={24} />
+                  </div>
+                  <h4 className="text-base font-extrabold text-red-950">
+                    Unable to load direct provider results
+                  </h4>
+                  <p className="text-sm text-red-700 max-w-lg mx-auto mt-1 leading-relaxed">
+                    {status.error || 'The provider API is temporarily unreachable or returned an unexpected response.'}
+                  </p>
+                  <button
+                    type="button"
+                    data-testid="error-retry-btn"
+                    onClick={onRetry}
+                    className="btn-primary mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+                  >
+                    <RefreshCw size={14} />
+                    <span>Retry provider search</span>
+                  </button>
+                </div>
+              )}
+
               {loading ? (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div data-testid="results-skeleton-loader" className="grid gap-4 md:grid-cols-2">
                   {[0, 1].map((idx) => (
-                    <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse" />
+                    <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse">
+                      <div className="h-4 bg-slate-200 rounded w-1/3 mb-4"></div>
+                      <div className="h-8 bg-slate-200 rounded w-2/3 mb-4"></div>
+                      <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                    </div>
                   ))}
                 </div>
               ) : hasResults ? (
@@ -460,11 +487,15 @@ export default function LiveResultsPanel({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
-                  <AlertTriangle className="mx-auto text-amber-500 mb-3" size={28} />
-                  <h4 className="text-base font-bold text-slate-900">No direct ticket rows returned</h4>
-                  <p className="text-sm text-slate-500 max-w-md mx-auto mt-1">
-                    Direct trains for this date may be fully booked or currently unavailable. Inspect the smart multi-modal connections above or check alternative dates.
+                <div data-testid="empty-direct-results" className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
+                  <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
+                    <Sparkles size={24} />
+                  </div>
+                  <h4 className="text-base font-extrabold text-slate-900">
+                    No direct {transport.toLowerCase()} seats available
+                  </h4>
+                  <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
+                    No direct {transport.toLowerCase()}s found. {multimodalRoutes.length > 0 ? `TravelMate found ${multimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
                   </p>
                 </div>
               )}
@@ -472,6 +503,14 @@ export default function LiveResultsPanel({
               <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-xs text-slate-600">
                 <b className="text-slate-900">Demo-booking notice:</b> Choose one provider row and use "Start demo booking" to attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready.
               </div>
+            </div>
+
+            {/* Statutory Split Booking Disclosure */}
+            <div
+              data-testid="statutory-split-disclosure"
+              className="rounded-2xl border border-slate-200 bg-slate-100/80 p-4 text-xs text-slate-600 leading-relaxed"
+            >
+              <b className="text-slate-900">Statutory Booking Notice:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation. Always maintain safe transfer buffers.
             </div>
           </main>
 
