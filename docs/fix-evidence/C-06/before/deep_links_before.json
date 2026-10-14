@@ -1,0 +1,12 @@
+{
+  "routeEngine": {
+    "busLinkWithStationCodes": "https://www.redbus.in/bus-tickets/cnb-to-pnbe?doj=2026-10-15",
+    "busLinkDelhiPatna": "https://www.redbus.in/bus-tickets/ndls-to-pnbe?doj=2026-10-15",
+    "flightLinkWithStationCodes": "https://www.google.com/travel/flights?q=flights+from+NDLS+to+PNBE+on+2026-10-15",
+    "flightLinkMumbaiKolkata": "https://www.google.com/travel/flights?q=flights+from+MMCT+to+HWH+on+2026-10-15"
+  },
+  "transportData": {
+    "busLinkWithStationCodes": "https://www.redbus.in/bus-tickets/ndls-to-pnbe?date=2026-10-15",
+    "flightLinkWithStationCodes": "https://www.google.com/travel/flights?q=flights%20from%20DEL%20to%20PAT%20on%202026-10-15"
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "battery20": [
+    {
+      "pair": "NDLS → HWH",
+      "desc": "Delhi to Howrah Trunk",
+      "directCount": 1,
+      "splitCount": 34,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "CSMT → HWH",
+      "desc": "Mumbai to Howrah Trunk",
+      "directCount": 1,
+      "splitCount": 8,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "MAS → NDLS",
+      "desc": "Chennai to Delhi Grand Trunk",
+      "directCount": 1,
+      "splitCount": 36,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "SBC → MAS",
+      "desc": "Bengaluru to Chennai Trunk",
+      "directCount": 2,
+      "splitCount": 15,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "PUNE → CSMT",
+      "desc": "Pune to Mumbai (Short 192km)",
+      "directCount": 2,
+      "splitCount": 7,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "TVC → NDLS",
+      "desc": "Thiruvananthapuram to Delhi (Long 3000km)",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    },
+    {
+      "pair": "CAPE → SVDK",
+      "desc": "Kanyakumari to Katra (Himsagar Corridor)",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    },
+    {
+      "pair": "GHY → MAQ",
+      "desc": "Guwahati to Mangaluru (Complex Inter-Zonal)",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    },
+    {
+      "pair": "BPL → NDLS",
+      "desc": "Bhopal to Delhi (Overnight Express)",
+      "directCount": 5,
+      "splitCount": 84,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "MODERATE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "BSB → NDLS",
+      "desc": "Varanasi to Delhi (Late Night)",
+      "directCount": 1,
+      "splitCount": 5,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "PNBE → CSMT",
+      "desc": "Patna to Mumbai (Multi-day boundary)",
+      "directCount": 1,
+      "splitCount": 4,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "NDLS → NDLS",
+      "desc": "Same OD Edge Case",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    },
+    {
+      "pair": "Delli → Kolkata",
+      "desc": "Misspelled Origin",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    },
+    {
+      "pair": "ZZZ99 → NDLS",
+      "desc": "Unknown Station Code",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    },
+    {
+      "pair": "NDLS → PNBE",
+      "desc": "Past Date Edge Case",
+      "directCount": 1,
+      "splitCount": 33,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "NDLS → PNBE",
+      "desc": "Distant Future Date",
+      "directCount": 1,
+      "splitCount": 33,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "NDLS → CNB",
+      "desc": "Delhi to Kanpur (High Frequency Direct)",
+      "directCount": 4,
+      "splitCount": 34,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "ADI → NGP",
+      "desc": "Ahmedabad to Nagpur",
+      "directCount": 1,
+      "splitCount": 2,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "HYB → SBC",
+      "desc": "Hyderabad to Bengaluru",
+      "directCount": 1,
+      "splitCount": 15,
+      "rankedTiersReturned": 3,
+      "tiers": [
+        {
+          "tier": "paisa-vasool",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "smart-balanced",
+          "risk": "SAFE"
+        },
+        {
+          "tier": "emergency-express",
+          "risk": "SAFE"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": "JAT → BSB",
+      "desc": "Jammu Tawi to Varanasi",
+      "directCount": 0,
+      "splitCount": 0,
+      "rankedTiersReturned": 0,
+      "tiers": [],
+      "status": "PASS"
+    }
+  ],
+  "delaySimTests": [
+    {
+      "scenario": "Zero delay",
+      "delayMinutes": 0,
+      "effectiveSlack": 120,
+      "mct": 45,
+      "isBroken": false,
+      "isTight": false,
+      "riskLevel": "SAFE",
+      "pointOfNoReturn": "11:15",
+      "fallbacksFound": 0
+    },
+    {
+      "scenario": "1 minute delay",
+      "delayMinutes": 1,
+      "effectiveSlack": 119,
+      "mct": 45,
+      "isBroken": false,
+      "isTight": false,
+      "riskLevel": "MODERATE",
+      "pointOfNoReturn": "11:15",
+      "fallbacksFound": 0
+    },
+    {
+      "scenario": "Exactly at slack limit (120 - 45 = 75m)",
+      "delayMinutes": 75,
+      "effectiveSlack": 45,
+      "mct": 45,
+      "isBroken": false,
+      "isTight": true,
+      "riskLevel": "HIGH_RISK",
+      "pointOfNoReturn": "11:15",
+      "fallbacksFound": 3
+    },
+    {
+      "scenario": "1 minute beyond slack limit (76m)",
+      "delayMinutes": 76,
+      "effectiveSlack": 44,
+      "mct": 45,
+      "isBroken": true,
+      "isTight": false,
+      "riskLevel": "BROKEN",
+      "pointOfNoReturn": "11:15",
+      "fallbacksFound": 3
+    },
+    {
+      "scenario": "Beyond last viable departure (150m delay)",
+      "delayMinutes": 150,
+      "effectiveSlack": -30,
+      "mct": 45,
+      "isBroken": true,
+      "isTight": false,
+      "riskLevel": "BROKEN",
+      "pointOfNoReturn": "11:15",
+      "fallbacksFound": 3
+    },
+    {
+      "scenario": "Across midnight rollover (14 hours delay)",
+      "delayMinutes": 840,
+      "effectiveSlack": -720,
+      "mct": 45,
+      "isBroken": true,
+      "isTight": false,
+      "riskLevel": "BROKEN",
+      "pointOfNoReturn": "11:15",
+      "fallbacksFound": 3
+    }
+  ],
+  "reliabilityAudit": {
+    "modelDefinition": "Parametric slack classification via server/config/reliabilityModel.js",
+    "tests": [
+      {
+        "slack": 130,
+        "risk": "SAFE",
+        "expected": "SAFE"
+      },
+      {
+        "slack": 100,
+        "risk": "MODERATE",
+        "expected": "MODERATE"
+      },
+      {
+        "slack": 70,
+        "risk": "TIGHT",
+        "expected": "TIGHT"
+      },
+      {
+        "slack": 40,
+        "risk": "BROKEN",
+        "expected": "HIGH_RISK"
+      }
+    ]
+  },
+  "transferGuidanceAudit": [
+    {
+      "junction": "NDLS",
+      "distKm": 4.8,
+      "stepsCount": 0
+    },
+    {
+      "junction": "NDLS",
+      "distKm": 21,
+      "stepsCount": 0
+    },
+    {
+      "junction": "CNB",
+      "distKm": 2.5,
+      "stepsCount": 0
+    },
+    {
+      "junction": "PNBE",
+      "distKm": 11.5,
+      "stepsCount": 0
+    },
+    {
+      "junction": "PNBE",
+      "distKm": 6.2,
+      "stepsCount": 0
+    },
+    {
+      "junction": "HWH",
+      "distKm": 4.2,
+      "stepsCount": 0
+    },
+    {
+      "junction": "HWH",
+      "distKm": 16.5,
+      "stepsCount": 0
+    },
+    {
+      "junction": "JP",
+      "distKm": 1.8,
+      "stepsCount": 0
+    },
+    {
+      "junction": "JP",
+      "distKm": 12.8,
+      "stepsCount": 0
+    },
+    {
+      "junction": "ADI",
+      "distKm": 3.2,
+      "stepsCount": 0
+    }
+  ],
+  "deepLinksAudit": [
+    {
+      "leg": "Leg 1"
+    },
+    {
+      "leg": "Leg 2"
+    }
+  ],
+  "tierRankingAudit": []
+}

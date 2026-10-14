@@ -1,0 +1,165 @@
+{
+  "grepAudit": {
+    "DocumentVault": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "EmergencyPhraseCards": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "CarbonCalculator": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "StatusBar": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "FloatingSOS": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "SmartAssistant": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "BookingModal": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    },
+    "Medical/CPR/Ambulance dispatch": {
+      "src": {
+        "count": 0,
+        "output": ""
+      },
+      "server": {
+        "count": 0,
+        "output": ""
+      },
+      "prisma": {
+        "count": 0,
+        "output": ""
+      },
+      "packageJson": {
+        "count": 0,
+        "output": ""
+      }
+    }
+  },
+  "dependencies": {
+    "@clerk/clerk-react": "^5.61.8",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.4",
+    "@axe-core/playwright": "^4.13.0",
+    "@vitejs/plugin-react": "6.0.3",
+    "autoprefixer": "^10.5.2",
+    "axe-core": "^4.13.0",
+    "playwright": "^1.63.0",
+    "postcss": "^8.5.16",
+    "puppeteer-core": "^25.12.0",
+    "tailwindcss": "^3.4.19",
+    "vite": "8.1.4"
+  }
+}

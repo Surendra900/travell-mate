@@ -1,4 +1,4 @@
-import { prepareApiRequest, providerStatus } from '../_security.js'
+import { prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 import { callRapidRail } from './_rapidapiRail.js'
 
 function normalizeLive(payload, trainNumber, startDay) {
@@ -37,6 +37,7 @@ export default async function handler(req, res) {
     const payload = await callRapidRail('/api/v1/liveTrainStatus', { trainNo: trainNumber, startDay })
     return res.status(200).json({ ok: true, mode: 'live', provider: 'RapidAPI IRCTC / irctc1', sourceBadge: 'Live API result', message: 'Live train running status loaded.', result: normalizeLive(payload, trainNumber, startDay) })
   } catch (error) {
-    return res.status(providerStatus(error)).json({ ok: false, mode: 'provider-error', provider: 'RapidAPI IRCTC / irctc1', sourceBadge: 'Provider unavailable', message: error.message, error: error.code || 'TRAIN_STATUS_ERROR', result: null })
+    const safe = publicProviderError(error, 'Live train running status unavailable.')
+    return res.status(providerStatus(error)).json({ ok: false, mode: 'provider-error', provider: 'RapidAPI IRCTC / irctc1', sourceBadge: 'Provider unavailable', message: safe.message, error: safe.error, result: null })
   }
 }

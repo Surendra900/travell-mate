@@ -34,11 +34,31 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), geolocation=(self), microphone=(self), payment=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://*.clerk.accounts.dev https://clerk.accounts.dev https://challenges.cloudflare.com https://*.clerk.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://img.clerk.com https://images.clerk.dev https://*.clerk.accounts.dev https://lh3.googleusercontent.com; font-src 'self' data:; connect-src 'self' https://api.open-meteo.com https://*.ingest.sentry.io https://*.upstash.io https://*.clerk.accounts.dev https://clerk.accounts.dev https://*.clerk.com https://clerk.com; worker-src 'self' blob:; frame-src 'self' https://challenges.cloudflare.com https://*.clerk.accounts.dev https://*.clerk.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
         }
       ]
     }
   ],
   "rewrites": [
+    {
+      "source": "/api/health/llm",
+      "destination": "/api/assistant?health=1"
+    },
+    {
+      "source": "/api/trains/by-station",
+      "destination": "/api/trains/live-station"
+    },
+    {
+      "source": "/api/recovery/:path*",
+      "destination": "/api/recovery"
+    },
     {
       "source": "/api/:path*",
       "destination": "/api/:path*"

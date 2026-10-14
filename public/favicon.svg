@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="108" fill="#0f172a"/>
+  <!-- Circular Transit Guideline -->
+  <circle cx="256" cy="256" r="184" fill="none" stroke="#1e293b" stroke-width="14" stroke-dasharray="16 12"/>
+  <circle cx="256" cy="256" r="148" fill="none" stroke="#0284c7" stroke-width="8" opacity="0.6"/>
+  <!-- Crossing Railway Junction / Compass Needles -->
+  <path d="M256 64 L294 220 L448 256 L294 292 L256 448 L218 292 L64 256 L218 220 Z" fill="#0284c7"/>
+  <!-- North / Main Direction Highlight -->
+  <path d="M256 64 L294 220 L256 256 Z" fill="#38bdf8"/>
+  <path d="M256 64 L218 220 L256 256 Z" fill="#0ea5e9"/>
+  <!-- East / West Wings -->
+  <path d="M448 256 L294 220 L256 256 Z" fill="#38bdf8"/>
+  <path d="M64 256 L218 292 L256 256 Z" fill="#0284c7"/>
+  <!-- Central Transit Hub Junction Node -->
+  <circle cx="256" cy="256" r="44" fill="#0f172a" stroke="#38bdf8" stroke-width="8"/>
+  <circle cx="256" cy="256" r="22" fill="#38bdf8"/>
+  <!-- Small Junction Marker -->
+  <circle cx="256" cy="256" r="10" fill="#f8fafc"/>
+</svg>

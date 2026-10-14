@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { getOfflinePack, getSavedPlans, saveOfflinePack } from '../utils/storage'
 import { warmOfflineCache } from '../utils/offlineMode'
+import { localDateIso } from '../utils/date'
 import { getCabinOptions, getRouteInputLabels, transportModes, transportPlaces } from '../data/transportData'
 import ServiceOptionsBoard from '../components/ServiceOptionsBoard'
 
@@ -73,7 +74,7 @@ function SavedOfflineSnapshot({ pack }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-lime-200">Offline saved plan</p>
-          <h3 className="mt-1 text-2xl font-black text-white">{saved.from} → {saved.to}</h3>
+          <h3 className="mt-1 text-2xl font-black text-white">{saved.from} to {saved.to}</h3>
           <p className="mt-1 text-sm text-lime-100/85">
             Destination: {saved.to} · Journey mode: {saved.transportMode || 'Train'} · Date: {saved.date || 'Saved date'}
           </p>
@@ -88,10 +89,10 @@ function SavedOfflineSnapshot({ pack }) {
             <b>Saved service:</b> {serviceValue(selectedService, 'serviceName', 'service', 'trainName', 'name') || 'Provider service'} ({serviceValue(selectedService, 'code', 'trainNumber', 'trainNo') || 'Code unavailable'})
           </p>
           <p className="mt-1">
-            <b>Path:</b> {serviceValue(selectedService, 'from', 'source') || saved.from} → {serviceValue(selectedService, 'to', 'destination') || saved.to}
+            <b>Path:</b> {serviceValue(selectedService, 'from', 'source') || saved.from} to {serviceValue(selectedService, 'to', 'destination') || saved.to}
           </p>
           <p className="mt-1">
-            <b>Timing:</b> {serviceValue(selectedService, 'departure', 'depart') || 'Check provider'} → {serviceValue(selectedService, 'arrival', 'arrive') || 'Check provider'} · {serviceValue(selectedService, 'duration', 'travelTime') || 'Duration unavailable'}
+            <b>Timing:</b> {serviceValue(selectedService, 'departure', 'depart') || 'Check provider'} to {serviceValue(selectedService, 'arrival', 'arrive') || 'Check provider'} · {serviceValue(selectedService, 'duration', 'travelTime') || 'Duration unavailable'}
           </p>
           <p className="mt-1">
             <b>Fare estimate:</b> {serviceValue(selectedService, 'fare', 'price', 'amount') ? `₹${serviceValue(selectedService, 'fare', 'price', 'amount')}` : 'Check provider'} · {serviceValue(selectedService, 'status', 'availability') || 'Provider verification required'}
@@ -114,14 +115,6 @@ function SavedOfflineSnapshot({ pack }) {
           ) : saved.pnrNumber ? (
             <p className="mt-1 text-cyan-100/75">The PNR is stored. Its status refreshes automatically when the journey is opened online.</p>
           ) : null}
-        </div>
-      )}
-      {pack?.secureVaultDocumentCount > 0 && (
-        <div className="mt-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-          <p className="font-black text-white">Encrypted vault available</p>
-          <p className="mt-1">
-            {pack.secureVaultDocumentCount} encrypted document(s) remain in the secure vault. They are not exposed or duplicated in this route snapshot.
-          </p>
         </div>
       )}
     </div>
@@ -235,7 +228,7 @@ export default function LowNetworkPlanner({ plan, update, onBook, onBookService,
               <Field label="Journey date">
                 <div className="relative">
                   <CalendarDays className="pointer-events-none absolute right-3 top-3 text-cyan-200" size={18} />
-                  <input className="input date-input pr-10" type="date" value={plan.date} onChange={(e) => update({ date: e.target.value })} />
+                  <input className="input date-input pr-10" type="date" min={localDateIso()} value={plan.date} onChange={(e) => update({ date: e.target.value })} />
                 </div>
               </Field>
             </div>

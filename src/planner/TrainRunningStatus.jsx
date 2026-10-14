@@ -93,7 +93,7 @@ export default function TrainRunningStatus({ plan, toast }) {
         <div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/50 bg-cyan-950 px-2.5 py-1 text-xs font-bold text-cyan-200">
-              <Radio size={14} className="text-cyan-400 animate-pulse" /> Live Transit Telemetry
+              <Radio size={14} className="text-cyan-400" /> Live Transit Telemetry
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-950 px-2.5 py-1 text-xs font-mono text-emerald-200">
               GPS Verified
@@ -203,7 +203,7 @@ export default function TrainRunningStatus({ plan, toast }) {
                     <span className="font-mono text-xl font-black text-cyan-300">{status.trainNumber}</span>
                     <h4 className="text-lg font-black text-white">{status.trainName}</h4>
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-200">{status.from} → {status.to}</p>
+                  <p className="mt-0.5 text-xs text-slate-200">{status.from} to {status.to}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {delayInfo && (
@@ -274,7 +274,7 @@ export default function TrainRunningStatus({ plan, toast }) {
                               Arr: {stn.actual || stn.scheduled}
                             </span>
                             {isDeparted && <span className="text-emerald-400 font-bold">Passed</span>}
-                            {isCurrent && <span className="text-cyan-300 font-black animate-pulse">At Station</span>}
+                            {isCurrent && <span className="text-cyan-300 font-black">At Station</span>}
                           </div>
                         </div>
                       )

@@ -1,4 +1,4 @@
-import { fetchJsonWithTimeout, prepareApiRequest } from '../_security.js'
+import { fetchJsonWithTimeout, prepareApiRequest, publicProviderError } from '../_security.js'
 
 function usableSecret(value = '') {
   const trimmed = String(value || '').trim()
@@ -192,13 +192,14 @@ export default async function handler(req, res) {
       result: normalizePnr(payload, pnrNumber)
     })
   } catch (error) {
+    const safe = publicProviderError(error, 'Unable to retrieve PNR status.')
     return res.status(safeProviderStatus(error?.status)).json({
       ok: false,
       mode: 'provider-error',
       provider: 'RapidAPI IRCTC PNR Status',
       sourceBadge: 'Provider unavailable',
-      message: error?.message || 'Unable to retrieve PNR status.',
-      error: error?.code || 'PNR_ERROR',
+      message: safe.message,
+      error: safe.error,
       result: null
     })
   }

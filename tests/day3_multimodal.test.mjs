@@ -41,7 +41,7 @@ test('formatWhatsAppShareText produces rich, readable itinerary for travelers', 
   assert.ok(pvRoute)
 
   const text = formatWhatsAppShareText(pvRoute)
-  assert.ok(text.includes('Delhi ➔ Mumbai'), 'Should include origin and destination')
+  assert.ok(text.includes('Delhi to Mumbai') || text.includes('Delhi ➔ Mumbai'), 'Should include origin and destination')
   assert.ok(text.includes('Paisa Vasool'), 'Should include tier label')
   assert.ok(text.includes(pvRoute.fareFormatted), 'Should include total fare')
   assert.ok(text.includes('Transfer at'), 'Should describe transfer hub')

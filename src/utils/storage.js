@@ -1,7 +1,7 @@
 import { emergencyCards, emergencyNumber } from '../data/emergencyData'
 import { calculatePlanQualityScore, scoreBreakdown } from './scoring'
 import { coverageNotice, getServiceOptions, transportPlaces } from '../data/transportData'
-import { getSecureVaultDocumentCount } from './secureVault'
+import { getCurrentUserId, saveRemotePlan, deleteRemotePlan, isSupabaseConfigured } from './supabaseClient'
 
 const PLAN_KEY = 'travelmate-plans'
 const OFFLINE_KEY = 'travelmate-offline-pack'
@@ -176,6 +176,9 @@ export function savePlan(plan) {
   }
 
   localStorage.setItem(PLAN_KEY, JSON.stringify([normalized, ...current.filter((item) => item.id !== normalized.id)].slice(0, 20)))
+  if (isSupabaseConfigured) {
+    saveRemotePlan(getCurrentUserId(), normalized).catch(() => {})
+  }
   return normalized
 }
 
@@ -209,6 +212,9 @@ export function attachPnrStatus(plan = {}, result = {}) {
 export function deletePlan(id) {
   const updated = getSavedPlans().filter((plan) => plan.id !== id)
   localStorage.setItem(PLAN_KEY, JSON.stringify(updated))
+  if (isSupabaseConfigured) {
+    deleteRemotePlan(getCurrentUserId(), id).catch(() => {})
+  }
   return updated
 }
 
@@ -241,15 +247,14 @@ export function saveOfflinePack() {
     serviceCoverageNotice: coverageNotice,
     transportPlaces: transportPlaces.map(({ city, train, airport, bus, aliases }) => ({ city, train, airport, bus, aliases })),
     currentRouteServices: savedRoutes.slice(0, 6).map((plan) => ({
-      route: `${plan.from} → ${plan.to}`,
+      route: `${plan.from} to ${plan.to}`,
       selectedService: plan.selectedService || null,
       pnrNumber: plan.pnrNumber || '',
       pnrStatus: plan.pnrStatus || null,
       options: getServiceOptions(plan)
     })),
-    secureVaultDocumentCount: getSecureVaultDocumentCount(),
     generatedAt: new Date().toISOString(),
-    notice: 'Offline pack contains emergency guidance and saved-route snapshots only. Encrypted documents stay separately in IndexedDB and are never copied into localStorage.',
+    notice: 'Offline pack contains emergency guidance and saved-route snapshots only.',
     savedAt: new Date().toISOString()
   }
   localStorage.setItem(OFFLINE_KEY, JSON.stringify(payload))

@@ -3,13 +3,18 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App.jsx'
-import ClerkSessionBridge from './auth/ClerkSessionBridge.jsx'
 import './index.css'
+import { initErrorMonitoring } from './utils/errorMonitoring'
 
-const clerkPublishableKey = String(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '').trim()
+initErrorMonitoring()
+
+const clerkPublishableKey = String(
+  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ||
+  'pk_test_d2VsY29tZS1za3lsYXJrLTE0LmNsZXJrLmFjY291bnRzLmRldiQ'
+).trim()
 const authEnabled = /^pk_(test|live)_/.test(clerkPublishableKey)
 
-const application = (
+const appTree = (
   <BrowserRouter>
     <App authEnabled={authEnabled} />
   </BrowserRouter>
@@ -19,10 +24,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {authEnabled ? (
       <ClerkProvider publishableKey={clerkPublishableKey}>
-        <ClerkSessionBridge />
-        {application}
+        {appTree}
       </ClerkProvider>
-    ) : application}
+    ) : (
+      appTree
+    )}
   </React.StrictMode>
 )
 

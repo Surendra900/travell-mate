@@ -21,6 +21,15 @@ function cleanTranscript(value, max = 4000) {
 
 async function commandFromTranscript(transcript, languageCode) {
   if (languageCode === 'en') return transcript
+  if (process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('[')) {
+    try {
+      const { callGemini } = await import('../../server/adapters/aiProvider.js')
+      const translated = await callGemini(`Translate this spoken travel-app command into concise English. Preserve Indian city names, station and airport codes, dates, numbers, transport words, and intent. Return only the translated command with no explanation: "${transcript}"`, { timeout: 8000, max_tokens: 150 })
+      if (translated?.trim()) return translated.trim()
+    } catch {
+      // Fall back to SambaNova or transcript
+    }
+  }
   try {
     const translated = await createSambaNovaResponse({
       input: transcript,
@@ -102,18 +111,23 @@ export default async function handler(req, res) {
   if (!await prepareApiRequest(req, res, { methods: ['POST'], rateLimit: 10, useGlobalAuth: false })) return
 
   try {
-    const apiKey = configuredSambaNovaKey()
-    if (!apiKey) return res.status(503).json({ ok: false, mode: 'provider-unconfigured', message: 'SAMBANOVA_API_KEY is required for voice command processing.' })
+    const hasSambaNova = Boolean(configuredSambaNovaKey())
+    const hasGemini = Boolean(process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('['))
+    if (!hasSambaNova && !hasGemini) {
+      return res.status(503).json({ ok: false, mode: 'provider-unconfigured', message: 'An AI API key is required for voice command processing.' })
+    }
 
     const body = await readJsonBody(req, 3_600_000)
     const languageCode = safeLanguage(body.language)
 
     let transcript = cleanTranscript(body.transcript)
-    if (!transcript && body.audio) transcript = await transcribeWithSambaStack({ apiKey, body, languageCode })
+    if (!transcript && body.audio && hasSambaNova) {
+      transcript = await transcribeWithSambaStack({ apiKey: configuredSambaNovaKey(), body, languageCode })
+    }
     if (!transcript) return res.status(422).json({ ok: false, mode: 'no-speech', message: 'No clear speech was detected. Try again closer to the microphone.' })
 
     const command = await commandFromTranscript(transcript, languageCode)
-    return res.status(200).json({ ok: true, mode: 'transcribed', provider: 'SambaNova', transcript, command })
+    return res.status(200).json({ ok: true, mode: 'transcribed', provider: hasGemini ? 'Gemini' : 'SambaNova', transcript, command })
   } catch (error) {
     const timedOut = error?.name === 'AbortError'
     return res.status(timedOut ? 504 : Number(error.status || 502)).json({

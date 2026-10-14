@@ -12,17 +12,6 @@ function clamp(value, min = 0, max = 100) {
   return Math.max(min, Math.min(max, Math.round(value)))
 }
 
-function routeHash(plan = {}) {
-  const text = `${plan.from || ''}|${plan.to || ''}|${plan.transportMode || ''}`.toLowerCase()
-  let hash = 0
-  for (let i = 0; i < text.length; i += 1) hash = ((hash << 5) - hash) + text.charCodeAt(i)
-  return Math.abs(hash)
-}
-
-function routeSpecificAdjustment(plan = {}, spread = 8) {
-  if (!plan.from || !plan.to) return 0
-  return (routeHash(plan) % (spread * 2 + 1)) - spread
-}
 
 export function estimatePrice({ distance = 0, passengers = 1, classType = '', urgency = 'Normal', transportMode = 'Train' }) {
   const km = Math.max(0, Number(distance) || 0)
@@ -69,9 +58,9 @@ function budgetFitScore(plan = {}) {
   const service = servicesForMode(plan, plan.transportMode)[0]
   const distance = routeDistanceKm(plan.from, plan.to)
   const expected = service?.fare || estimatePrice({ distance: distance || 1000, passengers: plan.passengers, classType: plan.classType, urgency: plan.urgency, transportMode: plan.transportMode })
-  if (expected <= budget) return clamp(94 + routeSpecificAdjustment(plan, 4), 82, 100)
+  if (expected <= budget) return 95
   const over = expected - budget
-  return clamp(100 - (over / Math.max(budget, 1)) * 80 + routeSpecificAdjustment(plan, 5), 25, 96)
+  return clamp(100 - (over / Math.max(budget, 1)) * 80, 25, 95)
 }
 
 function routeCompleteness(plan = {}) {
@@ -99,7 +88,6 @@ function availabilityScore(plan = {}) {
   if (text.includes('full') || text.includes('unavailable') || text.includes('no-direct')) score -= 28
   if (text.includes('delayed') || text.includes('limited')) score -= 12
   if (text.includes('verified') || text.includes('catalogue')) score -= 5
-  score += routeSpecificAdjustment(plan, 6)
   return clamp(score, 20, 100)
 }
 
@@ -118,7 +106,7 @@ function dateConfidenceScore(plan = {}) {
 
 function backupStrengthScore(plan = {}) {
   const combos = routeCombos.map((combo) => calculateRouteComboScore(combo, plan)).sort((a, b) => b - a)
-  return clamp((combos[1] || combos[0] || 45) + routeSpecificAdjustment(plan, 4), 30, 100)
+  return clamp((combos[1] || combos[0] || 45), 30, 100)
 }
 
 export function calculateRouteComboScore(combo, plan = {}) {
@@ -156,8 +144,7 @@ export function calculateTravelScore(plan = {}) {
     (dateScore * 0.1) +
     (backup * 0.12) +
     (readiness * 0.08) +
-    (knownDataScore * 0.05) +
-    routeSpecificAdjustment(plan, 5),
+    (knownDataScore * 0.05),
     20,
     100
   )

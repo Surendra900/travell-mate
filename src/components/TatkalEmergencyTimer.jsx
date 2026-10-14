@@ -101,18 +101,18 @@ export default function TatkalEmergencyTimer({ classType = 'Sleeper' }) {
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-amber-300 bg-amber-100/70 text-amber-950 text-xs font-bold tracking-wide">
-              <Clock size={13} className="text-amber-800" /> Tatkal Emergency Countdown Engine
+              <Clock size={13} className="text-amber-800" /> Tatkal Window Countdown (IST)
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-800 text-xs font-mono font-bold">
               IST Sync (UTC+5:30)
             </span>
           </div>
           <div className="mt-3 flex items-baseline gap-3">
-            <h3 className="font-mono text-4xl sm:text-5xl font-black tracking-tight text-slate-900">
+            <h3 className="font-mono text-4xl sm:text-5xl font-black tracking-tight text-slate-900" data-testid="tatkal-countdown-display">
               {isCurrentClassWindowLive ? 'LIVE NOW' : formatDelta(diff)}
             </h3>
             {isCurrentClassWindowLive && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-rose-600 px-3 py-1 text-xs font-black uppercase text-white animate-pulse">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-1 text-xs font-black uppercase text-white animate-pulse">
                 <Zap size={12} /> Window Open
               </span>
             )}
@@ -131,7 +131,7 @@ export default function TatkalEmergencyTimer({ classType = 'Sleeper' }) {
               <span className="font-bold">AC Tatkal</span>
               <span className="font-mono font-black text-amber-900">10:00 AM</span>
             </div>
-            <p className="mt-1 font-mono text-[11px] font-bold text-slate-800">{isAcWindowLive ? 'OPEN' : formatDelta(diffAc)}</p>
+            <p className="mt-1 font-mono text-[11px] font-bold text-slate-800" data-testid="tatkal-diff-ac">{isAcWindowLive ? 'OPEN' : formatDelta(diffAc)}</p>
             {isAc && <span className="mt-1 inline-block text-[9px] font-black uppercase tracking-wider text-amber-800">Selected Class</span>}
           </div>
 
@@ -142,7 +142,7 @@ export default function TatkalEmergencyTimer({ classType = 'Sleeper' }) {
               <span className="font-bold">Non-AC Tatkal</span>
               <span className="font-mono font-black text-orange-900">11:00 AM</span>
             </div>
-            <p className="mt-1 font-mono text-[11px] font-bold text-slate-800">{isNonAcWindowLive ? 'OPEN' : formatDelta(diffNonAc)}</p>
+            <p className="mt-1 font-mono text-[11px] font-bold text-slate-800" data-testid="tatkal-diff-nonac">{isNonAcWindowLive ? 'OPEN' : formatDelta(diffNonAc)}</p>
             {!isAc && <span className="mt-1 inline-block text-[9px] font-black uppercase tracking-wider text-orange-800">Selected Class</span>}
           </div>
         </div>
@@ -195,13 +195,13 @@ export default function TatkalEmergencyTimer({ classType = 'Sleeper' }) {
 
         <div className="flex items-center gap-2 text-xs">
           {urgent && !isCurrentClassWindowLive && (
-            <span className="rounded-full bg-rose-600 px-3 py-1 font-black text-white animate-bounce shadow-xs">
-              🚨 Final 5 Mins · Login IRCTC Now!
+            <span className="rounded-full bg-amber-600 px-3 py-1 font-bold text-white flex items-center gap-1.5 shadow-xs">
+              <AlertCircle size={14} /> Final 5 Mins · Prepare IRCTC Session
             </span>
           )}
           {active && !urgent && !isCurrentClassWindowLive && (
-            <span className="rounded-full bg-amber-100 border border-amber-300 px-3 py-1 font-bold text-amber-900">
-              Prep Window Active ({alarmLeadMinutes}m lead)
+            <span className="rounded-full bg-amber-100 border border-amber-300 px-3 py-1 font-bold text-amber-900 flex items-center gap-1.5">
+              <Clock size={13} /> Prep Window Active ({alarmLeadMinutes}m lead)
             </span>
           )}
         </div>

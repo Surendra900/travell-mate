@@ -48,7 +48,7 @@ function normalizeAliasKey(value = '') {
     .replace(/\s+/g, ' ')
 }
 
-function extractStationCode(label = '') {
+export function extractStationCode(label = '') {
   const match = String(label || '').toUpperCase().match(/\(([A-Z0-9]{2,5})\)/)
   return match ? match[1] : ''
 }
@@ -110,7 +110,7 @@ export function hasRapidRailConfig() {
   return Boolean(getRapidConfig().key)
 }
 
-export async function callRapidRail(path, params = {}, timeoutMs = 10_000) {
+export async function callRapidRail(path, params = {}, timeoutMs = 25_000) {
   const { host, key, base } = getRapidConfig()
   if (!key) {
     const missing = new Error('RAPIDAPI_KEY is not configured for this deployment.')

@@ -1,4 +1,4 @@
-import { fetchJsonWithTimeout, prepareApiRequest, providerStatus } from '../_security.js'
+import { fetchJsonWithTimeout, prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 
 function rowsFrom(payload) {
   if (Array.isArray(payload?.results)) return payload.results
@@ -8,6 +8,21 @@ function rowsFrom(payload) {
 }
 
 function normalizeBus(row, index, from, to) {
+  const depart = String(row.departure || row.departureTime || row.startTime || '').trim()
+  const arrive = String(row.arrival || row.arrivalTime || row.endTime || '').trim()
+  const price = Number.isFinite(Number(row.price || row.fare)) ? Number(row.price || row.fare) : null
+  const availability = String(row.availability || row.seatsAvailable || '').trim()
+
+  const hasSchedule = Boolean(depart && arrive && depart !== 'Check provider' && arrive !== 'Check provider')
+  const hasFareOrAvailability = price !== null || Boolean(availability && availability !== 'Check provider')
+
+  let status = 'PROVIDER_VERIFICATION_REQUIRED'
+  if (hasSchedule && hasFareOrAvailability) {
+    status = 'LIVE_PROVIDER_DATA'
+  } else if (hasSchedule) {
+    status = 'LIVE_SCHEDULE_ONLY'
+  }
+
   return {
     id: String(row.id || row.busId || row.service_id || `bus-${index}`),
     type: 'bus',
@@ -15,14 +30,17 @@ function normalizeBus(row, index, from, to) {
     code: String(row.serviceNumber || row.busNumber || row.code || 'N/A').slice(0, 60),
     from: String(row.from || row.source || row.boardingPoint || from).slice(0, 160),
     to: String(row.to || row.destination || row.droppingPoint || to).slice(0, 160),
-    departure: String(row.departure || row.departureTime || row.startTime || 'Check provider').slice(0, 80),
-    arrival: String(row.arrival || row.arrivalTime || row.endTime || 'Check provider').slice(0, 80),
+    departure: depart || 'Check provider',
+    depart: depart || 'Check provider',
+    arrival: arrive || 'Check provider',
+    arrive: arrive || 'Check provider',
     duration: String(row.duration || row.travelTime || 'Check provider').slice(0, 80),
-    price: Number.isFinite(Number(row.price || row.fare)) ? Number(row.price || row.fare) : null,
+    price,
     currency: String(row.currency || 'INR').slice(0, 8),
-    availability: String(row.availability || row.seatsAvailable || 'Check provider').slice(0, 80),
+    availability: availability || 'Check provider',
     provider: 'Configured bus provider',
-    sourceBadge: 'Live API result',
+    sourceBadge: status,
+    provenance: status,
     verification: 'Verify boarding point, live fare, seat, cancellation and operator details before payment.'
   }
 }
@@ -37,25 +55,93 @@ export default async function handler(req, res) {
 
   const apiUrl = String(process.env.BUS_API_URL || '').trim()
   const apiKey = String(process.env.BUS_API_KEY || '').trim()
-  if (!apiUrl || !apiKey) {
-    return res.status(503).json({ ok: false, mode: 'provider-unconfigured', provider: 'Bus provider', sourceBadge: 'Provider configuration required', message: 'Live bus provider is not configured. The local route catalogue remains available separately.', results: [] })
+  const allowedHosts = String(process.env.BUS_API_ALLOWED_HOSTS || '')
+    .split(',')
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean)
+
+  if (!apiUrl || !apiKey || !allowedHosts.length) {
+    return res.status(503).json({
+      ok: false,
+      mode: 'provider-unconfigured',
+      provider: 'Bus provider',
+      sourceBadge: 'PROVIDER_VERIFICATION_REQUIRED',
+      message: 'Live bus provider is not configured. The local route catalogue remains available separately.',
+      results: []
+    })
+  }
+
+  let url
+  try {
+    url = new URL(apiUrl)
+  } catch {
+    return res.status(500).json({
+      ok: false,
+      mode: 'provider-error',
+      message: 'Invalid BUS_API_URL format.',
+      results: []
+    })
+  }
+
+  if (url.protocol !== 'https:') {
+    return res.status(500).json({
+      ok: false,
+      mode: 'provider-error',
+      message: 'BUS_API_URL must use HTTPS.',
+      results: []
+    })
+  }
+
+  if (!allowedHosts.includes(url.hostname.toLowerCase())) {
+    return res.status(500).json({
+      ok: false,
+      mode: 'provider-error',
+      message: 'BUS_API_URL hostname is not allowlisted.',
+      results: []
+    })
   }
 
   try {
-    const url = new URL(apiUrl)
-    if (!['https:', 'http:'].includes(url.protocol)) throw new Error('BUS_API_URL must use HTTPS or HTTP.')
     url.searchParams.set('from', from)
     url.searchParams.set('to', to)
     if (date) url.searchParams.set('date', date)
-    const { response, payload } = await fetchJsonWithTimeout(url.toString(), { headers: { Accept: 'application/json', Authorization: `Bearer ${apiKey}`, 'x-api-key': apiKey } }, 12_000)
+
+    const { response, payload } = await fetchJsonWithTimeout(url.toString(), {
+      headers: {
+        Accept: 'application/json',
+        'x-api-key': apiKey
+      }
+    }, 12_000)
+
     if (!response.ok) {
       const error = new Error(`Bus provider returned HTTP ${response.status}.`)
       error.status = response.status
+      error.code = 'PROVIDER_ERROR'
       throw error
     }
+
     const results = rowsFrom(payload).slice(0, 30).map((row, index) => normalizeBus(row, index, from, to))
-    return res.status(200).json({ ok: true, mode: 'live', provider: 'Configured bus provider', sourceBadge: 'Live API result', message: results.length ? 'Live bus provider results loaded.' : 'The bus provider returned no matching services.', count: results.length, results })
+    const status = results.length ? (results[0].sourceBadge || 'LIVE_PROVIDER_DATA') : 'LIVE_SCHEDULE_ONLY'
+
+    return res.status(200).json({
+      ok: true,
+      mode: 'live',
+      provider: 'Configured bus provider',
+      sourceBadge: status,
+      message: results.length ? 'Live bus provider results loaded.' : 'The bus provider returned no matching services.',
+      count: results.length,
+      results
+    })
   } catch (error) {
-    return res.status(providerStatus(error)).json({ ok: false, mode: 'provider-error', provider: 'Configured bus provider', sourceBadge: 'Provider unavailable', message: error.message || 'Bus provider request failed.', error: error.code || 'BUS_PROVIDER_ERROR', results: [] })
+    const safe = publicProviderError(error, 'Bus provider request failed.')
+    return res.status(providerStatus(error)).json({
+      ok: false,
+      mode: 'provider-error',
+      provider: 'Configured bus provider',
+      sourceBadge: 'PROVIDER_VERIFICATION_REQUIRED',
+      message: safe.message,
+      error: safe.error,
+      results: []
+    })
   }
 }

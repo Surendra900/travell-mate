@@ -29,7 +29,7 @@ export function findTransitHubs(fromCity, toCity, maxDetourRatio = 1.35) {
     const totalDist = d1 + d2
     const ratio = totalDist / directDist
 
-    if (ratio <= maxDetourRatio) {
+    if (ratio <= maxDetourRatio && d2 < directDist) {
       candidates.push({
         place,
         city: place.city,
@@ -64,13 +64,91 @@ export function generateMultimodalRoutes({
   const directDist = haversineDistanceKm(fromPlace, toPlace) || 500
   const candidateHubs = findTransitHubs(from, to)
 
-  // Pick primary hub and secondary hub
-  const primaryHub = candidateHubs[0]?.place || transportPlaces.find(p => ['Vijayawada', 'Nagpur', 'Hyderabad', 'Kanpur', 'Pune', 'Bhopal'].includes(p.city)) || candidateHubs[0]?.place
+  // Direct corridor priority: for corridors under 250 km or where no reasonable intermediate hub exists
+  if (directDist <= 250 || candidateHubs.length === 0) {
+    const trainDurationMin = Math.round((directDist / 60) * 60)
+    const busDurationMin = Math.round((directDist / 45) * 60)
+
+    const trainFare = Math.max(90, Math.round(directDist * 0.65)) * passengers
+    const busFare = Math.max(120, Math.round(directDist * 0.95)) * passengers
+
+    return [
+      {
+        id: `direct-train-${fromPlace.city}-${toPlace.city}`,
+        tier: 'paisa-vasool',
+        tierLabel: 'Direct Rail Express',
+        tierBadge: 'Direct Route',
+        totalFare: trainFare,
+        fareFormatted: `₹${trainFare}`,
+        totalDuration: formatHoursMinutes(trainDurationMin),
+        totalDurationMin: trainDurationMin,
+        hubCity: 'Direct (No Transfers)',
+        transferBuffer: 'No intermediate transfer required',
+        whyPicked: `Direct railway corridor (${Math.round(directDist)} km). Frequent express and superfast trains connect these cities directly.`,
+        leg1: {
+          legIndex: 1,
+          mode: 'Train',
+          from: fromPlace.city,
+          to: toPlace.city,
+          depart: null,
+          arrive: null,
+          departureEstimate: 'Frequent daily services',
+          duration: formatHoursMinutes(trainDurationMin),
+          fare: trainFare,
+          service: `${fromPlace.city} to ${toPlace.city} Direct Express`,
+          provenance: 'ESTIMATE',
+          scheduleNote: 'Direct corridor route; check live portal for seat availability.',
+          bookingLink: getProviderDeepLink({
+            transport: 'Train',
+            from: fromPlace.city,
+            to: toPlace.city,
+            date
+          })
+        }
+      },
+      {
+        id: `direct-bus-${fromPlace.city}-${toPlace.city}`,
+        tier: 'smart-balanced',
+        tierLabel: 'Direct State or Private Bus',
+        tierBadge: 'Frequent Departure',
+        totalFare: busFare,
+        fareFormatted: `₹${busFare}`,
+        totalDuration: formatHoursMinutes(busDurationMin),
+        totalDurationMin: busDurationMin,
+        hubCity: 'Direct Highway Corridor',
+        transferBuffer: 'No transfer required',
+        whyPicked: `Direct highway connection via national highway. Non-stop express buses run at regular intervals.`,
+        leg1: {
+          legIndex: 1,
+          mode: 'Bus',
+          from: fromPlace.city,
+          to: toPlace.city,
+          depart: null,
+          arrive: null,
+          departureEstimate: 'Every 30 to 60 minutes',
+          duration: formatHoursMinutes(busDurationMin),
+          fare: busFare,
+          service: `${fromPlace.city} to ${toPlace.city} Highway Express Bus`,
+          provenance: 'ESTIMATE',
+          scheduleNote: 'Frequent highway service; board at central bus station.',
+          bookingLink: getProviderDeepLink({
+            transport: 'Bus',
+            from: fromPlace.city,
+            to: toPlace.city,
+            date
+          })
+        }
+      }
+    ]
+  }
+
+  // Pick primary hub and secondary hub from candidate hubs
+  const primaryHub = candidateHubs[0]?.place || null
   const airportHub = candidateHubs.find(h => ['Hyderabad', 'Bengaluru', 'Delhi', 'Mumbai', 'Kolkata', 'Chennai'].includes(h.city))?.place || primaryHub
 
   const routes = []
 
-  // 1. TIER 1: PAISA VASOOL (Cheapest Budget Hack - Train + Train or Bus + Train)
+  // 1. TIER 1: PAISA VASOOL (Cheapest Budget Hack Train + Train or Bus + Train)
   if (primaryHub) {
     const leg1Km = haversineDistanceKm(fromPlace, primaryHub) || 200
     const leg2Km = haversineDistanceKm(primaryHub, toPlace) || 300
@@ -87,7 +165,7 @@ export function generateMultimodalRoutes({
     routes.push({
       id: `pv-${fromPlace.city}-${primaryHub.city}-${toPlace.city}`,
       tier: 'paisa-vasool',
-      tierLabel: '🟢 Paisa Vasool (Cheapest)',
+      tierLabel: 'Paisa Vasool (Budget)',
       tierBadge: 'Maximum Savings',
       totalFare,
       fareFormatted: `₹${totalFare}`,
@@ -95,17 +173,20 @@ export function generateMultimodalRoutes({
       totalDurationMin,
       hubCity: primaryHub.city,
       transferBuffer: '1h 45m safe daylight transfer',
-      whyPicked: `Saves up to ₹3,500 vs. flight. Splits into two confirmed train quotas via ${primaryHub.city}.`,
+      whyPicked: `Saves up to ₹3,500 vs. flight. Splits into two high-availability train quotas via ${primaryHub.city}.`,
       leg1: {
         legIndex: 1,
         mode: 'Train',
         from: fromPlace.city,
         to: primaryHub.city,
-        depart: '07:30',
-        arrive: '11:15',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Daily rail service (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
-        service: `${fromPlace.city} → ${primaryHub.city} Rail Express`,
+        service: `${fromPlace.city} to ${primaryHub.city} Rail Express`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: fromPlace.city,
@@ -118,11 +199,14 @@ export function generateMultimodalRoutes({
         mode: 'Train',
         from: primaryHub.city,
         to: toPlace.city,
-        depart: '13:00',
-        arrive: '20:30',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Connecting rail service (verify timetable on portal)',
         duration: formatHoursMinutes(leg2DurationMin),
         fare: leg2Fare,
-        service: `${primaryHub.city} → ${toPlace.city} Connecting Express`,
+        service: `${primaryHub.city} to ${toPlace.city} Connecting Express`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: primaryHub.city,
@@ -133,7 +217,7 @@ export function generateMultimodalRoutes({
     })
   }
 
-  // 2. TIER 2: SMART BALANCED (Best Value - Superfast Train + AC Sleeper Bus / Train)
+  // 2. TIER 2: SMART BALANCED (Best Value Superfast Train + AC Sleeper Bus / Train)
   if (primaryHub) {
     const leg1Km = haversineDistanceKm(fromPlace, primaryHub) || 200
     const leg2Km = haversineDistanceKm(primaryHub, toPlace) || 300
@@ -150,7 +234,7 @@ export function generateMultimodalRoutes({
     routes.push({
       id: `sb-${fromPlace.city}-${primaryHub.city}-${toPlace.city}`,
       tier: 'smart-balanced',
-      tierLabel: '🔵 Smart Balanced (Best Value)',
+      tierLabel: 'Smart Balanced',
       tierBadge: 'Comfort & Speed',
       totalFare,
       fareFormatted: `₹${totalFare}`,
@@ -158,17 +242,20 @@ export function generateMultimodalRoutes({
       totalDurationMin,
       hubCity: primaryHub.city,
       transferBuffer: '2h 00m buffer between Rail & Bus Station',
-      whyPicked: `Confirmed AC sleeper travel. Fast daytime train to ${primaryHub.city}, then overnight AC bus.`,
+      whyPicked: `Scheduled AC sleeper travel. Fast daytime train to ${primaryHub.city}, then overnight AC bus.`,
       leg1: {
         legIndex: 1,
         mode: 'Train',
         from: fromPlace.city,
         to: primaryHub.city,
-        depart: '14:30',
-        arrive: '18:15',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Afternoon connector train (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
         service: `Superfast 3AC Connector to ${primaryHub.city}`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: fromPlace.city,
@@ -181,11 +268,14 @@ export function generateMultimodalRoutes({
         mode: 'Bus',
         from: primaryHub.city,
         to: toPlace.city,
-        depart: '20:15',
-        arrive: '06:30 (+1)',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Frequent overnight departures (every 30–60 min)',
         duration: formatHoursMinutes(leg2DurationMin),
         fare: leg2Fare,
         service: `AC Sleeper Coach to ${toPlace.city}`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Bus',
           from: primaryHub.city,
@@ -196,7 +286,7 @@ export function generateMultimodalRoutes({
     })
   }
 
-  // 3. TIER 3: EMERGENCY EXPRESS (Fastest Route - Train/Cab to Airport Hub + Flight)
+  // 3. TIER 3: EMERGENCY EXPRESS (Fastest Route Train/Cab to Airport Hub + Flight)
   if (airportHub) {
     const leg1Km = haversineDistanceKm(fromPlace, airportHub) || 200
     const leg2Km = haversineDistanceKm(airportHub, toPlace) || 600
@@ -213,7 +303,7 @@ export function generateMultimodalRoutes({
     routes.push({
       id: `ee-${fromPlace.city}-${airportHub.city}-${toPlace.city}`,
       tier: 'emergency-express',
-      tierLabel: '⚡ Emergency Express (Fastest)',
+      tierLabel: 'Fastest Route',
       tierBadge: 'Saves 8+ Hours',
       totalFare,
       fareFormatted: `₹${totalFare}`,
@@ -227,11 +317,14 @@ export function generateMultimodalRoutes({
         mode: 'Train',
         from: fromPlace.city,
         to: airportHub.city,
-        depart: '06:00',
-        arrive: '09:45',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Morning express departures (verify timetable on portal)',
         duration: formatHoursMinutes(leg1DurationMin),
         fare: leg1Fare,
         service: `Morning Express to ${airportHub.city}`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Service frequency estimate only; check operator before travelling.',
         bookingLink: getProviderDeepLink({
           transport: 'Train',
           from: fromPlace.city,
@@ -244,11 +337,14 @@ export function generateMultimodalRoutes({
         mode: 'Flight',
         from: airportHub.city,
         to: toPlace.city,
-        depart: '13:15',
-        arrive: '15:30',
-        duration: '2h 15m',
+        depart: null,
+        arrive: null,
+        departureEstimate: 'Direct flights operate daily (verify airline schedule on portal)',
+        duration: '2h 15m (approx. flight)',
         fare: leg2Fare,
-        service: `Non-stop Flight (${airportHub.city} → ${toPlace.city})`,
+        service: `Non-stop Flight (${airportHub.city} to ${toPlace.city})`,
+        provenance: 'ESTIMATE',
+        scheduleNote: 'Flight schedule estimate only; verify airline portal before booking.',
         bookingLink: getProviderDeepLink({
           transport: 'Flight',
           from: airportHub.city,
@@ -270,25 +366,37 @@ export function formatWhatsAppShareText(route) {
   const l1 = route.leg1
   const l2 = route.leg2
 
+  const l1Timing = (l1?.depart && l1?.arrive)
+    ? `Depart ${l1.depart} (${l1.from}) to Arrive ${l1.arrive} (${l1.to})`
+    : `Schedule: ${l1?.departureEstimate || 'Check operator schedule'} · ~${l1?.duration || 'Duration est.'}`
+
+  const l2Timing = (l2?.depart && l2?.arrive)
+    ? `Depart ${l2.depart} (${l2.from}) to Arrive ${l2.arrive} (${l2.to})`
+    : `Schedule: ${l2?.departureEstimate || 'Check operator schedule'} · ~${l2?.duration || 'Duration est.'}`
+
+  const baseOrigin = typeof window !== 'undefined' && window.location?.origin
+    ? window.location.origin
+    : 'https://travelmate-ai-flowzint.vercel.app'
+
   return [
-    `🚆 *TravelMate Confirmed Journey*`,
-    `📍 *Route:* ${l1?.from} ➔ ${l2?.to}`,
-    `🏷 *Plan:* ${route.tierLabel || route.tier} (${route.tierBadge})`,
-    `💰 *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
+    ` *TravelMate Recovered Journey Plan*`,
+    ` *Route:* ${l1?.from} to ${l2?.to}`,
+    ` *Plan:* ${route.tierLabel || route.tier} (${route.tierBadge})`,
+    ` *Fare:* ${route.fareFormatted} · *Time:* ${route.totalDuration}`,
     ``,
-    `1️⃣ *Step 1:* ${l1?.service || `${l1?.mode} to ${l1?.to}`}`,
-    `   🕒 Depart ${l1?.depart} (${l1?.from}) ➔ Arrive ${l1?.arrive} (${l1?.to}) · ₹${l1?.fare}`,
+    `Step 1: *Step 1:* ${l1?.service || `${l1?.mode} to ${l1?.to}`}`,
+    `    ${l1Timing} · ₹${l1?.fare}${l1?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
     ``,
-    `🔄 *Transfer at ${route.hubCity}:*`,
+    ` *Transfer at ${route.hubCity}:*`,
     `   ⏳ ${route.transferBuffer}`,
     ``,
-    `2️⃣ *Step 2:* ${l2?.service || `${l2?.mode} to ${l2?.to}`}`,
-    `   🕒 Depart ${l2?.depart} (${l2?.from}) ➔ Arrive ${l2?.arrive} (${l2?.to}) · ₹${l2?.fare}`,
+    `Step 2: *Step 2:* ${l2?.service || `${l2?.mode} to ${l2?.to}`}`,
+    `    ${l2Timing} · ₹${l2?.fare}${l2?.provenance === 'ESTIMATE' ? ' (est.)' : ''}`,
     ``,
-    `💡 *Why this route:* ${route.whyPicked}`,
+    ` *Why this route:* ${route.whyPicked}`,
     ``,
-    `🔗 Stitched automatically by TravelMate AI:`,
-    `https://travelmate-ai-flowzint.vercel.app/planner?from=${encodeURIComponent(l1?.from || '')}&to=${encodeURIComponent(l2?.to || '')}`
+    ` Stitched automatically by TravelMate:`,
+    `${baseOrigin}/planner?from=${encodeURIComponent(l1?.from || '')}&to=${encodeURIComponent(l2?.to || '')}`
   ].join('\n')
 }
 

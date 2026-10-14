@@ -1,0 +1,117 @@
+[
+  {
+    "name": "AnalyzeJourney-IgIPsMiB.js",
+    "bytes": 4547,
+    "kb": "4.44"
+  },
+  {
+    "name": "date-oOsr9jzQ.js",
+    "bytes": 276,
+    "kb": "0.27"
+  },
+  {
+    "name": "EmergencyDetail-BLUQDteZ.js",
+    "bytes": 5417,
+    "kb": "5.29"
+  },
+  {
+    "name": "Home-BPrllqZg.js",
+    "bytes": 15325,
+    "kb": "14.97"
+  },
+  {
+    "name": "index-Bv6Kbywh.js",
+    "bytes": 191350,
+    "kb": "186.87"
+  },
+  {
+    "name": "index-D6Wu9Oci.css",
+    "bytes": 78949,
+    "kb": "77.10"
+  },
+  {
+    "name": "LegalDisclaimer-CmZvK2ne.js",
+    "bytes": 5148,
+    "kb": "5.03"
+  },
+  {
+    "name": "NaturalLanguageQueryInput-WJ6T_RJG.js",
+    "bytes": 22864,
+    "kb": "22.33"
+  },
+  {
+    "name": "OfflineTravelerPassModal-CsjrG49Y.js",
+    "bytes": 9433,
+    "kb": "9.21"
+  },
+  {
+    "name": "Planner-B54ho9XL.js",
+    "bytes": 210892,
+    "kb": "205.95"
+  },
+  {
+    "name": "PnrPredictorModal-CsmwnecI.js",
+    "bytes": 26364,
+    "kb": "25.75"
+  },
+  {
+    "name": "PrivacyPolicy-BoIVzv3c.js",
+    "bytes": 6833,
+    "kb": "6.67"
+  },
+  {
+    "name": "rolldown-runtime-Bh1tDfsg.js",
+    "bytes": 567,
+    "kb": "0.55"
+  },
+  {
+    "name": "SafetyMode-CqJDwApX.js",
+    "bytes": 37596,
+    "kb": "36.71"
+  },
+  {
+    "name": "SavedPlans-B-XDJnaZ.js",
+    "bytes": 23174,
+    "kb": "22.63"
+  },
+  {
+    "name": "TermsOfService-DuJ3qRyh.js",
+    "bytes": 4943,
+    "kb": "4.83"
+  },
+  {
+    "name": "vendor-0b5rP9hd.js",
+    "bytes": 29748,
+    "kb": "29.05"
+  },
+  {
+    "name": "vendor-auth-DObaHfal.js",
+    "bytes": 210102,
+    "kb": "205.18"
+  },
+  {
+    "name": "vendor-icons-B-w2rkHV.js",
+    "bytes": 28155,
+    "kb": "27.50"
+  },
+  {
+    "name": "vendor-maps-B40yZd3c.js",
+    "bytes": 148818,
+    "kb": "145.33"
+  },
+  {
+    "name": "vendor-maps-CcXJxNtP.css",
+    "bytes": 14808,
+    "kb": "14.46"
+  },
+  {
+    "name": "vendor-react-DQp0g44c.js",
+    "bytes": 846,
+    "kb": "0.83"
+  },
+  {
+    "name": "vendor-router-C1uG2bLD.js",
+    "bytes": 14074,
+    "kb": "13.74"
+  }
+]

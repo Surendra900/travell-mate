@@ -1,0 +1,84 @@
+[
+  {
+    "task": "(a) Find alternative route for sold-out corridor",
+    "durationMs": 4610,
+    "clicks": 0,
+    "hesitationPoints": [
+      "Cold visitor blocked by Location Gate modal on initial load",
+      "Cold visitor blocked by Voice Gate modal on initial load",
+      "Double-search confusion: user must tap Search button again on planner page"
+    ],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(b) Understand transfer risk",
+    "durationMs": 49,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.isVisible: Error: strict mode violation: getByTestId('waitlist-bypass-contrast') resolved to 2 elements:\n    1) <section data-testid=\"waitlist-bypass-contrast\" class=\"rounded-3xl border-2 border-sky-300 bg-white p-5 sm:p-7 shadow-lg\">…</section> aka getByTestId('waitlist-bypass-contrast').first()\n    2) <section data-testid=\"waitlist-bypass-contrast\" class=\"rounded-3xl border-2 border-sky-300 bg-white p-5 sm:p-7 shadow-lg\">…</section> aka getByRole('dialog', { name: 'Delhi (NDLS) Patna (PNBE)' }).getByTestId('waitlist-bypass-contrast')\n\nCall log:\n\u001b[2m    - checking visibility of getByTestId('waitlist-bypass-contrast')\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(c) Simulate late first train",
+    "durationMs": 15022,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: /if leg 1 runs late|delay simulator/i }).or(locator('button:has-text(\"If Leg 1 Runs Late\")')).first()\u001b[22m\n\u001b[2m    - locator resolved to <button role=\"tab\" type=\"button\" aria-selected=\"false\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <section aria-labelledby=\"backup-title\" class=\"rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100\">…</section> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <header class=\"live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4\">…</header> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  6 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <section aria-labelledby=\"backup-title\" class=\"rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100\">…</section> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <header class=\"live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4\">…</header> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <header class=\"live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4\">…</header> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <section aria-labelledby=\"backup-title\" class=\"rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100\">…</section> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(d) Use Demo scenario",
+    "durationMs": 1374,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(e) Prepare for Tatkal",
+    "durationMs": 1199,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(f) Save or open offline pass",
+    "durationMs": 734,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(g) Find helpline numbers",
+    "durationMs": 731,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(h) Change date or origin after results",
+    "durationMs": 1117,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(i) Recover from mistake",
+    "durationMs": 1196,
+    "clicks": 0,
+    "hesitationPoints": [
+      "No toast or inline validation visible upon empty search"
+    ],
+    "errors": [],
+    "status": "PASS"
+  }
+]

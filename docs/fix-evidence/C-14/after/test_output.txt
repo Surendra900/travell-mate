@@ -1,0 +1,33 @@
+# C-14 AFTER Test Output
+Date: 2026-10-09
+Target: Enforce min attribute on HTML date pickers
+
+$ node tests/c14_date_picker_min_constraint.test.mjs
+
+▶ C-14 Date Picker Min Constraint Suite
+  ✔ Static code check: src/pages/Home.jsx date input has min={localDateIso()} (7.2988ms)
+  ✔ Static code check: src/planner/NormalPlanner.jsx date input has min={localDateIso()} (3.3421ms)
+  ✔ Static code check: src/planner/EmergencyTatkalPlanner.jsx date input has min={localDateIso()} (2.9168ms)
+  ✔ Static code check: src/planner/LowNetworkPlanner.jsx date input has min={localDateIso()} (3.4254ms)
+  ✔ Static code check: src/pages/AnalyzeJourney.jsx date input has min={localDateIso()} (2.2266ms)
+  ✔ Browser check: Home travel date input has min attribute set to current date (2596.9901ms)
+  ✔ Browser check: Planner date input has min attribute set to current date (5165.0907ms)
+✔ C-14 Date Picker Min Constraint Suite (7791.6615ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7805.523
+
+Resolution Summary:
+- Added `min={localDateIso()}` to `#home-travel-date` in `src/pages/Home.jsx`.
+- Added `min={localDateIso()}` to `[data-testid="planner-date-input"]` in `src/planner/NormalPlanner.jsx`.
+- Imported `localDateIso` and added `min={localDateIso()}` to date input in `src/planner/EmergencyTatkalPlanner.jsx`.
+- Imported `localDateIso` and added `min={localDateIso()}` to date input in `src/planner/LowNetworkPlanner.jsx`.
+- Added `min={localDateIso()}` to Departure date input in `src/pages/AnalyzeJourney.jsx`.
+- Browser runtime validation confirmed:
+  - `min` attribute evaluates to current ISO date string (`2026-10-09`).
+  - Selecting/entering past dates sets `validity.rangeUnderflow = true` and `validity.valid = false`.

@@ -1,24 +1,56 @@
 const CITY_ALIASES = {
+  delh: 'Delhi',
+  deli: 'Delhi',
   dilli: 'Delhi',
+  ndls: 'Delhi',
+  dli: 'Delhi',
+  nzm: 'Delhi',
   bombay: 'Mumbai',
+  cstm: 'Mumbai',
+  bct: 'Mumbai',
   bangalore: 'Bengaluru',
   blr: 'Bengaluru',
+  sbc: 'Bengaluru',
+  ypr: 'Bengaluru',
   calcutta: 'Kolkata',
+  hwh: 'Kolkata',
+  sda: 'Kolkata',
   madras: 'Chennai',
+  mas: 'Chennai',
   hydrabad: 'Hyderabad',
+  hyd: 'Hyderabad',
+  secunderabad: 'Hyderabad',
+  sc: 'Hyderabad',
   banaras: 'Varanasi',
   kashi: 'Varanasi',
+  bsb: 'Varanasi',
   cochin: 'Kochi',
+  ernakulam: 'Kochi',
+  ers: 'Kochi',
   trivandrum: 'Thiruvananthapuram',
+  tvm: 'Thiruvananthapuram',
   vizag: 'Visakhapatnam',
+  vskp: 'Visakhapatnam',
+  vijaywada: 'Vijayawada',
+  vijayawada: 'Vijayawada',
+  bza: 'Vijayawada',
   poona: 'Pune',
   amdavad: 'Ahmedabad',
-  bbsr: 'Bhubaneswar'
+  adi: 'Ahmedabad',
+  bbsr: 'Bhubaneswar',
+  pnbe: 'Patna',
+  patna: 'Patna',
+  cnb: 'Kanpur',
+  kanpur: 'Kanpur',
+  lko: 'Lucknow',
+  lucknow: 'Lucknow',
+  jp: 'Jaipur',
+  jaipur: 'Jaipur'
 }
 
 function cleanText(value = '') {
   return String(value)
-    .replace(/[–—→➡➜]/g, ' to ')
+    .replace(new RegExp('[\\u2013' + String.fromCharCode(8212) + '\\u2192\\u27A1\\u279C]', 'g'), ' to ')
     .replace(/\b(?:fron|frm|froom)\b/gi, 'from')
     .replace(/\b(?:too|2)\b/gi, 'to')
     .replace(/\b(?:tiketd|tikets?|tickts?|tikt|tikcet|tickit|ticktes)\b/gi, 'ticket')
@@ -194,12 +226,14 @@ export function speakRouteConfirmation(parsedIntent, options = {}) {
 
 export function formatTierSpeechSummary(route) {
   if (!route) return ''
-  const tierName = String(route.tierLabel || 'Alternative route').replace(/[🟢🔵⚡]/g, '').trim()
+  const tierName = String(route.tierLabel || 'Alternative route').replace(/[\u{1F7E2}\u{1F535}\u26A1]/gu, '').trim()
   const fare = route.totalFare ? `${route.totalFare} rupees` : 'Standard fare'
   const duration = route.totalDuration || 'calculated duration'
-  const leg1 = route.leg1 ? `Step 1: ${route.leg1.mode} from ${route.leg1.from} to ${route.leg1.to}, departing at ${route.leg1.depart}.` : ''
+  const leg1Timing = route.leg1?.depart ? `, departing at ${route.leg1.depart}` : (route.leg1?.departureEstimate ? `, ${route.leg1.departureEstimate}` : '')
+  const leg1 = route.leg1 ? `Step 1: ${route.leg1.mode} from ${route.leg1.from} to ${route.leg1.to}${leg1Timing}.` : ''
   const transfer = route.transferBuffer ? `Transfer: ${route.transferBuffer} at ${route.hubCity} Junction.` : ''
-  const leg2 = route.leg2 ? `Step 2: ${route.leg2.mode} from ${route.leg2.from} to ${route.leg2.to}, arriving at ${route.leg2.arrive}.` : ''
+  const leg2Timing = route.leg2?.arrive ? `, arriving at ${route.leg2.arrive}` : ''
+  const leg2 = route.leg2 ? `Step 2: ${route.leg2.mode} from ${route.leg2.from} to ${route.leg2.to}${leg2Timing}.` : ''
   const why = route.whyPicked ? `Why picked: ${route.whyPicked}` : ''
 
   return `${tierName}. Total fare is ${fare}, journey duration is ${duration}. ${leg1} ${transfer} ${leg2} ${why}`.trim()

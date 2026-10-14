@@ -179,7 +179,7 @@ export function evaluateTransitDisruption(currentWeather = {}, hubName = 'Transi
     headline = `Severe Thunderstorm & Wind Caution at ${hubName}`;
     trainImpact = 'Overhead Equipment (OHE) caution; potential tree falls causing brief power line trips.';
     flightImpact = 'Turbulence advisories and runway queue delays during squall peaks.';
-    roadImpact = 'Reduced vehicle stability on highways; avoid elevated flyovers during peak gusts.';
+    roadImpact = 'Reduced vehicle stability on highways; avoid raised highway structures during peak gusts.';
     recommendedAction = 'Seek shelter inside the terminal/station building during active storm peak.';
     delayEstimateMinutes = 45;
   }

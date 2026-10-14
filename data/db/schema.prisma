@@ -1,0 +1,143 @@
+// Prisma Schema for TravelMate Real Railway Data Architecture
+// Configured per Standing Decision S4, S9, S10, and Phase 1 specifications.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Station {
+  code      String   @id @db.VarChar(16)
+  name      String   @db.VarChar(255)
+  state     String?  @db.VarChar(128)
+  zone      String?  @db.VarChar(32)
+  latitude  Float?
+  longitude Float?
+  address   String?  @db.Text
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stops        TrainStop[]
+  aliases      StationAlias[]
+  originTrains Train[]        @relation("TrainOrigin")
+  destTrains   Train[]        @relation("TrainDestination")
+
+  @@index([name])
+  @@index([state])
+  @@index([zone])
+}
+
+model StationAlias {
+  id              String   @id @default(uuid())
+  oldCodeOrName   String   @db.VarChar(128)
+  currentCode     String   @db.VarChar(16)
+  source          String   @default("IR_HISTORICAL") @db.VarChar(64)
+  note            String?  @db.Text
+  createdAt       DateTime @default(now())
+
+  station         Station  @relation(fields: [currentCode], references: [code], onDelete: Cascade)
+
+  @@index([oldCodeOrName])
+  @@index([currentCode])
+}
+
+model Train {
+  number         String   @id @db.VarChar(32)
+  name           String   @db.VarChar(255)
+  type           String?  @db.VarChar(64)
+  fromCode       String   @db.VarChar(16)
+  toCode         String   @db.VarChar(16)
+  distanceKm     Int?
+  zone           String?  @db.VarChar(32)
+  classFlags     Json?
+  returnTrain    String?  @db.VarChar(32)
+  sourceDataset  String   @default("datameet") @db.VarChar(64)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  originStation  Station  @relation("TrainOrigin", fields: [fromCode], references: [code], onDelete: Restrict)
+  destStation    Station  @relation("TrainDestination", fields: [toCode], references: [code], onDelete: Restrict)
+  stops          TrainStop[]
+  runDays        TrainRunDay[]
+  delays         DelaySnapshot[]
+
+  @@index([fromCode])
+  @@index([toCode])
+  @@index([type])
+  @@index([sourceDataset])
+}
+
+model TrainStop {
+  id               String   @id @default(uuid())
+  trainNumber      String   @db.VarChar(32)
+  sequence         Int
+  stationCode      String   @db.VarChar(16)
+  arrivalMinutes   Int?     // Minutes from midnight
+  departureMinutes Int?     // Minutes from midnight
+  haltMinutes      Int?
+  distanceKm       Int?
+  dayOffset        Int      @default(0)
+  createdAt        DateTime @default(now())
+
+  train            Train    @relation(fields: [trainNumber], references: [number], onDelete: Cascade)
+  station          Station  @relation(fields: [stationCode], references: [code], onDelete: Cascade)
+
+  @@unique([trainNumber, sequence])
+  @@index([stationCode])
+  @@index([trainNumber])
+  @@index([stationCode, departureMinutes])
+}
+
+model TrainRunDay {
+  id          String    @id @default(uuid())
+  trainNumber String    @db.VarChar(32)
+  mon         Boolean   @default(true)
+  tue         Boolean   @default(true)
+  wed         Boolean   @default(true)
+  thu         Boolean   @default(true)
+  fri         Boolean   @default(true)
+  sat         Boolean   @default(true)
+  sun         Boolean   @default(true)
+  validFrom   DateTime?
+  validTo     DateTime?
+  source      String    @default("unknown") @db.VarChar(64) // 'unknown' for datameet, 'railpull' for NTES
+  createdAt   DateTime  @default(now())
+
+  train       Train     @relation(fields: [trainNumber], references: [number], onDelete: Cascade)
+
+  @@index([trainNumber])
+  @@index([source])
+}
+
+model DelaySnapshot {
+  id           String   @id @default(uuid())
+  trainNumber  String   @db.VarChar(32)
+  delayMinutes Int      @default(0)
+  cancelled    Boolean  @default(false)
+  observedAt   DateTime @default(now())
+  source       String   @default("railpull_snapshot") @db.VarChar(64)
+
+  train        Train    @relation(fields: [trainNumber], references: [number], onDelete: Cascade)
+
+  @@index([trainNumber])
+  @@index([observedAt])
+}
+
+model DatasetVersion {
+  id              String   @id @default(uuid())
+  source          String   @db.VarChar(64)
+  license         String   @db.VarChar(128)
+  sourceReference String   @db.VarChar(255)
+  checksum        String   @db.VarChar(128)
+  rowCounts       Json
+  importedAt      DateTime @default(now())
+
+  @@index([source])
+  @@index([importedAt])
+}

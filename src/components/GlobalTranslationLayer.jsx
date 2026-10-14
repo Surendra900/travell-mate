@@ -78,7 +78,7 @@ function shouldTranslate(value = '') {
   if (/^[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}$/.test(text)) return false
   if (/^[A-Z0-9_-]{2,10}$/.test(text)) return false
   if (/^[-+]?\d[\d\s.,:/%-]*$/.test(text)) return false
-  if (/^[A-Z]{2,5}\s*(?:→|->|–|—)\s*[A-Z]{2,5}$/.test(text)) return false
+  if (new RegExp('^[A-Z]{2,5}\\s*(?:\\u2192|->|\\u2013|' + String.fromCharCode(8212) + ')\\s*[A-Z]{2,5}$').test(text)) return false
   if ((text.startsWith('{') && text.endsWith('}')) || (text.startsWith('[') && text.endsWith(']'))) return false
   return true
 }

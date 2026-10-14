@@ -1,0 +1,75 @@
+id,category,name,file_path,type,status,notes
+P01,Page,Home,src/pages/Home.jsx,React page,Present,Search hero + NL input + popular corridors
+P02,Page,Planner,src/pages/Planner.jsx,React page,Present,Core planner with live results
+P03,Page,SafetyMode,src/pages/SafetyMode.jsx,React page,Present,Emergency helplines + offline passes
+P04,Page,SavedPlans,src/pages/SavedPlans.jsx,React page,Present,Local-storage saved trips
+P05,Page,AnalyzeJourney,src/pages/AnalyzeJourney.jsx,React page,Present,Journey analysis
+P06,Page,PrivacyPolicy,src/pages/PrivacyPolicy.jsx,React page,Present,DPDP-aligned privacy page
+P07,Page,TermsOfService,src/pages/TermsOfService.jsx,React page,Present,Terms page
+P08,Page,LegalDisclaimer,src/pages/LegalDisclaimer.jsx,React page,Present,Legal disclaimer page
+P09,Page,EmergencyDetail,src/pages/EmergencyDetail.jsx,React page,Present,Emergency detail sub-page
+C01,Component,Navbar,src/components/Navbar.jsx,React component,Present,Top navigation
+C02,Component,Footer,src/components/Footer.jsx,React component,Present,Site footer
+C03,Component,BackupPlan,src/components/BackupPlan.jsx,React component,Present,Backup route card
+C04,Component,BlindVoiceGate,src/components/BlindVoiceGate.jsx,React component,Present,Accessibility voice gate
+C05,Component,DelayContingencySimulator,src/components/DelayContingencySimulator.jsx,React component,Present,Delay slider simulator
+C06,Component,DemoTourModal,src/components/DemoTourModal.jsx,React component,Present,Demo tour overlay
+C07,Component,DpdpPrivacyModal,src/components/DpdpPrivacyModal.jsx,React component,Present,Privacy consent modal
+C08,Component,EmergencyCard,src/components/EmergencyCard.jsx,React component,Present,Emergency service card
+C09,Component,EmergencyToolkit,src/components/EmergencyToolkit.jsx,React component,Present,Emergency full toolkit
+C10,Component,FeedbackModal,src/components/FeedbackModal.jsx,React component,Present,Feedback widget
+C11,Component,GlobalTranslationLayer,src/components/GlobalTranslationLayer.jsx,React component,Present,Language translation
+C12,Component,GlossaryTooltip,src/components/GlossaryTooltip.jsx,React component,Present,Rail term tooltips
+C13,Component,LanguageSelector,src/components/LanguageSelector.jsx,React component,Present,Language picker
+C14,Component,LiveResultsPanel,src/components/LiveResultsPanel.jsx,React component,Present,Live search results panel
+C15,Component,LocationPermissionGate,src/components/LocationPermissionGate.jsx,React component,Present,Location consent gate
+C16,Component,MasterTrustPanel,src/components/MasterTrustPanel.jsx,React component,Present,Provenance trust panel
+C17,Component,MultimodalTimelineCard,src/components/MultimodalTimelineCard.jsx,React component,Present,Multimodal route card
+C18,Component,NaturalLanguageQueryInput,src/components/NaturalLanguageQueryInput.jsx,React component,Present,NL AI input
+C19,Component,OfflineModeBanner,src/components/OfflineModeBanner.jsx,React component,Present,Offline warning banner
+C20,Component,OfflineOnlyMode,src/components/OfflineOnlyMode.jsx,React component,Present,Full offline mode screen
+C21,Component,OfflinePassModal,src/components/OfflinePassModal.jsx,React component,Present,Offline boarding pass
+C22,Component,OfflineTravelerPassModal,src/components/OfflineTravelerPassModal.jsx,React component,Present,Traveler pass modal
+C23,Component,OnboardingModal,src/components/OnboardingModal.jsx,React component,Present,First-run onboarding
+C24,Component,PageErrorBoundary,src/components/PageErrorBoundary.jsx,React component,Present,Error boundary
+C25,Component,PnrPredictorModal,src/components/PnrPredictorModal.jsx,React component,Present,PNR predictor modal
+C26,Component,PwaInstallBanner,src/components/PwaInstallBanner.jsx,React component,Present,PWA install prompt
+C27,Component,RouteMap,src/components/RouteMap.jsx,React component,Present,Leaflet interactive map
+C28,Component,ServiceOptionsBoard,src/components/ServiceOptionsBoard.jsx,React component,Present,Service options board
+C29,Component,SourceBadge,src/components/SourceBadge.jsx,React component,Present,Live/Estimate/Timetable badge
+C30,Component,StationAutocomplete,src/components/StationAutocomplete.jsx,React component,Present,Station search input
+C31,Component,StationHopperCard,src/components/StationHopperCard.jsx,React component,Present,Station hopper card
+C32,Component,TatkalEmergencyTimer,src/components/TatkalEmergencyTimer.jsx,React component,Present,Tatkal countdown timer
+C33,Component,TripComparison,src/components/TripComparison.jsx,React component,Present,Trip comparison UI
+C34,Component,VoiceSearchButton,src/components/VoiceSearchButton.jsx,React component,Present,Voice input button
+C35,Component,WaitlistBypassContrast,src/components/WaitlistBypassContrast.jsx,React component,Present,Waitlist vs alternative contrast
+C36,Component,WeatherDisruptionAlert,src/components/WeatherDisruptionAlert.jsx,React component,Present,Weather alert widget
+A01,API,trains/search,api/trains/search.js,Vercel serverless,Present,Train search via RapidAPI
+A02,API,trains/pnr,api/trains/pnr.js,Vercel serverless,Present,PNR status via RapidAPI
+A03,API,trains/status,api/trains/status.js,Vercel serverless,Present,Train running status
+A04,API,trains/live-station,api/trains/live-station.js,Vercel serverless,Present,Live station board
+A05,API,trains/station-search,api/trains/station-search.js,Vercel serverless,Present,Station search
+A06,API,trains/seat-availability,api/trains/seat-availability.js,Vercel serverless,Present,Seat availability
+A07,API,assistant,api/assistant.js,Vercel serverless,Present,AI NL query + rationale
+A08,API,translate,api/translate.js,Vercel serverless,Present,UI translation
+A09,API,buses/search,api/buses/ (dir),Vercel serverless,Present,Bus search
+A10,API,flights/search,api/flights/ (dir),Vercel serverless,Present,Flight search
+A11,API,voice/transcribe,api/voice/transcribe.js,Vercel serverless,Present,Voice transcription
+A12,API,recovery,api/recovery.js,Vercel serverless,Present,Recovery fallback
+U01,Util,multimodalRouter,src/utils/multimodalRouter.js,JS module,Present,Core route generation engine
+U02,Util,scoring,src/utils/scoring.js,JS module,Present,Travel score algorithm
+U03,Util,pnrPredictor,src/utils/pnrPredictor.js,JS module,Present,WL confirmation probability
+U04,Util,contingencyEngine,src/utils/contingencyEngine.js,JS module,Present,Delay contingency logic
+U05,Util,stationHopper,src/utils/stationHopper.js,JS module,Present,Station hopping logic
+U06,Util,weatherDisruptionEngine,src/utils/weatherDisruptionEngine.js,JS module,Present,Weather disruption
+U07,Util,secureVault,src/utils/secureVault.js,JS module,Present,Encrypted IndexedDB vault
+U08,Util,voiceIntent,src/utils/voiceIntent.js,JS module,Present,Voice command parser
+U09,Util,storage,src/utils/storage.js,JS module,Present,LocalStorage persistence
+U10,Util,deviceStatus,src/utils/deviceStatus.js,JS module,Present,Online/offline detection
+U11,Util,offlineMode,src/utils/offlineMode.js,JS module,Present,Offline cache warmer
+U12,Util,vaultPassBridge,src/utils/vaultPassBridge.js,JS module,Present,Vault-pass integration
+D01,Data,transportData,src/data/transportData.js,Static data,Present,51KB station/transport data
+D02,Data,transitHubData,src/data/transitHubData.js,Static data,Present,Hub transfer guides (7 hubs)
+D03,Data,languageData,src/data/languageData.js,Static data,Present,43KB multilingual strings
+D04,Data,emergencyData,src/data/emergencyData.js,Static data,Present,Emergency services data
+D05,Data,stationsData,src/data/stationsData.js,Static data,Present,Station list

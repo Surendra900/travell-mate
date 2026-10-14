@@ -1,0 +1,263 @@
+{
+  "counts": {
+    "stations": 47,
+    "trains": 12,
+    "stops": 63,
+    "junctions": 25,
+    "transferGuides": 24
+  },
+  "stationCodeDuplicates": [],
+  "trainNumberDuplicates": [],
+  "impossibleTimes": [],
+  "spotCheck50": [
+    {
+      "type": "station",
+      "code": "NDLS",
+      "name": "New Delhi Railway Station",
+      "state": "Delhi"
+    },
+    {
+      "type": "station",
+      "code": "DLI",
+      "name": "Old Delhi Junction",
+      "state": "Delhi"
+    },
+    {
+      "type": "station",
+      "code": "NZM",
+      "name": "Hazrat Nizamuddin",
+      "state": "Delhi"
+    },
+    {
+      "type": "station",
+      "code": "ANVT",
+      "name": "Anand Vihar Terminal",
+      "state": "Delhi"
+    },
+    {
+      "type": "station",
+      "code": "AGC",
+      "name": "Agra Cantt",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "GWL",
+      "name": "Gwalior Junction",
+      "state": "Madhya Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "VGLJ",
+      "name": "Virangana Lakshmibai Jhansi",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "BPL",
+      "name": "Bhopal Junction",
+      "state": "Madhya Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "RKMP",
+      "name": "Rani Kamlapati",
+      "state": "Madhya Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "ET",
+      "name": "Itarsi Junction",
+      "state": "Madhya Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "NGP",
+      "name": "Nagpur Junction",
+      "state": "Maharashtra"
+    },
+    {
+      "type": "station",
+      "code": "CNB",
+      "name": "Kanpur Central",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "LKO",
+      "name": "Lucknow Charbagh",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "PRYJ",
+      "name": "Prayagraj Junction",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "BSB",
+      "name": "Varanasi Junction",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "DDU",
+      "name": "Pt. Deen Dayal Upadhyaya Junction",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "GKP",
+      "name": "Gorakhpur Junction",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "type": "station",
+      "code": "PNBE",
+      "name": "Patna Junction",
+      "state": "Bihar"
+    },
+    {
+      "type": "station",
+      "code": "GAYA",
+      "name": "Gaya Junction",
+      "state": "Bihar"
+    },
+    {
+      "type": "station",
+      "code": "DHN",
+      "name": "Dhanbad Junction",
+      "state": "Jharkhand"
+    },
+    {
+      "type": "station",
+      "code": "ASN",
+      "name": "Asansol Junction",
+      "state": "West Bengal"
+    },
+    {
+      "type": "station",
+      "code": "HWH",
+      "name": "Howrah Junction",
+      "state": "West Bengal"
+    },
+    {
+      "type": "station",
+      "code": "SDAH",
+      "name": "Sealdah",
+      "state": "West Bengal"
+    },
+    {
+      "type": "station",
+      "code": "KGP",
+      "name": "Kharagpur Junction",
+      "state": "West Bengal"
+    },
+    {
+      "type": "station",
+      "code": "JP",
+      "name": "Jaipur Junction",
+      "state": "Rajasthan"
+    },
+    {
+      "type": "train",
+      "number": "12302",
+      "name": "Howrah Rajdhani Express"
+    },
+    {
+      "type": "train",
+      "number": "12301",
+      "name": "New Delhi Rajdhani Express"
+    },
+    {
+      "type": "train",
+      "number": "12394",
+      "name": "Sampoorna Kranti Express"
+    },
+    {
+      "type": "train",
+      "number": "22436",
+      "name": "Varanasi Vande Bharat Express"
+    },
+    {
+      "type": "train",
+      "number": "12952",
+      "name": "Mumbai Central Rajdhani Express"
+    },
+    {
+      "type": "train",
+      "number": "12628",
+      "name": "Karnataka Express"
+    },
+    {
+      "type": "train",
+      "number": "12724",
+      "name": "Telangana Express"
+    },
+    {
+      "type": "train",
+      "number": "12841",
+      "name": "Coromandel Express"
+    },
+    {
+      "type": "train",
+      "number": "20834",
+      "name": "Visakhapatnam Vande Bharat Express"
+    },
+    {
+      "type": "train",
+      "number": "12028",
+      "name": "KSR Bengaluru - Chennai Shatabdi"
+    },
+    {
+      "type": "train",
+      "number": "20607",
+      "name": "Chennai - Mysuru Vande Bharat"
+    },
+    {
+      "type": "train",
+      "number": "12123",
+      "name": "Deccan Queen Express"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    },
+    {
+      "type": "junction"
+    }
+  ]
+}

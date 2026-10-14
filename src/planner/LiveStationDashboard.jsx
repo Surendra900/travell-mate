@@ -111,8 +111,8 @@ export default function LiveStationDashboard({ icon }) {
           {rows.map((row, index) => (
             <div key={`${row.code}-${index}`} className="rounded-2xl border border-slate-700/70 bg-slate-950/70 p-3 text-sm text-slate-300">
               <div className="flex items-start justify-between gap-3"><b className="text-white">{row.serviceName}</b><SourceBadge label={row.sourceBadge || 'Live API result'} /></div>
-              <p className="mt-2"><b className="text-cyan-100">Route:</b> {row.from} → {row.to}</p>
-              <p className="mt-1"><b className="text-cyan-100">Time:</b> {row.departure} → {row.arrival}</p>
+              <p className="mt-2"><b className="text-cyan-100">Route:</b> {row.from} to {row.to}</p>
+              <p className="mt-1"><b className="text-cyan-100">Time:</b> {row.departure} to {row.arrival}</p>
               <p className="mt-2 text-xs text-yellow-100/80">{row.verification}</p>
             </div>
           ))}

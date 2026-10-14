@@ -1,0 +1,42 @@
+# C-14 BEFORE Test Output
+Date: 2026-10-09
+Target: Enforce min attribute on HTML date pickers
+
+$ node tests/c14_date_picker_min_constraint.test.mjs
+
+✖ C-14 Date Picker Min Constraint Suite (19618.2071ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 0
+ℹ fail 8
+
+✖ failing tests:
+✖ Static code check: src/pages/Home.jsx date input has min={localDateIso()}
+  AssertionError [ERR_ASSERTION]: #home-travel-date input must enforce min={localDateIso()}
+
+✖ Static code check: src/planner/NormalPlanner.jsx date input has min={localDateIso()}
+  AssertionError [ERR_ASSERTION]: planner-date-input must enforce min={localDateIso()}
+
+✖ Static code check: src/planner/EmergencyTatkalPlanner.jsx date input has min={localDateIso()}
+  AssertionError [ERR_ASSERTION]: EmergencyTatkalPlanner date input must enforce min={localDateIso()}
+
+✖ Static code check: src/planner/LowNetworkPlanner.jsx date input has min={localDateIso()}
+  AssertionError [ERR_ASSERTION]: LowNetworkPlanner date input must enforce min={localDateIso()}
+
+✖ Static code check: src/pages/AnalyzeJourney.jsx date input has min={localDateIso()}
+  AssertionError [ERR_ASSERTION]: AnalyzeJourney date input must enforce min={localDateIso()}
+
+✖ Browser check: Home travel date input has min attribute set to current date
+  AssertionError [ERR_ASSERTION]: Home date input min must be 2026-10-09, but was null
+  + actual - expected
+  + null
+  - '2026-10-09'
+
+✖ Browser check: Planner date input has min attribute set to current date
+  AssertionError [ERR_ASSERTION]: Planner date input min must be 2026-10-09, but was null
+  + actual - expected
+  + null
+  - '2026-10-09'
+
+Finding C-14 verified:
+- Inputs lacked `min` attribute constraints, allowing past dates to be manually entered or selected in date pickers.

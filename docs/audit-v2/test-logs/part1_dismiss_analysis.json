@@ -1,0 +1,84 @@
+{
+  "prod": {
+    "mobile": {
+      "clickablesInFold": 16,
+      "navLinksCount": 9,
+      "navTexts": [
+        "TravelMate",
+        "Route Finder",
+        "Tatkal Desk",
+        "Passes & Safety",
+        "Saved Trips",
+        "Sign in"
+      ],
+      "hasWhereAmI": true,
+      "hasWhatItDoes": true,
+      "hasHowToSearch": true,
+      "hasSoldOutGuidance": true,
+      "hasUrgentMode": true,
+      "h1Text": "Find a way forward when direct tickets are sold out.",
+      "heroSnippet": "Skip to main content\nTravelMate\nSelect language\nEnglish\nहिन्दी\nతెలుగు\nதமிழ்\nಕನ್ನಡ\nമലയാളം\nमराठी\nবাংলা\nગુજરાતી\nਪੰਜਾਬੀ\nاردو\nEspañol\nFrançais\nDeutsch\nSign in\nMultimodal Disruption & Route Recovery Engine\nFind a way forward when direct tickets are sold out.\n\nWhen direct trains are waitlisted, TravelMate calculates time-tested split-routes through India’s Top 25 junction hubs with verified layovers, delay simulations, and official booking links.\n\nAll Combinations\nTrains Only\nBuses\nFlights\nParse\nFROM (DEPARTURE STATION OR CITY)\nTO (DESTINATION STATION OR CITY)\nTRAVEL DATE\nPASSENGERS\n1 Passenger (Solo"
+    },
+    "desktop": {
+      "clickablesInFold": 25,
+      "navLinksCount": 9,
+      "navTexts": [
+        "TravelMate",
+        "Route Finder",
+        "Tatkal Desk",
+        "Passes & Safety",
+        "Saved Trips",
+        "See a Demo",
+        "Sign in"
+      ],
+      "hasWhereAmI": true,
+      "hasWhatItDoes": true,
+      "hasHowToSearch": true,
+      "hasSoldOutGuidance": true,
+      "hasUrgentMode": true,
+      "h1Text": "Find a way forward when direct tickets are sold out.",
+      "heroSnippet": "Skip to main content\nTravelMate\nRoute Finder\nTatkal Desk\nPasses & Safety\nSaved Trips\nSee a Demo\nSelect language\nEnglish\nहिन्दी\nతెలుగు\nதமிழ்\nಕನ್ನಡ\nമലയാളം\nमराठी\nবাংলা\nગુજરાતી\nਪੰਜਾਬੀ\nاردو\nEspañol\nFrançais\nDeutsch\nSign in\nMultimodal Disruption & Route Recovery Engine\nFind a way forward when direct tickets are sold out.\n\nWhen direct trains are waitlisted, TravelMate calculates time-tested split-routes through India’s Top 25 junction hubs with verified layovers, delay simulations, and official booking links.\n\nAll Combinations\nTrains Only\nBuses\nFlights\nParse\nFROM (DEPARTURE STATION OR CITY)\nTO (DESTINATION STATION OR CITY)\nTRAVEL DATE\nPASSENGERS\n1 Passenger (Solo)\n2 Passengers\n3 Passengers\n4 Passengers\n5+ Group\nNeed to travel tonight? (12h)\nSearch Recovery Routes\nSee a Demo\nHigh-Traffic Corridors"
+    }
+  },
+  "local": {
+    "mobile": {
+      "clickablesInFold": 16,
+      "navLinksCount": 9,
+      "navTexts": [
+        "TravelMate",
+        "Route Finder",
+        "Tatkal Desk",
+        "Passes & Safety",
+        "Saved Trips",
+        "Local profile"
+      ],
+      "hasWhereAmI": true,
+      "hasWhatItDoes": true,
+      "hasHowToSearch": true,
+      "hasSoldOutGuidance": true,
+      "hasUrgentMode": true,
+      "h1Text": "Find a way forward when direct tickets are sold out.",
+      "heroSnippet": "Skip to main content\nTravelMate\nSelect language\nEnglish\nहिन्दी\nతెలుగు\nதமிழ்\nಕನ್ನಡ\nമലയാളം\nमराठी\nবাংলা\nગુજરાતી\nਪੰਜਾਬੀ\nاردو\nEspañol\nFrançais\nDeutsch\nLocal profile\nMultimodal Disruption & Route Recovery Engine\nFind a way forward when direct tickets are sold out.\n\nWhen direct trains are waitlisted, TravelMate calculates time-tested split-routes through India’s Top 25 junction hubs with verified layovers, delay simulations, and official booking links.\n\nAll Combinations\nTrains Only\nBuses\nFlights\nParse\nFROM (DEPARTURE STATION OR CITY)\nTO (DESTINATION STATION OR CITY)\nTRAVEL DATE\nPASSENGERS\n1 Passenger"
+    },
+    "desktop": {
+      "clickablesInFold": 25,
+      "navLinksCount": 9,
+      "navTexts": [
+        "TravelMate",
+        "Route Finder",
+        "Tatkal Desk",
+        "Passes & Safety",
+        "Saved Trips",
+        "See a Demo",
+        "Local profile"
+      ],
+      "hasWhereAmI": true,
+      "hasWhatItDoes": true,
+      "hasHowToSearch": true,
+      "hasSoldOutGuidance": true,
+      "hasUrgentMode": true,
+      "h1Text": "Find a way forward when direct tickets are sold out.",
+      "heroSnippet": "Skip to main content\nTravelMate\nRoute Finder\nTatkal Desk\nPasses & Safety\nSaved Trips\nSee a Demo\nSelect language\nEnglish\nहिन्दी\nతెలుగు\nதமிழ்\nಕನ್ನಡ\nമലയാളം\nमराठी\nবাংলা\nગુજરાતી\nਪੰਜਾਬੀ\nاردو\nEspañol\nFrançais\nDeutsch\nLocal profile\nMultimodal Disruption & Route Recovery Engine\nFind a way forward when direct tickets are sold out.\n\nWhen direct trains are waitlisted, TravelMate calculates time-tested split-routes through India’s Top 25 junction hubs with verified layovers, delay simulations, and official booking links.\n\nAll Combinations\nTrains Only\nBuses\nFlights\nParse\nFROM (DEPARTURE STATION OR CITY)\nTO (DESTINATION STATION OR CITY)\nTRAVEL DATE\nPASSENGERS\n1 Passenger (Solo)\n2 Passengers\n3 Passengers\n4 Passengers\n5+ Group\nNeed to travel tonight? (12h)\nSearch Recovery Routes\nSee a Demo\nHigh-Traffic Cor"
+    }
+  }
+}

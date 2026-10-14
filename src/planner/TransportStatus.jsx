@@ -29,7 +29,7 @@ export default function TransportStatus({ mode = 'Train' }) {
               <SourceBadge label={mode === 'Flight' ? 'API-ready' : mode === 'Bus' ? 'Local planning estimate' : 'Local planning dataset'} />
             </div>
             <p className="mt-2 text-cyan-200">{row.status}</p>
-            <p className="mt-1 text-slate-400">{row.from} → {row.to} · {row.platform}</p>
+            <p className="mt-1 text-slate-400">{row.from} to {row.to} · {row.platform}</p>
             <p className="mt-1 text-xs text-slate-500">{row.updated}. Use the provider check panel for Aviationstack/RapidAPI calls.</p>
           </div>
         ))}

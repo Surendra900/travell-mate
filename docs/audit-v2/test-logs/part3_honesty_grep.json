@@ -1,0 +1,276 @@
+{
+  "guarantee": {
+    "src": [
+      {
+        "file": "src/components/LiveResultsPanel.jsx",
+        "line": "544",
+        "text": "<b className=\"text-slate-900\">Statutory Booking Notice:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation. Always maintain safe transfer buffers."
+      },
+      {
+        "file": "src/components/MultimodalTimelineCard.jsx",
+        "line": "385",
+        "text": "<b className=\"text-slate-900\">Disclosure:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation."
+      },
+      {
+        "file": "src/components/WaitlistBypassContrast.jsx",
+        "line": "288",
+        "text": "<b className=\"text-slate-900\">Statutory Booking Notice:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation. Always maintain safe transfer buffers."
+      },
+      {
+        "file": "src/planner/FlightInstructions.jsx",
+        "line": "26",
+        "text": "<p className=\"mt-3 text-xs text-sky-200/70\">Baggage kilograms vary by airline, route, cabin class and fare. This guide shows instructions, not legal guarantee.</p>"
+      }
+    ],
+    "server": [
+      {
+        "file": "server/services/routeEngine.js",
+        "line": "384",
+        "text": "legalNotice: 'These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation.',"
+      },
+      {
+        "file": "server/services/routeEngine.js",
+        "line": "476",
+        "text": "legalNotice: 'These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation.',"
+      },
+      {
+        "file": "server/services/routeEngine.js",
+        "line": "564",
+        "text": "legalNotice: 'These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation.',"
+      }
+    ]
+  },
+  "guaranteed": {
+    "src": [
+      {
+        "file": "src/components/GlossaryTooltip.jsx",
+        "line": "15",
+        "text": "short: 'Guaranteed seat / boarding right; sitting berth shared.',"
+      },
+      {
+        "file": "src/components/GlossaryTooltip.jsx",
+        "line": "16",
+        "text": "definition: 'RAC grants a legal right to board the train with a guaranteed sitting seat (typically sharing a Side Lower berth). If passengers with confirmed berths cancel before or during chart preparation, RAC tickets get upgraded to full sleeping berths.',"
+      },
+      {
+        "file": "src/data/journeyData.js",
+        "line": "5",
+        "text": "'Train Tatkal e-ticket preparation is shown as guidance, not guaranteed booking.',"
+      },
+      {
+        "file": "src/pages/Home.jsx",
+        "line": "366",
+        "text": "Connect two high-frequency express trains at an intermediate junction with guaranteed platform transfer buffer."
+      },
+      {
+        "file": "src/pages/LegalDisclaimer.jsx",
+        "line": "50",
+        "text": "All confirmation odds (e.g. \"82% High Chance\") and delay risk badges are <strong>mathematical heuristic estimates</strong> derived from historical cancellation distributions and class quotas. They do <em>not</em> represent guaranteed chart allocations. Final berth confirmation remains exclusively under the jurisdiction of the Indian Railways Passenger Reservation System (PRS)."
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "14",
+        "text": "description: 'Guaranteed right to board the train with shared side-lower berth. High likelihood of full berth upon charting.'"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "211",
+        "text": "? `RAC ${parsed.currentWl} has guaranteed boarding rights with high chance of full berth.`"
+      }
+    ],
+    "server": [
+      {
+        "file": "server/services/contingencyEngine.js",
+        "line": "75",
+        "text": "// Fallback: If fewer than 2 trains found, synthesize guaranteed inter-state bus departures"
+      }
+    ]
+  },
+  "confirmed": {
+    "src": [
+      {
+        "file": "src/components/DpdpPrivacyModal.jsx",
+        "line": "25",
+        "text": "const confirmed = window.confirm("
+      },
+      {
+        "file": "src/components/DpdpPrivacyModal.jsx",
+        "line": "28",
+        "text": "if (!confirmed) return"
+      },
+      {
+        "file": "src/components/GlossaryTooltip.jsx",
+        "line": "9",
+        "text": "definition: 'Waitlist tickets permit travel only if cancellations move your status to RAC or Confirmed before charting. E-tickets remaining in full WL after charting are automatically cancelled and refunded by IRCTC.',"
+      },
+      {
+        "file": "src/components/GlossaryTooltip.jsx",
+        "line": "16",
+        "text": "definition: 'RAC grants a legal right to board the train with a guaranteed sitting seat (typically sharing a Side Lower berth). If passengers with confirmed berths cancel before or during chart preparation, RAC tickets get upgraded to full sleeping berths.',"
+      },
+      {
+        "file": "src/components/GlossaryTooltip.jsx",
+        "line": "31",
+        "text": "officialRule: 'Booking Rules: Maximum 4 passengers per PNR. No refund on cancellation of confirmed Tatkal tickets.'"
+      },
+      {
+        "file": "src/components/MultimodalTimelineCard.jsx",
+        "line": "379",
+        "text": "{route.rationale || route.whyPicked || `Connects ${route.from || route.leg1?.from} to ${route.to || route.leg2?.to} via ${hubCity} Junction with a verified ${slackMinutes}m transfer buffer. Bypasses direct waitlists with confirmed split-ticket availability.`}"
+      },
+      {
+        "file": "src/components/MultimodalTimelineCard.jsx",
+        "line": "426",
+        "text": "title=\"Share confirmed itinerary on WhatsApp\""
+      },
+      {
+        "file": "src/components/PnrPredictorModal.jsx",
+        "line": "241",
+        "text": "{idx === 2 && '🎫 Confirmed'}"
+      },
+      {
+        "file": "src/components/PnrPredictorModal.jsx",
+        "line": "322",
+        "text": "<span>Chance of Confirmed Berth:</span>"
+      },
+      {
+        "file": "src/components/StationHopperCard.jsx",
+        "line": "21",
+        "text": "Same Train, Confirmed Seat Bypass 💡"
+      },
+      {
+        "file": "src/components/StationHopperCard.jsx",
+        "line": "26",
+        "text": "{hacks.length} Confirmed Bypass Option{hacks.length > 1 ? 's' : ''}"
+      },
+      {
+        "file": "src/components/StationHopperCard.jsx",
+        "line": "32",
+        "text": "By booking from an originating junction or extending by 1 station, you tap into larger General Quotas with confirmed berths:"
+      },
+      {
+        "file": "src/components/WaitlistBypassContrast.jsx",
+        "line": "48",
+        "text": "whyPicked: 'Splits journey into two confirmed regional quotas via Kanpur Central, bypassing direct waitlist.',"
+      },
+      {
+        "file": "src/components/WaitlistBypassContrast.jsx",
+        "line": "198",
+        "text": "{split.whyPicked || `Splits journey into two confirmed regional quotas via ${split.hubCity}.`}"
+      },
+      {
+        "file": "src/components/ui/ProvenanceBadge.jsx",
+        "line": "14",
+        "text": "title={timestamp ? `Live provider confirmed at ${timestamp}` : 'Live data from official provider'}"
+      },
+      {
+        "file": "src/data/emergencyData.js",
+        "line": "149",
+        "text": "'Check in at the Station Superintendent (SS) or Station Master (SM) booth on Platform 1 for confirmed connecting train status.',"
+      },
+      {
+        "file": "src/index.css",
+        "line": "33",
+        "text": "--tm-success: #059669;       /* Emerald 600: Confirmed seats, eco-friendly */"
+      },
+      {
+        "file": "src/planner/SeatAvailabilityChecker.jsx",
+        "line": "107",
+        "text": "<p className=\"mt-1 text-sm text-slate-400\">This is a second API check after the route-train search. A listed train is not confirmed as Tatkal-available until this TQ check returns seat or waitlist data.</p>"
+      },
+      {
+        "file": "src/utils/contingencyEngine.js",
+        "line": "70",
+        "text": "availability: 'Confirmed Tatkal / Quota Available',"
+      },
+      {
+        "file": "src/utils/multimodalRouter.js",
+        "line": "98",
+        "text": "whyPicked: `Saves up to ₹3,500 vs. flight. Splits into two confirmed train quotas via ${primaryHub.city}.`,"
+      },
+      {
+        "file": "src/utils/multimodalRouter.js",
+        "line": "161",
+        "text": "whyPicked: `Confirmed AC sleeper travel. Fast daytime train to ${primaryHub.city}, then overnight AC bus.`,"
+      },
+      {
+        "file": "src/utils/multimodalRouter.js",
+        "line": "274",
+        "text": "`🚆 *TravelMate Confirmed Journey*`,"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "102",
+        "text": "tier: 'confirmed',"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "103",
+        "text": "label: 'Confirmed (CNF)',"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "106",
+        "text": "summary: 'Seat is confirmed. Check coach and berth allocation.',"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "108",
+        "text": "'Berth and coach details are confirmed by Indian Railways.',"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "113",
+        "text": "recommendation: 'Pack your bags! Your journey is confirmed.'"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "141",
+        "text": "label: 'RAC Confirmed to Board',"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "144",
+        "text": "summary: 'Chart prepared. You have confirmed boarding rights with side-lower berth allocation.',"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "147",
+        "text": "'If any confirmed passenger no-shows, the TTE will upgrade you to a full berth during the journey.'"
+      },
+      {
+        "file": "src/utils/pnrPredictor.js",
+        "line": "212",
+        "text": ": `${parsed.quota} ${parsed.currentWl} has ~${finalProb}% chance to clear into confirmed or RAC status.`,"
+      },
+      {
+        "file": "src/utils/stationHopper.js",
+        "line": "7",
+        "text": "* larger General Quota (GN) pools with confirmed berths."
+      },
+      {
+        "file": "src/utils/stationHopper.js",
+        "line": "109",
+        "text": "* Generates confirmed alternate station options"
+      },
+      {
+        "file": "src/utils/stationHopper.js",
+        "line": "122",
+        "text": "description: `Book ticket to the next major division junction beyond ${to || 'Destination'}. Major junctions hold 70%+ of the General Quota (GN), which frequently has confirmed berths while intermediate stations show Waitlist.`,"
+      },
+      {
+        "file": "src/utils/stationHopper.js",
+        "line": "177",
+        "text": "description: `Originating quota from ${prevStn.city} often has confirmed seats. Book from ${prevStn.code} and select \"${origStn.city}\" as your official Boarding Point on IRCTC / ConfirmTkt.`,"
+      }
+    ],
+    "server": [
+      {
+        "file": "server/adapters/aiProvider.js",
+        "line": "282",
+        "text": "return `Connects ${facts.origin} to ${facts.destination} via ${hub} with a ${layover} transfer window. Bypasses the direct route waitlist bottleneck with confirmed split-ticket availability.`;"
+      }
+    ]
+  },
+  "hardcodedPercentages": []
+}

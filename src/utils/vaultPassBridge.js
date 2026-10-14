@@ -116,7 +116,7 @@ export function generateOfflineBoardingPass(plan) {
     date: dateStr,
     departure: service.departure || service.depart || '10:00',
     arrival: service.arrival || service.arrive || '18:30',
-    berthSeat: service.berth || plan.seatPreference || 'B3 - 42 (MB)',
+    berthSeat: service.berth || plan.seatPreference || 'B3/42 (MB)',
     coachClass: service.coach || plan.classPreference || (plan.transportMode === 'Flight' ? 'Economy (Y)' : '3rd AC (3A)'),
     passengerName: plan.passengerName || 'Surendra G (Adult)',
     emergencyHotlines: [

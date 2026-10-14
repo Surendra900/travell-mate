@@ -30,7 +30,7 @@ export const emergencyFlows = {
   medical: {
     id: 'medical',
     title: 'Medical Emergency',
-    accent: 'from-red-600 to-pink-500',
+    accent: 'from-red-600 to-amber-600',
     summary: 'Ambulance call, location sharing, hospital steps, insurance and medical readiness.',
     callType: 'Ambulance',
     number: emergencyNumber.ambulance,
@@ -100,8 +100,8 @@ export const TRANSIT_HOTLINES = [
     title: 'Women Safety & Transit Support',
     desc: 'Anti-Harassment Helpline, Women RPF Escort Desk, Confidential Aid',
     badge: 'Women Safety 24/7',
-    badgeColor: 'bg-purple-500/20 text-purple-200 border-purple-500/30',
-    btnColor: 'bg-purple-600 hover:bg-purple-500 text-white',
+    badgeColor: 'bg-rose-500/20 text-rose-200 border-rose-500/30',
+    btnColor: 'bg-rose-700 hover:bg-rose-600 text-white',
     icon: 'Shield',
     category: 'women'
   }
@@ -159,7 +159,7 @@ export const TRANSIT_INCIDENT_PROTOCOLS = [
     hotlineLabel: 'Call Unified SOS (112)',
     steps: [
       'Tap "Copy Alert" or "WhatsApp" in TravelMate to broadcast your live GPS pin and Google Maps coordinates to your group.',
-      'Anchor yourself at a prominent public landmark (Platform 1 Main Clock, Station Enquiry Counter, or Airport Info Desk).',
+      'Anchor yourself at a prominent public landmark (Platform 1 Main Clock, Station Enquiry Desk, or Airport Info Desk).',
       'Go to the Railway Public Address (PA) announcement booth and request an emergency passenger broadcast by name.',
       'If you suspect you are being followed or harassed, head straight into the nearest RPF/Police post on Platform 1.'
     ]

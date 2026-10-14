@@ -1,20 +1,18 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import Navbar from './components/Navbar'
-import StatusBar from './components/StatusBar'
 import OfflineModeBanner from './components/OfflineModeBanner'
 import VoiceSearchButton from './components/VoiceSearchButton'
 import OnboardingModal from './components/OnboardingModal'
-import FloatingSOS from './components/FloatingSOS'
 import OfflineOnlyMode from './components/OfflineOnlyMode'
 import GlobalTranslationLayer from './components/GlobalTranslationLayer'
-import BlindVoiceGate from './components/BlindVoiceGate'
 import PwaInstallBanner from './components/PwaInstallBanner'
 import DpdpPrivacyModal from './components/DpdpPrivacyModal'
 import DemoTourModal from './components/DemoTourModal'
 import Footer from './components/Footer'
 import LocationPermissionGate from './components/LocationPermissionGate'
 import PageErrorBoundary from './components/PageErrorBoundary'
+import FeedbackModal from './components/FeedbackModal'
 import { languages } from './data/languageData'
 import { useDeviceStatus } from './utils/deviceStatus'
 import { warmOfflineCache } from './utils/offlineMode'
@@ -27,6 +25,11 @@ const EmergencyDetail = lazy(() => import('./pages/EmergencyDetail'))
 const Planner = lazy(() => import('./pages/Planner'))
 const SavedPlans = lazy(() => import('./pages/SavedPlans'))
 const AnalyzeJourney = lazy(() => import('./pages/AnalyzeJourney'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
+const LegalDisclaimer = lazy(() => import('./pages/LegalDisclaimer'))
+const CookiePolicy = lazy(() => import('./pages/CookiePolicy'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App({ authEnabled = false }) {
   const navigate = useNavigate()
@@ -42,9 +45,8 @@ export default function App({ authEnabled = false }) {
   const [toastMessage, setToastMessage] = useState('')
   const [profileModalOpen, setProfileModalOpen] = useState(false)
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false)
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
   const [demoTourOpen, setDemoTourOpen] = useState(false)
-  const [blindGateOpen, setBlindGateOpen] = useState(false)
-  const [blindMode, setBlindMode] = useState(false)
   const status = useDeviceStatus()
   const labels = useMemo(() => languages[language].labels, [language])
 
@@ -129,14 +131,17 @@ export default function App({ authEnabled = false }) {
     return { ok: true, message: voice.message }
   }, [location.pathname, navigate, toast, language])
 
+  const handleVoiceGateAssist = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('travelmate:toggle-voice-search'))
+    toast('Voice search ready. Click the microphone or speak.')
+  }, [toast])
+
   const appShell = (
     <div className="min-h-screen pb-24 sm:pb-0">
       <GlobalTranslationLayer language={language} />
-      <BlindVoiceGate forceOpen={blindGateOpen} onClose={() => setBlindGateOpen(false)} toast={toast} onModeChange={setBlindMode} />
       <LocationPermissionGate toast={toast} />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-2 focus:font-black focus:text-slate-950">Skip to main content</a>
-      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={() => setBlindGateOpen(true)} onOpenDemoTour={() => setDemoTourOpen(true)} />}
-      <StatusBar status={status} />
+      {status.online !== false && <Navbar language={language} onLanguageChange={setLanguage} labels={labels} authEnabled={authEnabled} onOpenProfile={() => setProfileModalOpen(true)} onOpenVoiceGate={handleVoiceGateAssist} onOpenDemoTour={() => setDemoTourOpen(true)} />}
       {status.online === false ? (
         <main id="main-content" tabIndex="-1"><OfflineOnlyMode status={status} toast={toast} /></main>
       ) : (
@@ -144,7 +149,7 @@ export default function App({ authEnabled = false }) {
           <OfflineModeBanner status={status} toast={toast} />
           <main id="main-content" tabIndex="-1">
             <PageErrorBoundary key={location.pathname}>
-              <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16 text-center font-bold text-cyan-100">Loading TravelMate module…</div>}>
+              <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16 text-center font-bold text-slate-700">Loading TravelMate module…</div>}>
                 <Routes>
                 <Route path="/" element={<Home labels={labels} toast={toast} />} />
                 <Route path="/safety" element={<SafetyMode toast={toast} labels={labels} />} />
@@ -153,19 +158,36 @@ export default function App({ authEnabled = false }) {
                 <Route path="/saved" element={<SavedPlans toast={toast} />} />
                 <Route path="/plans" element={<SavedPlans toast={toast} />} />
                 <Route path="/analyze" element={<AnalyzeJourney toast={toast} />} />
+                <Route path="/privacy" element={<PrivacyPolicy toast={toast} />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/disclaimer" element={<LegalDisclaimer />} />
+                <Route path="/cookies" element={<CookiePolicy toast={toast} />} />
+                <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
             </PageErrorBoundary>
           </main>
         </>
       )}
-      {location.pathname !== '/analyze' && location.pathname !== '/saved' && <FloatingSOS status={status} />}
       {location.pathname !== '/analyze' && <VoiceSearchButton onSearch={handleVoiceSearch} language={language} />}
       <PwaInstallBanner />
-      {status.online !== false && <Footer onOpenPrivacy={() => setPrivacyModalOpen(true)} />}
+      {status.online !== false && (
+        <Footer
+          onOpenPrivacy={() => setPrivacyModalOpen(true)}
+          onOpenFeedback={() => setFeedbackModalOpen(true)}
+        />
+      )}
       {status.online !== false && <OnboardingModal toast={toast} forceOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} />}
       <DpdpPrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} toast={toast} />
-      <DemoTourModal open={demoTourOpen} onClose={() => setDemoTourOpen(false)} onLaunchVoiceGate={() => setBlindGateOpen(true)} />
+      <FeedbackModal open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)} toast={toast} />
+      <DemoTourModal
+        open={demoTourOpen}
+        onClose={() => setDemoTourOpen(false)}
+        onLaunchVoiceGate={() => {
+          setDemoTourOpen(false)
+          handleVoiceGateAssist()
+        }}
+      />
       {toastMessage && (
         <div className="app-toast" role="status" aria-live="polite">
           {toastMessage}

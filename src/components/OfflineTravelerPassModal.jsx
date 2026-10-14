@@ -16,6 +16,8 @@ import {
   X
 } from 'lucide-react'
 
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
+
 const modeIcons = {
   Train: Train,
   Bus: Bus,
@@ -25,6 +27,7 @@ const modeIcons = {
 export default function OfflineTravelerPassModal({ route, onClose }) {
   const [copied, setCopied] = useState(false)
   const [offlineCached, setOfflineCached] = useState(false)
+  const dialogRef = useDialogFocus({ isOpen: Boolean(route), onClose })
 
   useEffect(() => {
     if (!route) return
@@ -52,8 +55,8 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
 
   function handleCopySummary() {
     const text = [
-      `🎫 TRAVELMATE OFFLINE BOARDING PASS`,
-      `Route: ${route.leg1?.from} ➔ ${route.leg2?.to}`,
+      `TRAVELMATE OFFLINE BOARDING PASS`,
+      `Route: ${route.leg1?.from} to ${route.leg2?.to}`,
       `Total Fare: ${route.fareFormatted} | Duration: ${route.totalDuration}`,
       `----------------------------------------`,
       `STEP 1: ${route.leg1?.service} (${route.leg1?.mode})`,
@@ -83,8 +86,14 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
-      <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/40 bg-slate-950 p-6 shadow-2xl text-slate-100 print:max-h-none print:w-full print:border-none print:bg-white print:text-black print:p-0">
+    <div
+      ref={dialogRef}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="offline-pass-modal-title"
+    >
+      <div className="relative max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto rounded-3xl border border-cyan-400/40 bg-slate-950 p-6 shadow-2xl text-slate-100 print:max-h-none print:w-full print:border-none print:bg-white print:text-black print:p-0">
         
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-800 pb-4 print:border-black">
@@ -99,8 +108,8 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
                 </span>
               )}
             </div>
-            <h2 className="mt-2 text-2xl font-black text-white print:text-black">
-              {route.leg1?.from} ➔ {route.leg2?.to}
+            <h2 id="offline-pass-modal-title" className="mt-2 text-2xl font-black text-white print:text-black">
+              {route.leg1?.from} to {route.leg2?.to}
             </h2>
             <p className="text-xs text-slate-400 print:text-slate-600">
               {route.tierLabel} · {route.fareFormatted} · {route.totalDuration} Total Travel Time
@@ -219,10 +228,10 @@ export default function OfflineTravelerPassModal({ route, onClose }) {
             <button
               type="button"
               onClick={handleCopySummary}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-2 text-xs font-bold text-slate-300 transition hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2 text-xs font-bold text-slate-300 transition hover:text-white"
             >
               {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-              {copied ? 'Copied to Clipboard!' : 'Copy Summary'}
+              {copied ? 'Copied to Clipboard' : 'Copy Summary'}
             </button>
           </div>
 

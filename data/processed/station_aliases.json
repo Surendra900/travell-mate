@@ -1,0 +1,170 @@
+[
+  {
+    "oldCode": "MGS",
+    "oldName": "Mughal Sarai",
+    "currentCode": "DDU",
+    "currentName": "Pt. Deen Dayal Upadhyaya Junction",
+    "note": "Renamed in 2018"
+  },
+  {
+    "oldCode": "ALD",
+    "oldName": "Allahabad Junction",
+    "currentCode": "PRYJ",
+    "currentName": "Prayagraj Junction",
+    "note": "Renamed in 2020"
+  },
+  {
+    "oldCode": "FD",
+    "oldName": "Faizabad",
+    "currentCode": "AYC",
+    "currentName": "Ayodhya Cantt",
+    "note": "Renamed in 2021"
+  },
+  {
+    "oldCode": "JHS",
+    "oldName": "Jhansi Junction",
+    "currentCode": "VGLJ",
+    "currentName": "Virangana Lakshmibai Jhansi",
+    "note": "Renamed in 2021"
+  },
+  {
+    "oldCode": "HBD",
+    "oldName": "Hoshangabad",
+    "currentCode": "NDPM",
+    "currentName": "Narmadapuram",
+    "note": "Renamed in 2022"
+  },
+  {
+    "oldCode": "CR",
+    "oldName": "Habibganj",
+    "currentCode": "RKMP",
+    "currentName": "Rani Kamlapati",
+    "note": "Renamed in 2021"
+  },
+  {
+    "oldCode": "RJY",
+    "oldName": "Rajamahendravaram",
+    "currentCode": "RJY",
+    "currentName": "Rajahmundry",
+    "note": "Local official Telugu name"
+  },
+  {
+    "oldCode": "BZA",
+    "oldName": "Bezawada",
+    "currentCode": "BZA",
+    "currentName": "Vijayawada",
+    "note": "Historical name"
+  },
+  {
+    "oldCode": "MAS",
+    "oldName": "Madras",
+    "currentCode": "MAS",
+    "currentName": "MGR Chennai Central",
+    "note": "Colonial name"
+  },
+  {
+    "oldCode": "MS",
+    "oldName": "Madras Egmore",
+    "currentCode": "MS",
+    "currentName": "Chennai Egmore",
+    "note": "Colonial name"
+  },
+  {
+    "oldCode": "BCT",
+    "oldName": "Bombay Central",
+    "currentCode": "MMCT",
+    "currentName": "Mumbai Central",
+    "note": "Historical railway code BCT"
+  },
+  {
+    "oldCode": "MMCT",
+    "oldName": "Mumbai Central",
+    "currentCode": "BCT",
+    "currentName": "Bombay Central",
+    "note": "Canonical timetable code in Datameet"
+  },
+  {
+    "oldCode": "CSTM",
+    "oldName": "Victoria Terminus",
+    "currentCode": "CSMT",
+    "currentName": "Chhatrapati Shivaji Maharaj Terminus",
+    "note": "Historical code CSTM"
+  },
+  {
+    "oldCode": "CSMT",
+    "oldName": "Chhatrapati Shivaji Maharaj Terminus",
+    "currentCode": "CSTM",
+    "currentName": "Victoria Terminus",
+    "note": "Canonical timetable code in Datameet"
+  },
+  {
+    "oldCode": "VT",
+    "oldName": "VT",
+    "currentCode": "CSMT",
+    "currentName": "Chhatrapati Shivaji Maharaj Terminus",
+    "note": "Colonial code shortcut"
+  },
+  {
+    "oldCode": "SBC",
+    "oldName": "Bangalore City",
+    "currentCode": "SBC",
+    "currentName": "KSR Bengaluru City",
+    "note": "Colonial name"
+  },
+  {
+    "oldCode": "HYB",
+    "oldName": "Nampally",
+    "currentCode": "HYB",
+    "currentName": "Hyderabad Deccan Nampally",
+    "note": "Colloquial local station name"
+  },
+  {
+    "oldCode": "HWH",
+    "oldName": "Calcutta",
+    "currentCode": "HWH",
+    "currentName": "Howrah Junction",
+    "note": "Colonial city designation"
+  },
+  {
+    "oldCode": "CNB",
+    "oldName": "Cawnpore",
+    "currentCode": "CNB",
+    "currentName": "Kanpur Central",
+    "note": "Colonial name"
+  },
+  {
+    "oldCode": "BSB",
+    "oldName": "Benares",
+    "currentCode": "BSB",
+    "currentName": "Varanasi Junction",
+    "note": "Colonial / historical name"
+  },
+  {
+    "oldCode": "BSB",
+    "oldName": "Kashi",
+    "currentCode": "BSB",
+    "currentName": "Varanasi Junction",
+    "note": "Sacred name"
+  },
+  {
+    "oldCode": "VSKP",
+    "oldName": "Vizag",
+    "currentCode": "VSKP",
+    "currentName": "Visakhapatnam Junction",
+    "note": "Colloquial name"
+  },
+  {
+    "oldCode": "VSKP",
+    "oldName": "Waltair",
+    "currentCode": "VSKP",
+    "currentName": "Visakhapatnam Junction",
+    "note": "Colonial division name"
+  },
+  {
+    "oldCode": "PUNE",
+    "oldName": "Poona",
+    "currentCode": "PUNE",
+    "currentName": "Pune Junction",
+    "note": "Colonial name"
+  }
+]

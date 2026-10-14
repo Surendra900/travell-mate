@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelMate Rebuild — Visual Verification Gallery</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    h1 { margin-top: 0; font-size: 28px; }
+    p { color: #94a3b8; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-header {
+      padding: 12px 16px;
+      background: #0f172a;
+      border-bottom: 1px solid #334155;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-left: 8px;
+    }
+    .badge-baseline { background: #0284c7; color: #fff; }
+    .badge-after { background: #10b981; color: #fff; }
+  </style>
+</head>
+<body>
+  <h1>TravelMate Master Rebuild — Visual QA Gallery</h1>
+  <p>Authoritative visual verification before/after artifact gallery per Section 16 of MASTER_SPEC.md.</p>
+
+  <h2>Day 0 Baseline Artifacts</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/desktop-1440-01-homepage.png" alt="Desktop Homepage Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/mobile-390-01-homepage.png" alt="Mobile Homepage Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Journey Planner <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/desktop-1440-02-planner.png" alt="Desktop Planner Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Journey Planner <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/mobile-390-02-planner.png" alt="Mobile Planner Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Emergency Desk <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/desktop-1440-02b-tatkal.png" alt="Desktop Tatkal Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Tatkal Emergency Desk <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/mobile-390-02b-tatkal.png" alt="Mobile Tatkal Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Results Workspace <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/desktop-1440-02c-results.png" alt="Desktop Results Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Results Workspace <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/mobile-390-02c-results.png" alt="Mobile Results Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Transit Safety <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/desktop-1440-03-safety.png" alt="Desktop Safety Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Transit Safety <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/mobile-390-03-safety.png" alt="Mobile Safety Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · My Trips & Passes <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/desktop-1440-04-mytrips.png" alt="Desktop My Trips Baseline" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · My Trips & Passes <span class="badge badge-baseline">Baseline</span></div>
+      <img src="day-0/before/mobile-390-04-mytrips.png" alt="Mobile My Trips Baseline" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 1 After Artifacts (Foundation & Bloat Purged)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage (No Floating SOS/Status Bar) <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/desktop-1440-01-homepage.png" alt="Desktop Homepage Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/mobile-390-01-homepage.png" alt="Mobile Homepage Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Journey Planner (No Carbon Tab/No Chat Drawer) <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/desktop-1440-02-planner.png" alt="Desktop Planner Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Journey Planner <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/mobile-390-02-planner.png" alt="Mobile Planner Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Emergency Desk <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/desktop-1440-02b-tatkal.png" alt="Desktop Tatkal Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Tatkal Emergency Desk <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/mobile-390-02b-tatkal.png" alt="Mobile Tatkal Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Results Workspace (Verified Deep-Link CTAs) <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/desktop-1440-02c-results.png" alt="Desktop Results Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Results Workspace <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/mobile-390-02c-results.png" alt="Mobile Results Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Transit Safety (No Vault / No Phrase Cards) <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/desktop-1440-03-safety.png" alt="Desktop Safety Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Transit Safety <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/mobile-390-03-safety.png" alt="Mobile Safety Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · My Trips & Passes <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/desktop-1440-04-mytrips.png" alt="Desktop My Trips Day 1 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · My Trips & Passes <span class="badge badge-after">Day 1 After</span></div>
+      <img src="day-1/after/mobile-390-04-mytrips.png" alt="Mobile My Trips Day 1 After" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 2 After Artifacts (Data Pipeline & Attribution)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage & Legal Attribution Footer <span class="badge badge-after">Day 2 After</span></div>
+      <img src="day-2/after/desktop-1440-01-homepage-footer.png" alt="Desktop Homepage Footer Day 2" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage & Legal Attribution Footer <span class="badge badge-after">Day 2 After</span></div>
+      <img src="day-2/after/mobile-390-01-homepage-footer.png" alt="Mobile Homepage Footer Day 2" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Journey Planner <span class="badge badge-after">Day 2 After</span></div>
+      <img src="day-2/after/desktop-1440-02-planner.png" alt="Desktop Planner Day 2" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Journey Planner <span class="badge badge-after">Day 2 After</span></div>
+      <img src="day-2/after/mobile-390-02-planner.png" alt="Mobile Planner Day 2" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Safety Hub <span class="badge badge-after">Day 2 After</span></div>
+      <img src="day-2/after/desktop-1440-03-safety.png" alt="Desktop Safety Hub Day 2" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Safety Hub <span class="badge badge-after">Day 2 After</span></div>
+      <img src="day-2/after/mobile-390-03-safety.png" alt="Mobile Safety Hub Day 2" loading="lazy">
+    </div>
+  <h2>Day 3 After Artifacts (Route Recovery Engine v2 & Simulator)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Journey Planner & Route Engine <span class="badge badge-after">Day 3 After</span></div>
+      <img src="day-3/after/planner_desktop.png" alt="Desktop Planner Day 3 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Journey Planner & Route Engine <span class="badge badge-after">Day 3 After</span></div>
+      <img src="day-3/after/planner_mobile.png" alt="Mobile Planner Day 3 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage & Search UX <span class="badge badge-after">Day 3 After</span></div>
+      <img src="day-3/after/home_desktop.png" alt="Desktop Home Day 3 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage & Search UX <span class="badge badge-after">Day 3 After</span></div>
+      <img src="day-3/after/home_mobile.png" alt="Mobile Home Day 3 After" loading="lazy">
+  </div>
+
+  <h2>Day 4 After Artifacts (App Shell, Autocomplete & Demo Scenario)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage Hero & Autocomplete <span class="badge badge-after">Day 4 After</span></div>
+      <img src="day-4/after/desktop-01-home-hero.png" alt="Desktop Home Hero Day 4" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage Hero & Autocomplete <span class="badge badge-after">Day 4 After</span></div>
+      <img src="day-4/after/mobile-01-home-hero.png" alt="Mobile Home Hero Day 4" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Honest Demo Mode Banner <span class="badge badge-after">Day 4 After</span></div>
+      <img src="day-4/after/desktop-02-demo-banner.png" alt="Desktop Demo Banner Day 4" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Honest Demo Mode Banner <span class="badge badge-after">Day 4 After</span></div>
+      <img src="day-4/after/mobile-02-demo-banner.png" alt="Mobile Demo Banner Day 4" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 5 Artifacts (Waitlist Bypass Contrast, Journey Cards & Delay Simulator)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Planner Results Before <span class="badge badge-baseline">Day 5 Before</span></div>
+      <img src="day-5/before/desktop-01-planner-results.png" alt="Desktop Planner Day 5 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Planner Results Before <span class="badge badge-baseline">Day 5 Before</span></div>
+      <img src="day-5/before/mobile-01-planner-results.png" alt="Mobile Planner Day 5 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Waitlist Bypass Contrast <span class="badge badge-after">Day 5 After</span></div>
+      <img src="day-5/after/desktop-01-results-contrast.png" alt="Desktop Waitlist Bypass Contrast Day 5" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Inline Delay Simulator <span class="badge badge-after">Day 5 After</span></div>
+      <img src="day-5/after/desktop-02-delay-simulator.png" alt="Desktop Delay Simulator Day 5" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Waitlist Bypass Contrast <span class="badge badge-after">Day 5 After</span></div>
+      <img src="day-5/after/mobile-01-results-contrast.png" alt="Mobile Waitlist Bypass Contrast Day 5" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Inline Delay Simulator <span class="badge badge-after">Day 5 After</span></div>
+      <img src="day-5/after/mobile-02-delay-simulator.png" alt="Mobile Delay Simulator Day 5" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 6 Artifacts (Urgent Mode, Tatkal Desk & PNR Estimator)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Desk Before <span class="badge badge-baseline">Day 6 Before</span></div>
+      <img src="day-6/before/desktop-01-tatkal-desk.png" alt="Desktop Tatkal Desk Day 6 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · PNR Tracker Modal Before <span class="badge badge-baseline">Day 6 Before</span></div>
+      <img src="day-6/before/desktop-02-pnr-tracker.png" alt="Desktop PNR Tracker Day 6 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Tatkal Desk Before <span class="badge badge-baseline">Day 6 Before</span></div>
+      <img src="day-6/before/mobile-01-tatkal-desk.png" alt="Mobile Tatkal Desk Day 6 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · PNR Tracker Modal Before <span class="badge badge-baseline">Day 6 Before</span></div>
+      <img src="day-6/before/mobile-02-pnr-tracker.png" alt="Mobile PNR Tracker Day 6 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Desk (Dual Countdown, Zero-ID Master) <span class="badge badge-after">Day 6 After</span></div>
+      <img src="day-6/after/desktop-01-tatkal-desk.png" alt="Desktop Tatkal Desk Day 6 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · PNR Estimator (Historical Model, IRCTC Links) <span class="badge badge-after">Day 6 After</span></div>
+      <img src="day-6/after/desktop-02-pnr-tracker.png" alt="Desktop PNR Estimator Day 6 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Tatkal Desk (Dual Countdown & Auto-Fill) <span class="badge badge-after">Day 6 After</span></div>
+      <img src="day-6/after/mobile-01-tatkal-desk.png" alt="Mobile Tatkal Desk Day 6 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · PNR Estimator (Historical Model & Estimation Details) <span class="badge badge-after">Day 6 After</span></div>
+      <img src="day-6/after/mobile-02-pnr-tracker.png" alt="Mobile PNR Estimator Day 6 After" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 7 Artifacts (Passes & Safety Hub, Offline Boarding Passes, 112/139 & Grounded AI)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Passes & Safety Before <span class="badge badge-baseline">Day 7 Before</span></div>
+      <img src="day-7/before/desktop-01-passes-safety.png" alt="Desktop Passes & Safety Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Emergency SOS Screen Before <span class="badge badge-baseline">Day 7 Before</span></div>
+      <img src="day-7/before/desktop-02-safety-drawer.png" alt="Desktop Emergency SOS Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Passes & Safety Before <span class="badge badge-baseline">Day 7 Before</span></div>
+      <img src="day-7/before/mobile-01-passes-safety.png" alt="Mobile Passes & Safety Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Emergency SOS Screen Before <span class="badge badge-baseline">Day 7 Before</span></div>
+      <img src="day-7/before/mobile-02-safety-drawer.png" alt="Mobile Emergency SOS Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Passes & Safety Hub (Offline Boarding Passes, PWA Status) <span class="badge badge-after">Day 7 After</span></div>
+      <img src="day-7/after/desktop-01-passes-safety.png" alt="Desktop Passes & Safety Hub Day 7 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Offline Digital Boarding Pass Modal (QR & Print) <span class="badge badge-after">Day 7 After</span></div>
+      <img src="day-7/after/desktop-02-digital-pass-modal.png" alt="Desktop Digital Pass Modal Day 7 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Transit Helplines (112 / 139) & Live GPS Pin <span class="badge badge-after">Day 7 After</span></div>
+      <img src="day-7/after/desktop-03-safety-drawer.png" alt="Desktop Transit Helplines Day 7 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Grounded AI Query Parser (Understood Chips) <span class="badge badge-after">Day 7 After</span></div>
+      <img src="day-7/after/desktop-04-ai-query-input.png" alt="Desktop Grounded AI Query Parser Day 7 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Passes & Safety Hub (Offline Boarding Passes) <span class="badge badge-after">Day 7 After</span></div>
+      <img src="day-7/after/mobile-01-passes-safety.png" alt="Mobile Passes & Safety Hub Day 7 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Transit Helplines (112 / 139) & GPS Pin Share <span class="badge badge-after">Day 7 After</span></div>
+      <img src="day-7/after/mobile-02-safety-drawer.png" alt="Mobile Transit Helplines Day 7 After" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 8 Artifacts (Comprehensive States, Multi-Viewport Responsive Layout, WCAG 2.1 AA)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage Before <span class="badge badge-baseline">Day 8 Before</span></div>
+      <img src="day-8/before/desktop-01-home.png" alt="Desktop Homepage Day 8 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Journey Planner Before <span class="badge badge-baseline">Day 8 Before</span></div>
+      <img src="day-8/before/desktop-02-planner.png" alt="Desktop Planner Day 8 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Emergency Desk Before <span class="badge badge-baseline">Day 8 Before</span></div>
+      <img src="day-8/before/desktop-03-tatkal.png" alt="Desktop Tatkal Desk Day 8 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage Before <span class="badge badge-baseline">Day 8 Before</span></div>
+      <img src="day-8/before/mobile-01-home.png" alt="Mobile Homepage Day 8 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Journey Planner Before <span class="badge badge-baseline">Day 8 Before</span></div>
+      <img src="day-8/before/mobile-02-planner.png" alt="Mobile Planner Day 8 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage (Responsive, Zero Overflow) <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/desktop-01-home.png" alt="Desktop Homepage Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Planner & Results Workspace <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/desktop-02-planner.png" alt="Desktop Planner Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Emergency Desk & Dual Window Timer <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/desktop-03-tatkal.png" alt="Desktop Tatkal Desk Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Saved Plans (Hardened Empty State) <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/desktop-05-saved-plans.png" alt="Desktop Saved Plans Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Tablet 768 · Multi-Viewport Planner Grid <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/tablet-01-planner.png" alt="Tablet Planner Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Responsive Homepage (WCAG Touch Targets) <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/mobile-01-home.png" alt="Mobile Homepage Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Responsive Planner (Touch Targets, Zero Clip) <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/mobile-02-planner.png" alt="Mobile Planner Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Passes & Safety Hub <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/mobile-03-passes-safety.png" alt="Mobile Passes & Safety Day 8 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Saved Plans Empty State <span class="badge badge-after">Day 8 After</span></div>
+      <img src="day-8/after/mobile-04-saved-plans.png" alt="Mobile Saved Plans Day 8 After" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 9 Artifacts (Security Hardening, DPDP 2023 Compliance & Legal Architecture)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Footer Area Before <span class="badge badge-baseline">Day 9 Before</span></div>
+      <img src="day-9/before/desktop-01-home-footer.png" alt="Desktop Footer Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Privacy Policy & DPDP 2023 Page <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/desktop-01-privacy-policy.png" alt="Desktop Privacy Policy Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Terms of Service Page <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/desktop-02-terms-of-service.png" alt="Desktop Terms of Service Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Statutory Legal Disclaimers Page <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/desktop-03-legal-disclaimer.png" alt="Desktop Legal Disclaimer Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Compliance Footer & Links <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/desktop-04-footer-compliance.png" alt="Desktop Footer Compliance Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Anonymous Feedback Modal (Zero-ID) <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/desktop-05-feedback-modal.png" alt="Desktop Feedback Modal Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Privacy Policy (DPDP 2023 Compliant) <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/mobile-01-privacy-policy.png" alt="Mobile Privacy Policy Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Terms of Service <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/mobile-02-terms-of-service.png" alt="Mobile Terms of Service Day 9 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Legal Disclaimers <span class="badge badge-after">Day 9 After</span></div>
+      <img src="day-9/after/mobile-03-legal-disclaimer.png" alt="Mobile Legal Disclaimers Day 9 After" loading="lazy">
+    </div>
+  </div>
+
+  <h2>Day 10 Artifacts (Production Release, Pitch Assets, Final Visual QA)</h2>
+  <div class="gallery-grid">
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Homepage Before Release <span class="badge badge-baseline">Day 10 Before</span></div>
+      <img src="day-10/before/desktop-01-home.png" alt="Desktop Home Day 10 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Journey Planner Before Release <span class="badge badge-baseline">Day 10 Before</span></div>
+      <img src="day-10/before/desktop-02-planner.png" alt="Desktop Planner Day 10 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Homepage Before Release <span class="badge badge-baseline">Day 10 Before</span></div>
+      <img src="day-10/before/mobile-01-home.png" alt="Mobile Home Day 10 Before" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Production Homepage (Release Build) <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/desktop-01-home.png" alt="Desktop Home Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Production Journey Planner & Results <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/desktop-02-planner.png" alt="Desktop Planner Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Tatkal Emergency Desk (Dual Window IST) <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/desktop-03-tatkal.png" alt="Desktop Tatkal Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · Passes & Safety Hub (112/139 Dialers) <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/desktop-04-passes-safety.png" alt="Desktop Safety Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Desktop 1440 · DPDP Privacy Policy & Right to Erasure <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/desktop-05-privacy.png" alt="Desktop Privacy Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Production Mobile Home (PWA) <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/mobile-01-home.png" alt="Mobile Home Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Production Mobile Planner <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/mobile-02-planner.png" alt="Mobile Planner Day 10 After" loading="lazy">
+    </div>
+    <div class="card">
+      <div class="card-header">Mobile 390 · Mobile Passes & Transit Safety <span class="badge badge-after">Day 10 After</span></div>
+      <img src="day-10/after/mobile-03-passes-safety.png" alt="Mobile Passes Day 10 After" loading="lazy">
+    </div>
+  </div>
+</body>
+</html>

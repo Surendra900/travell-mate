@@ -1,0 +1,96 @@
+[
+  {
+    "task": "(a) Find alternative route for sold-out corridor",
+    "durationMs": 10950,
+    "clicks": 0,
+    "hesitationPoints": [
+      "Blocked by Location Gate modal on entry",
+      "Blocked by Voice Gate modal on entry",
+      "User must click search a second time on planner page"
+    ],
+    "errors": [
+      "page.waitForSelector: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"waitlist-bypass-contrast\"], .timeline-card') to be visible\u001b[22m\n\u001b[2m    19 × locator resolved to 2 elements. Proceeding with the first one: <section data-testid=\"waitlist-bypass-contrast\" class=\"rounded-3xl border-2 border-sky-300 bg-white p-5 sm:p-7 shadow-lg\">…</section>\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(b) Understand transfer risk",
+    "durationMs": 4,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.isVisible: Unexpected token \"=\" while parsing css selector \".risk-badge, [data-testid=\"risk-badge\"], text=Safe, text=Moderate\". Did you mean to CSS.escape it?\nCall log:\n\u001b[2m    - checking visibility of .risk-badge, [data-testid=\"risk-badge\"], text=Safe, text=Moderate >> nth=0\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(c) Simulate late first train",
+    "durationMs": 15029,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"If Leg 1 Runs Late\"), button:has-text(\"Delay Simulator\")').first()\u001b[22m\n\u001b[2m    - locator resolved to <button role=\"tab\" type=\"button\" aria-selected=\"false\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <section aria-labelledby=\"backup-title\" class=\"rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100\">…</section> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <header class=\"live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4\">…</header> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  6 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <section aria-labelledby=\"backup-title\" class=\"rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100\">…</section> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <header class=\"live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4\">…</header> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <header class=\"live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4\">…</header> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <section aria-labelledby=\"backup-title\" class=\"rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100\">…</section> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" data-testid=\"analyze-suggest-backup-btn\" class=\"btn-primary inline-flex items-center gap-2\">…</button> from <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"live-results-title\" class=\"live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(d) Use Demo scenario",
+    "durationMs": 117,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.count: Unexpected token \"=\" while parsing css selector \"[data-testid=\"demo-mode-banner\"], text=Demo Scenario\". Did you mean to CSS.escape it?"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(e) Prepare for Tatkal",
+    "durationMs": 2340,
+    "clicks": 0,
+    "hesitationPoints": [
+      "Passenger Master card difficult to locate on mobile"
+    ],
+    "errors": [
+      "Tatkal countdown timers not visible on Tatkal Desk"
+    ],
+    "status": "PARTIAL"
+  },
+  {
+    "task": "(f) Save or open offline pass",
+    "durationMs": 733,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.isVisible: Unexpected token \"=\" while parsing css selector \"h1, h2:has-text(\"Saved\"), text=Offline\". Did you mean to CSS.escape it?\nCall log:\n\u001b[2m    - checking visibility of h1, h2:has-text(\"Saved\"), text=Offline >> nth=0\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(g) Find helpline numbers",
+    "durationMs": 716,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.isVisible: Unexpected token \"=\" while parsing css selector \"a[href*=\"112\"], text=112\". Did you mean to CSS.escape it?\nCall log:\n\u001b[2m    - checking visibility of a[href*=\"112\"], text=112 >> nth=0\u001b[22m\n"
+    ],
+    "status": "FAIL"
+  },
+  {
+    "task": "(h) Change date or origin after results",
+    "durationMs": 1243,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [],
+    "status": "PASS"
+  },
+  {
+    "task": "(i) Recover from mistake",
+    "durationMs": 768,
+    "clicks": 0,
+    "hesitationPoints": [],
+    "errors": [
+      "locator.count: Unexpected token \"=\" while parsing css selector \".app-toast, text=Please select\". Did you mean to CSS.escape it?"
+    ],
+    "status": "FAIL"
+  }
+]

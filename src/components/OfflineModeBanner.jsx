@@ -16,13 +16,7 @@ export default function OfflineModeBanner({ status, toast }) {
   }, [offline])
 
   if (!offline) {
-    return (
-      <div className="border-b border-emerald-200 bg-emerald-50/80 px-4 py-2 text-xs text-emerald-900">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-2"><WifiOff size={14} className="text-emerald-700" /> Offline readiness: {cacheCount > 0 ? `${cacheCount} cached files` : 'auto-prepares after first online visit'}</span>
-        </div>
-      </div>
-    )
+    return null
   }
 
   return (
@@ -36,8 +30,8 @@ export default function OfflineModeBanner({ status, toast }) {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link className="rounded-full bg-lime-300 px-4 py-2 text-sm font-black text-slate-950" to="/planner">Open Offline Planner</Link>
-          <Link className="rounded-full border border-red-300 px-4 py-2 text-sm font-bold text-red-900" to="/safety"><ShieldAlert size={16} className="inline" /> Safety Mode</Link>
+          <Link className="rounded-md bg-lime-300 px-4 py-2 text-sm font-black text-slate-950" to="/planner">Open Offline Planner</Link>
+          <Link className="rounded-md border border-red-300 px-4 py-2 text-sm font-bold text-red-900" to="/safety"><ShieldAlert size={16} className="inline" /> Safety Mode</Link>
         </div>
       </div>
     </div>

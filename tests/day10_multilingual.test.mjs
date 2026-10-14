@@ -63,11 +63,7 @@ test('Day 10: api/translate.js and GlobalTranslationLayer support Punjabi and of
   assert.match(gtl, /pa:\s*['"]/, 'GlobalTranslationLayer TRANSLATING_TEXT must support Punjabi')
 })
 
-test('Day 10: EmergencyPhraseCards component exists with Web Speech and 10 regional languages', () => {
-  const comp = fs.readFileSync(path.join(root, 'src/components/EmergencyPhraseCards.jsx'), 'utf8')
-  assert.match(comp, /speechSynthesis/, 'Must use Web Speech Synthesis')
-  assert.match(comp, /clipboard(?:\?\.|\.)writeText/, 'Must support clipboard copy')
-  for (const lang of REQUIRED_INDIAN_LANGS) {
-    assert.match(comp, new RegExp(`code:\\s*['"]${lang}['"]`), `Language selector must include ${lang}`)
-  }
+test('Day 10: EmergencyPhraseCards is pruned per Master Spec Section 4', () => {
+  const exists = fs.existsSync(path.join(root, 'src/components/EmergencyPhraseCards.jsx'))
+  assert.equal(exists, false, 'EmergencyPhraseCards.jsx must not exist')
 })

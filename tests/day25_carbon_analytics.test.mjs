@@ -19,22 +19,13 @@ test('Day 25: estimateCarbonKg accurately computes multi-modal transit emissions
   assert.equal(trainMultiPax, 120, '3 passengers on Train should be 120kg CO2e');
 });
 
-test('Day 25: CarbonCalculator.jsx defines rich environmental intelligence card and comparison bars', () => {
+test('Day 25: CarbonCalculator.jsx is pruned per Master Spec Section 4', () => {
   const carbonPath = path.resolve('src/planner/CarbonCalculator.jsx');
-  assert.ok(fs.existsSync(carbonPath), 'CarbonCalculator.jsx must exist');
-
-  const content = fs.readFileSync(carbonPath, 'utf8');
-  assert.ok(content.includes('data-testid="carbon-analytics-card"'), 'Must declare card test id');
-  assert.ok(content.includes('data-testid="carbon-co2-val"'), 'Must declare footprint value test id');
-  assert.ok(content.includes('data-testid="carbon-savings-badge"'), 'Must declare savings badge test id');
-  assert.ok(content.includes('data-testid="carbon-trees-val"'), 'Must declare trees offset value test id');
-  assert.ok(content.includes('Private Cab'), 'Must support Private Cab baseline comparison');
-  assert.ok(content.includes('Flight'), 'Must support Flight baseline comparison');
+  assert.equal(fs.existsSync(carbonPath), false, 'CarbonCalculator.jsx must not exist');
 });
 
-test('Day 25: NormalPlanner.jsx mounts CarbonCalculator component', () => {
+test('Day 25: NormalPlanner.jsx does not mount CarbonCalculator component', () => {
   const plannerPath = path.resolve('src/planner/NormalPlanner.jsx');
   const content = fs.readFileSync(plannerPath, 'utf8');
-  assert.ok(content.includes('import CarbonCalculator from \'./CarbonCalculator\''), 'Must import CarbonCalculator');
-  assert.ok(content.includes('<CarbonCalculator plan={plan} />'), 'Must mount CarbonCalculator');
+  assert.ok(!content.includes('CarbonCalculator'), 'Must not include CarbonCalculator');
 });

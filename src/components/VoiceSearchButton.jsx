@@ -330,59 +330,72 @@ export default function VoiceSearchButton({ onSearch, language = 'en' }) {
   return (
     <div className="voice-root">
       {open && (
-        <section id="travelmate-voice-search" className="voice-panel" role="dialog" aria-modal="true" aria-label="Voice search panel">
-          <header className="dialog-panel-header">
-            <div className="min-w-0 flex-1">
-              <p className="flex items-center gap-2 font-black text-cyan-100"><Search size={17} aria-hidden="true" /> Voice Search</p>
-              <p className="mt-1 text-xs text-slate-400">Speak naturally. Route requests fill the planner first; Tatkal requests open Tatkal mode; the demo booking opens only when you explicitly say “open demo booking”.</p>
-            </div>
-            <button type="button" className="dialog-close-button" onClick={closePanel} aria-label="Close voice search" title="Close voice search">
-              <X size={22} aria-hidden="true" />
-            </button>
-          </header>
-
-          <div className="mt-3 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3" aria-live="polite">
-            <p className="text-xs font-bold text-cyan-100">{status}</p>
-            {transcript && <p className="mt-2 text-xs text-slate-200"><span>Heard:</span> <span data-no-translate>{transcript}</span></p>}
-          </div>
-
-          <button
-            type="button"
-            className={`mt-3 mobile-full ${listening ? 'btn-danger' : 'btn-soft'}`}
-            onClick={listening ? stopListening : startListening}
-            disabled={transcribing}
+        <div
+          className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-fade-in"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closePanel()
+          }}
+        >
+          <section
+            id="travelmate-voice-search"
+            className="voice-panel w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-slate-700 bg-slate-900 p-5 sm:p-6 text-slate-100 shadow-2xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Voice search panel"
           >
-            {transcribing ? <LoaderCircle className="animate-spin" size={18} aria-hidden="true" /> : listening ? <MicOff size={18} aria-hidden="true" /> : <Mic size={18} aria-hidden="true" />}
-            {transcribing ? 'Processing voice…' : listening ? 'Stop listening' : 'Start listening'}
-          </button>
-
-          <div className="mt-3 grid gap-2">
-            <label className="text-xs font-black text-cyan-100" htmlFor="voice-search-fallback">Type route search</label>
-            <input
-              id="voice-search-fallback"
-              className="input"
-              value={typedSearch}
-              onChange={(event) => setTypedSearch(event.target.value)}
-              onKeyDown={(event) => event.key === 'Enter' && submit(typedSearch)}
-              placeholder="Example: tickets from Hyderabad to Delhi by train"
-            />
-            <button type="button" className="btn-primary" data-testid="voice-search-submit" onClick={() => submit(typedSearch)}>Search</button>
-          </div>
-
-          <div className="mt-3 grid gap-2 text-xs">
-            {[
-              'tickets from Hyderabad to Delhi by train',
-              'tatkal from Kochi to Chennai',
-              'check live flights from Delhi to Mumbai',
-              'open demo booking',
-              'open safety'
-            ].map((example) => (
-              <button key={example} type="button" className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-left font-bold text-slate-300 hover:bg-slate-800" onClick={() => submit(example)}>
-                {example}
+            <header className="dialog-panel-header">
+              <div className="min-w-0 flex-1">
+                <p className="flex items-center gap-2 font-black text-cyan-100"><Search size={17} aria-hidden="true" /> Voice Search</p>
+                <p className="mt-1 text-xs text-slate-400">Speak naturally. Route requests fill the planner first; Tatkal requests open Tatkal mode; the demo booking opens only when you explicitly say “open demo booking”.</p>
+              </div>
+              <button type="button" className="dialog-close-button" onClick={closePanel} aria-label="Close voice search" title="Close voice search">
+                <X size={22} aria-hidden="true" />
               </button>
-            ))}
-          </div>
-        </section>
+            </header>
+
+            <div className="mt-3 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3" aria-live="polite">
+              <p className="text-xs font-bold text-cyan-100">{status}</p>
+              {transcript && <p className="mt-2 text-xs text-slate-200"><span>Heard:</span> <span data-no-translate>{transcript}</span></p>}
+            </div>
+
+            <button
+              type="button"
+              className={`mt-3 w-full mobile-full min-h-[44px] ${listening ? 'btn-danger' : 'btn-soft'}`}
+              onClick={listening ? stopListening : startListening}
+              disabled={transcribing}
+            >
+              {transcribing ? <LoaderCircle className="animate-spin" size={18} aria-hidden="true" /> : listening ? <MicOff size={18} aria-hidden="true" /> : <Mic size={18} aria-hidden="true" />}
+              {transcribing ? 'Processing voice…' : listening ? 'Stop listening' : 'Start listening'}
+            </button>
+
+            <div className="mt-3 grid gap-2">
+              <label className="text-xs font-black text-cyan-100" htmlFor="voice-search-fallback">Type route search</label>
+              <input
+                id="voice-search-fallback"
+                className="input"
+                value={typedSearch}
+                onChange={(event) => setTypedSearch(event.target.value)}
+                onKeyDown={(event) => event.key === 'Enter' && submit(typedSearch)}
+                placeholder="Example: tickets from Hyderabad to Delhi by train"
+              />
+              <button type="button" className="btn-primary min-h-[44px]" data-testid="voice-search-submit" onClick={() => submit(typedSearch)}>Search</button>
+            </div>
+
+            <div className="mt-3 grid gap-2 text-xs">
+              {[
+                'tickets from Hyderabad to Delhi by train',
+                'tatkal from Kochi to Chennai',
+                'check live flights from Delhi to Mumbai',
+                'open demo booking',
+                'open safety'
+              ].map((example) => (
+                <button key={example} type="button" className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-left font-bold text-slate-300 hover:bg-slate-800 min-h-[44px] flex items-center" onClick={() => submit(example)}>
+                  {example}
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
       )}
 
       {!open && (

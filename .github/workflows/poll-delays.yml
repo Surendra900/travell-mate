@@ -1,0 +1,48 @@
+name: Poll NTES Delay Snapshot
+
+# Standing Decision S2: This workflow is DISABLED by default.
+# It runs only on manual trigger (workflow_dispatch) to avoid continuous automated polling.
+# To enable scheduled execution, uncomment the schedule block below.
+
+on:
+  workflow_dispatch:
+    inputs:
+      windowHours:
+        description: 'Look-ahead window hours (2, 4, or 8)'
+        required: true
+        default: '2'
+
+# schedule:
+#   - cron: '*/30 * * * *' # Uncomment only with formal operator authorization
+
+jobs:
+  poll-delays:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tools/railpull/requirements.txt
+
+      - name: Run delay poller snapshot
+        continue-on-error: true
+        run: |
+          python tools/railpull/ntes/poll_delays.py --hours ${{ github.event.inputs.windowHours || '2' }} --stations 20
+
+      - name: Import delay snapshot
+        continue-on-error: true
+        run: |
+          node data/etl/import-railpull.mjs --dir tools/railpull/data/out

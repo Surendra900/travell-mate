@@ -94,7 +94,6 @@ function localServerlessApiPlugin() {
 
 function splitVendorChunk(id) {
   if (!id.includes('node_modules')) return undefined
-  if (id.includes('@clerk')) return 'vendor-auth'
   if (id.includes('leaflet')) return 'vendor-maps'
   if (id.includes('lucide-react')) return 'vendor-icons'
   if (id.includes('react-router')) return 'vendor-router'
@@ -105,6 +104,7 @@ function splitVendorChunk(id) {
 export default defineConfig(({ mode }) => {
   applyServerEnv(loadEnv(mode, process.cwd(), ''))
   return {
+    envPrefix: ['VITE_', 'VITESUPABASE_'],
     plugins: [react(), localServerlessApiPlugin()],
     server: { host: '127.0.0.1' },
     preview: { host: '127.0.0.1' },

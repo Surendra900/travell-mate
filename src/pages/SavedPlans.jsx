@@ -19,7 +19,6 @@ import {
   Clock,
   MapPin
 } from 'lucide-react'
-import BookingModal from '../components/BookingModal'
 import PnrPredictorModal from '../components/PnrPredictorModal'
 import OfflinePassModal from '../components/OfflinePassModal'
 import {
@@ -33,6 +32,8 @@ import {
 } from '../utils/storage'
 import { calculatePlanQualityScore, planVerdict, scoreBreakdown } from '../utils/scoring'
 import { getPNRStatus } from '../services/LiveTransportApi'
+import { usePageMetadata } from '../hooks/usePageMetadata'
+import { isSupabaseConfigured, syncSavedPlans, getCurrentUserId } from '../utils/supabaseClient'
 
 function serviceValue(service, ...keys) {
   for (const key of keys) {
@@ -48,6 +49,11 @@ function iconFor(mode) {
 }
 
 export default function SavedPlans({ toast }) {
+  usePageMetadata({
+    title: 'Saved Trips & Offline Passes | TravelMate',
+    description: 'View saved itineraries, offline digital passes, connection readiness scores, and PNR tracking.'
+  })
+
   const [plans, setPlans] = useState([])
   const [bookingPlan, setBookingPlan] = useState(null)
   const [passPlan, setPassPlan] = useState(null)
@@ -58,8 +64,18 @@ export default function SavedPlans({ toast }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setPlans(getSavedPlans())
+    const local = getSavedPlans()
+    setPlans(local)
     setOffline(getOfflinePack())
+
+    if (isSupabaseConfigured) {
+      const uid = getCurrentUserId()
+      syncSavedPlans(uid, local).then((synced) => {
+        if (Array.isArray(synced) && synced.length) {
+          setPlans(synced)
+        }
+      }).catch(() => {})
+    }
   }, [])
 
   useEffect(() => {
@@ -152,9 +168,9 @@ export default function SavedPlans({ toast }) {
           <button
             type="button"
             onClick={() => navigate('/planner')}
-            className="btn-primary h-12 px-5 rounded-2xl text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/20"
+            className="btn-primary h-12 px-5 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/20"
           >
-            <span>＋ Plan a New Trip</span>
+            <span>Plan a New Trip</span>
           </button>
         </div>
       </section>
@@ -167,11 +183,36 @@ export default function SavedPlans({ toast }) {
               <CalendarDays size={20} className="text-sky-600" />
               <span>Upcoming Journeys</span>
             </h2>
-            <span className="text-xs font-semibold text-slate-500">{plans.length} total saved</span>
+            <div className="flex items-center gap-2">
+              {isSupabaseConfigured && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                  <CheckCircle2 size={12} className="text-emerald-600" />
+                  <span>Cloud Synced</span>
+                </span>
+              )}
+              <span className="text-xs font-semibold text-slate-500">{plans.length} total saved</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {plans.slice(0, 2).map((plan) => {
+          {plans.length === 0 ? (
+            <div data-testid="empty-saved-plans" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 mx-auto flex items-center justify-center mb-4">
+                <Bookmark size={26} />
+              </div>
+              <h3 className="text-lg font-black text-slate-900">No saved journeys yet</h3>
+              <p className="text-sm text-slate-500 max-w-md mx-auto mt-1.5 leading-relaxed">
+                When you find an optimal route recovery option in the planner, save it here to access it instantly offline with 1-click boarding passes.
+              </p>
+              <div className="mt-5 flex justify-center">
+                <Link to="/planner" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold shadow-md shadow-sky-600/20">
+                  <span>Explore Route Recovery</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {plans.slice(0, 2).map((plan) => {
               const service = plan.selectedService || {}
               const ModeIcon = iconFor(plan.transportMode)
               const name =
@@ -220,7 +261,7 @@ export default function SavedPlans({ toast }) {
                       <div>
                         <span className="text-slate-400 block font-semibold mb-0.5">Timings</span>
                         <strong className="text-slate-900 font-bold">
-                          {departure || '—'} {arrival ? `→ ${arrival}` : ''}
+                          {departure || 'Pending'} {arrival ? `to ${arrival}` : ''}
                         </strong>
                       </div>
                     </div>
@@ -242,7 +283,7 @@ export default function SavedPlans({ toast }) {
                         type="button"
                         data-testid={`view-pass-${plan.id}`}
                         onClick={() => setPassPlan(plan)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
+                        className="px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
                       >
                         <ShieldCheck size={14} className="text-emerald-600" />
                         <span>Boarding Pass</span>
@@ -251,7 +292,7 @@ export default function SavedPlans({ toast }) {
                       <button
                         type="button"
                         onClick={() => setBookingPlan(plan)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
+                        className="px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
                       >
                         <Ticket size={14} className="text-sky-600" />
                         <span>Booking</span>
@@ -261,24 +302,8 @@ export default function SavedPlans({ toast }) {
                 </article>
               )
             })}
-
-            {plans.length === 0 && (
-              <div className="col-span-full bg-white rounded-3xl border border-dashed border-slate-300 p-10 text-center">
-                <Bookmark size={32} className="mx-auto text-slate-400 mb-3" />
-                <h3 className="text-lg font-bold text-slate-900">No trips saved yet</h3>
-                <p className="text-sm text-slate-500 max-w-sm mx-auto mt-1 mb-5">
-                  Search any train, bus, or flight in Journey Planner and tap "Save to Trips" to keep it accessible here.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => navigate('/planner')}
-                  className="btn-primary text-sm font-bold"
-                >
-                  Plan Your First Trip
-                </button>
-              </div>
-            )}
           </div>
+          )}
         </section>
 
         {/* Offline Pack Generator */}
@@ -325,8 +350,8 @@ export default function SavedPlans({ toast }) {
               <strong className="text-lg font-black text-slate-900">{packedExactRoutes}</strong>
             </div>
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Vault Documents</span>
-              <strong className="text-lg font-black text-slate-900">{offline?.secureVaultDocumentCount || 0}</strong>
+              <span className="text-xs font-bold text-slate-500">Offline Pack</span>
+              <strong className="text-lg font-black text-slate-900">{offline ? 'Ready' : 'Pending'}</strong>
             </div>
           </div>
         </section>
@@ -363,7 +388,7 @@ export default function SavedPlans({ toast }) {
                             'Custom Route Plan'}
                         </h4>
                         <p className="text-xs text-slate-500">
-                          {plan.from} → {plan.to} · {planVerdict(score)} (Score: {score}/100)
+                          {plan.from} to {plan.to} · {planVerdict(score)} (Score: {score}/100)
                         </p>
                       </div>
                     </div>
@@ -405,12 +430,6 @@ export default function SavedPlans({ toast }) {
         )}
       </main>
 
-      <BookingModal
-        open={Boolean(bookingPlan)}
-        onClose={() => setBookingPlan(null)}
-        plan={bookingPlan}
-        onSaved={handleBookingSaved}
-      />
       <OfflinePassModal
         open={Boolean(passPlan)}
         onClose={() => setPassPlan(null)}

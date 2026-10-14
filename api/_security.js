@@ -26,10 +26,95 @@ function clientIp(req) {
   return header(req, 'x-forwarded-for').split(',')[0].trim() || header(req, 'x-real-ip') || 'unknown'
 }
 
-function enforceRateLimit(req, res, limit, windowMs) {
+export async function enforceDistributedRateLimit(key, limit, windowMs) {
+  const url = process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || !token) return null
+
+  try {
+    const windowSec = Math.max(1, Math.ceil(windowMs / 1000))
+    const response = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([
+        ['INCR', `rl:${key}`],
+        ['EXPIRE', `rl:${key}`, windowSec, 'NX'],
+        ['TTL', `rl:${key}`]
+      ]),
+      signal: AbortSignal.timeout(2000)
+    })
+
+    if (!response.ok) {
+      console.warn(`[RateLimit] Upstash Redis returned HTTP ${response.status}, falling back to memory store`)
+      return null
+    }
+
+    const results = await response.json()
+    const count = Number(results?.[0]?.result || 1)
+    const ttl = Number(results?.[2]?.result || windowSec)
+    return { count, resetSec: Math.max(1, ttl) }
+  } catch (err) {
+    console.warn(`[RateLimit] Upstash Redis request error (${err.message}), falling back to memory store`)
+    return null
+  }
+}
+
+export function publicProviderError(
+  error,
+  fallback = 'The provider is temporarily unavailable.'
+) {
+  const code = String(error?.code || '').trim()
+
+  const safeMessages = new Map([
+    ['PROVIDER_TIMEOUT', 'The provider timed out. Please try again.'],
+    ['MISSING_PROVIDER_CONFIG', 'This provider is not configured.'],
+    ['MISSING_RAPIDAPI_KEY', 'The railway provider is not configured.'],
+    ['SAMBANOVA_NOT_CONFIGURED', 'The assistant provider is not configured.'],
+    ['RATE_LIMITED', 'Too many requests. Please try again later.']
+  ])
+
+  return {
+    message: safeMessages.get(code) || fallback,
+    error: code || 'PROVIDER_ERROR'
+  }
+}
+
+export async function enforceRateLimit(req, res, limit, windowMs) {
+  const isProduction = Boolean(process.env.VERCEL_REGION) && (process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL))
   const now = Date.now()
   const pathname = String(req?.url || req?.query?.path || 'api').split('?')[0]
   const key = `${clientIp(req)}:${pathname}`
+
+  // 1. Try distributed Upstash Redis if configured
+  const distributed = await enforceDistributedRateLimit(key, limit, windowMs)
+  if (distributed) {
+    const { count, resetSec } = distributed
+    const resetAt = now + (resetSec * 1000)
+    res.setHeader('X-RateLimit-Limit', String(limit))
+    res.setHeader('X-RateLimit-Remaining', String(Math.max(0, limit - count)))
+    res.setHeader('X-RateLimit-Reset', String(Math.ceil(resetAt / 1000)))
+    if (count > limit) {
+      res.setHeader('Retry-After', String(Math.max(1, resetSec)))
+      return false
+    }
+    return true
+  }
+
+  // In production with Upstash configured, rate limiter must be distributed
+  if (isProduction && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN && !distributed) {
+    res.status(503).json({
+      ok: false,
+      mode: 'error',
+      message: 'Rate limiting is temporarily unavailable. Please try again later.',
+      error: 'RATE_LIMITER_UNAVAILABLE'
+    })
+    return false
+  }
+
+  // 2. Fallback to local in-memory store for development
   let record = RATE_LIMIT_STORE.get(key)
   if (!record || record.resetAt <= now) record = { count: 0, resetAt: now + windowMs }
   record.count += 1
@@ -165,7 +250,7 @@ export async function prepareApiRequest(req, res, options = {}) {
 
   const limit = Number(options.rateLimit || 30)
   const windowMs = Number(options.windowMs || 60_000)
-  if (!enforceRateLimit(req, res, limit, windowMs)) {
+  if (!(await enforceRateLimit(req, res, limit, windowMs))) {
     jsonError(res, 429, 'Too many requests. Wait before trying again.', 'RATE_LIMITED')
     return null
   }

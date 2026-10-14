@@ -1,0 +1,67 @@
+{
+  "production": {},
+  "local": {},
+  "clickableCounts": {},
+  "navCounts": {},
+  "fiveSecondTest": {},
+  "prod_desktop": {
+    "totalVisibleFirstFold": 31,
+    "navItemCount": 9,
+    "navTexts": [
+      "TravelMate",
+      "Route Finder",
+      "Tatkal Desk",
+      "Passes & Safety",
+      "Saved Trips",
+      "See a Demo",
+      "Sign in"
+    ],
+    "headingText": "Are you blind or visually impaired?",
+    "subheadingText": "TravelMate AI features an end-to-end hands-free voice engine. Say “Yes” into your microphone or tap below to enable spoken audio guides, automatic route readouts, and voice emergency triggers.",
+    "bodySnippet": "Accessible Voice Gate · Press Alt+B anytime\nAre you blind or visually impaired?\n\nTravelMate AI features an end-to-end hands-free voice engine. Say “Yes” into your microphone or tap below to enable spoken audio guides, automatic route readouts, and voice emergency triggers.\n\nMicrophone standby\n\nSay \"Yes\" or \"No\", or use the buttons below\n\nYES - Enable Voice Mode\nNO - Standard Mode\nReplay Audio Prompt\nPress Tab to navigate · Esc to dismiss\n\nEmergency location setup\n\nAllow location before using TravelMate\n\nWhen you later tap WhatsApp or SMS in Safety Mode, TravelMate will refresh your GPS location and place it in the emergency message automatically.\n\nWhat is stored\n\nOnly the latest coordinates, accuracy and capture time are stored locally in this browser. They are not sent to TravelMate servers.\n\nWhatsApp and SMS will open with a prepared message. Your phone still requires you to review it and tap Send; a website cannot silently send messages on your behalf.\nAllow and continue\nContinue wi"
+  },
+  "prod_mobile": {
+    "totalVisibleFirstFold": 22,
+    "navItemCount": 9,
+    "navTexts": [
+      "TravelMate",
+      "Route Finder",
+      "Tatkal Desk",
+      "Passes & Safety",
+      "Saved Trips",
+      "Sign in"
+    ],
+    "headingText": "Are you blind or visually impaired?",
+    "bodySnippet": "Accessible Voice Gate · Press Alt+B anytime\nAre you blind or visually impaired?\n\nTravelMate AI features an end-to-end hands-free voice engine. Say “Yes” into your microphone or tap below to enable spoken audio guides, automatic route readouts, and voice emergency triggers.\n\nMicrophone standby\n\nSay \"Yes\" or \"No\", or use the buttons below\n\nYES - Enable Voice Mode\nNO - Standard Mode\nReplay Audio Prompt\nPress Tab to navigate · Esc to dismiss\n\nEmergency location setup\n\nAllow location before using TravelMate\n\nWhen you later tap WhatsApp or SMS in Safety Mode, TravelMate will refresh your GPS location and place it in the emergency message automatically.\n\nWhat is stored\n\nOnly the latest coordinates, accuracy and capture time are stored locally in this browser. They are not sent to TravelMate serve"
+  },
+  "local_desktop": {
+    "totalVisibleFirstFold": 31,
+    "navItemCount": 9,
+    "navTexts": [
+      "TravelMate",
+      "Route Finder",
+      "Tatkal Desk",
+      "Passes & Safety",
+      "Saved Trips",
+      "See a Demo",
+      "Local profile"
+    ],
+    "headingText": "Are you blind or visually impaired?",
+    "subheadingText": "TravelMate AI features an end-to-end hands-free voice engine. Say “Yes” into your microphone or tap below to enable spoken audio guides, automatic route readouts, and voice emergency triggers.",
+    "bodySnippet": "Accessible Voice Gate · Press Alt+B anytime\nAre you blind or visually impaired?\n\nTravelMate AI features an end-to-end hands-free voice engine. Say “Yes” into your microphone or tap below to enable spoken audio guides, automatic route readouts, and voice emergency triggers.\n\nMicrophone standby\n\nSay \"Yes\" or \"No\", or use the buttons below\n\nYES - Enable Voice Mode\nNO - Standard Mode\nReplay Audio Prompt\nPress Tab to navigate · Esc to dismiss\n\nEmergency location setup\n\nAllow location before using TravelMate\n\nWhen you later tap WhatsApp or SMS in Safety Mode, TravelMate will refresh your GPS location and place it in the emergency message automatically.\n\nWhat is stored\n\nOnly the latest coordinates, accuracy and capture time are stored locally in this browser. They are not sent to TravelMate servers.\n\nWhatsApp and SMS will open with a prepared message. Your phone still requires you to review it and tap Send; a website cannot silently send messages on your behalf.\nAllow and continue\nContinue wi"
+  },
+  "local_mobile": {
+    "totalVisibleFirstFold": 22,
+    "navItemCount": 9,
+    "navTexts": [
+      "TravelMate",
+      "Route Finder",
+      "Tatkal Desk",
+      "Passes & Safety",
+      "Saved Trips",
+      "Local profile"
+    ],
+    "headingText": "Are you blind or visually impaired?",
+    "bodySnippet": "Accessible Voice Gate · Press Alt+B anytime\nAre you blind or visually impaired?\n\nTravelMate AI features an end-to-end hands-free voice engine. Say “Yes” into your microphone or tap below to enable spoken audio guides, automatic route readouts, and voice emergency triggers.\n\nMicrophone standby\n\nSay \"Yes\" or \"No\", or use the buttons below\n\nYES - Enable Voice Mode\nNO - Standard Mode\nReplay Audio Prompt\nPress Tab to navigate · Esc to dismiss\n\nEmergency location setup\n\nAllow location before using TravelMate\n\nWhen you later tap WhatsApp or SMS in Safety Mode, TravelMate will refresh your GPS location and place it in the emergency message automatically.\n\nWhat is stored\n\nOnly the latest coordinates, accuracy and capture time are stored locally in this browser. They are not sent to TravelMate serve"
+  }
+}

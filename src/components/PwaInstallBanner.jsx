@@ -7,6 +7,7 @@ export default function PwaInstallBanner() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [installed, setInstalled] = useState(false)
   const [dismissed, setDismissed] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [installing, setInstalling] = useState(false)
 
   useEffect(() => {
@@ -28,11 +29,13 @@ export default function PwaInstallBanner() {
     function handleBeforeInstallPrompt(e) {
       e.preventDefault()
       setDeferredPrompt(e)
+      setVisible(true)
       setDismissed(false)
     }
 
     function handleAppInstalled() {
       setInstalled(true)
+      setVisible(false)
       setDeferredPrompt(null)
       localStorage.removeItem(DISMISS_KEY)
     }
@@ -42,6 +45,7 @@ export default function PwaInstallBanner() {
 
     // Custom event to trigger banner open from navbar/footer
     function handleOpenInstallPrompt() {
+      setVisible(true)
       setDismissed(false)
     }
     window.addEventListener('travelmate:open-pwa-install', handleOpenInstallPrompt)
@@ -54,6 +58,7 @@ export default function PwaInstallBanner() {
   }, [])
 
   function dismiss() {
+    setVisible(false)
     setDismissed(true)
     try {
       localStorage.setItem(DISMISS_KEY, String(Date.now()))
@@ -82,24 +87,24 @@ export default function PwaInstallBanner() {
     }
   }
 
-  if (installed || dismissed) return null
+  if (installed || dismissed || !visible) return null
 
   return (
     <aside
       role="banner"
       aria-label="Install TravelMate Web Application"
       data-testid="pwa-install-banner"
-      className="fixed bottom-20 left-4 right-4 z-40 mx-auto max-w-xl rounded-2xl border border-indigo-400/40 bg-slate-950/95 p-4 text-white shadow-2xl backdrop-blur-md md:bottom-6"
+      className="fixed bottom-20 left-4 right-4 z-40 mx-auto max-w-lg rounded-2xl border border-sky-400/30 bg-slate-950/95 p-4 text-white shadow-2xl backdrop-blur-md sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-cyan-600 text-slate-950 shadow-md">
             <Sparkles size={22} />
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="text-sm font-black text-white">Install TravelMate AI</h3>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-950 px-2 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
+              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-950 px-2 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
                 <WifiOff size={10} /> 100% Offline Ready
               </span>
             </div>
@@ -113,7 +118,7 @@ export default function PwaInstallBanner() {
           aria-label="Dismiss install banner"
           data-testid="pwa-dismiss-button"
           onClick={dismiss}
-          className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white"
+          className="rounded-md p-1 text-slate-400 hover:bg-slate-800 hover:text-white"
         >
           <X size={16} />
         </button>
@@ -123,7 +128,7 @@ export default function PwaInstallBanner() {
         <button
           type="button"
           onClick={dismiss}
-          className="rounded-xl px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white transition"
+          className="rounded-md px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white transition"
         >
           Maybe Later
         </button>
@@ -132,9 +137,9 @@ export default function PwaInstallBanner() {
           data-testid="pwa-install-button"
           onClick={handleInstallClick}
           disabled={installing}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-1.5 text-xs font-bold text-white shadow-md hover:bg-indigo-500 active:scale-95 transition"
+          className="inline-flex items-center gap-1.5 rounded-md bg-cyan-600 px-4 py-1.5 text-xs font-bold text-slate-950 shadow-md hover:bg-cyan-500 active:scale-95 transition"
         >
-          <Download size={14} /> {installing ? 'Installing…' : 'Install App'}
+          <Download size={14} /> {installing ? 'Installing...' : 'Install App'}
         </button>
       </div>
     </aside>

@@ -1,0 +1,122 @@
+{
+  "finding": "C-12: 205 KB @clerk/clerk-react bundled in client assets despite auth being disabled",
+  "category": "Performance",
+  "severity": "Medium",
+  "authVendorChunkPresent": false,
+  "vendorAuthFiles": [],
+  "totalSavingsKb": 210.1,
+  "status": "FIXED-VERIFIED",
+  "bundleFiles": [
+    {
+      "file": "AnalyzeJourney-Bux53-uF.js",
+      "sizeBytes": 4514,
+      "sizeKb": 4.4
+    },
+    {
+      "file": "date-oOsr9jzQ.js",
+      "sizeBytes": 276,
+      "sizeKb": 0.3
+    },
+    {
+      "file": "EmergencyDetail-BVhtAVNF.js",
+      "sizeBytes": 5422,
+      "sizeKb": 5.3
+    },
+    {
+      "file": "Home-C8KyssdO.js",
+      "sizeBytes": 15291,
+      "sizeKb": 14.9
+    },
+    {
+      "file": "index-BySuk5dp.js",
+      "sizeBytes": 188522,
+      "sizeKb": 184.1
+    },
+    {
+      "file": "index-Ck2vL8AE.css",
+      "sizeBytes": 78917,
+      "sizeKb": 77.1
+    },
+    {
+      "file": "LegalDisclaimer-D0yClYPq.js",
+      "sizeBytes": 5236,
+      "sizeKb": 5.1
+    },
+    {
+      "file": "NaturalLanguageQueryInput-DapNZlr4.js",
+      "sizeBytes": 22831,
+      "sizeKb": 22.3
+    },
+    {
+      "file": "OfflineTravelerPassModal-DTO-Rlaf.js",
+      "sizeBytes": 9400,
+      "sizeKb": 9.2
+    },
+    {
+      "file": "Planner-CPNR-sas.js",
+      "sizeBytes": 212081,
+      "sizeKb": 207.1
+    },
+    {
+      "file": "PnrPredictorModal-B7dVy0fE.js",
+      "sizeBytes": 26882,
+      "sizeKb": 26.3
+    },
+    {
+      "file": "PrivacyPolicy-DrcYW6tR.js",
+      "sizeBytes": 6812,
+      "sizeKb": 6.7
+    },
+    {
+      "file": "rolldown-runtime-Bh1tDfsg.js",
+      "sizeBytes": 567,
+      "sizeKb": 0.6
+    },
+    {
+      "file": "SafetyMode-Dm9kq_mE.js",
+      "sizeBytes": 37560,
+      "sizeKb": 36.7
+    },
+    {
+      "file": "SavedPlans-kwR95nZR.js",
+      "sizeBytes": 23146,
+      "sizeKb": 22.6
+    },
+    {
+      "file": "TermsOfService-CDyy8Hwv.js",
+      "sizeBytes": 4973,
+      "sizeKb": 4.9
+    },
+    {
+      "file": "vendor-DoGSnQyv.js",
+      "sizeBytes": 9087,
+      "sizeKb": 8.9
+    },
+    {
+      "file": "vendor-icons-B7iOLv49.js",
+      "sizeBytes": 33895,
+      "sizeKb": 33.1
+    },
+    {
+      "file": "vendor-maps-B40yZd3c.js",
+      "sizeBytes": 148818,
+      "sizeKb": 145.3
+    },
+    {
+      "file": "vendor-maps-CcXJxNtP.css",
+      "sizeBytes": 14808,
+      "sizeKb": 14.5
+    },
+    {
+      "file": "vendor-react-7w0D73jl.js",
+      "sizeBytes": 133430,
+      "sizeKb": 130.3
+    },
+    {
+      "file": "vendor-router-BZHNsUbR.js",
+      "sizeBytes": 14116,
+      "sizeKb": 13.8
+    }
+  ],
+  "timestamp": "2026-10-09T07:41:32.120Z"
+}

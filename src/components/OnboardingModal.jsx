@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle2, Save, UserRound } from 'lucide-react'
+import { useDialogFocus } from '../hooks/useDialogFocus.js'
 
 const PROFILE_KEY = 'travelmate-user-profile'
 
@@ -16,6 +17,13 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
   const [saved, setSaved] = useState(false)
   const [profile, setProfile] = useState({ name: '', phone: '', email: '', irctcUsername: '', emergencyContact: '' })
 
+  function close() {
+    setOpen(false)
+    onClose?.()
+  }
+
+  const dialogRef = useDialogFocus({ isOpen: open, onClose: close })
+
   useEffect(() => {
     if (!forceOpen) return
     const existing = getUserProfile()
@@ -29,11 +37,6 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
     (!profile.phone || /^[0-9]{10}$/.test(profile.phone.trim())) &&
     (!profile.email || /.+@.+\..+/.test(profile.email.trim()))
   ), [profile])
-
-  function close() {
-    setOpen(false)
-    onClose?.()
-  }
 
   function handleSave() {
     if (!validProfile) {
@@ -49,7 +52,13 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-[90] grid place-items-start bg-slate-950/85 p-3 pt-4 backdrop-blur-md sm:place-items-center sm:p-4" role="dialog" aria-modal="true" aria-label="Edit local TravelMate profile">
+    <div
+      ref={dialogRef}
+      className="fixed inset-0 z-[90] grid place-items-start bg-slate-950/85 p-3 pt-4 backdrop-blur-md sm:place-items-center sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Edit local TravelMate profile"
+    >
       <div className="glass max-h-[calc(100dvh-1rem)] w-full max-w-2xl overflow-y-auto rounded-3xl p-4 pb-8 shadow-glow sm:max-h-[92vh] sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -61,9 +70,9 @@ export default function OnboardingModal({ toast, forceOpen = false, onClose }) {
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Full name</span><input className="input" value={profile.name} onChange={(event) => setProfile({ ...profile, name: event.target.value })} placeholder="Your name" /></label>
+          <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Full name</span><input className="input" value={profile.name} onChange={(event) => setProfile({ ...profile, name: event.target.value })} placeholder="Passenger name as on government photo ID" /></label>
           <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Phone number <span className="text-slate-400">(optional)</span></span><input className="input" inputMode="numeric" value={profile.phone} onChange={(event) => setProfile({ ...profile, phone: event.target.value.replace(/\D/g, '').slice(0, 10) })} placeholder="10-digit mobile" /></label>
-          <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Email <span className="text-slate-400">(optional)</span></span><input className="input" type="email" value={profile.email} onChange={(event) => setProfile({ ...profile, email: event.target.value })} placeholder="you@example.com" /></label>
+          <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">Email <span className="text-slate-400">(optional)</span></span><input className="input" type="email" value={profile.email} onChange={(event) => setProfile({ ...profile, email: event.target.value })} placeholder="name@domain.in" /></label>
           <label className="text-sm font-bold text-cyan-100"><span className="mb-2 block">IRCTC username <span className="text-slate-400">(optional)</span></span><input className="input" value={profile.irctcUsername} onChange={(event) => setProfile({ ...profile, irctcUsername: event.target.value })} placeholder="For manual portal entry" /></label>
           <label className="text-sm font-bold text-cyan-100 sm:col-span-2"><span className="mb-2 block">Emergency contact phone <span className="text-slate-400">(optional)</span></span><input className="input" inputMode="numeric" value={profile.emergencyContact} onChange={(event) => setProfile({ ...profile, emergencyContact: event.target.value.replace(/\D/g, '').slice(0, 10) })} placeholder="Family or trusted contact" /></label>
           <div className="sm:col-span-2 rounded-2xl border border-yellow-400/25 bg-yellow-400/10 p-4 text-sm text-yellow-100">

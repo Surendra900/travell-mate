@@ -32,11 +32,20 @@ export default function LocationPermissionGate({ toast }) {
         return
       }
 
-      const choice = getLocationOnboardingChoice()
-      setOpen(!choice)
+      // Spec Section 15: Never auto-open on cold load without user gesture.
+      // Remains closed until explicitly invoked via user action in Safety Mode or emergency tools.
+      setOpen(false)
     }
     initialize()
-    return () => { active = false }
+
+    function handleOpenRequest() {
+      setOpen(true)
+    }
+    window.addEventListener('travelmate:open-location-gate', handleOpenRequest)
+    return () => {
+      active = false
+      window.removeEventListener('travelmate:open-location-gate', handleOpenRequest)
+    }
   }, [])
 
   async function enableLocation() {
@@ -95,7 +104,7 @@ export default function LocationPermissionGate({ toast }) {
             </div>
           )}
           {status === 'denied' && (
-            <div className="rounded-2xl border border-red-400/25 bg-red-400/10 p-4 text-red-100">Location is blocked. Use the lock icon beside the website address → Site settings → Location → Allow, then reload.</div>
+            <div className="rounded-2xl border border-red-400/25 bg-red-400/10 p-4 text-red-100">Location is blocked. Use the lock icon beside the website address to open Site settings, select Location, choose Allow, and reload.</div>
           )}
         </div>
 

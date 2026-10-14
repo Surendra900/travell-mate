@@ -1,5 +1,6 @@
 import { createSambaNovaResponse } from './_sambanova.js'
-import { prepareApiRequest, readJsonBody, providerStatus } from './_security.js'
+import { prepareApiRequest, readJsonBody, providerStatus, publicProviderError } from './_security.js'
+import { resolveCityAlias } from '../server/adapters/aiProvider.js'
 
 const languageNames = {
   en: 'English', hi: 'Hindi', te: 'Telugu', ta: 'Tamil', kn: 'Kannada', ml: 'Malayalam',
@@ -101,7 +102,7 @@ function routePair(fromValue, toValue) {
   if (!from || !to || from.length < 2 || to.length < 2) return null
   if (/^(?:how|what|where|when|why|who)$/i.test(from)) return null
   if (from.toLowerCase() === to.toLowerCase()) return null
-  return { from, to }
+  return { from: resolveCityAlias(from), to: resolveCityAlias(to) }
 }
 
 function detectTransport(text) {
@@ -250,6 +251,40 @@ function generalLocalFallbackReply(message, currentPlan, error) {
 }
 
 export default async function handler(req, res) {
+  // Support /api/health/llm endpoint without exceeding Vercel 12-function cap
+  if (req.method === 'GET' && (req.query?.health || req.url?.includes('/health') || req.url?.includes('health='))) {
+    if (!await prepareApiRequest(req, res, { methods: ['GET'], rateLimit: 60, useGlobalAuth: false })) return;
+    const { getActiveAiProvider, testGeminiConnectivity } = await import('../server/adapters/aiProvider.js');
+    const activeProvider = getActiveAiProvider();
+    const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('['));
+    const hasSambaNovaKey = Boolean(process.env.SAMBANOVA_API_KEY && !process.env.SAMBANOVA_API_KEY.startsWith('['));
+
+    const geminiHealth = await testGeminiConnectivity();
+
+    const report = {
+      timestamp: new Date().toISOString(),
+      activeProvider,
+      configured: {
+        gemini: hasGeminiKey,
+        sambanova: hasSambaNovaKey
+      },
+      gemini: {
+        status: geminiHealth.ok ? 'OK' : 'ERROR',
+        code: geminiHealth.code,
+        message: geminiHealth.message
+      },
+      fallbackMode: 'deterministic-heuristic'
+    };
+
+    const isHealthy = geminiHealth.ok || hasSambaNovaKey;
+
+    return res.status(isHealthy ? 200 : 503).json({
+      ok: isHealthy,
+      mode: isHealthy ? 'healthy' : 'degraded',
+      data: report
+    });
+  }
+
   if (!await prepareApiRequest(req, res, { methods: ['POST'], rateLimit: 18, useGlobalAuth: false })) return
 
   let message = ''
@@ -258,6 +293,29 @@ export default async function handler(req, res) {
 
   try {
     const body = await readJsonBody(req, 64_000)
+
+    // Feature 7.a: Grounded Natural-Language Query to Structured JSON
+    if (body?.action === 'parse_query') {
+      const { parseNaturalLanguageQuery } = await import('../server/adapters/aiProvider.js')
+      try {
+        const parsed = await parseNaturalLanguageQuery(body.query || '')
+        return res.status(200).json({ ok: true, mode: 'grounded-query', data: parsed })
+      } catch (err) {
+        return res.status(400).json({ ok: false, error: err.message })
+      }
+    }
+
+    // Feature 7.b: Grounded Route Rationale (strictly 2 sentences from computed facts)
+    if (body?.action === 'route_rationale') {
+      const { generateRouteRationale } = await import('../server/adapters/aiProvider.js')
+      try {
+        const rationale = await generateRouteRationale(body.facts || {})
+        return res.status(200).json({ ok: true, mode: 'grounded-rationale', rationale })
+      } catch (err) {
+        return res.status(400).json({ ok: false, error: err.message })
+      }
+    }
+
     message = cleanText(body.message, 1200)
     if (!message) return res.status(400).json({ ok: false, mode: 'invalid', message: 'Enter a message for the assistant.' })
 
@@ -286,13 +344,82 @@ export default async function handler(req, res) {
       schemaName: 'travelmate_assistant_reply'
     })
 
+    async function requestGeminiAssistant(convo, instr) {
+      const { callGemini } = await import('../server/adapters/aiProvider.js')
+      const prompt = `${instr}
+
+The conversation so far:
+${convo.map((c) => `${c.role.toUpperCase()}: ${c.content}`).join('\n')}
+
+Output strictly a single valid JSON object with this exact shape:
+{
+  "reply": "friendly natural response in the requested language",
+  "applyPlan": false,
+  "mode": "normal",
+  "planPatch": {
+    "from": null,
+    "to": null,
+    "date": null,
+    "transportMode": null,
+    "passengers": null,
+    "budget": null,
+    "urgency": null,
+    "classType": null,
+    "routeCombo": null
+  }
+}
+No markdown blocks, no formatting, output raw JSON.`
+
+      const raw = await callGemini(prompt, { timeout: 12_000, max_tokens: 1200 })
+      const cleaned = String(raw || '').replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim()
+      const json = JSON.parse(cleaned)
+      return { text: cleaned, json, provider: 'Gemini' }
+    }
+
+    const { getActiveAiProvider } = await import('../server/adapters/aiProvider.js')
+    const activeProvider = getActiveAiProvider()
     let assistantResponse
-    try {
-      assistantResponse = await requestAssistant(primaryModel, 32_000, 1200)
-    } catch (error) {
-      const shouldRetryFastModel = error?.code === 'PROVIDER_TIMEOUT' && fallbackModel && fallbackModel !== primaryModel
-      if (!shouldRetryFastModel) throw error
-      assistantResponse = await requestAssistant(fallbackModel, 20_000, 900)
+    let usedProvider = 'SambaNova'
+
+    if (activeProvider === 'gemini') {
+      try {
+        assistantResponse = await requestGeminiAssistant(conversation, instructions)
+        usedProvider = 'Gemini'
+      } catch (geminiError) {
+        console.warn('Gemini assistant call failed, attempting SambaNova fallback:', geminiError.message)
+        if (process.env.SAMBANOVA_API_KEY && !process.env.SAMBANOVA_API_KEY.startsWith('[')) {
+          try {
+            assistantResponse = await requestAssistant(primaryModel, 25_000, 1200)
+            usedProvider = 'SambaNova'
+          } catch {
+            throw geminiError
+          }
+        } else {
+          throw geminiError
+        }
+      }
+    } else {
+      try {
+        assistantResponse = await requestAssistant(primaryModel, 32_000, 1200)
+        usedProvider = 'SambaNova'
+      } catch (error) {
+        const shouldRetryFastModel = error?.code === 'PROVIDER_TIMEOUT' && fallbackModel && fallbackModel !== primaryModel
+        if (shouldRetryFastModel) {
+          try {
+            assistantResponse = await requestAssistant(fallbackModel, 20_000, 900)
+            usedProvider = 'SambaNova'
+          } catch (retryError) {
+            error = retryError
+          }
+        }
+        if (!assistantResponse && process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.startsWith('[')) {
+          console.warn('SambaNova assistant call failed, attempting Gemini fallback:', error.message)
+          assistantResponse = await requestGeminiAssistant(conversation, instructions)
+          usedProvider = 'Gemini'
+        } else if (!assistantResponse) {
+          throw error
+        }
+      }
     }
 
     const { text, json } = assistantResponse
@@ -317,7 +444,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       mode: 'ai',
-      provider: 'SambaNova',
+      provider: usedProvider,
       reply,
       applyPlan,
       plannerMode: mode,
@@ -365,12 +492,13 @@ export default async function handler(req, res) {
     }
 
     const status = Number(error.status || providerStatus(error))
+    const safe = publicProviderError(error, 'The AI assistant could not respond.')
     return res.status(status).json({
       ok: false,
       mode: error.code === 'SAMBANOVA_NOT_CONFIGURED' ? 'provider-unconfigured' : 'provider-error',
       provider: 'SambaNova',
-      message: error.message || 'The AI assistant could not respond.',
-      error: error.code || 'SAMBANOVA_ASSISTANT_ERROR'
+      message: safe.message,
+      error: safe.error
     })
   }
 }

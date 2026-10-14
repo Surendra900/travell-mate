@@ -11,16 +11,30 @@
     "build": "vite build",
     "preview": "vite preview",
     "audit": "node scripts/audit.mjs",
+    "etl": "node data/etl/runEtl.js",
+    "etl:datameet": "node data/etl/import-datameet.mjs",
+    "etl:railpull": "node data/etl/import-railpull.mjs",
+    "etl:airports": "node data/etl/import-airports.mjs",
     "test": "node --test tests/*.test.mjs",
-    "check": "npm run audit && npm test && npm run build"
+    "test:mobile": "node tests/mobile/run-suite.mjs",
+    "launch-check": "node scripts/launch-checks/run-all.mjs",
+    "check": "npm run audit && npm test && npm run test:mobile && npm run build"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.61.8",
+    "@clerk/clerk-react": "^5.61.10",
+    "@supabase/supabase-js": "^2.117.3",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.4"
+    "react-router-dom": "^6.30.6",
+    "zod": "^4.6.5"
+  },
+  "overrides": {
+    "chokidar": "^4.0.3",
+    "postcss-selector-parser": "^7.1.6",
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

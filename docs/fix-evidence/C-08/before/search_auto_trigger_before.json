@@ -1,0 +1,8 @@
+{
+  "test": "C-08: Submitting search on Home redirects to Planner with filled form requiring 2nd click",
+  "url": "http://127.0.0.1:5173/planner?from=Delhi+%28NDLS%29&to=Patna+%28PNBE%29&date=2026-10-09&transportMode=Train&passengers=1",
+  "resultsImmediatelyVisibleOnPlanner": false,
+  "plannerSearchBtnVisible": true,
+  "secondClickRequired": true,
+  "timestamp": "2026-10-09T07:28:30.571Z"
+}

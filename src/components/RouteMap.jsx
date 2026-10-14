@@ -22,6 +22,9 @@ const segmentColors = {
   Bus: '#a3e635' // Lime
 };
 
+import { escapeHtml } from '../utils/sanitize.js';
+export { escapeHtml };
+
 function midpoint(a, b, offset = 0) {
   return [(a[0] + b[0]) / 2 + offset, (a[1] + b[1]) / 2 + offset];
 }
@@ -167,19 +170,19 @@ export default function RouteMap({ plan = {} }) {
       popupContent.className = 'text-xs text-slate-900 font-sans p-1 max-w-[200px]';
       popupContent.innerHTML = `
         <div style="font-weight: 800; font-size: 13px; color: #0f172a; margin-bottom: 2px;">
-          ${route.labels[index]}
+          ${escapeHtml(route.labels[index])}
         </div>
         <div style="font-size: 11px; color: #475569; margin-bottom: 4px;">
-          ${place?.station || place?.city || 'Transit Node'}
+          ${escapeHtml(place?.station || place?.city || 'Transit Node')}
         </div>
         ${
           isJunction && route.junctionHub
             ? `
           <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 6px; padding: 4px 6px; font-size: 10px; color: #92400e; margin-top: 4px;">
-            <b>Transfer Hub Tip:</b> ${route.junctionHub.trainTransferTip || 'Direct platform ramp access.'}
+            <b>Transfer Hub Tip:</b> ${escapeHtml(route.junctionHub.trainTransferTip || 'Direct platform ramp access.')}
           </div>
           <div style="font-size: 10px; color: #64748b; margin-top: 4px;">
-            Bus terminal: ${route.junctionHub.busTerminalDistanceKm || '2'} km (Auto: ${route.junctionHub.busAutoFare || '₹50-₹80'})
+            Bus terminal: ${escapeHtml(route.junctionHub.busTerminalDistanceKm || '2')} km (Auto: ${escapeHtml(route.junctionHub.busAutoFare || '₹50-₹80')})
           </div>
         `
             : ''
@@ -187,7 +190,7 @@ export default function RouteMap({ plan = {} }) {
       `;
 
       marker.bindPopup(popupContent);
-      marker.bindTooltip(route.labels[index], {
+      marker.bindTooltip(escapeHtml(route.labels[index]), {
         permanent: false,
         direction: 'top',
         className: 'rounded px-2 py-0.5 text-xs font-bold'
@@ -255,12 +258,12 @@ export default function RouteMap({ plan = {} }) {
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
               Interactive Route Map
             </span>
-            <span className="rounded-full border border-slate-700 bg-slate-800/80 px-2 py-0.5 text-[10px] text-slate-300">
+            <span className="rounded-md border border-slate-700 bg-slate-800/80 px-2 py-0.5 text-[10px] text-slate-300">
               Leaflet &middot; OpenStreetMap
             </span>
           </div>
           <h3 className="text-xl font-black text-white sm:text-2xl">
-            {route ? `${route.labels[0]} \u2192 ${route.labels.at(-1)}` : 'India Transit Corridor Visualizer'}
+            {route ? `${route.labels[0]} to ${route.labels.at(-1)}` : 'India Transit Corridor Visualizer'}
           </h3>
         </div>
 
@@ -270,7 +273,7 @@ export default function RouteMap({ plan = {} }) {
             type="button"
             data-testid="map-zoom-fit"
             onClick={handleZoomFit}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/90 px-3 py-1.5 text-xs font-bold text-slate-200 hover:border-slate-500 hover:text-white"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/90 px-3 py-1.5 text-xs font-bold text-slate-200 hover:border-slate-500 hover:text-white"
             title="Zoom to Fit Full Route"
           >
             <Maximize2 size={13} />
@@ -281,7 +284,7 @@ export default function RouteMap({ plan = {} }) {
               type="button"
               data-testid="map-focus-junction"
               onClick={handleFocusJunction}
-              className="flex items-center gap-1.5 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-300 hover:bg-amber-500/20"
+              className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-300 hover:bg-amber-500/20"
               title="Focus on Intermediate Junction"
             >
               <GitCommit size={13} />
@@ -306,13 +309,14 @@ export default function RouteMap({ plan = {} }) {
         <div className="relative">
           <div
             ref={mapContainerRef}
+            style={{ touchAction: 'pan-y' }}
             className="h-[340px] w-full overflow-hidden rounded-2xl border border-cyan-400/20 bg-slate-950 shadow-inner"
             aria-label="Interactive Leaflet route map"
             data-testid="leaflet-map-canvas"
           />
 
           {/* Quick Legend Overlay */}
-          <div className="absolute bottom-3 left-3 z-[400] flex flex-wrap gap-1.5 rounded-xl border border-slate-800/90 bg-slate-950/85 p-2 backdrop-blur-md">
+          <div className="absolute bottom-3 left-3 z-[400] max-w-[calc(100%-24px)] flex flex-wrap gap-1.5 rounded-xl border border-slate-800/90 bg-slate-950/85 p-2 backdrop-blur-md">
             <span className="flex items-center gap-1 text-[11px] font-bold text-cyan-400">
               <span className="h-2 w-2 rounded-full bg-cyan-400" /> Train Line
             </span>
@@ -323,7 +327,7 @@ export default function RouteMap({ plan = {} }) {
               <span className="h-2 w-2 rounded-full bg-lime-400" /> Bus / Highway
             </span>
             <span className="flex items-center gap-1 text-[11px] font-bold text-amber-300">
-              <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" /> Junction Transfer
+              <span className="h-2 w-2 rounded-full bg-amber-400" /> Junction Transfer
             </span>
           </div>
         </div>

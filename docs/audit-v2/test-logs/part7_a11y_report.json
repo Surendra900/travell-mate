@@ -1,0 +1,37 @@
+{
+  "axeByRoute": {
+    "home": {
+      "violationsCount": 0,
+      "violations": []
+    },
+    "planner": {
+      "violationsCount": 0,
+      "violations": []
+    },
+    "safety": {
+      "violationsCount": 0,
+      "violations": []
+    },
+    "saved": {
+      "violationsCount": 0,
+      "violations": []
+    },
+    "privacy": {
+      "violationsCount": 0,
+      "violations": []
+    },
+    "terms": {
+      "violationsCount": 0,
+      "violations": []
+    },
+    "disclaimer": {
+      "violationsCount": 0,
+      "violations": []
+    }
+  },
+  "skipLinkFound": true,
+  "zoomReflowCheck": {
+    "viewport320ScrollWidth": 320,
+    "hasHorizontalScrollAt400Percent": false
+  }
+}

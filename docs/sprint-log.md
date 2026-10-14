@@ -2,7 +2,374 @@
 
 ---
 
-## Sprint Entry: Day 6
+## Master Rebuild Entry: Day 0
+**Date:** October 2026  
+**Goal:** Comprehensive Audit, Engine Characterization Tests, Baseline Artifact Capture, and Tracking Document Initialization  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `baseline-before-rebuild`  
+
+### Day 0 Task List
+- [x] Task 0.1: Save Master Specification verbatim to `docs/MASTER_SPEC.md` as the single source of truth.
+- [x] Task 0.2: Create branch `rebuild/route-recovery` and tag baseline state with `baseline-before-rebuild`.
+- [x] Task 0.3: Inspect developer environment and CLI extensions (Docker v29.7.2, Vercel v59.10.0, Prisma, GitLens), record details in `docs/tooling.md`.
+- [x] Task 0.4: Document architectural decisions, 7 deprecated feature removals, and supersession of old plans in `docs/decisions.md`.
+- [x] Task 0.5: Group all external integration keys, providers, free-tier limits, URLs, and test commands in `docs/api-keys-needed.md`.
+- [x] Task 0.6: Compile dataset sources, licenses, attribution rules, and Top 25 Junction Corridors in `docs/data-sources.md`.
+- [x] Task 0.7: Establish authoritative feature disposition, provenance mapping, and proof test suites in `docs/feature-matrix.md`.
+- [x] Task 0.8: Write characterization tests (`tests/characterization_engines.test.mjs`) locking legacy behaviors of multimodalRouter, contingencyEngine, deep links, Tatkal rules, and Leaflet RouteMap.
+- [x] Task 0.9: Capture 12 baseline screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-0/before/`.
+- [x] Task 0.10: Build visual verification gallery index in `docs/screenshots/index.html`.
+- [x] Task 0.11: Update `sprint-status.md` and feature changelog in `docs/changelog-features.md`.
+
+### Day 0 Verification Evidence
+1. **Characterization Suite:** 7 passing unit tests in `tests/characterization_engines.test.mjs` confirming behavior of `findTransitHubs`, `generateMultimodalRoutes`, `calculateConnectionRisk`, `generateContingencyOptions`, `getProviderDeepLink`, `TatkalEmergencyTimer`, and `RouteMap`.
+2. **Baseline Artifacts:** 12 screenshots captured across Desktop (1440x900) and Mobile (390x844) viewports for Homepage, Planner, Tatkal, Results, Safety, and My Trips saved in `docs/screenshots/day-0/before/` and indexed in `docs/screenshots/index.html`.
+3. **Environment Audit:** Vercel authenticated as `surendragedala6-3289` linked to project `travelmate-ai-flowzint`. Docker CLI v29.7.2 verified.
+4. **Git State:** Working on branch `rebuild/route-recovery`, tagged `baseline-before-rebuild`.
+
+**DAY 0 COMPLETE. Verification passed (7/7). Moving to DAY 1.**
+
+---
+
+## Master Rebuild Entry: Day 1
+**Date:** October 2026  
+**Goal:** Foundation — Layered Architecture, Prisma Schema, Docker Compose, Env Validation, Design Tokens, Core UI Primitives, and Feature Pruning  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-1`  
+
+### Day 1 Task List
+- [x] Task 1.1: Capture BEFORE screenshots for screens being updated.
+- [x] Task 1.2: Scaffold clean layered directory structure (`src/app`, `src/features`, `shared`, `server`, `src/components/ui`, `src/styles/tokens`, `src/lib`).
+- [x] Task 1.3: Define central semantic design tokens in `src/styles/tokens/` and core UI primitives in `src/components/ui/` (`Button`, `Badge`, `Card`, `Input`, `RiskBadge`, `ProvenanceBadge`).
+- [x] Task 1.4: Create `docker-compose.yml` for local Postgres and `prisma/schema.prisma` with core models (`Station`, `Train`, `TrainStop`, `Junction`, `Terminal`, `Airport`, `TransferGuide`, `ApiCache`, `Feedback`).
+- [x] Task 1.5: Implement runtime Zod environment validator (`src/lib/env.js` and `server/config/env.js`) with zero secret leakage.
+- [x] Task 1.6: Execute Section 4 Feature Disposition — purge the 7 deprecated bloat components (`DocumentVault.jsx`, `EmergencyPhraseCards.jsx`, `CarbonCalculator.jsx`, `StatusBar.jsx`, `FloatingSOS.jsx`, `SmartAssistant.jsx`, fake booking modal) and update `docs/changelog-features.md` with grep proof.
+- [x] Task 1.7: Update PWA manifest and npm scripts in `package.json`.
+- [x] Task 1.8: Run Day 1 Verification Gate (161/161 tests passing, production build passing, zero console errors, no secret leaks).
+- [x] Task 1.9: Capture AFTER screenshots in `docs/screenshots/day-1/after/` and update `docs/screenshots/index.html`.
+- [x] Task 1.10: Commit Day 1, tag `day-1`, and deploy Vercel Preview.
+
+### Day 1 Verification Evidence
+1. **Zero Bloat Proof:** Git grep confirmed 0 remaining occurrences of the 7 deprecated components in `src/`.
+2. **Test Suite:** 161 of 161 unit, integration, and characterization tests passing cleanly (`npm test`).
+3. **Production Build:** Vite production bundle compiled in 1.28s with zero warnings or errors.
+4. **Visual Gallery:** 12 AFTER screenshots captured across desktop-1440 and mobile-390 and indexed in `docs/screenshots/index.html`.
+
+**DAY 1 COMPLETE. Verification passed (161/161). Moving to DAY 2.**
+
+---
+
+## Master Rebuild Entry: Day 2
+**Date:** October 2026  
+**Goal:** Data Pipeline (ETL & Seed) — Stations, Trains, Stop-Times, Top 25 Junction Corridors, Bus Terminals, Airports, Provenance Metadata, Data Quality Assertions & Attribution  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-2`  
+
+### Day 2 Task List
+- [x] Task 2.1: Create open data ETL pipeline in `data/etl/` for Indian Railway stations and timetable stop-times (GODL / ODbL / Open Data sources documented in `docs/data-sources.md`).
+- [x] Task 2.2: Build Top 25 Junction Hubs directory dataset with platforms, safety ratings, transfer cross-city links, and operating facilities.
+- [x] Task 2.3: Build Major Airports (IATA/ICAO) and Inter-State Bus Terminals (ISBT) dataset linking to regional transit corridors.
+- [x] Task 2.4: Implement `prisma/seed.ts` (and standalone JSON fallback seed for zero-db setups) loading all stations, trains, stops, junctions, terminals, and transfer guides.
+- [x] Task 2.5: Enforce data provenance fields (`source`, `license`, `retrievedAt`, `reliabilityScore`) on every record.
+- [x] Task 2.6: Write comprehensive data-quality test suite (`tests/day2_data_pipeline.test.mjs`) verifying coordinate validity, timetable chronological monotonicity, no negative durations, and corridor completeness.
+- [x] Task 2.7: Update UI footer with "Timetable data as of <date>" and attribution notice per Master Spec Section 6.
+- [x] Task 2.8: Run Day 2 Verification Gate, commit, tag `day-2`, and deploy Vercel Preview.
+
+### Day 2 Verification Evidence
+1. **ETL Extraction Output:** Generated 47 stations, 25 junctions, 22 bus terminals, 17 civil airports, 12 high-frequency trunk trains with 63 stops, and 24 intermodal transfer guides in `data/processed/` and `shared/data/`.
+2. **Data Quality Suite:** 7 out of 7 test suites passing in `tests/day2_data_pipeline.test.mjs` verifying geographic coordinate bounds, chronological monotonic stop sequences, contiguous stop numbering, and non-negative distances.
+3. **Database & Fallback Seed:** `prisma/seed.js` and `prisma/seed.ts` executed with zero errors, validating all models and outputting full attribution.
+4. **UI Attribution:** UI footer in `src/components/Footer.jsx` verified displaying: *"Timetable data as of October 2026 · Map data © OpenStreetMap contributors · Weather data by Open-Meteo"*.
+5. **Full Regression Suite:** 168 of 168 tests passing cleanly across the entire repository.
+6. **Visual QA:** 6 AFTER screenshots captured across desktop-1440 and mobile-390 and indexed in `docs/screenshots/index.html`.
+
+**DAY 2 COMPLETE. Verification passed (168/168). Moving to DAY 3.**
+
+---
+
+## Master Rebuild Entry: Day 3
+**Date:** October 2026  
+**Goal:** Route Recovery Engine v2 — Time-Expanded Timetable Graph, Minimum Connection Times, Risk Slack Classifier, Parametric Reliability Delay Model, Multi-Modal 3-Tier Ranking, and Delay Simulator Tabs  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-3`  
+
+### Day 3 Task List
+- [x] Task 3.1: Build time-expanded graph search engine in `server/services/routeEngine.js` searching direct options first, then 1-transfer itineraries through the Top 25 junction hubs.
+- [x] Task 3.2: Implement strict Minimum Connection Time (MCT) matrix in `server/config/connectionTimes.js` (Rail-to-Rail: 45 min; Rail-to-Bus: 105 min; Rail-to-Airport: 210 min; overnight transfer rules).
+- [x] Task 3.3: Implement connection risk classification and parametric delay reliability model (`Safe` >=120m, `Moderate` 90-119m, `Tight` 60-89m, `High Risk` <60m).
+- [x] Task 3.4: Implement 3-tier multimodal ranking algorithm (Budget: Rail+Rail, Balanced: Rail+AC Bus, Fastest: Rail+Flight).
+- [x] Task 3.5: Build inline Delay Contingency Simulator ("If Leg 1 runs late" slider recomputing slack, risk badge, and next 3 viable departures).
+- [x] Task 3.6: Write unit and property test suite (`tests/day3_engine_v2.test.mjs`) proving zero MCT violations, chronological consistency, and deadline fulfillment.
+- [x] Task 3.7: Run Day 3 Verification Gate, capture screenshots, commit, tag `day-3`, and deploy Vercel Preview.
+
+### Day 3 Verification Evidence
+1. **Engine & MCT Matrix:** `server/config/connectionTimes.js` enforces strict tested thresholds (Rail-to-Rail: 45 min, Cross-Metro: 90 min, Rail-to-Bus: 105 min, Rail-to-Airport: 210 min).
+2. **Parametric Reliability Model:** `server/config/reliabilityModel.js` replaces static percentages with documented delay distributions across train categories (Vande Bharat p85: 25m, Rajdhani p85: 40m, Superfast p85: 60m) and computes exact "Safe up to +X min delay on Leg 1" absorption limits.
+3. **Time-Expanded Route Recovery Engine:** `server/services/routeEngine.js` implements direct route lookup and 1-transfer graph searches through Top 25 junction hubs with verified deep links and legal disclaimers.
+4. **Contingency Engine:** `server/services/contingencyEngine.js` simulates Leg 1 delay propagation, recomputes slack, identifies point of no return, and fetches fallback onward departures.
+5. **Full Test Regression:** 176 out of 176 unit and property tests passing across the repository (`npm test` and `npm run check` with 0 failures).
+6. **Visual QA:** Desktop 1440x900 and Mobile 390x844 screenshots captured in `docs/screenshots/day-3/after/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 3 COMPLETE. Verification passed (176/176). Moving to DAY 4.**
+
+---
+
+## Master Rebuild Entry: Day 4
+**Date:** October 2026  
+**Goal:** App Shell, 4-Item Minimal Navigation, Clean Homepage Hero, Real-Time Autocomplete Search, 3-Step Educational Strip, and Honest Demo Scenario Mode  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-4`  
+
+### Day 4 Task List
+- [x] Task 4.1: Streamline App Shell and Navbar to strict 4-item minimal architecture (Route Finder, Tatkal Desk, Passes & Safety, See a Demo).
+- [x] Task 4.2: Build clean Homepage Hero with single primary visual focus (From, To, Date, Passengers, Mode, and prominent Search CTA).
+- [x] Task 4.3: Implement high-performance Station Autocomplete using canonical `stations.json` dataset (keyboard navigable, search-as-you-type).
+- [x] Task 4.4: Implement "How TravelMate Works in 3 Steps" educational onboarding strip and "Direct route unavailable?" combinations explainer.
+- [x] Task 4.5: Implement honest "See a Demo" mode with distinct visual styling and explicit banner ("Demo scenario: illustrative availability").
+- [x] Task 4.6: Run Day 4 Verification Gate, capture screenshots, commit, tag `day-4`, and deploy Vercel Preview.
+
+### Day 4 Verification Evidence
+1. **Minimal 4-Item Navigation Bar:** `src/components/Navbar.jsx` adheres strictly to Master Spec Section 8 (Route Finder `/planner`, Tatkal Desk `/planner?mode=tatkal`, Passes & Safety `/safety`, Saved Trips `/saved`, plus prominent "See a Demo" action button `data-testid="navbar-demo-tour-btn"`).
+2. **High-Performance Station Autocomplete:** Built `src/components/StationAutocomplete.jsx` backed by `src/data/stationsData.js` and canonical `shared/data/stations.json`. Implements ARIA combobox semantics, keyboard navigation (`ArrowDown`, `ArrowUp`, `Enter`, `Escape`), and highlights Top 25 junction hubs.
+3. **Consumer-Grade Homepage UX:** Rebuilt `src/pages/Home.jsx` with single dominant search focus, 12-hour "Need to travel tonight?" preset, "How TravelMate Works in 3 Steps" educational strip, and "Direct Route Unavailable?" combinations explainer.
+4. **Honest Demo Scenario Mode:** Documented in `docs/demo-mode.md` and implemented in `src/pages/Planner.jsx` with prominent illustrative banner (`data-testid="demo-mode-banner"`).
+5. **Full Test Regression:** 181 out of 181 unit, integration, and property tests passing across the repository (`npm test` and `npm run check` with 0 failures).
+6. **Visual QA:** Desktop 1440x900 and Mobile 390x844 screenshots captured in `docs/screenshots/day-4/after/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 4 COMPLETE. Verification passed (181/181). Moving to DAY 5.**
+
+---
+
+## Master Rebuild Entry: Day 5
+**Date:** October 2026  
+**Goal:** Results & Split Routes Experience — Direct vs Split Contrast, Journey Cards, Interactive Route Map, Risk Badges, Delay Simulator Tab, Deep-Link Buttons, and Legal Disclosures  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-5`  
+
+### Day 5 Task List
+- [x] Task 5.1: Implement Left/Right "Waitlist Bypass" visual contrast (`src/components/WaitlistBypassContrast.jsx`: Left: Direct Train status; Right: Split-Route Recovery alternative).
+- [x] Task 5.2: Build consumer-grade Journey Cards (`src/components/MultimodalTimelineCard.jsx`) displaying departure, arrival, duration, mode, transfer junction, fare estimate, and provenance badges (`TIMETABLE`, `ESTIMATE`, `LIVE`).
+- [x] Task 5.3: Integrate interactive Leaflet Route Visualizer (`src/components/RouteMap.jsx`) with markers for origin, transfer hubs, and destination.
+- [x] Task 5.4: Mount inline "If Leg 1 runs late" Delay Simulator tab (`src/components/DelayContingencySimulator.jsx`) with interactive slider, connection risk indicator, and fallback departures.
+- [x] Task 5.5: Embed verified portal deep-links (ConfirmTkt, redBus, Google Flights) and statutory independent booking disclosures (`data-testid="statutory-split-disclosure"`).
+- [x] Task 5.6: Upgrade `NormalPlanner.jsx` with `StationAutocomplete` and contextual insight tabs (`Route Map`, `Bypass Contrast`, `Delay Simulator`).
+- [x] Task 5.7: Upgrade `LiveResultsPanel.jsx` with dedicated filter tabs and Waitlist Bypass Contrast view mode.
+- [x] Task 5.8: Write Day 5 test suite (`tests/day5_results_experience.test.mjs`, 5/5 passing).
+- [x] Task 5.9: Capture BEFORE and AFTER screenshots across Desktop (1440x900) and Mobile (390x844) into `docs/screenshots/day-5/` and update `docs/screenshots/index.html`.
+- [x] Task 5.10: Run Day 5 Verification Gate (`npm run check` with 186/186 passing tests and clean build), commit, tag `day-5`, and deploy Vercel Preview.
+
+### Day 5 Verification Evidence
+1. **Waitlist Bypass Visual Contrast:** Created `src/components/WaitlistBypassContrast.jsx` displaying side-by-side contrast between direct train bottlenecks (`data-testid="contrast-direct-card"`) and split-route alternatives (`data-testid="contrast-split-card"`), plus statutory independent booking disclosure (`data-testid="statutory-split-disclosure"`).
+2. **Consumer-Grade Journey Cards:** Enhanced `src/components/MultimodalTimelineCard.jsx` with provenance badges (`TIMETABLE`, `ESTIMATE`, or `LIVE`), dynamic delay tolerance indicator ("Safe up to +X min delay on Leg 1"), transfer risk badges (`RiskBadge`), junction selection rationale ("Why TravelMate Picked This Junction"), station transfer guide, and inline delay simulator stress-testing.
+3. **Interactive Delay Simulator:** Built `src/components/DelayContingencySimulator.jsx` featuring an interactive delay slider (0 to 180m), preset buttons, real-time effective slack computation (`data-testid="effective-slack"`), connection status classifier (`data-testid="contingency-status"`), point of no return clock time (`data-testid="point-of-no-return"`), and alternative onward departures.
+4. **Interactive Leaflet Route Map:** Verified `src/components/RouteMap.jsx` rendering Leaflet canvas with custom markers, segment-colored polylines (cyan for rail, orange for flight, lime for bus), zoom-fit controls, and junction focus highlights.
+5. **Full Test Regression:** 186 out of 186 unit, integration, and property tests passing across the repository (`npm test` and `npm run check` with 0 failures, 0 lint/build warnings).
+6. **Visual QA Gallery:** Captured 2 BEFORE and 4 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-5/` and indexed in `docs/screenshots/index.html`.
+**DAY 5 COMPLETE. Verification passed (186/186). Moving to DAY 6.**
+
+---
+
+## Master Rebuild Entry: Day 6
+**Date:** October 2026  
+**Goal:** Urgent Mode Preset, Tatkal Desk with Local Passenger Master, PNR Status & Estimate, and Transit Glossary Tooltips  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-6`  
+
+### Day 6 Task List
+- [x] Task 6.1: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for Tatkal Desk (`/planner?mode=tatkal`) and PNR tracker modal (`docs/screenshots/day-6/before/`).
+- [x] Task 6.2: Refactor Urgent Mode Preset ("Need to travel tonight? (12h)") on `Home.jsx` and `NormalPlanner.jsx` to filter departures within 12 hours without emergency framing or redirecting away from route recovery.
+- [x] Task 6.3: Upgrade Tatkal Desk (`EmergencyTatkalPlanner.jsx` / `TatkalEmergencyTimer.jsx`): dual-window IST countdown (10:00 AM AC, 11:00 AM Non-AC), assistive-only disclaimer, clean passenger master list (name, age, gender, berth only; strictly zero IDs), 1-click clipboard copy, and "Clear All Saved Passengers" button.
+- [x] Task 6.4: Upgrade PNR Tracker & Predictor (`PNRTracker.jsx` / `PnrPredictorModal.jsx`): simplified 10-digit lookup, honest estimated confirmation probability with "How we estimate" explanation, and official IRCTC / NTES direct links.
+- [x] Task 6.5: Implement accessible Indian Transit Glossary tooltips (`GlossaryTooltip.jsx`) for `WL`, `RAC`, `PNR`, `Tatkal`, and `Junction`, integrated across search, journey cards, and Tatkal desk.
+- [x] Task 6.6: Write Day 6 test suite (`tests/day6_tatkal_pnr.test.mjs`) verifying countdown logic, zero ID storage, clipboard format, clear-data action, PNR disclaimers, urgent preset, and glossary tooltips.
+- [x] Task 6.7: Capture AFTER screenshots in `docs/screenshots/day-6/after/` and update `docs/screenshots/index.html`.
+- [x] Task 6.8: Run Day 6 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-6`, and deploy Vercel Preview.
+
+### Day 6 Verification Evidence
+1. **Urgent Departure Preset (12h):** Decoupled urgent travel from Tatkal emergency hijacking. Added `Need to travel tonight? (12h)` checkbox on both `Home.jsx` and `NormalPlanner.jsx` (`data-testid="planner-urgent-tonight-checkbox"`). Set `urgency=Tonight&urgent=12h` query parameters with active banner indicator (`data-testid="urgent-tonight-banner"`).
+2. **Tatkal Desk Dual-Window IST Countdown:** Updated `src/components/TatkalEmergencyTimer.jsx` and `src/planner/EmergencyTatkalPlanner.jsx` with dual-window IST countdown for AC (10:00 AM IST) and Non-AC (11:00 AM IST) windows (`data-testid="tatkal-countdown-display"`, `data-testid="tatkal-diff-ac"`, `data-testid="tatkal-diff-nonac"`). Replaced sensationalist siren visuals with clean, professional assistive indicators.
+3. **Local Passenger Master List & Zero-ID Compliance:** Implemented client-side local passenger storage (`travelmate-tatkal-master-list`) strictly accepting only Name, Age, Gender, and Berth preference. Zero personal identity cards or numbers requested or stored (`data-testid="zero-id-notice"`). Added 1-Click Clipboard Copy in IRCTC-ready format (`Name, Age, Gender, Berth`) via `data-testid="copy-all-passengers-btn"` and local purge button (`data-testid="clear-passengers-btn"`).
+4. **PNR Status & Confirmation Estimator:** Simplified 10-digit lookup in `src/components/PnrPredictorModal.jsx` (`data-testid="pnr-input"`, `data-testid="pnr-predict-btn"`, `data-testid="pnr-probability-display"`). Added "How we estimate" explanation toggle (`data-testid="how-we-estimate-btn"`, `data-testid="pnr-estimation-disclaimer"`) clarifying historical statistical models without false guarantees, plus direct link to official Indian Railways enquiry (`data-testid="pnr-official-link"`).
+5. **Transit Glossary Tooltips:** Created `src/components/GlossaryTooltip.jsx` providing accessible definition popovers with keyboard accessibility and rule citations for `WL` (Waitlist), `RAC` (Reservation Against Cancellation), `PNR` (Passenger Name Record), `Tatkal` (Emergency Quota), and `Junction` (Transfer Hub).
+6. **Full Test Regression:** 191/191 unit, integration, and property tests passing across the repository with 0 failures (`npm test` and `npm run check` with clean production build).
+7. **Visual QA Gallery:** Captured 4 BEFORE and 4 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-6/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 6 COMPLETE. Verification passed (191/191). Moving to DAY 7.**
+
+---
+
+## Master Rebuild Entry: Day 7
+**Date:** October 2026  
+**Goal:** Passes and Safety Hub (Offline Boarding Passes & Trip Pack, 112/139 Helplines, Location Pin Sharing), Contextual Weather Disruption, and Grounded AI Endpoints (Query Parser & Route Rationale)  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-7`  
+
+### Day 7 Task List
+- [x] Task 7.1: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for Passes & Safety (`/safety`) and AI natural language search (`docs/screenshots/day-7/before/`).
+- [x] Task 7.2: Refactor `SafetyMode.jsx` into unified "Passes and Transit Safety" Hub:
+  - Tab 1: Offline Boarding Passes & Trip Pack (P1) with immediate access to digital boarding passes, sample route pass, 1-click print, 1-click clipboard summary, and PWA caching.
+  - Tab 2: Transit Safety Drawer (P2) with one-tap 112 and 139 (RailMadad) helplines, live GPS pin sharing on explicit user action, and visible statutory disclaimer: "TravelMate is not an emergency service. In an emergency call 112."
+  - Tab 3: Station Layover Guides.
+- [x] Task 7.3: Build server-side Grounded AI system (`server/adapters/aiProvider.js`, `server/schemas/querySchema.js`, `api/assistant.js`):
+  - Provider interface with SambaNova as primary and Google Gemini as an alternative, with automatic fallback.
+  - Feature 7.a: Natural language query to structured JSON (zod schema: origin, destination, date, budget, mode, passengers) and UI with "I understood: ..." editable chips.
+  - Feature 7.b: Grounded route rationale (2 sentences strictly from computed facts, with validator rejecting extraneous claims and falling back to template).
+- [x] Task 7.4: Contextual Weather Disruption: ensure Open-Meteo route warnings (fog, monsoon) are displayed contextually on results cards without full-screen clutter (`data-testid="route-contextual-weather"`).
+- [x] Task 7.5: Write Day 7 test suite (`tests/day7_passes_safety_ai.test.mjs`) verifying passes, safety disclaimers, explicit location consent, zod schema parsing, route rationale validation, and weather disruption.
+- [x] Task 7.6: Capture AFTER screenshots in `docs/screenshots/day-7/after/` and update `docs/screenshots/index.html`.
+- [x] Task 7.7: Run Day 7 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-7`, and deploy Vercel Preview.
+
+### Day 7 Verification Evidence
+1. **Passes & Transit Safety Hub:** Rebuilt `src/pages/SafetyMode.jsx` into the consolidated "Passes & Transit Safety" Hub uniting Offline Boarding Passes & Trip Pack (`data-testid="tab-offline-passes"`), Transit Helplines (`data-testid="tab-safety-helplines"`), and Station Layover Guides (`data-testid="tab-station-guides"`). Renders statutory disclaimer (`data-testid="safety-statutory-notice"`: *"TravelMate is not an emergency service. In an emergency call 112."*).
+2. **Offline Digital Boarding Passes & PWA Trip Pack:** Implemented offline passes with leg-by-leg departure details, transfer buffers, and local storage persistence. Added 1-click "View Digital Pass" (`data-testid="view-offline-pass-btn"`), 1-click "Print / Save PDF" (`data-testid="print-pass-btn"`), 1-click "Copy Summary" (`data-testid="copy-pass-summary-btn"`), and PWA offline sync (`data-testid="sync-offline-pack-btn"`, `data-testid="pwa-offline-status"`).
+3. **National Transit Helplines & Explicit Location Consent:** Updated `src/components/EmergencyToolkit.jsx` with dedicated 112 (`data-testid="helpline-112"`) and 139 RailMadad (`data-testid="helpline-139"`) direct carrier dialers. Enforced DPDP-compliant explicit user consent for live GPS pin sharing (`data-testid="share-gps-pin-btn"`) with visible disclosure (`data-testid="location-privacy-notice"`: *"Location requested only on your explicit action. No background tracking or logging."*).
+4. **Grounded AI Architecture (Master Spec Section 7):**
+   - Zod validation in `server/schemas/querySchema.js` (`TravelQuerySchema` and `RouteFactsSchema`).
+   - Provider interface in `server/adapters/aiProvider.js` supporting SambaNova primary, Google Gemini fallback, and deterministic heuristic fallback (`heuristicParseQuery`).
+   - Feature 7.a: `src/components/NaturalLanguageQueryInput.jsx` on Home and Planner rendering "I understood: ..." banner (`data-testid="ai-understood-banner"`) with editable parameter chips (`chip-origin`, `chip-destination`, `chip-date`, `chip-mode`, `chip-passengers`, `apply-ai-chips-btn`).
+   - Feature 7.b: Grounded route rationale (`data-testid="route-grounded-rationale"`) in `MultimodalTimelineCard.jsx` and strict anti-hallucination validator (`validateRouteRationale`) rejecting unverified cities/places/numbers.
+5. **Contextual Weather Disruption (Master Spec Section 4 & 12):** Evaluates Open-Meteo weather codes and visibility for transfer hubs (dense fog, torrential rain) and displays clean contextual advisory on journey cards (`data-testid="route-contextual-weather"`).
+6. **Full Test Regression:** 197 out of 197 unit, property, and integration tests passing across the repository (`npm test` and `npm run check` with clean production build).
+7. **Visual QA Gallery:** Captured 4 BEFORE and 6 AFTER screenshots across Desktop (1440x900) and Mobile (390x844) viewports in `docs/screenshots/day-7/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 7 COMPLETE. Verification passed (197/197). Moving to DAY 8.**
+
+---
+
+## Master Rebuild Entry: Day 8
+**Date:** October 2026  
+**Goal:** Comprehensive States (Loading, Empty, Error, Skeletons), Multi-Viewport Responsive Layout (390px, 768px, 1440px), WCAG 2.1 AA Accessibility Audit, First-Time User Tasks, and Click-Budget Validation  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-8`  
+
+### Day 8 Task List
+- [x] Task 8.1: Initialize Day 8 task tracking in `docs/sprint-log.md`.
+- [x] Task 8.2: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for core application screens (`docs/screenshots/day-8/before/`).
+- [x] Task 8.3: Comprehensive States Hardening (Master Spec U9):
+  - Audit and polish loading skeletons, zero-result empty states, and error boundary states across Home, Results, Tatkal Desk, and Passes & Safety.
+  - Ensure empty results provide clear recovery instructions: *"No direct trains found. TravelMate found alternative multimodal routes."*
+- [x] Task 8.4: Multi-Viewport Responsive Layout Audit (Master Spec U10):
+  - Enforce zero horizontal overflow (`scrollWidth <= innerWidth`) on 390px (mobile), 768px (tablet), and 1440px (desktop).
+  - Verify touch target dimensions meet WCAG minimums ($\ge 44\text{px}$).
+- [x] Task 8.5: Axe Accessibility Gate (Master Spec U11, Section 13):
+  - Automated Axe accessibility audit across Home, Results, Tatkal Desk, and Passes & Safety ensuring zero critical and zero serious violations.
+  - Visible focus indicators, accessible modals (`aria-modal`, `role="dialog"`), and full keyboard navigation.
+- [x] Task 8.6: First-Time User Task & Click-Budget Verification (Master Spec Section 8):
+  - Search to Results: $\le 3$ user interactions.
+  - Result to Booking: $\le 2$ user interactions.
+  - Task flows: (1) Alternative route search, (2) PNR lookup & estimate, (3) Demo scenario walkthrough, (4) Save & view offline boarding pass, (5) 1-tap transit helpline dial.
+- [x] Task 8.7: Write comprehensive Day 8 test suite (`tests/day8_states_responsive_a11y.test.mjs`, 8/8 passing).
+- [x] Task 8.8: Capture AFTER screenshots in `docs/screenshots/day-8/after/` and update `docs/screenshots/index.html`.
+- [x] Task 8.9: Run Day 8 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-8`, and deploy Vercel Preview.
+
+### Day 8 Verification Evidence
+1. **Comprehensive UI States (Master Spec U9):**
+   - Verified skeleton loaders (`data-testid="results-skeleton-loader"`), direct waitlist empty states with recovery suggestions (`data-testid="empty-direct-results"`: *"No direct trains found. TravelMate found alternative multimodal routes through regional junctions with confirmed quotas."*), results error recovery (`data-testid="results-error-state"`, `data-testid="error-retry-btn"`), and empty saved trips state (`data-testid="empty-saved-plans"`).
+2. **Multi-Viewport Responsive Hardening (Master Spec U10):**
+   - Tested across Mobile (390x844), Tablet (768x1024), and Desktop (1440x900). Zero horizontal overflow (`overflow-x:hidden`, `max-width: 100vw`).
+   - Touch targets comply with WCAG minimums ($\ge 44\text{px}$ touch target height for buttons, tabs, comboboxes, and deep links).
+3. **Accessibility & Keyboard Semantics (Master Spec U11, Section 13):**
+   - Verified ARIA landmark roles (`aria-label="Primary navigation"`), ARIA combobox semantics on `StationAutocomplete` (`role="combobox"`, `aria-expanded`), dialog semantics on modals (`role="dialog"`, `aria-modal="true"` on `OfflineTravelerPassModal` and `PnrPredictorModal`), and WCAG color contrast standards.
+4. **Click-Budget & First-Time User Tasks (Master Spec Section 8):**
+   - Search Click-Budget: $\le 3$ interactions (`select-origin` $\to$ `select-destination` $\to$ `click-search`).
+   - Booking Click-Budget: $\le 2$ interactions (`select-route-tier` $\to$ `click-official-deep-link`).
+   - All 5 first-time user tasks proven:
+     1. Alternative multimodal routes through regional junctions (`generateMultimodalRoutes`).
+     2. PNR status lookup and waitlist confirmation odds estimation (`predictWaitlistConfirmation`).
+     3. Honest Demo Scenario Mode walkthrough (`data-testid="demo-mode-banner"`).
+     4. Save, view, and print offline boarding pass (`data-testid="view-offline-pass-btn"`, `data-testid="print-pass-btn"`).
+     5. 1-tap national transit helplines (112, 139) and GPS telemetry sharing (`data-testid="helpline-112"`, `data-testid="share-gps-pin-btn"`).
+5. **Full Automated Test Suite:**
+   - 205 out of 205 tests passing cleanly across the entire repository (`npm test`).
+   - `npm run check` passed 100% (audit, tests, and Vite production bundle compiled in 1.78s).
+6. **Visual QA Gallery:**
+   - 7 BEFORE screenshots and 10 AFTER screenshots captured across Desktop, Tablet, and Mobile viewports in `docs/screenshots/day-8/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 8 COMPLETE. Verification passed (205/205). Moving to DAY 9.**
+
+---
+
+## Master Rebuild Entry: Day 9
+**Date:** October 2026  
+**Goal:** Hardening — Security Review, DPDP 2023 Statutory Consent & Data Minimization, Privacy, Terms & Disclaimer Pages, Anonymous Feedback Loop, Error Boundary & SEO Previews  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-9`  
+
+### Day 9 Task List
+- [x] Task 9.1: Initialize Day 9 task tracking in `docs/sprint-log.md`.
+- [x] Task 9.2: Capture BEFORE screenshots across Desktop (1440x900) and Mobile (390x844) for compliance touchpoints (`docs/screenshots/day-9/before/`).
+- [x] Task 9.3: Create dedicated accessible compliance pages:
+  - `src/pages/PrivacyPolicy.jsx` (`/privacy`): India DPDP Act 2023 compliance, Zero-ID Policy, Data Minimization, 1-Click Erasure (`data-testid="dpdp-erase-all-btn"`).
+  - `src/pages/TermsOfService.jsx` (`/terms`): Terms of service, independent operator booking disclaimer, no automated bot ticketing notice, limitation of liability.
+  - `src/pages/LegalDisclaimer.jsx` (`/disclaimer`): Statutory disclaimer ("TravelMate is not an emergency service. In an emergency call 112."), open data attribution (OpenStreetMap, Open-Meteo, Indian Railways open timetables), algorithmic probability disclaimer.
+- [x] Task 9.4: Wire new routes into `src/App.jsx` and add navigation links into `src/components/Footer.jsx`.
+- [x] Task 9.5: Build lightweight privacy-preserving user feedback dialog `src/components/FeedbackModal.jsx` and wire into `src/components/Footer.jsx` (`data-testid="footer-feedback-btn"`).
+- [x] Task 9.6: Security & SEO Hardening:
+  - Update `index.html` with canonical title, description, OpenGraph (`og:title`, `og:description`, `og:image`, `og:url`), Twitter card tags, and strict referrer policy.
+  - Verify zero secrets in client bundle and safe external deep-links (`rel="noreferrer noopener"`).
+- [x] Task 9.7: Write Day 9 automated test suite (`tests/day9_security_dpdp_compliance.test.mjs`, 6/6 passing).
+- [x] Task 9.8: Capture AFTER screenshots in `docs/screenshots/day-9/after/` and update `docs/screenshots/index.html`.
+- [x] Task 9.9: Run Day 9 Verification Gate (`npm run check`), update tracking docs, commit, tag `day-9`, and deploy Vercel Preview.
+
+### Day 9 Verification Evidence
+1. **Dedicated Compliance Pages:**
+   - Built [PrivacyPolicy.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/pages/PrivacyPolicy.jsx) (`/privacy`) incorporating DPDP Act 2023 Section 12 Right to Erasure (`data-testid="dpdp-erase-all-btn"`), Zero-ID policy disclosure, and grievance contact.
+   - Built [TermsOfService.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/pages/TermsOfService.jsx) (`/terms`) with transparent deep-linking disclosures and automated bot booking prohibitions.
+   - Built [LegalDisclaimer.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/pages/LegalDisclaimer.jsx) (`/disclaimer`) declaring mandatory emergency notice (*"TravelMate is not an emergency service. In an emergency call 112."*) and attribution for OpenStreetMap and Open-Meteo.
+2. **Accessible Feedback Loop (Zero-ID):**
+   - Implemented [FeedbackModal.jsx](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/src/components/FeedbackModal.jsx) with `role="dialog"`, `aria-modal="true"`, star ratings, topic categorization, and local anonymous storage.
+3. **SEO, OpenGraph & Security Hardening:**
+   - Updated `index.html` with canonical title: *TravelMate — Multimodal Disruption & Route Recovery Engine*, OpenGraph tags, Twitter summary card, and `referrer="strict-origin-when-cross-origin"`.
+   - Verified zero leaked private keys across all client source files.
+4. **Full Automated Test Suite:**
+   - 211 out of 211 tests passing cleanly across the entire repository (`npm test`).
+   - `npm run check` passed 100% (audit, tests, and Vite production bundle compiled in 10.13s with zero errors).
+5. **Visual QA Gallery:**
+   - 5 BEFORE screenshots and 9 AFTER screenshots captured across Desktop and Mobile viewports in `docs/screenshots/day-9/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 9 COMPLETE. Verification passed (211/211). Moving to DAY 10.**
+
+---
+
+## Master Rebuild Entry: Day 10
+**Date:** October 2026  
+**Goal:** Release — Production Vercel Deployment, Clean Alias Verification, Pitch Assets, Judge Objection Q&A, and Final Regression Gate  
+**Branch:** `rebuild/route-recovery`  
+**Git Tag:** `day-10`  
+
+### Day 10 Task List
+- [x] Task 10.1: Initialize Day 10 task tracking in `docs/sprint-log.md`.
+- [x] Task 10.2: Capture BEFORE screenshots for production release (`docs/screenshots/day-10/before/`).
+- [x] Task 10.3: Create comprehensive pitch assets in `docs/pitch/`:
+  - `docs/pitch/pitch-60s.md`: 60-Second Hackathon Elevator Pitch with core hooks and metric proofs.
+  - `docs/pitch/demo-script-45s.md`: 45-Second Live Demo Script with second-by-second cues.
+  - `docs/pitch/judge-objections-qa.md`: In-depth technical and legal answers to the 10 likely judge objections.
+  - `docs/pitch/real-vs-demo-matrix.md`: Transparent "What is real vs demo" specification per Section 5 and Section 20.
+- [x] Task 10.4: Build Day 10 Master Rebuild regression test suite (`tests/day10_release_regression.test.mjs`, 5/5 passing).
+- [x] Task 10.5: Run Day 10 Final Regression Gate twice consecutively (`npm run check`, 216/216 passing both times).
+- [x] Task 10.6: Capture AFTER screenshots on release build in `docs/screenshots/day-10/after/` and update `docs/screenshots/index.html`.
+- [x] Task 10.7: Promote and deploy to Vercel Production (`vercel --prod`) at stable alias `https://travelmate-ai-flowzint.vercel.app`.
+- [x] Task 10.8: Confirm public access without login via curl and fresh incognito checks.
+- [x] Task 10.9: Update `docs/sprint-status.md`, `docs/sprint-log.md`, `docs/changelog-features.md`, and `docs/feature-matrix.md`.
+- [x] Task 10.10: Git commit, tag `day-10`, push to origin, and output Section 20 Final Report.
+
+### Day 10 Verification Evidence
+1. **Pitch Assets Suite:**
+   - Authored all 4 investor/judge presentation assets in `docs/pitch/`: [pitch-60s.md](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/docs/pitch/pitch-60s.md), [demo-script-45s.md](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/docs/pitch/demo-script-45s.md), [judge-objections-qa.md](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/docs/pitch/judge-objections-qa.md), and [real-vs-demo-matrix.md](file:///c:/Users/SURENDRA.G/.gemini/antigravity/scratch/travelmate-app/docs/pitch/real-vs-demo-matrix.md).
+2. **Two Consecutive Full Regression Gate Runs:**
+   - Regression Pass 1: 216/216 tests passing, clean Vite production build in 2.87s.
+   - Regression Pass 2: 216/216 tests passing, clean Vite production build in 2.29s.
+3. **Production Deployment & Public Access:**
+   - Production URL: `https://travelmate-ai-flowzint.vercel.app`.
+   - Verified public access without authentication barriers.
+4. **Visual QA Gallery:**
+   - 3 BEFORE screenshots and 8 AFTER screenshots captured in `docs/screenshots/day-10/` and indexed in `docs/screenshots/index.html`.
+
+**DAY 10 COMPLETE. Verification passed (216/216). All 10 Days of Master Rebuild Finished.**
+
+---
+
+## Sprint Entry: Day 6 (Archived Baseline)
 **Date:** October 2026  
 **Goal:** Dedicated Emergency Mode, 1-Tap National Transit Helplines (112, 139, 108, 1090), Live GPS Broadcast Engine & Offline Incident Protocols  
 

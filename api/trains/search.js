@@ -1,13 +1,32 @@
-import { prepareApiRequest, providerStatus } from '../_security.js'
-import { callRapidRail, dataRows, stationCodes } from './_rapidapiRail.js'
+import { prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
+import { callRapidRail, dataRows, extractStationCode, getRapidConfig, stationCodes } from './_rapidapiRail.js'
+import { findDirectTrainRoutes } from '../../server/services/routeEngine.js'
 
 function normalizeTrainRow(row, index, from, to, date) {
-  const trainNo = row.train_number || row.trainNo || row.train_no || row.number || row.code || row.train_num || 'N/A'
-  const trainName = row.train_name || row.trainName || row.name || row.train || 'Train option'
-  const depart = row.from_std || row.departure_time || row.departure || row.dep_time || row.start_time || row.std || 'Check provider'
-  const arrive = row.to_sta || row.arrival_time || row.arrival || row.arr_time || row.end_time || row.sta || 'Check provider'
-  const fromStationCode = row.from_station_code || row.fromStationCode || row.from_stn_code || row.source_code || row.src || from
-  const toStationCode = row.to_station_code || row.toStationCode || row.to_stn_code || row.destination_code || row.dstn || to
+  const trainNo = row.trainNumber || row.train_number || row.trainNo || row.train_no || row.number || row.code || row.train_num || 'N/A'
+  const trainName = row.trainName || row.train_name || row.name || row.train || 'Train option'
+  const depart = row.schedule?.departureTime || row.from_std || row.departure_time || row.departure || row.dep_time || row.start_time || row.std || 'Check provider'
+  const arrive = row.schedule?.arrivalTime || row.to_sta || row.arrival_time || row.arrival || row.arr_time || row.end_time || row.sta || 'Check provider'
+  
+  const originExtracted = row.schedule?.origin?.code ? extractStationCode(row.schedule.origin.code) : ''
+  const destExtracted = row.schedule?.destination?.code ? extractStationCode(row.schedule.destination.code) : ''
+  const fromStationCode = originExtracted || row.from_station_code || row.fromStationCode || row.from_stn_code || row.source_code || row.src || from
+  const toStationCode = destExtracted || row.to_station_code || row.toStationCode || row.to_stn_code || row.destination_code || row.dstn || to
+
+  const hasSchedule = Boolean(depart && arrive && depart !== 'Check provider' && arrive !== 'Check provider')
+  const hasFareOrAvailability = Boolean(row.fare || row.price || row.classes || row.available_classes || row.inventory?.length)
+  let status = 'PROVIDER_VERIFICATION_REQUIRED'
+  if (hasSchedule && hasFareOrAvailability) {
+    status = 'LIVE_PROVIDER_DATA'
+  } else if (hasSchedule) {
+    status = 'LIVE_SCHEDULE_ONLY'
+  }
+
+  let runningDays = row.run_days || row.running_days || row.days || row.train_runs_on || ''
+  if (!runningDays && row.schedule?.runningDays) {
+    runningDays = Object.entries(row.schedule.runningDays).filter(([_, active]) => active).map(([day]) => day).join(', ')
+  }
+
   return {
     id: `${trainNo}-${index}`,
     type: 'train',
@@ -22,13 +41,14 @@ function normalizeTrainRow(row, index, from, to, date) {
     depart,
     arrival: arrive,
     arrive,
-    duration: row.duration || row.travel_time || row.travelTime || 'Check provider',
-    runningDays: row.run_days || row.running_days || row.days || row.train_runs_on || '',
+    duration: row.schedule?.duration || row.duration || row.travel_time || row.travelTime || 'Check provider',
+    runningDays,
     price: row.fare || row.price || null,
     currency: 'INR',
     cabins: row.class_type || row.classes || row.available_classes || ['SL', '3A', '2A'],
-    provider: 'RapidAPI IRCTC / irctc1',
-    sourceBadge: 'Live API result',
+    provider: 'RapidAPI IRCTC',
+    sourceBadge: status,
+    provenance: status,
     verification: `Live route-train response${date ? ` for ${date}` : ''}. This does not confirm Tatkal quota seats; run the separate TQ seat-availability check and verify booking with an authorized provider.`
   }
 }
@@ -73,15 +93,71 @@ export default async function handler(req, res) {
   try {
     let rows = []
     let selectedPair = null
+    const { host } = getRapidConfig()
+    const isNewTrainApi = host.includes('irctc-train-api')
+
     if (fromCodes.length && toCodes.length) {
       for (const [fromStationCode, toStationCode] of candidatePairs(fromCodes, toCodes)) {
-        const payload = await callRapidRail('/api/v3/trainBetweenStations', { fromStationCode, toStationCode, dateOfJourney: date })
+        let payload
+        if (isNewTrainApi) {
+          const defaultDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
+          const parts = (date || defaultDate).split('-')
+          const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`
+          payload = await callRapidRail('/api/v1/trains-between-stations', {
+            startStationCode: fromStationCode,
+            endStationCode: toStationCode,
+            date: formattedDate
+          })
+        } else {
+          payload = await callRapidRail('/api/v3/trainBetweenStations', { fromStationCode, toStationCode, dateOfJourney: date })
+        }
         rows = dataRows(payload)
         selectedPair = [fromStationCode, toStationCode]
         if (rows.length) break
       }
     } else {
-      rows = dataRows(await callRapidRail('/api/v1/searchTrain', { query: searchText }))
+      const searchEndpoint = isNewTrainApi ? '/api/v1/search-train' : '/api/v1/searchTrain'
+      rows = dataRows(await callRapidRail(searchEndpoint, { query: searchText }))
+    }
+
+    if (!rows.length && fromCodes.length && toCodes.length) {
+      const offlineDirect = findDirectTrainRoutes(fromCodes[0], toCodes[0], date)
+      if (offlineDirect.length) {
+        const offlineResults = offlineDirect.slice(0, 30).map((t, index) => ({
+          id: `${t.trainNumber}-${index}`,
+          type: 'train',
+          serviceName: `${t.trainName} (${t.trainNumber})`,
+          service: `${t.trainName} (${t.trainNumber})`,
+          code: String(t.trainNumber),
+          fromStationCode: t.originCode,
+          toStationCode: t.destCode,
+          from: t.originCode,
+          to: t.destCode,
+          departure: t.departTime,
+          depart: t.departTime,
+          arrival: t.arriveTime,
+          arrive: t.arriveTime,
+          duration: t.durationFormatted,
+          runningDays: 'Running days unknown. Check before you travel',
+          price: t.estimatedFare,
+          currency: 'INR',
+          cabins: ['SL', '3A', '2A', '1A'],
+          provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+          sourceBadge: 'TIMETABLE (circa 2016)',
+          provenance: 'TIMETABLE',
+          verification: 'Offline timetable schedule (community snapshot, circa 2016). Running days unknown. Check before you travel.'
+        }))
+        return res.status(200).json({
+          ok: true,
+          mode: 'timetable',
+          provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+          sourceBadge: 'TIMETABLE (circa 2016)',
+          message: `Timetable schedule loaded (${offlineResults.length} direct trains). Community snapshot circa 2016.`,
+          count: offlineResults.length,
+          results: offlineResults,
+          searchedStationPair: `${fromCodes[0]}-${toCodes[0]}`
+        })
+      }
     }
 
     const fromLabel = selectedPair?.[0] || from || ''
@@ -90,7 +166,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       mode: 'live',
-      provider: 'RapidAPI IRCTC / irctc1',
+      provider: 'RapidAPI IRCTC',
       sourceBadge: 'Live API result',
       message: results.length ? `Live train results loaded${selectedPair ? ` for ${selectedPair[0]} → ${selectedPair[1]}` : ''}.` : 'The provider returned no matching trains.',
       count: results.length,
@@ -98,13 +174,55 @@ export default async function handler(req, res) {
       searchedStationPair: selectedPair ? `${selectedPair[0]}-${selectedPair[1]}` : null
     })
   } catch (error) {
+    if (fromCodes.length && toCodes.length) {
+      try {
+        const offlineDirect = findDirectTrainRoutes(fromCodes[0], toCodes[0], date)
+        if (offlineDirect.length) {
+          const offlineResults = offlineDirect.slice(0, 30).map((t, index) => ({
+            id: `${t.trainNumber}-${index}`,
+            type: 'train',
+            serviceName: `${t.trainName} (${t.trainNumber})`,
+            service: `${t.trainName} (${t.trainNumber})`,
+            code: String(t.trainNumber),
+            fromStationCode: t.originCode,
+            toStationCode: t.destCode,
+            from: t.originCode,
+            to: t.destCode,
+            departure: t.departTime,
+            depart: t.departTime,
+            arrival: t.arriveTime,
+            arrive: t.arriveTime,
+            duration: t.durationFormatted,
+            runningDays: 'Running days unknown. Check before you travel',
+            price: t.estimatedFare,
+            currency: 'INR',
+            cabins: ['SL', '3A', '2A', '1A'],
+            provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+            sourceBadge: 'TIMETABLE (circa 2016)',
+            provenance: 'TIMETABLE',
+            verification: 'Offline timetable schedule (community snapshot, circa 2016). Running days unknown. Check before you travel.'
+          }))
+          return res.status(200).json({
+            ok: true,
+            mode: 'timetable',
+            provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+            sourceBadge: 'TIMETABLE (circa 2016)',
+            message: `Timetable schedule loaded (${offlineResults.length} direct trains). Community snapshot circa 2016.`,
+            count: offlineResults.length,
+            results: offlineResults,
+            searchedStationPair: `${fromCodes[0]}-${toCodes[0]}`
+          })
+        }
+      } catch (_) {}
+    }
+    const safe = publicProviderError(error, 'Railway provider request failed.')
     return res.status(providerStatus(error)).json({
       ok: false,
       mode: error.code === 'MISSING_RAPIDAPI_KEY' ? 'provider-unconfigured' : 'provider-error',
       provider: 'RapidAPI IRCTC / irctc1',
-      sourceBadge: 'Provider unavailable',
-      message: `${error.message} No synthetic train result was generated.`,
-      error: error.code || 'TRAIN_SEARCH_ERROR',
+      sourceBadge: 'PROVIDER_VERIFICATION_REQUIRED',
+      message: `${safe.message} No synthetic train result was generated.`,
+      error: safe.error,
       results: []
     })
   }

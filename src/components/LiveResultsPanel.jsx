@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AlertTriangle,
@@ -20,7 +20,8 @@ import {
   Users,
   Volume2,
   VolumeX,
-  CheckCircle2
+  CheckCircle2,
+  Compass
 } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
@@ -31,6 +32,11 @@ import MultimodalTimelineCard from './MultimodalTimelineCard'
 import StationHopperCard from './StationHopperCard'
 import { generateStationHopperHacks } from '../utils/stationHopper'
 import PnrPredictorModal from './PnrPredictorModal'
+import WaitlistBypassContrast from './WaitlistBypassContrast'
+import DelayContingencySimulator from './DelayContingencySimulator'
+import { localDateIso } from '../utils/date'
+
+const RouteMap = lazy(() => import('./RouteMap'))
 
 const transportMeta = {
   Train: { icon: Train, label: 'Train' },
@@ -38,7 +44,7 @@ const transportMeta = {
   Bus: { icon: Bus, label: 'Bus' }
 }
 
-function displayValue(value, fallback = '—') {
+function displayValue(value, fallback = ': ') {
   if (value === null || value === undefined || value === '') return fallback
   return value
 }
@@ -49,10 +55,10 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
   const fare = item.price || item.fare || item.amount
   const source = item.sourceBadge || 'Live API result'
 
-  const departure = displayValue(item.departure || item.depart || item.departureTime, '10:30 AM')
-  const arrival = displayValue(item.arrival || item.arrive || item.arrivalTime, '06:45 PM')
-  const duration = displayValue(item.duration || item.travelTime, '8h 15m')
-  const statusText = displayValue(item.status || item.availability, 'Available')
+  const departure = displayValue(item.departure || item.depart || item.departureTime, 'Schedule unavailable')
+  const arrival = displayValue(item.arrival || item.arrive || item.arrivalTime, 'Schedule unavailable')
+  const duration = displayValue(item.duration || item.travelTime, ': ')
+  const statusText = displayValue(item.status || item.availability, 'Check availability')
   const isAvailable = statusText.toLowerCase().includes('avail') || statusText.toLowerCase().includes('confirm')
 
   const directLink = getProviderDeepLink({
@@ -92,9 +98,8 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
         </div>
       </div>
 
-      {/* Main Schedule & Timing Row (ConfirmTkt / Airline style) */}
+      {/* Main Schedule & Timing Row */}
       <div className="my-5 grid grid-cols-3 items-center gap-2 text-center sm:text-left">
-        {/* Departure */}
         <div>
           <div className="text-xl sm:text-2xl font-black text-slate-900">{departure}</div>
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate">
@@ -102,9 +107,8 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
           </div>
         </div>
 
-        {/* Duration & Connector Graphic */}
         <div className="text-center px-2">
-          <div className="text-xs font-semibold text-slate-400 mb-1 flex items-center justify-center gap-1">
+          <div className="text-xs font-semibold text-slate-600 mb-1 flex items-center justify-center gap-1">
             <Clock size={12} />
             <span>{duration}</span>
           </div>
@@ -112,10 +116,9 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
             <div className="w-full h-0.5 bg-slate-200"></div>
             <div className="absolute w-2 h-2 rounded-full bg-sky-600"></div>
           </div>
-          <div className="text-[11px] font-bold text-slate-400 mt-1">Direct</div>
+          <div className="text-[11px] font-bold text-slate-600 mt-1">Direct</div>
         </div>
 
-        {/* Arrival */}
         <div className="text-right">
           <div className="text-xl sm:text-2xl font-black text-slate-900">{arrival}</div>
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate">
@@ -139,7 +142,7 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
           className="btn-primary mobile-full h-11 text-sm font-bold flex items-center justify-center gap-2"
         >
           <TicketCheck size={16} />
-          <span>Start demo booking</span>
+          <span>Book on Portal</span>
         </button>
 
         <a
@@ -167,9 +170,12 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
 
 const filterOptions = [
   { id: 'all', label: 'All Options' },
-  { id: 'budget', label: '🟢 Under ₹1,000 (Paisa Vasool)' },
-  { id: 'balanced', label: '🔵 Sub-₹2,000 (Balanced)' },
-  { id: 'fastest', label: '⚡ Fastest (< 12h)' }
+  { id: 'contrast', label: 'Bypass Contrast' },
+  { id: 'budget', label: 'Under ₹1,000 (Paisa Vasool)' },
+  { id: 'balanced', label: 'Sub-₹2,000 (Balanced)' },
+  { id: 'fastest', label: 'Fastest (< 12h)' },
+  { id: 'map', label: 'Route Map' },
+  { id: 'simulator', label: 'Delay Simulator' }
 ]
 
 export default function LiveResultsPanel({
@@ -188,7 +194,90 @@ export default function LiveResultsPanel({
   const [showPnrModal, setShowPnrModal] = useState(false)
   const [isSpeakingTop, setIsSpeakingTop] = useState(false)
 
-  const multimodalRoutes = useMemo(() => {
+  const [recoveryTiers, setRecoveryTiers] = useState(null)
+  const [recoveryLoading, setRecoveryLoading] = useState(false)
+
+  useEffect(() => {
+    if (!open || !plan?.from || !plan?.to) {
+      setRecoveryTiers(null)
+      return
+    }
+
+    let isSubscribed = true
+    setRecoveryLoading(true)
+
+    const params = new URLSearchParams({
+      from: plan.from,
+      to: plan.to,
+      date: plan.date || localDateIso()
+    })
+
+    fetch(`/api/recovery?${params.toString()}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(json => {
+        if (!isSubscribed) return
+        if (json?.ok && Array.isArray(json.data?.rankedTiers) && json.data.rankedTiers.length > 0) {
+          const mapped = json.data.rankedTiers.map(t => ({
+            id: t.id,
+            tier: t.tier,
+            tierLabel: t.tierLabel,
+            tierBadge: t.tier === 'paisa-vasool' ? 'Maximum Savings' : t.tier === 'smart-balanced' ? 'Comfort & Speed' : 'Saves 8+ Hours',
+            totalFare: t.totalFare,
+            fareFormatted: t.fareFormatted,
+            totalDuration: t.totalDurationFormatted,
+            totalDurationMin: t.totalDurationMin,
+            hubCity: t.hubCity,
+            transferBuffer: t.transfer?.durationFormatted ? `${t.transfer.durationFormatted} transfer buffer` : t.slackFormatted,
+            slackMinutes: t.slackMinutes,
+            mctMinutes: t.transfer?.mctMinutes || 45,
+            riskLevel: t.reliability?.riskLevel || 'Safe',
+            whyPicked: t.whyPicked,
+            rationale: t.rationale,
+            leg1: t.leg1 ? {
+              legIndex: 1,
+              mode: t.leg1.mode === 'train' ? 'Train' : t.leg1.mode === 'bus' ? 'Bus' : 'Flight',
+              from: t.leg1.from,
+              to: t.leg1.to,
+              depart: t.leg1.depart,
+              arrive: t.leg1.arrive,
+              duration: t.leg1.durationFormatted,
+              fare: t.leg1.fare,
+              service: t.leg1.vehicleName ? `${t.leg1.vehicleName} (${t.leg1.vehicleNumber || ''})` : `${t.leg1.mode} service`,
+              provenance: t.leg1.provenance || 'TIMETABLE',
+              bookingLink: t.leg1.bookingLink
+            } : null,
+            leg2: t.leg2 ? {
+              legIndex: 2,
+              mode: t.leg2.mode === 'train' ? 'Train' : t.leg2.mode === 'bus' ? 'Bus' : 'Flight',
+              from: t.leg2.from,
+              to: t.leg2.to,
+              depart: t.leg2.depart,
+              arrive: t.leg2.arrive,
+              duration: t.leg2.durationFormatted,
+              fare: t.leg2.fare,
+              service: t.leg2.vehicleName ? `${t.leg2.vehicleName} (${t.leg2.vehicleNumber || ''})` : `${t.leg2.mode} service`,
+              provenance: t.leg2.provenance || (t.leg2.mode === 'train' ? 'TIMETABLE' : 'ESTIMATE'),
+              bookingLink: t.leg2.bookingLink
+            } : null
+          }))
+          setRecoveryTiers(mapped)
+        } else {
+          setRecoveryTiers(null)
+        }
+      })
+      .catch(() => {
+        if (isSubscribed) setRecoveryTiers(null)
+      })
+      .finally(() => {
+        if (isSubscribed) setRecoveryLoading(false)
+      })
+
+    return () => {
+      isSubscribed = false
+    }
+  }, [open, plan?.from, plan?.to, plan?.date])
+
+  const fallbackRoutes = useMemo(() => {
     if (!open) return []
     return generateMultimodalRoutes({
       from: plan?.from,
@@ -197,6 +286,8 @@ export default function LiveResultsPanel({
       passengers: plan?.passengers || 1
     })
   }, [open, plan?.from, plan?.to, plan?.date, plan?.passengers])
+
+  const multimodalRoutes = recoveryTiers && recoveryTiers.length > 0 ? recoveryTiers : fallbackRoutes
 
   const displayedMultimodalRoutes = useMemo(() => {
     if (!multimodalRoutes || multimodalRoutes.length === 0) return []
@@ -214,7 +305,7 @@ export default function LiveResultsPanel({
 
   // Sync plan filter if set from voice intent
   useEffect(() => {
-    if (plan?.filter && ['budget', 'fastest', 'balanced', 'all'].includes(plan.filter)) {
+    if (plan?.filter && ['budget', 'fastest', 'balanced', 'all', 'contrast', 'map', 'simulator'].includes(plan.filter)) {
       setActiveFilter(plan.filter)
     }
   }, [plan?.filter])
@@ -229,7 +320,7 @@ export default function LiveResultsPanel({
   // Listen for voice events
   useEffect(() => {
     function handleVoiceFilter(e) {
-      if (e.detail?.filter && ['budget', 'fastest', 'balanced', 'all'].includes(e.detail.filter)) {
+      if (e.detail?.filter && ['budget', 'fastest', 'balanced', 'all', 'contrast', 'map', 'simulator'].includes(e.detail.filter)) {
         setActiveFilter(e.detail.filter)
       }
     }
@@ -263,14 +354,11 @@ export default function LiveResultsPanel({
 
   useEffect(() => {
     if (!open) return undefined
-    const oldOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
     const handleKey = (event) => {
       if (event.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handleKey)
     return () => {
-      document.body.style.overflow = oldOverflow
       window.removeEventListener('keydown', handleKey)
     }
   }, [open, onClose])
@@ -292,25 +380,25 @@ export default function LiveResultsPanel({
   const hasResults = results.length > 0
 
   return (
-    <div className="live-results-backdrop fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-2 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="live-results-title">
-      <section className="live-results-workspace max-w-6xl mx-auto bg-slate-50 rounded-3xl border border-slate-200 shadow-2xl overflow-hidden min-h-[90vh]">
+    <div id="live-results-section" className="live-results-workspace mt-8 mb-12 max-w-6xl mx-auto" aria-labelledby="live-results-title">
+      <section className="bg-slate-50 rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         {/* Results Header */}
-        <header className="live-results-header bg-white border-b border-slate-200 px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+        <header className="live-results-header bg-white border-b border-slate-200 px-4 sm:px-6 py-4 sm:py-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition"
+            className="inline-flex items-center gap-2 min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition"
           >
             <ArrowLeft size={16} />
             <span>Back to planner</span>
           </button>
 
-          <div className="flex-1 min-w-[240px]">
+          <div className="flex-1 min-w-0">
             <p className="text-xs font-bold uppercase tracking-wider text-sky-700 mb-0.5">Dedicated provider-results workspace</p>
-            <h2 id="live-results-title" className="text-xl sm:text-2xl font-black text-slate-950 flex items-center gap-2">
-              <MetaIcon size={22} className="text-sky-600" />
+            <h2 id="live-results-title" className="text-xl sm:text-2xl font-black text-slate-950 flex flex-wrap items-center gap-2">
+              <MetaIcon size={22} className="text-sky-600 shrink-0" />
               <span>{plan.from || 'Origin'}</span>
-              <ArrowRight size={18} className="text-slate-400" />
+              <ArrowRight size={18} className="text-slate-400 shrink-0" />
               <span>{plan.to || 'Destination'}</span>
             </h2>
             <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -322,7 +410,7 @@ export default function LiveResultsPanel({
             <button
               type="button"
               onClick={() => setShowPnrModal(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold hover:bg-sky-100 transition"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold hover:bg-sky-100 transition"
             >
               <Sparkles size={14} className="text-sky-600" />
               <span>Check PNR</span>
@@ -331,7 +419,7 @@ export default function LiveResultsPanel({
               type="button"
               onClick={onRetry}
               disabled={loading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition"
             >
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
               <span>{loading ? 'Refreshing…' : 'Refresh'}</span>
@@ -342,20 +430,73 @@ export default function LiveResultsPanel({
         {/* Results Body Layout */}
         <div className={`live-results-layout p-4 sm:p-8 grid gap-8 ${allowBackup ? "lg:grid-cols-[1fr,360px]" : "grid-cols-1"}`}>
           <main className="order-2 min-w-0 lg:order-1 space-y-6">
+            {/* Filter Pills */}
+            <div className="flex items-center gap-2 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto max-w-full">
+              <span className="text-xs font-bold text-slate-600 flex items-center gap-1 shrink-0 mr-1">
+                <SlidersHorizontal size={13} /> View:
+              </span>
+              <div className="flex items-center gap-2 shrink-0">
+                {filterOptions.map((filter) => {
+                  const isSelected = activeFilter === filter.id
+                  return (
+                    <button
+                      key={filter.id}
+                      type="button"
+                      onClick={() => setActiveFilter(filter.id)}
+                      className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center shrink-0 transition ${
+                        isSelected
+                          ? 'bg-sky-700 text-white shadow-sm font-extrabold'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                      }`}
+                    >
+                      {filter.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Waitlist Bypass Contrast View */}
+            {(activeFilter === 'all' || activeFilter === 'contrast') && (
+              <WaitlistBypassContrast
+                directRoute={results[0] || null}
+                splitRoute={multimodalRoutes[0] || null}
+                from={plan?.from || 'Origin'}
+                to={plan?.to || 'Destination'}
+                date={plan?.date}
+              />
+            )}
+
+            {/* Route Map View Tab */}
+            {activeFilter === 'map' && (
+              <div className="my-2">
+                <Suspense fallback={<div className="h-[340px] rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 text-sm">Loading route visualizer...</div>}>
+                  <RouteMap plan={plan} />
+                </Suspense>
+              </div>
+            )}
+
+            {/* Delay Simulator Tab */}
+            {activeFilter === 'simulator' && (
+              <div className="my-2">
+                <DelayContingencySimulator itinerary={multimodalRoutes[0] || null} />
+              </div>
+            )}
+
             {/* Multi-Modal Smart Combinations Section */}
-            {multimodalRoutes.length > 0 && (
+            {activeFilter !== 'map' && activeFilter !== 'simulator' && multimodalRoutes.length > 0 && (
               <section className="multimodal-container bg-white rounded-3xl border border-sky-200 p-5 sm:p-6 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
                   <div>
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 text-xs font-bold mb-1">
                       <Sparkles size={13} className="text-sky-600" />
-                      <span>Confirmed Split-Route Alternatives</span>
+                      <span>Split-Route Recovery Options</span>
                     </div>
                     <h3 className="text-lg font-black text-slate-950">
-                      Smart Combined Journeys via Major Junctions
+                      Multi-Modal Journeys via Regional Junctions
                     </h3>
                     <p className="text-xs text-slate-500">
-                      When direct seats are waitlisted, these guaranteed multimodal connections get you there faster.
+                      When direct seats are waitlisted, these multi-modal connections bypass the bottleneck via regional interchange hubs.
                     </p>
                   </div>
 
@@ -389,30 +530,6 @@ export default function LiveResultsPanel({
                   </div>
                 </div>
 
-                {/* Filter Pills */}
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-bold text-slate-400 flex items-center gap-1 mr-1">
-                    <SlidersHorizontal size={13} /> Filter:
-                  </span>
-                  {filterOptions.map((filter) => {
-                    const isSelected = activeFilter === filter.id
-                    return (
-                      <button
-                        key={filter.id}
-                        type="button"
-                        onClick={() => setActiveFilter(filter.id)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold transition ${
-                          isSelected
-                            ? 'bg-sky-600 text-white shadow-sm'
-                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
-                        }`}
-                      >
-                        {filter.label}
-                      </button>
-                    )
-                  })}
-                </div>
-
                 {/* Multimodal Cards */}
                 <div className="mt-5 space-y-4">
                   {displayedMultimodalRoutes.map((route) => (
@@ -423,7 +540,7 @@ export default function LiveResultsPanel({
             )}
 
             {/* Station Hopper Quota Hacks */}
-            {stationHopperHacks.length > 0 && (
+            {activeFilter !== 'map' && activeFilter !== 'simulator' && stationHopperHacks.length > 0 && (
               <StationHopperCard
                 hacks={stationHopperHacks}
                 from={plan?.from}
@@ -432,78 +549,80 @@ export default function LiveResultsPanel({
             )}
 
             {/* Direct Results Section */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-extrabold text-slate-900">
-                  <span>{transport === 'Flight' ? 'Direct Flight Services' : transport === 'Bus' ? 'Direct Bus Services' : 'Direct Train Services'}</span> ({results.length})
-                </h3>
-                <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
-              </div>
-
-              {status.error && (
-                <div data-testid="results-error-state" className="rounded-2xl border border-red-300 bg-red-50 p-6 text-center mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-700 mx-auto flex items-center justify-center mb-3">
-                    <AlertTriangle size={24} />
-                  </div>
-                  <h4 className="text-base font-extrabold text-red-950">
-                    Unable to load direct provider results
-                  </h4>
-                  <p className="text-sm text-red-700 max-w-lg mx-auto mt-1 leading-relaxed">
-                    {status.error || 'The provider API is temporarily unreachable or returned an unexpected response.'}
-                  </p>
-                  <button
-                    type="button"
-                    data-testid="error-retry-btn"
-                    onClick={onRetry}
-                    className="btn-primary mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
-                  >
-                    <RefreshCw size={14} />
-                    <span>Retry provider search</span>
-                  </button>
+            {activeFilter !== 'map' && activeFilter !== 'simulator' && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-extrabold text-slate-900">
+                    <span>{transport === 'Flight' ? 'Direct Flight Services' : transport === 'Bus' ? 'Direct Bus Services' : 'Direct Train Services'}</span> ({results.length})
+                  </h3>
+                  <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
                 </div>
-              )}
 
-              {loading ? (
-                <div data-testid="results-skeleton-loader" className="grid gap-4 md:grid-cols-2">
-                  {[0, 1].map((idx) => (
-                    <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse">
-                      <div className="h-4 bg-slate-200 rounded w-1/3 mb-4"></div>
-                      <div className="h-8 bg-slate-200 rounded w-2/3 mb-4"></div>
-                      <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                {status.error && (
+                  <div data-testid="results-error-state" className="rounded-2xl border border-red-300 bg-red-50 p-6 text-center mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-700 mx-auto flex items-center justify-center mb-3">
+                      <AlertTriangle size={24} />
                     </div>
-                  ))}
-                </div>
-              ) : hasResults ? (
-                <div className="grid gap-4">
-                  {results.map((item, index) => (
-                    <ResultCard
-                      key={item.id || item.code || index}
-                      item={item}
-                      transport={transport}
-                      plan={plan}
-                      onBook={onBookResult}
-                      onSave={onSaveResult}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div data-testid="empty-direct-results" className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
-                  <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
-                    <Sparkles size={24} />
+                    <h4 className="text-base font-extrabold text-red-950">
+                      Unable to load direct provider results
+                    </h4>
+                    <p className="text-sm text-red-700 max-w-lg mx-auto mt-1 leading-relaxed">
+                      {status.error || 'The provider API is temporarily unreachable or returned an unexpected response.'}
+                    </p>
+                    <button
+                      type="button"
+                      data-testid="error-retry-btn"
+                      onClick={onRetry}
+                      className="btn-primary mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+                    >
+                      <RefreshCw size={14} />
+                      <span>Retry provider search</span>
+                    </button>
                   </div>
-                  <h4 className="text-base font-extrabold text-slate-900">
-                    No direct {transport.toLowerCase()} seats available
-                  </h4>
-                  <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
-                    No direct {transport.toLowerCase()}s found. {multimodalRoutes.length > 0 ? `TravelMate found ${multimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
-                  </p>
-                </div>
-              )}
+                )}
 
-              <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-xs text-slate-600">
-                <b className="text-slate-900">Demo-booking notice:</b> Choose one provider row and use "Start demo booking" to attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready.
+                {loading ? (
+                  <div data-testid="results-skeleton-loader" className="grid gap-4 md:grid-cols-2">
+                    {[0, 1].map((idx) => (
+                      <div key={idx} className="h-48 rounded-2xl bg-white border border-slate-200 p-6 animate-pulse">
+                        <div className="h-4 bg-slate-200 rounded w-1/3 mb-4"></div>
+                        <div className="h-8 bg-slate-200 rounded w-2/3 mb-4"></div>
+                        <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : hasResults ? (
+                  <div className="grid gap-4">
+                    {results.map((item, index) => (
+                      <ResultCard
+                        key={item.id || item.code || index}
+                        item={item}
+                        transport={transport}
+                        plan={plan}
+                        onBook={onBookResult}
+                        onSave={onSaveResult}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div data-testid="empty-direct-results" className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
+                    <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
+                      <Sparkles size={24} />
+                    </div>
+                    <h4 className="text-base font-extrabold text-slate-900">
+                      No direct {transport.toLowerCase()} seats available
+                    </h4>
+                    <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
+                      No direct {transport.toLowerCase()}s found. {multimodalRoutes.length > 0 ? `TravelMate found ${multimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
+                    </p>
+                  </div>
+                )}
+
+                <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-xs text-slate-600">
+                  <b className="text-slate-900">Demo-booking notice:</b> Choose one provider row and use "Start demo booking" to attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready.
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Statutory Split Booking Disclosure */}
             <div

@@ -1,17 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import BookingModal from '../components/BookingModal'
+import { Sparkles, Clock, Ticket } from 'lucide-react'
 import NormalPlanner from '../planner/NormalPlanner'
 import EmergencyTatkalPlanner from '../planner/EmergencyTatkalPlanner'
 import LowNetworkPlanner from '../planner/LowNetworkPlanner'
 import { attachPnrStatus, consumeLoadedPlan, saveOfflinePack, savePlan } from '../utils/storage'
 import { calculateTravelScore } from '../utils/scoring'
-import SmartAssistant from '../components/SmartAssistant'
 import MasterTrustPanel from '../components/MasterTrustPanel'
 import LiveResultsPanel from '../components/LiveResultsPanel'
+import PnrPredictorModal from '../components/PnrPredictorModal'
 import { getPNRStatus, searchLiveTransport } from '../services/LiveTransportApi'
 import { localDateIso } from '../utils/date'
-import { getCabinOptions } from '../data/transportData'
+import { getCabinOptions, getProviderDeepLink } from '../data/transportData'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 const basePlan = {
   from: '',
@@ -29,6 +30,36 @@ const basePlan = {
   readinessScore: 0
 }
 
+function getInitialPlan(search) {
+  try {
+    const params = new URLSearchParams(search)
+    const from = params.get('from') || ''
+    const to = params.get('to') || ''
+    const date = params.get('date') || ''
+    const requestedMode = params.get('transportMode')
+    const urgency = params.get('urgency')
+    const isTonight = urgency === 'Tonight' || params.get('urgent') === '12h'
+    const passengers = Number(params.get('passengers')) || 1
+
+    if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode) || isTonight) {
+      return {
+        ...basePlan,
+        ...(from ? { from } : {}),
+        ...(to ? { to } : {}),
+        ...(date ? { date } : isTonight ? { date: localDateIso() } : {}),
+        ...(isTonight ? { urgency: 'Tonight' } : urgency ? { urgency } : {}),
+        ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? {
+          transportMode: requestedMode,
+          routeCombo: `${requestedMode} only`,
+          classType: getCabinOptions(requestedMode)[0]
+        } : {}),
+        passengers
+      }
+    }
+  } catch {}
+  return basePlan
+}
+
 function selectedServicePatch(service, transport, fallbackSource = 'Saved provider result') {
   const name = service?.serviceName || service?.service || service?.trainName || service?.name || service?.operator || `${transport} option`
   const code = service?.code || service?.trainNo || service?.trainNumber || service?.flightNumber || service?.serviceNumber || ''
@@ -43,18 +74,24 @@ function selectedServicePatch(service, transport, fallbackSource = 'Saved provid
 }
 
 export default function Planner({ status, toast, language = 'en' }) {
+  usePageMetadata({
+    title: 'Route Finder & Tatkal Desk | TravelMate',
+    description: 'Multimodal split route discovery across trains, buses, and flights with verified connection buffers and Tatkal countdown assistance.'
+  })
+
   const location = useLocation()
+  const lastSearchedParamsRef = useRef('')
   const [manualMode, setManualMode] = useState('normal')
-  const [plan, setPlan] = useState(basePlan)
-  const [bookingOpen, setBookingOpen] = useState(false)
-  const [bookingPlan, setBookingPlan] = useState(null)
+  const [plan, setPlan] = useState(() => getInitialPlan(location.search))
   const [resultsOpen, setResultsOpen] = useState(false)
   const [liveResults, setLiveResults] = useState([])
   const [liveStatus, setLiveStatus] = useState({ loading: false, mode: 'idle', message: '' })
   const [pendingVoiceAction, setPendingVoiceAction] = useState(null)
+  const [isDemoMode, setIsDemoMode] = useState(false)
+  const [showPnrModal, setShowPnrModal] = useState(false)
 
   const applyVoiceDetail = (detail = {}) => {
-    if (detail.mode) setManualMode(detail.mode)
+    if (detail.mode) setManualMode(detail.mode === 'emergency' ? 'tatkal' : detail.mode)
     if (detail.plan && Object.keys(detail.plan).length) {
       setPlan((old) => ({ ...old, ...detail.plan }))
     }
@@ -74,14 +111,52 @@ export default function Planner({ status, toast, language = 'en' }) {
     const to = params.get('to') || ''
     const date = params.get('date') || ''
     const requestedMode = params.get('transportMode')
-    if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode)) {
-      setPlan((old) => ({
-        ...old,
+    const demoParam = params.get('demo') === 'true'
+    const modeParam = params.get('mode')
+    const urgency = params.get('urgency')
+    const passengers = Number(params.get('passengers')) || 1
+
+    if (demoParam) setIsDemoMode(true)
+    if (modeParam === 'tatkal' || urgency === 'Emergency') {
+      setManualMode('tatkal')
+    } else if (modeParam === 'pnr') {
+      setShowPnrModal(true)
+    }
+
+    const isTonight = urgency === 'Tonight' || params.get('urgent') === '12h'
+    const resolvedTransport = ['Train', 'Bus', 'Flight'].includes(requestedMode) ? requestedMode : 'Train'
+
+    let updatedFields = null
+    if (from || to || date || ['Train', 'Bus', 'Flight'].includes(requestedMode) || isTonight) {
+      updatedFields = {
         ...(from ? { from } : {}),
         ...(to ? { to } : {}),
-        ...(date ? { date } : {}),
-        ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? { transportMode: requestedMode, routeCombo: `${requestedMode} only`, classType: getCabinOptions(requestedMode)[0] } : {})
-      }))
+        ...(date ? { date } : isTonight ? { date: localDateIso() } : {}),
+        ...(isTonight ? { urgency: 'Tonight' } : urgency ? { urgency } : {}),
+        ...(['Train', 'Bus', 'Flight'].includes(requestedMode) ? { transportMode: requestedMode, routeCombo: `${requestedMode} only`, classType: getCabinOptions(requestedMode)[0] } : {}),
+        ...(passengers ? { passengers } : {})
+      }
+      setPlan((old) => ({ ...old, ...updatedFields }))
+    }
+
+    // Auto-trigger search if both from and to are present in URL params (C-08)
+    if (from.trim() && to.trim()) {
+      const searchKey = `${from.trim()}|${to.trim()}|${date || (isTonight ? localDateIso() : basePlan.date)}|${resolvedTransport}|${urgency || 'Normal'}`
+      if (lastSearchedParamsRef.current !== searchKey) {
+        lastSearchedParamsRef.current = searchKey
+        const searchPlan = {
+          ...basePlan,
+          ...(updatedFields || {}),
+          from: from.trim(),
+          to: to.trim(),
+          date: date || (isTonight ? localDateIso() : basePlan.date),
+          transportMode: resolvedTransport,
+          urgency: isTonight ? 'Tonight' : (urgency || 'Normal'),
+          passengers
+        }
+        setResultsOpen(true)
+        runLiveSearch(searchPlan, { announce: true })
+      }
     }
   }, [location.search])
 
@@ -166,10 +241,14 @@ export default function Planner({ status, toast, language = 'en' }) {
   }, [pendingVoiceAction])
 
   useEffect(() => {
+    const currentKey = `${plan.from?.trim() || ''}|${plan.to?.trim() || ''}|${plan.date || ''}|${plan.transportMode || 'Train'}|${plan.urgency || 'Normal'}`
+    if (lastSearchedParamsRef.current && currentKey === lastSearchedParamsRef.current) {
+      return
+    }
     setLiveResults([])
     setLiveStatus({ loading: false, mode: 'idle', message: '' })
     setResultsOpen(false)
-  }, [plan.transportMode, plan.from, plan.to, plan.date, plan.airline])
+  }, [plan.transportMode, plan.from, plan.to, plan.date, plan.airline, plan.urgency])
 
   useEffect(() => {
     try {
@@ -206,8 +285,19 @@ export default function Planner({ status, toast, language = 'en' }) {
       toast('Enter From and To before opening ticket booking.')
       return
     }
-    setBookingPlan(nextPlan)
-    setBookingOpen(true)
+    const transport = nextPlan.transportMode || 'Train'
+    const link = getProviderDeepLink({
+      transport,
+      from: nextPlan.from,
+      to: nextPlan.to,
+      date: nextPlan.date,
+      serviceCode: nextPlan.selectedService?.code,
+      serviceName: nextPlan.selectedService?.serviceName || nextPlan.selectedServiceName
+    })
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official booking portal (${transport}). Direct booking on operator site.`)
   }
 
   function openBackupBooking(combo, leg = null) {
@@ -216,15 +306,18 @@ export default function Planner({ status, toast, language = 'en' }) {
       return
     }
     const transportFromLeg = leg?.mode || enrichedPlan.transportMode
-    setBookingPlan({
-      ...enrichedPlan,
-      transportMode: transportFromLeg,
-      routeCombo: combo?.label || enrichedPlan.routeCombo,
-      selectedBackup: combo,
-      selectedService: leg ? { ...leg, service: leg.service, code: leg.code } : undefined,
-      selectedProvider: leg ? `Backup leg ${leg.leg}` : 'Local backup recommendation'
+    const link = getProviderDeepLink({
+      transport: transportFromLeg,
+      from: leg?.from || enrichedPlan.from,
+      to: leg?.to || enrichedPlan.to,
+      date: enrichedPlan.date,
+      serviceCode: leg?.code,
+      serviceName: leg?.service
     })
-    setBookingOpen(true)
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official portal for backup leg (${transportFromLeg}).`)
   }
 
   function openServiceBooking(service, groupKey) {
@@ -235,14 +328,19 @@ export default function Planner({ status, toast, language = 'en' }) {
     const transportFromGroup = groupKey === 'flights' ? 'Flight' : groupKey === 'buses' ? 'Bus' : 'Train'
     const selected = selectedServicePatch(service, transportFromGroup, 'Planning result')
     setPlan((current) => ({ ...current, ...selected, transportMode: transportFromGroup, routeCombo: `${transportFromGroup} only` }))
-    setBookingPlan({
-      ...enrichedPlan,
-      ...selected,
-      transportMode: transportFromGroup,
-      routeCombo: `${transportFromGroup} only`
+    const link = getProviderDeepLink({
+      transport: transportFromGroup,
+      from: enrichedPlan.from,
+      to: enrichedPlan.to,
+      date: enrichedPlan.date,
+      serviceCode: selected.selectedServiceCode,
+      serviceName: selected.selectedServiceName
     })
     setResultsOpen(false)
-    setBookingOpen(true)
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official portal for ${selected.selectedServiceName || transportFromGroup}.`)
   }
 
   async function runLiveSearch(nextPlan, { announce = true } = {}) {
@@ -281,19 +379,25 @@ export default function Planner({ status, toast, language = 'en' }) {
   }
 
   async function handleLiveSearch() {
+    const currentKey = `${enrichedPlan.from?.trim() || ''}|${enrichedPlan.to?.trim() || ''}|${enrichedPlan.date || ''}|${enrichedPlan.transportMode || 'Train'}|${enrichedPlan.urgency || 'Normal'}`
+    lastSearchedParamsRef.current = currentKey
     setResultsOpen(true)
     return runLiveSearch(enrichedPlan)
   }
 
   async function handleTatkalLiveSearch() {
-    return runLiveSearch({
+    const tatkalPlan = {
       ...enrichedPlan,
       transportMode: 'Train',
       routeCombo: 'Train only',
       ticketType: 'Tatkal / Emergency',
       quota: 'Tatkal / Emergency',
       urgency: 'Emergency'
-    })
+    }
+    const currentKey = `${tatkalPlan.from?.trim() || ''}|${tatkalPlan.to?.trim() || ''}|${tatkalPlan.date || ''}|Train|Emergency`
+    lastSearchedParamsRef.current = currentKey
+    setResultsOpen(true)
+    return runLiveSearch(tatkalPlan)
   }
 
   async function handleAssistantPlanApplied(nextPlan) {
@@ -301,14 +405,24 @@ export default function Planner({ status, toast, language = 'en' }) {
   }
 
   function openLiveResultBooking(item) {
+    const transport = enrichedPlan.transportMode || 'Train'
     const selected = selectedServicePatch(
       item,
-      enrichedPlan.transportMode || 'Train',
+      transport,
       liveStatus.mode === 'live' ? 'Live API result' : 'Provider status'
     )
-    setPlan((current) => ({ ...current, ...selected }))
-    setBookingPlan({ ...enrichedPlan, ...selected })
-    setBookingOpen(true)
+    const link = getProviderDeepLink({
+      transport,
+      from: item.from || enrichedPlan.from,
+      to: item.to || enrichedPlan.to,
+      date: enrichedPlan.date,
+      serviceCode: selected.selectedServiceCode,
+      serviceName: selected.selectedServiceName
+    })
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+    toast(`Opening official portal for ${selected.selectedServiceName || transport}.`)
   }
 
   function saveLiveResult(item) {
@@ -359,38 +473,120 @@ export default function Planner({ status, toast, language = 'en' }) {
       <section className="flex flex-col items-stretch justify-between gap-5 lg:flex-row lg:items-end pb-6 border-b border-slate-200">
         <div>
           <span className="badge">Network: {(forcedOffline || forcedLowSignal) ? 'automatic low-network' : 'online'}</span>
-          <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl md:text-5xl">Journey Planner</h1>
-          <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600">Plan train, flight and bus journeys with verified provider schedules and smart split-routing alternatives.</p>
+          <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+            {manualMode === 'tatkal' || manualMode === 'emergency' ? 'Tatkal Desk' : 'Journey Planner'}
+          </h1>
+          <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600">
+            {manualMode === 'tatkal' || manualMode === 'emergency'
+              ? 'Dual-window countdown, verified Tatkal Quota availability, and local passenger preparation.'
+              : 'Plan train, flight and bus journeys with verified provider schedules and smart split-routing alternatives.'}
+          </p>
         </div>
-        <div className="planner-mode-tabs bg-white border border-slate-200 shadow-sm grid grid-cols-2 gap-1.5 rounded-2xl p-1.5">
-          {[
-            ['normal', 'Normal tickets'],
-            ['emergency', 'Tatkal emergency']
-          ].map(([value, label]) => {
-            const active = manualMode === value
-            const emergencyTab = value === 'emergency'
-            return (
-              <button
-                key={value}
-                type="button"
-                className={`min-h-11 rounded-xl px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
-                  active
-                    ? emergencyTab
-                      ? 'bg-red-600 text-white shadow-sm'
-                      : 'bg-sky-700 text-white shadow-sm'
-                    : emergencyTab
-                      ? 'border border-red-200 bg-red-50 text-red-700 hover:bg-red-100'
-                      : 'text-slate-600 hover:bg-slate-100'
-                }`}
-                onClick={() => !(forcedOffline || forcedLowSignal) && setManualMode(value)}
-                disabled={forcedOffline || forcedLowSignal}
-              >
-                {label}
-              </button>
-            )
-          })}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto">
+          <button
+            type="button"
+            data-testid="planner-pnr-status-btn"
+            onClick={() => setShowPnrModal(true)}
+            className="flex items-center justify-center gap-1.5 min-h-[44px] px-3.5 py-2.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs sm:text-sm font-bold transition shadow-xs w-full sm:w-auto"
+          >
+            <Ticket size={16} className="text-sky-600" />
+            <span>Check PNR Status</span>
+          </button>
+
+          <div className="planner-mode-tabs bg-white border border-slate-200 shadow-sm grid grid-cols-2 gap-1.5 rounded-2xl p-1.5 w-full sm:w-auto">
+            {[
+              ['normal', 'Route Finder'],
+              ['tatkal', 'Tatkal Desk']
+            ].map(([value, label]) => {
+              const active = manualMode === value || (value === 'tatkal' && manualMode === 'emergency')
+              const isTatkalTab = value === 'tatkal'
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  data-testid={`planner-tab-${value}`}
+                  className={`min-h-[44px] rounded-lg px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
+                    active
+                      ? isTatkalTab
+                        ? 'bg-amber-600 text-white shadow-sm'
+                        : 'bg-sky-700 text-white shadow-sm'
+                      : isTatkalTab
+                        ? 'border border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                        : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                  onClick={() => !(forcedOffline || forcedLowSignal) && setManualMode(value)}
+                  disabled={forcedOffline || forcedLowSignal}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </section>
+
+      {/* Urgent Departure Mode Active Banner (Master Spec Section 8) */}
+      {plan.urgency === 'Tonight' && manualMode !== 'tatkal' && (
+        <div
+          data-testid="urgent-tonight-banner"
+          className="mt-6 rounded-2xl border-2 border-amber-300 bg-amber-50/90 p-4 text-amber-950 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0">
+              <Clock size={20} />
+            </div>
+            <div>
+              <div className="text-sm font-black text-amber-950 flex items-center gap-2">
+                <span>Urgent Departure Preset Active (12h)</span>
+                <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">
+                  DEPART TONIGHT
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                Prioritizing multimodal recovery routes departing within the next 12 hours from current time.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setPlan((p) => ({ ...p, urgency: 'Normal' }))}
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-amber-300 hover:bg-amber-100 text-amber-900 transition shrink-0"
+          >
+            Reset to All Departures
+          </button>
+        </div>
+      )}
+
+      {isDemoMode && (
+        <div
+          data-testid="demo-mode-banner"
+          className="mt-6 rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0">
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <div className="text-sm font-black text-amber-950 flex items-center gap-2">
+                <span>Demo scenario: illustrative availability</span>
+                <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">
+                  DEMO MODE
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                Timetable schedules and junction transfers are real computed facts from the canonical graph. Seat availability statuses are illustrative for demonstration purposes.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsDemoMode(false)}
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-amber-300 hover:bg-amber-100 text-amber-900 transition shrink-0"
+          >
+            Exit Demo Mode
+          </button>
+        </div>
+      )}
 
       {(forcedOffline || forcedLowSignal) && (
         <div className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-5 text-red-900">
@@ -400,7 +596,7 @@ export default function Planner({ status, toast, language = 'en' }) {
       )}
 
       <section className="mt-6">
-        {mode === 'emergency' ? (
+        {mode === 'tatkal' || mode === 'emergency' ? (
           <EmergencyTatkalPlanner
             plan={enrichedPlan}
             update={update}
@@ -416,15 +612,10 @@ export default function Planner({ status, toast, language = 'en' }) {
         ) : mode === 'low-network' ? (
           <LowNetworkPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onBookService={openServiceBooking} toast={toast} status={status} />
         ) : (
-          <NormalPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onFindTicket={handleLiveSearch} onOpenLiveResults={() => setResultsOpen(true)} onBookBackup={openBackupBooking} liveStatus={liveStatus} toast={toast} />
+          <NormalPlanner plan={enrichedPlan} update={update} onBook={() => openBooking()} onFindTicket={handleLiveSearch} onOpenLiveResults={() => setResultsOpen(true)} onBookBackup={openBackupBooking} liveStatus={liveStatus} resultsOpen={resultsOpen} toast={toast} />
         )}
       </section>
 
-      <div className="mt-12">
-        <MasterTrustPanel compact />
-      </div>
-
-      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} plan={bookingPlan || enrichedPlan} mode={mode} onSaved={handleBookingSaved} />
       <LiveResultsPanel
         open={resultsOpen}
         onClose={() => setResultsOpen(false)}
@@ -435,9 +626,17 @@ export default function Planner({ status, toast, language = 'en' }) {
         onBookResult={openLiveResultBooking}
         onSaveResult={saveLiveResult}
         onBookBackup={openBackupBooking}
-        allowBackup={manualMode !== 'emergency'}
+        allowBackup={manualMode !== 'tatkal' && manualMode !== 'emergency'}
       />
-      <SmartAssistant plan={enrichedPlan} update={update} setManualMode={setManualMode} onPlanApplied={handleAssistantPlanApplied} toast={toast} language={language} />
+
+      <div className="mt-12">
+        <MasterTrustPanel compact />
+      </div>
+
+      <PnrPredictorModal
+        open={showPnrModal}
+        onClose={() => setShowPnrModal(false)}
+      />
     </main>
   )
 }
