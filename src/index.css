@@ -9,7 +9,7 @@
 
 :root {
   color-scheme: light;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Nirmala UI", "Noto Sans Devanagari", "Noto Sans Telugu", "Helvetica Neue", Arial, sans-serif;
   
   /* Core Brand & Travel Palette */
   --tm-bg: #f8fafc;            /* Slate 50: Clean, light, calm background */
@@ -48,6 +48,46 @@
   --tm-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
   --tm-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
   --tm-shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.1), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+}
+
+html[lang="te"] body {
+  font-family: "Nirmala UI", "Noto Sans Telugu", "Gautami", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="hi"] body {
+  font-family: "Nirmala UI", "Noto Sans Devanagari", "Mangal", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="ta"] body {
+  font-family: "Nirmala UI", "Noto Sans Tamil", "Latha", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="kn"] body {
+  font-family: "Nirmala UI", "Noto Sans Kannada", "Tunga", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="ml"] body {
+  font-family: "Nirmala UI", "Noto Sans Malayalam", "Kartika", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="mr"] body {
+  font-family: "Nirmala UI", "Noto Sans Devanagari", "Mangal", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="bn"] body {
+  font-family: "Nirmala UI", "Noto Sans Bengali", "Vrinda", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="gu"] body {
+  font-family: "Nirmala UI", "Noto Sans Gujarati", "Shruti", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="pa"] body {
+  font-family: "Nirmala UI", "Noto Sans Gurmukhi", "Raavi", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[lang="ur"] body {
+  font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Segoe UI", Tahoma, sans-serif;
 }
 
 /* Base Reset & Overflow Guards */

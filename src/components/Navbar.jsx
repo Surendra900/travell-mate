@@ -98,6 +98,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           ))}
 
           <div className="pt-3 mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100">
+            <LanguageSelector language={language} onChange={(lang) => { onLanguageChange(lang); setOpen(false) }} />
             <button
               type="button"
               onClick={() => {

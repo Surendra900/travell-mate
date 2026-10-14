@@ -42,7 +42,13 @@ function readCache(language) {
     const value = JSON.parse(localStorage.getItem(storageKey(language)) || '{}')
     const local = value && typeof value === 'object' && !Array.isArray(value) ? value : {}
     const offline = OFFLINE_UI_TRANSLATIONS?.[language] || {}
-    return { ...offline, ...local }
+    const merged = { ...offline, ...local }
+    for (const [k, v] of Object.entries(offline)) {
+      if (!merged[k] || merged[k] === k) {
+        merged[k] = v
+      }
+    }
+    return merged
   } catch {
     return OFFLINE_UI_TRANSLATIONS?.[language] || {}
   }
@@ -225,6 +231,8 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
       return { targets, strings: Array.from(strings) }
     }
 
+    const inFlightStrings = new Set()
+
     function renderTargets(targets, dictionary) {
       if (runIdRef.current !== runId) return
       translating = true
@@ -232,7 +240,7 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
       try {
         for (const target of targets) {
           if (!target.node?.isConnected) continue
-          const translated = language === 'en' ? target.source : dictionary[target.source]
+          const translated = language === 'en' ? target.source : (dictionary[target.source] || target.source)
           if (!translated) continue
 
           if (target.type === 'text') {
@@ -280,20 +288,34 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
         return
       }
 
-      const missing = strings.filter((text) => !cache[text])
+      // 1. Immediately apply existing offline and cached translations
+      renderTargets(targets, cache)
+
+      const missing = strings.filter((text) => !cache[text] && !inFlightStrings.has(text))
+      if (!missing.length) {
+        const untranslated = strings.some((text) => !cache[text])
+        setState(untranslated ? 'partial' : 'idle')
+        return
+      }
+
       let hadFailure = false
       for (const batch of batchesFor(missing)) {
         if (runIdRef.current !== runId) return
+        for (const text of batch) inFlightStrings.add(text)
         try {
           const received = await requestWithRetry(language, batch, controller.signal)
           if (runIdRef.current !== runId) return
           Object.assign(cache, received)
           writeCache(language, cache)
+          // Progressively apply newly arrived translations
+          renderTargets(targets, cache)
         } catch (error) {
           if (error?.name === 'AbortError') return
           hadFailure = true
           console.warn('TravelMate full-page translation unavailable:', error.message)
           break
+        } finally {
+          for (const text of batch) inFlightStrings.delete(text)
         }
       }
 
@@ -310,8 +332,15 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
       })
       if (!relevant) return
       clearTimeout(timer)
-      timer = window.setTimeout(() => translateRoots(false), 180)
+      timer = window.setTimeout(() => translateRoots(false), 60)
     })
+
+    const handleNavigation = () => {
+      if (runIdRef.current === runId) {
+        translateRoots(false)
+      }
+    }
+    window.addEventListener('popstate', handleNavigation)
 
     translateRoots(true)
     observer.observe(document.documentElement, {
@@ -326,6 +355,7 @@ export default function GlobalTranslationLayer({ language = 'en' }) {
       controller.abort()
       clearTimeout(timer)
       observer.disconnect()
+      window.removeEventListener('popstate', handleNavigation)
     }
   }, [language])
 

@@ -435,7 +435,7 @@ export default function LiveResultsPanel({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-extrabold text-slate-900">
-                  Direct {transport} Services ({results.length})
+                  <span>{transport === 'Flight' ? 'Direct Flight Services' : transport === 'Bus' ? 'Direct Bus Services' : 'Direct Train Services'}</span> ({results.length})
                 </h3>
                 <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
               </div>
