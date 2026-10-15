@@ -41,7 +41,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
       if (e.key === 'Escape') setOpen(false)
     }
 
-    const mql = window.matchMedia('(min-width: 768px)')
+    const mql = window.matchMedia('(min-width: 1024px)')
     function handleMediaChange(e) {
       if (e.matches) setOpen(false)
     }
@@ -77,7 +77,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <span className="font-extrabold text-slate-900 tracking-tight shrink-0" title="TravelMate">TravelMate</span>
         </NavLink>
 
-        <nav className="tm-nav-links hidden md:grid md:grid-cols-4 items-center gap-1.5 lg:max-w-4xl" aria-label="Primary navigation">
+        <nav className="tm-nav-links hidden lg:grid lg:grid-cols-4 items-center gap-1.5 lg:max-w-3xl" aria-label="Primary navigation">
           {nav.map(({ to, label, icon: Icon }) => {
             const active = isItemActive(to)
             return (
@@ -86,7 +86,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
                 to={to}
                 aria-current={active ? 'page' : null}
                 className={
-                  `tm-nav-link px-3.5 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition ${
+                  `tm-nav-link px-3 py-2 rounded-md text-xs sm:text-sm font-bold flex items-center gap-1.5 transition whitespace-nowrap ${
                     active
                       ? 'bg-sky-50 text-sky-700 font-extrabold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -104,7 +104,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <button
             type="button"
             onClick={onOpenDemoTour}
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
+            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
             title="See a Demo scenario"
             aria-label="See a Demo"
             data-testid="navbar-demo-tour-btn"
@@ -126,16 +126,17 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
 
           <LanguageSelector language={language} onChange={onLanguageChange} compact />
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             <AccountMenu authEnabled={authEnabled} onOpenProfile={onOpenProfile} />
           </div>
 
           <button
-            className="tm-menu md:hidden flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-slate-700 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-md"
+            className="tm-menu lg:hidden flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-slate-700 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-md"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={open}
             aria-controls="mobile-navigation"
+            data-testid="navbar-mobile-toggle-btn"
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
