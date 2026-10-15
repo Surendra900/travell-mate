@@ -17,7 +17,6 @@ import { getOfflinePack, getSavedPlans, saveOfflinePack } from '../utils/storage
 import { warmOfflineCache } from '../utils/offlineMode'
 import { localDateIso } from '../utils/date'
 import { getCabinOptions, getRouteInputLabels, transportModes, transportPlaces } from '../data/transportData'
-import ServiceOptionsBoard from '../components/ServiceOptionsBoard'
 
 function Field({ label, children }) {
   return (
@@ -29,10 +28,6 @@ function Field({ label, children }) {
 }
 
 const cityOptions = Array.from(new Set(transportPlaces.map((item) => item.city).filter(Boolean)))
-
-function groupKeyFor(mode = 'Train') {
-  return mode === 'Flight' ? 'flights' : mode === 'Bus' ? 'buses' : 'trains'
-}
 
 function serviceForSaved(saved) {
   return saved?.selectedService || null
@@ -130,7 +125,6 @@ export default function LowNetworkPlanner({ plan, update, onBook, onBookService,
   const [offlinePack, setOfflinePack] = useState(() => getOfflinePack())
   const [syncing, setSyncing] = useState(false)
   const lowPlan = { ...plan, transportMode: selectedMode, routeCombo: `${selectedMode} only`, classType: plan.classType || getCabinOptions(selectedMode)[0] }
-  const focusMode = groupKeyFor(selectedMode)
 
   const isOffline = status?.online === false
   const isSlow = Boolean(status?.isSlowNetwork)
@@ -301,10 +295,9 @@ export default function LowNetworkPlanner({ plan, update, onBook, onBookService,
           </p>
         </div>
 
-        {/* Right Column: Saved Snapshot, Service Options, Offline Features */}
+        {/* Right Column: Saved Snapshot, Offline Features */}
         <div className="grid gap-6">
           <SavedOfflineSnapshot pack={offlinePack} />
-          <ServiceOptionsBoard plan={lowPlan} compact focusMode={focusMode} onBookService={onBookService} />
 
           <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
             <h3 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">What stays available offline</h3>
