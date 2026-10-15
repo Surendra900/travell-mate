@@ -34,12 +34,13 @@ const translationSchema = {
 export default async function handler(req, res) {
   if (!await prepareApiRequest(req, res, { methods: ['POST'], rateLimit: 30, useGlobalAuth: false })) return
 
+  let languageCode = 'en'
+  let unique = []
   try {
     const body = await readJsonBody(req, 120_000)
-    const languageCode = Object.hasOwn(languageNames, body.language) ? body.language : 'en'
+    languageCode = Object.hasOwn(languageNames, body?.language) ? body.language : 'en'
     if (languageCode === 'en') return res.status(200).json({ ok: true, language: 'en', translations: {} })
 
-    const unique = []
     const seen = new Set()
     let totalCharacters = 0
     for (const value of Array.isArray(body.strings) ? body.strings : []) {
