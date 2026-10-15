@@ -605,7 +605,7 @@ export default function LiveResultsPanel({
                       />
                     ))}
                   </div>
-                ) : (
+                ) : !status.error ? (
                   <div data-testid="empty-direct-results" className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
                     <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
                       <Sparkles size={24} />
@@ -617,7 +617,7 @@ export default function LiveResultsPanel({
                       No direct {transportPlural} found. {displayedMultimodalRoutes.length > 0 ? `TravelMate found ${displayedMultimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
                     </p>
                   </div>
-                )}
+                ) : null}
 
                 <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-xs text-slate-600">
                   <b className="text-slate-900">Demo-booking notice:</b> Choose one provider row and use "Start demo booking" to attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready.
