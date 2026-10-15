@@ -129,7 +129,7 @@ export default function Planner({ status, toast, language = 'en' }) {
       setManualMode('emergency')
     } else if (modeParam === 'pnr') {
       setShowPnrModal(true)
-    } else if (!modeParam && !urgency) {
+    } else {
       setManualMode('normal')
     }
 
