@@ -3,6 +3,17 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
 test('C-08 Search Auto-Trigger Suite', async (t) => {
+  try {
+    const resp = await fetch('http://127.0.0.1:5173/').catch(() => null);
+    if (!resp) {
+      t.skip('Dev server not running at http://127.0.0.1:5173/ - skipping browser interaction tests');
+      return;
+    }
+  } catch {
+    t.skip('Dev server not running at http://127.0.0.1:5173/ - skipping browser interaction tests');
+    return;
+  }
+
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 

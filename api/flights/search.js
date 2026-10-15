@@ -148,7 +148,7 @@ async function requestAviationstack(baseUrl, params) {
 }
 
 async function requestSkyscanner(host, key, origin, destination, date) {
-  const today = new Date().toISOString().slice(0, 10)
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
   const searchDate = (date && date >= today) ? date : today
   const url = `https://${host}/api/v1/search?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&date=${encodeURIComponent(searchDate)}&currency=INR&market=IN&locale=en-GB`
   return fetchJsonWithTimeout(

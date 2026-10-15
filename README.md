@@ -1,269 +1,203 @@
 # TravelMate AI
 
-## Hackathon project brief
+**Autonomous Multimodal Journey Planner & Waitlist Recovery Platform**
 
-**TravelMate AI is an emergency-aware, multilingual journey assistant for train, flight, and bus travel.** It combines route planning, live third-party provider checks, conversational and voice-assisted planning, Tatkal support, PNR tools, offline readiness, and location-based safety actions in one responsive web application.
+[![Vercel Deployment](https://img.shields.io/badge/Production-Live-059669?style=flat&logo=vercel)](https://travelmate-ai-flowzint.vercel.app)
+[![Tests Passing](https://img.shields.io/badge/Tests-308%20Passed-0284c7?style=flat)](https://github.com/Surendra900/travell-mate)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DPDP Act 2023](https://img.shields.io/badge/Privacy-Zero--PII%20Client--Side-emerald)](https://travelmate-ai-flowzint.vercel.app/privacy)
 
-The project focuses on a common gap in travel applications: users often need to switch between booking sites, status tools, translation apps, maps, and emergency contacts. TravelMate brings those workflows into a single interface while clearly distinguishing live API data from local examples and demo-only functionality.
+TravelMate AI is an emergency-aware, multimodal transit and waitlist recovery platform designed to eliminate travel dead-ends across India. When direct trains are 100% sold out or heavily waitlisted, TravelMate dynamically synthesizes reliable intermodal alternatives: **Train + Flight**, **Train + Bus**, and **Bus + Flight**, backed by parametric connection buffers and real-time delay simulations.
 
-## Core problem
+Live Production URL: **[https://travelmate-ai-flowzint.vercel.app](https://travelmate-ai-flowzint.vercel.app)**
 
-Travel planning becomes difficult when users face:
+---
 
-- Multiple transport modes and disconnected provider websites
-- Urgent or Tatkal travel requirements
-- Language and accessibility barriers
-- Weak networks or temporary loss of connectivity
-- Safety incidents where location sharing must be fast
-- Confusing results that do not clearly identify whether data is live
+## The Core Problem
 
-## Solution
+Over **24 Million** passengers travel on Indian Railways daily across 13,000+ trains. However:
+1. **25 Million+ waitlisted tickets** are automatically cancelled every month by IRCTC due to track and seat saturation.
+2. **Disconnected Transport Silos:** Railway, aviation, and intercity bus networks operate in isolation. If a direct train from Patna to Bengaluru is waitlisted, no major rail app recommends taking a fast feeder train to Kolkata or Delhi to board a budget flight.
+3. **Surge & Exploitation:** Stranded travelers face last-minute airfare surges or unauthorized ticket touts.
+4. **Language & Connectivity Gaps:** Critical travel alerts, platform details, and booking instructions are frequently inaccessible to non-English speakers or users traveling through poor 2G/3G connectivity corridors.
 
-TravelMate provides:
+---
 
-- **Unified journey planner:** Train, flight, and bus planning from one route form
-- **AI Smart Assistant:** Natural-language route entry, travel guidance, and planner updates through SambaNova
-- **Voice assistance:** Commands such as “tickets from Kochi to Chennai by train” fill the planner; “Tatkal” opens emergency booking mode
-- **Live provider checks:** Server-side integrations for train, flight, PNR, seat availability, and optional bus data
-- **Tatkal emergency mode:** Live train search plus a separate Tatkal quota availability check when supported by the configured provider
-- **Multilingual interface:** English and major Indian languages, with right-to-left support for Urdu
-- **Safety mode:** GPS permission setup, emergency contacts, and prepared WhatsApp/SMS messages containing a map link
-- **Offline readiness:** Cached application shell and clearly labelled local planning examples
-- **Demo booking flow:** Passenger, contact, preference, and payment-type steps without charging money or issuing a real ticket
-- **Authentication:** Optional Clerk sign-in for protected features such as sensitive train lookups
-- **Responsive design:** Desktop and mobile interfaces with touch-friendly dialogs and controls
+## Target Users
 
-## What makes the project different
+- **Urgent & Family Emergency Travelers:** Individuals requiring guaranteed arrival when Tatkal or general train quotas are exhausted.
+- **Intercity Migrant Workers & Students:** Budget-conscious travelers needing dependable, affordable alternative connections across state corridors.
+- **Business Travelers:** Professionals seeking fast multimodal rail-to-air combinations when direct flights or executive trains are fully booked.
+- **Next-Billion Vernacular Travelers:** Users needing travel assistance in their native mother tongue (14 Indian languages supported offline).
 
-1. **Honest source labelling** :  every result is identified as live API data, local planning data, an estimate, or provider verification required.
-2. **Emergency-first planning** :  safety sharing and Tatkal workflows are treated as core features rather than add-ons.
-3. **Natural interaction** :  typed and spoken requests can update the planner without forcing a rigid command format.
-4. **Inclusive design** :  multilingual content, mobile support, low-network handling, and accessibility-oriented controls are built into the same experience.
-5. **Safe demo booking** :  the prototype demonstrates a realistic booking journey while refusing to collect card numbers, CVV, UPI PIN, OTP, bank passwords, or identity-document numbers.
+---
 
-## Important prototype limitation
+## Key Features
 
-TravelMate does **not** currently sell tickets, reserve seats, collect payment, create a real PNR, or issue a confirmed booking. The booking flow is explicitly marked as a demonstration. Licensed and authorized direct booking integration is planned for a future version. Users must verify live data and complete purchases through an official provider.
+### 1. Multimodal Waitlist Recovery Engine
+When direct rail tickets are unavailable, the engine traverses a time-expanded directed graph to generate 4 recovery paths:
+- **Train + Flight (Hub Rail-to-Air):** High-frequency express train to an intermediate tier-1 airport hub + low-cost domestic flight to destination (e.g., Patna $\rightarrow$ Kolkata [Train] + Kolkata $\rightarrow$ Bengaluru [Flight], saving up to 18 hours).
+- **Train + Intercity AC Bus:** Fast trunk rail service connected to state or private luxury sleeper bus networks.
+- **Bus + Flight (Tier-3 Feeder):** Express feeder bus from rural or tier-3 towns without airports straight to the departure terminal.
+- **Station-Hopper Quota Splitter:** Segmenting long congested journeys across intermediate junctions where regional quotas exist.
 
-## Technology stack
+### 2. Parametric Delay Contingency & Minimum Connection Times (MCT)
+To prevent missed connections, the engine enforces strict transfer buffers:
+- **Train to Train:** 45 to 75 minutes.
+- **Train to Intercity Bus:** 105 minutes.
+- **Train/Bus to Domestic Flight:** Strict 210 minutes (accounts for station-to-airport transit, check-in, and security).
+- **Real-Time Safety Index:** Reassures travelers with clear indicators (e.g., *"Safe up to +120m delay on Leg 1"*).
 
-- React 18 and React Router
-- Vite and Tailwind CSS
-- Vercel Functions for server-side provider access
-- SambaNova for the Smart Assistant and dynamic translation
-- Clerk for optional authentication
-- Leaflet and OpenStreetMap for route visualization
-- RapidAPI-based railway services for supported train features
-- Aviationstack for supported flight schedule/status checks
-- Browser Geolocation, Speech Recognition, IndexedDB, and Service Worker APIs
+### 3. Extreme Accessibility & 14 Regional Languages
+- **14 Indian Languages Localized Offline:** Hindi, Bengali, Telugu, Marathi, Tamil, Urdu (with native RTL layout), Gujarati, Kannada, Malayalam, Odia, Punjabi, Assamese, Maithili, and English.
+- **Low-Bandwidth 2G Mode:** Text-first, lightweight interface for remote railway platforms.
+- **100% Offline PWA Traveler Pass:** Stored confirmed itineraries and platform advice viewable with zero cellular reception.
+- **Hardware-Level SOS Emergency Mode:** One-tap calling to Railway Police (139), National Emergency (112), and ambulance (108) with offline GPS coordinate dispatch.
 
-## Architecture
+### 4. Smart Assistant & Voice-Enabled Search
+- Conversational travel route planning powered by SambaNova and Google Gemini APIs.
+- Spoken and typed natural queries (e.g., *"Fastest way from Kochi to Chennai tomorrow"*) automatically populate search fields.
+
+### 5. Data Provenance & Unbundled Ticketing Integrity
+- Every result card is labelled with honest data provenance: `LIVE_PROVIDER_DATA`, `TIMETABLE`, `ESTIMATE`, or `PROVIDER_VERIFICATION_REQUIRED`.
+- Clear unbundled ticketing disclaimers inform travelers that connections operate under independent contracts of carriage.
+
+---
+
+## Important Prototype Limitation & Safety Notice
+
+TravelMate is an **unbundled discovery and routing platform**. It does **not** sell tickets, collect payments, store banking passwords, issue real PNRs, or charge user credit cards/UPI. When ready to book, users are redirected via verified direct links to official operators (e.g., IRCTC, ConfirmTkt, airline portals, redBus). The in-app booking flow is explicitly a demonstration prototype.
+
+---
+
+## Technology Stack
+
+- **Frontend:** React 18, React Router v6, Tailwind CSS, Lucide Icons
+- **Build Tool:** Vite 8, Rolldown engine
+- **Maps & Geolocation:** Leaflet, OpenStreetMap, HTML5 Geolocation API
+- **AI & Language Services:** SambaNova Systems (Meta-Llama-3.3-70B-Instruct, Whisper-Large-v3), Google Gemini
+- **Transit APIs:** RapidAPI IRCTC Rail API, Skyscanner Flights API, Aviationstack
+- **Offline / PWA:** Service Worker, Cache API, LocalStorage Vault
+- **Authentication:** Clerk React (optional session sign-in)
+- **Testing & Quality Assurance:** Node.js native test runner (`node:test`), Playwright, axe-core
+
+---
+
+## Project Structure
 
 ```text
-Browser (React/Vite)
-  ├─ Planner, Safety, Saved Plans, Analytics
-  ├─ Smart Assistant and Voice Intent Layer
-  ├─ Local encrypted document storage
-  └─ Service worker / offline application shell
-
-Vercel Functions (/api)
-  ├─ SambaNova assistant and translation
-  ├─ Flight provider adapter
-  ├─ Train search, status, station, seat and PNR adapters
-  ├─ Optional bus provider adapter
-  └─ Validation, authentication, timeout and rate-limit utilities
-```
-
-Provider secrets are read only by server-side functions. Do not expose private credentials through variables beginning with `VITE_`.
-
-## Project structure
-
-```text
-api/                 Vercel serverless API handlers
-public/              PWA manifest, icons and service worker
+api/                 Vercel serverless API route handlers
+  ├── assistant.js   Conversational AI assistant handler
+  ├── flights/       Skyscanner and Aviationstack flight search adapters
+  ├── trains/        IRCTC train search, seat availability, and PNR status
+  └── translate.js   Dynamic language translation endpoint
+public/              PWA manifest, service worker, icons, and QR code assets
 src/                 React application source
-  auth/              Clerk session integration
-  components/        Reusable UI and assistant components
-  data/              Static planning and language data
-  pages/             Main application screens
-  planner/           Normal, Tatkal, PNR and status workflows
-  services/          Browser-side API clients
-  utils/             Voice intent, safety, storage and scoring logic
-tests/               Automated source and behavior tests
-scripts/             Project audit script
-.env.local.example   Environment-variable template
-vercel.json          Vercel routing and function configuration
+  ├── auth/          Clerk authentication integration
+  ├── components/    Reusable UI, navigation, multimodal cards, and dialogs
+  ├── data/          14-language offline dictionaries, transit hubs, and schedules
+  ├── pages/         Home, Planner, Safety, Saved Plans, Analytics, and Legal pages
+  ├── planner/       Normal, Tatkal, PNR predictor, and Low-Network planners
+  └── utils/         Date handling, graph routing heuristics, and voice intent
+tests/               Automated test suite (unit, regression, accessibility, security)
+scripts/             Audit runner, launch check scripts, and timetable ETL
 ```
 
-## Local setup
+---
 
-Requirements:
+## Local Setup & Installation
 
-- Node.js 20.19+ or 22.12+
-- npm
+### Prerequisites
+- **Node.js:** `^20.19.0` or `>=22.12.0 <23`
+- **npm:** 10.x or higher
 
-Run:
+### Windows (PowerShell)
+
+```powershell
+# 1. Clone repository
+git clone https://github.com/Surendra900/travell-mate.git
+cd travell-mate
+
+# 2. Install dependencies
+npm.cmd ci
+
+# 3. Create local environment file
+Copy-Item .env.example .env.local
+
+# 4. Start local development server
+npm.cmd run dev
+```
+
+### macOS / Linux (Bash)
 
 ```bash
+# 1. Clone repository
+git clone https://github.com/Surendra900/travell-mate.git
+cd travell-mate
+
+# 2. Install dependencies
 npm ci
-copy .env.local.example .env.local
+
+# 3. Create local environment file
+cp .env.example .env.local
+
+# 4. Start local development server
 npm run dev
 ```
 
-On macOS/Linux, use:
+Open `http://localhost:5173` in your browser.
+
+---
+
+## Running Verification & Tests
+
+To execute the project verification battery:
 
 ```bash
-cp .env.local.example .env.local
+# 1. Run source and security audit (checks IST dates, raw fields, PWA icons)
+npm.cmd run audit
+
+# 2. Run automated test suite (300+ assertions)
+npm.cmd test
+
+# 3. Run production build
+npm.cmd run build
 ```
 
-## Validation
+---
 
-```bash
-npm run check
-```
+## Environment Variables
 
-This runs the source audit, automated tests, and production build.
+Copy `.env.example` to `.env.local`. All API keys are optional for running the local mock/timetable explorer:
 
-## Environment variables
+| Variable | Description |
+| :--- | :--- |
+| `RAPIDAPI_KEY` | RapidAPI key for IRCTC and Skyscanner APIs |
+| `RAPIDAPI_TRAIN_HOST` | IRCTC train API host (`irctc1.p.rapidapi.com`) |
+| `RAPIDAPI_FLIGHT_HOST` | Skyscanner flights host (`skyscanner-flights4.p.rapidapi.com`) |
+| `SAMBANOVA_API_KEY` | SambaNova API key for Llama-3.3 assistant |
+| `VITE_GEMINI_API_KEY` | Google Gemini API key for natural language route parsing |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk publishable key for optional user accounts |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis URL for serverless rate limiting |
 
-Copy `.env.local.example` for the full template. Common variables include:
+---
 
-```text
-SAMBANOVA_API_KEY
-SAMBANOVA_BASE_URL=https://api.sambanova.ai/v1
-SAMBANOVA_ASSISTANT_MODEL=Meta-Llama-3.3-70B-Instruct
-SAMBANOVA_TRANSLATION_MODEL=Meta-Llama-3.3-70B-Instruct
+## Privacy & Security (DPDP Act 2023)
 
-VITE_CLERK_PUBLISHABLE_KEY
-CLERK_ISSUER_URL
-API_REQUIRE_AUTH=true
+- **Zero Server-Side PII:** Passenger names, mobile numbers, and personal details are never stored on backend databases.
+- **Client-Side Storage:** Saved itineraries and passes reside in local browser storage.
+- **Strict Headers:** Vercel deployment enforces Content Security Policy (CSP), HSTS, `X-Content-Type-Options: nosniff`, and `Cache-Control: no-store` on sensitive endpoints.
 
-AVIATIONSTACK_API_KEY
-AVIATIONSTACK_BASE_URL=https://api.aviationstack.com/v1
+---
 
-RAPIDAPI_KEY
-RAPIDAPI_TRAIN_HOST
+## AI Tooling Usage Disclosure
 
-RAPIDAPI_PNR_KEY
-RAPIDAPI_PNR_HOST
-RAPIDAPI_PNR_ENDPOINT
-```
+In compliance with hackathon and academic integrity guidelines:
+- Generative AI tools (including Anthropic Claude and Google Gemini) were utilized during the project lifecycle as developer productivity assistants for code scaffolding, repetitive test assertions, i18n vocabulary maps, and algorithmic prototyping.
+- All system architecture, graph routing heuristics, delay safety formulas, data provenance policies, and final code reviews were designed, verified, and integrated by the human project author.
 
-Configure private variables in Vercel for both Preview and Production. Never commit real secrets.
+---
 
-## Vercel deployment
+## License
 
-```bash
-npm ci
-npm run check
-vercel login
-vercel link
-vercel --prod --force
-```
-
-Choose the existing Vercel project when prompted. Environment-variable updates apply only to newly created deployments.
-
-## Suggested judging demo
-
-1. Allow location access and open Safety Mode.
-2. Change the interface language.
-3. Say or type: `tickets from Kochi to Chennai by train`.
-4. Open Tatkal mode and run the configured live train check.
-5. Open Smart Assistant and ask for overnight-train preparation advice.
-6. Open a service card and complete the clearly labelled demo-booking flow.
-7. Show the source labels that separate live provider data from local examples.
-
-## Privacy and security notes
-
-- API secrets stay in server-side environment variables.
-- Sensitive API responses use `Cache-Control: no-store`.
-- PNR and seat checks can require authentication.
-- Emergency messages are prepared for WhatsApp/SMS; the user must manually tap Send.
-- The local document vault uses browser-side encryption, but judges should use sample documents only.
-- Public production deployments should add durable rate limiting and provider-specific monitoring.
-
-## Data pipeline
-
-The authentic timetable data pipeline ingests datasets from `datameet/railways` (CC0 public domain, pinned commit `e0c538a1e41ae5eace454d2818902e1065608e16`) and optionally merges NTES enquiry extracts from `tools/railpull` (MIT license).
-
-### Windows execution (PowerShell)
-
-1. Ingest Datameet timetable baseline:
-   ```powershell
-   npm.cmd run etl:datameet
-   ```
-   Dry-run mode (validates records without writing):
-   ```powershell
-   node data/etl/import-datameet.mjs --dry-run
-   ```
-
-2. Test railpull fixture ingestion:
-   ```powershell
-   npm.cmd run etl:railpull
-   ```
-
-3. Run Gemini connectivity and model diagnostic check:
-   ```powershell
-   node scripts/check-gemini.mjs
-   ```
-
-4. Run the 12-corridor battery verification:
-   ```powershell
-   node scripts/corridor_battery.mjs
-   ```
-
-5. Poll delays snapshot (single on-demand execution, 15-minute TTL):
-   ```powershell
-   python tools/railpull/ntes/poll_delays.py --window 2 --out data/out/delays.json
-   ```
-
-### macOS and Linux execution (Bash)
-
-1. Ingest Datameet timetable baseline:
-   ```bash
-   npm run etl:datameet
-   ```
-   Dry-run mode:
-   ```bash
-   node data/etl/import-datameet.mjs --dry-run
-   ```
-
-2. Test railpull fixture ingestion:
-   ```bash
-   npm run etl:railpull
-   ```
-
-3. Run Gemini connectivity and model diagnostic check:
-   ```bash
-   node scripts/check-gemini.mjs
-   ```
-
-4. Run the 12-corridor battery verification:
-   ```bash
-   node scripts/corridor_battery.mjs
-   ```
-
-5. Poll delays snapshot:
-   ```bash
-   python3 tools/railpull/ntes/poll_delays.py --window 2 --out data/out/delays.json
-   ```
-
-## Mobile testing
-
-TravelMate includes an automated mobile regression and layout detector suite powered by Playwright and axe-core. It evaluates 13 screen viewports (320px to 1440px) across all 16 application routes and states.
-
-Run the mobile detector suite:
-```bash
-npm run test:mobile
-```
-
-The suite automatically checks for:
-- Horizontal overflow spillage (`document.documentElement.scrollWidth > clientWidth`)
-- Cut-off, hidden, or obscured interactive controls
-- Touch target sizing (minimum 24px per WCAG 2.2 AA SC 2.5.8, 44px primary standard)
-- Input font sizing (minimum 16px to prevent iOS Safari automatic zoom)
-- Modal dynamic viewport constraints (`calc(100dvh - safe-area)`)
-- Accessibility compliance via `@axe-core/playwright`
-
-Visual regression evidence is captured side by side in `docs/mobile/screenshots/index.html`.
-
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.

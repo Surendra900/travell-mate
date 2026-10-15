@@ -77,7 +77,7 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
           <span className="font-extrabold text-slate-900 tracking-tight shrink-0" title="TravelMate">TravelMate</span>
         </NavLink>
 
-        <nav className="tm-nav-links hidden lg:grid lg:grid-cols-4 items-center gap-1.5 lg:max-w-3xl" aria-label="Primary navigation">
+        <nav className="tm-nav-links hidden lg:grid lg:grid-cols-4 items-center gap-1.5 lg:max-w-4xl" aria-label="Primary navigation">
           {nav.map(({ to, label, icon: Icon }) => {
             const active = isItemActive(to)
             return (
