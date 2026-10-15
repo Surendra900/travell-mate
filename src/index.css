@@ -765,3 +765,195 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================================
+   MOBILE RESPONSIVENESS & DYNAMIC MULTILINGUAL FONT SCALING
+   Ensures UI fits smoothly on mobile viewports. When language
+   is switched away from English (e.g. Hindi, Telugu, Tamil, etc.),
+   font sizes, paddings, and line heights are proportionally scaled
+   down to prevent text wrapping into 4-5 lines, button blowout,
+   or horizontal scrollbar issues.
+   ========================================================= */
+
+@media (max-width: 768px) {
+  /* General mobile layout fit */
+  .live-results-workspace,
+  .stitch-trust-card,
+  .multimodal-container,
+  [data-testid="waitlist-bypass-contrast"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .live-results-header {
+    padding: 0.875rem 1rem !important;
+  }
+
+  .live-results-layout {
+    padding: 1rem !important;
+  }
+
+  /* Non-English Multilingual Scaling on Mobile (<= 768px) */
+  html:not([lang="en"]) body {
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+
+  html:not([lang="en"]) h1,
+  html:not([lang="en"]) .text-4xl,
+  html:not([lang="en"]) .text-3xl {
+    font-size: 1.45rem !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.015em;
+  }
+
+  html:not([lang="en"]) h2,
+  html:not([lang="en"]) .text-2xl {
+    font-size: 1.25rem !important;
+    line-height: 1.3 !important;
+  }
+
+  html:not([lang="en"]) h3,
+  html:not([lang="en"]) .text-xl {
+    font-size: 1.05rem !important;
+    line-height: 1.35 !important;
+  }
+
+  html:not([lang="en"]) h4,
+  html:not([lang="en"]) .text-lg,
+  html:not([lang="en"]) .text-base {
+    font-size: 0.925rem !important;
+    line-height: 1.35 !important;
+  }
+
+  html:not([lang="en"]) p.text-sm,
+  html:not([lang="en"]) .text-sm {
+    font-size: 0.8125rem !important;
+    line-height: 1.42 !important;
+  }
+
+  html:not([lang="en"]) p.text-xs,
+  html:not([lang="en"]) .text-xs {
+    font-size: 0.735rem !important;
+    line-height: 1.38 !important;
+  }
+
+  html:not([lang="en"]) .btn-primary,
+  html:not([lang="en"]) .btn-secondary,
+  html:not([lang="en"]) .btn-soft {
+    font-size: 0.8125rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    min-height: 40px !important;
+  }
+
+  html:not([lang="en"]) .tm-nav-link {
+    font-size: 0.8125rem !important;
+    padding: 0.45rem 0.65rem !important;
+  }
+
+  html:not([lang="en"]) [data-testid="results-error-state"] {
+    padding: 1.15rem 1rem !important;
+  }
+
+  html:not([lang="en"]) [data-testid="results-error-state"] h4 {
+    font-size: 0.95rem !important;
+  }
+
+  html:not([lang="en"]) [data-testid="results-error-state"] p {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+  }
+
+  html:not([lang="en"]) [data-testid="statutory-split-disclosure"] {
+    font-size: 0.735rem !important;
+    line-height: 1.4 !important;
+    padding: 0.85rem !important;
+  }
+
+  html:not([lang="en"]) .stitch-trust-card {
+    padding: 1.15rem 1rem !important;
+  }
+
+  html:not([lang="en"]) .stitch-meta-pill {
+    font-size: 0.72rem !important;
+    padding: 0.25rem 0.55rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Smaller mobile screen adjustments (360px - 440px) */
+  html:not([lang="en"]) body {
+    font-size: 13.5px;
+  }
+
+  html:not([lang="en"]) h1,
+  html:not([lang="en"]) .text-4xl,
+  html:not([lang="en"]) .text-3xl {
+    font-size: 1.3rem !important;
+    line-height: 1.25 !important;
+  }
+
+  html:not([lang="en"]) h2,
+  html:not([lang="en"]) .text-2xl {
+    font-size: 1.125rem !important;
+    line-height: 1.28 !important;
+  }
+
+  html:not([lang="en"]) h3,
+  html:not([lang="en"]) .text-xl {
+    font-size: 0.975rem !important;
+    line-height: 1.3 !important;
+  }
+
+  html:not([lang="en"]) h4,
+  html:not([lang="en"]) .text-lg,
+  html:not([lang="en"]) .text-base {
+    font-size: 0.875rem !important;
+    line-height: 1.3 !important;
+  }
+
+  html:not([lang="en"]) p.text-sm,
+  html:not([lang="en"]) .text-sm {
+    font-size: 0.775rem !important;
+    line-height: 1.38 !important;
+  }
+
+  html:not([lang="en"]) p.text-xs,
+  html:not([lang="en"]) .text-xs {
+    font-size: 0.7rem !important;
+    line-height: 1.35 !important;
+  }
+
+  html:not([lang="en"]) .btn-primary,
+  html:not([lang="en"]) .btn-secondary,
+  html:not([lang="en"]) .btn-soft {
+    font-size: 0.775rem !important;
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+    min-height: 38px !important;
+  }
+
+  html:not([lang="en"]) .language-control {
+    font-size: 12px !important;
+    min-height: 34px !important;
+    padding: 0 4px !important;
+  }
+
+  html:not([lang="en"]) .language-control select {
+    font-size: 12px !important;
+    min-height: 32px !important;
+  }
+
+  html:not([lang="en"]) .live-results-header h2 {
+    font-size: 1.05rem !important;
+  }
+
+  html:not([lang="en"]) .live-results-header button {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.55rem !important;
+    min-height: 36px !important;
+  }
+}
+
