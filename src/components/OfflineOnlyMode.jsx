@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MapPinned, MessageSquareText, PhoneCall, RefreshCw, ShieldCheck, WifiOff } from 'lucide-react'
+import { MapPinned, MessageSquareText, PhoneCall, RefreshCw, ShieldCheck, WifiOff, CheckCircle2 } from 'lucide-react'
 import { getOfflinePack, getSavedPlans, saveOfflinePack } from '../utils/storage'
 import { formatEmergencyLocation, getCachedEmergencyLocation, requestEmergencyLocation } from '../utils/locationSafety'
 import { buildComboLegs, routeCombos } from '../data/transportData'
@@ -36,7 +36,6 @@ function serviceValue(service, ...keys) {
 function savedService(plan) {
   return plan?.selectedService || null
 }
-
 
 function locationSmsMessage(plan, service, location) {
   const serviceName = serviceValue(service, 'serviceName', 'service', 'trainName', 'name', 'operator')
@@ -96,81 +95,98 @@ export default function OfflineOnlyMode({ status, toast }) {
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-7 sm:py-10">
-      <section className="rounded-[2rem] border border-lime-400/25 bg-lime-400/10 p-6 shadow-glow">
-        <span className="badge border-lime-400/30 bg-lime-400/10 text-lime-100"><WifiOff size={14} /> Offline Mode Only</span>
-        <h1 className="mt-5 text-3xl font-black text-white sm:text-4xl md:text-5xl">TravelMate Offline Pack</h1>
-        <p className="mt-3 max-w-3xl text-lime-100/90">Internet is unavailable, so live search, booking checks, API refresh, maps and heavy comparison panels are hidden. Your newest saved route, exact selected service, PNR and the last successfully checked PNR status remain available.</p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <button className="btn-low inline-flex items-center gap-2" onClick={refreshPack}><RefreshCw size={18} /> Refresh local pack</button>
-          <button className="btn-primary inline-flex items-center gap-2" onClick={shareLocationBySms} disabled={sharingLocation}><MessageSquareText size={18} /> {sharingLocation ? 'Getting location…' : 'Share location by SMS'}</button>
-          <a className="btn-danger inline-flex items-center gap-2" href="tel:112"><PhoneCall size={18} /> Call 112</a>
+      <section className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-sky-200 bg-sky-50 text-sky-800">
+          <WifiOff size={13} /> Offline Mode Active
+        </span>
+        <h1 className="mt-4 text-3xl font-black text-slate-950 sm:text-4xl tracking-tight">TravelMate Offline Pack</h1>
+        <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+          Internet is unavailable, so live search, booking checks, API refresh, maps and heavy comparison panels are hidden. Your newest saved route, exact selected service, PNR and the last successfully checked PNR status remain available.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-2.5 text-sm transition shadow-2xs" onClick={refreshPack}>
+            <RefreshCw size={16} /> Refresh local pack
+          </button>
+          <button className="inline-flex items-center gap-2 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2.5 text-sm shadow-sm transition" onClick={shareLocationBySms} disabled={sharingLocation}>
+            <MessageSquareText size={16} /> {sharingLocation ? 'Getting location…' : 'Share location by SMS'}
+          </button>
+          <a className="inline-flex items-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2.5 text-sm shadow-sm transition" href="tel:112">
+            <PhoneCall size={16} /> Call 112
+          </a>
         </div>
-        <p className="mt-3 text-xs text-lime-100/75">GPS can work without internet when device location is enabled. SMS requires cellular service, and you must review and send the message from your phone.</p>
+        <p className="mt-3 text-xs text-slate-500 font-normal">
+          GPS can work without internet when device location is enabled. SMS requires cellular service, and you must review and send the message from your phone.
+        </p>
       </section>
 
       {!plan ? (
-        <section className="mt-6 rounded-3xl border border-yellow-400/25 bg-yellow-400/10 p-6 text-yellow-100">
-          <h2 className="text-2xl font-black text-white">No saved journey found</h2>
-          <p className="mt-2">When internet returns, open Planner, check live results, choose one exact provider service and use “Select & save this train” (or flight/bus). That exact service will then appear here during no-network situations.</p>
+        <section className="mt-6 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center shrink-0">
+              <ShieldCheck size={20} />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-950">No saved journey found</h2>
+          </div>
+          <p className="mt-2 text-sm text-slate-600 leading-relaxed font-normal">
+            When internet returns, open Planner, check live results, choose one exact provider service and use “Select & save this train” (or flight/bus). That exact service will then appear here during no-network situations.
+          </p>
         </section>
       ) : (
-        <section className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.9fr]">
-          <article className="low-glass rounded-3xl p-5">
+        <section className="mt-6 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+          <article className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-lime-200">Saved journey snapshot</p>
-                <h2 className="mt-2 text-3xl font-black text-white">{plan.from} to {plan.to}</h2>
-                <p className="mt-2 text-lime-100/90">Destination: {plan.to} · Journey mode: {plan.transportMode || 'Train'} · Date: {plan.date || 'Saved date'}</p>
-                <p className="mt-1 text-sm text-lime-100/85">PNR: {plan.pnrNumber || (plan.bookingStatus ? 'No real PNR issued by demo booking' : 'Waiting for authorized booking provider')}</p>
-                {plan.bookingReference && <p className="mt-1 text-sm text-lime-100/85">Booking reference: {plan.bookingReference}</p>}
-                {plan.bookingStatus && <p className="mt-1 text-sm text-lime-100/85">Booking state: {plan.bookingStatus}</p>}
-                {plan.pnrStatus && <p className="mt-1 text-sm text-lime-100/85">Saved PNR status: {plan.pnrStatus.currentStatus || plan.pnrStatus.bookingStatus || 'Passenger status saved'} · Chart {String(plan.pnrStatus.chartStatus || 'not returned')}</p>}
+                <span className="text-xs font-black uppercase tracking-wider text-sky-700">Saved Journey Snapshot</span>
+                <h2 className="mt-1 text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">{plan.from} to {plan.to}</h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  Destination: {plan.to} · Mode: {plan.transportMode || 'Train'} · Date: {plan.date || 'Saved date'}
+                </p>
+                <p className="mt-1 text-sm text-slate-600">PNR: {plan.pnrNumber || (plan.bookingStatus ? 'No real PNR issued by demo booking' : 'Waiting for authorized booking provider')}</p>
+                {plan.bookingReference && <p className="mt-1 text-sm text-slate-600">Booking reference: {plan.bookingReference}</p>}
+                {plan.bookingStatus && <p className="mt-1 text-sm text-slate-600">Booking state: {plan.bookingStatus}</p>}
+                {plan.pnrStatus && <p className="mt-1 text-sm text-slate-600">Saved PNR status: {plan.pnrStatus.currentStatus || plan.pnrStatus.bookingStatus || 'Passenger status saved'} · Chart {String(plan.pnrStatus.chartStatus || 'not returned')}</p>}
               </div>
-              <span className="rounded-full bg-lime-300 px-4 py-2 text-sm font-black text-slate-950">Offline ready</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-800">
+                <CheckCircle2 size={13} /> Offline ready
+              </span>
             </div>
             {service ? (
-              <div className="mt-5 rounded-2xl border border-lime-300/20 bg-slate-950/80 p-4 text-sm text-lime-50">
-                <p><b className="text-white">Exact saved service:</b> {serviceName || 'Provider service'} ({serviceCode || 'Code unavailable'})</p>
-                <p className="mt-1"><b className="text-white">Path:</b> {serviceValue(service, 'from', 'source') || plan.from} to {serviceValue(service, 'to', 'destination') || plan.to}</p>
-                <p className="mt-1"><b className="text-white">Timing:</b> {departure || 'Check provider'} to {arrival || 'Check provider'} · {serviceValue(service, 'duration', 'travelTime') || 'Duration unavailable'}</p>
-                <p className="mt-1"><b className="text-white">Fare estimate:</b> {fare ? `₹${fare}` : 'Check provider'} · {serviceValue(service, 'status', 'availability') || 'Provider verification required'}</p>
-                <p className="mt-1"><b className="text-white">Provider:</b> {service.provider || plan.selectedProvider || 'Provider verification required'}</p>
-                <p className="mt-2 text-xs text-yellow-100/90">This is the last saved provider result and PNR snapshot. Final live availability and current PNR status still need official verification.</p>
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-800">
+                <p><b className="text-slate-950">Exact saved service:</b> {serviceName || 'Provider service'} ({serviceCode || 'Code unavailable'})</p>
+                <p className="mt-1"><b className="text-slate-950">Path:</b> {serviceValue(service, 'from', 'source') || plan.from} to {serviceValue(service, 'to', 'destination') || plan.to}</p>
+                <p className="mt-1"><b className="text-slate-950">Timing:</b> {departure || 'Check provider'} to {arrival || 'Check provider'} · {serviceValue(service, 'duration', 'travelTime') || 'Duration unavailable'}</p>
+                <p className="mt-1"><b className="text-slate-950">Fare estimate:</b> {fare ? `₹${fare}` : 'Check provider'} · {serviceValue(service, 'status', 'availability') || 'Provider verification required'}</p>
+                <p className="mt-1"><b className="text-slate-950">Provider:</b> {service.provider || plan.selectedProvider || 'Provider verification required'}</p>
+                <p className="mt-2 text-xs text-slate-500">This is the last saved provider result and PNR snapshot. Final live availability and current PNR status still need official verification.</p>
               </div>
             ) : (
-              <div className="mt-5 rounded-2xl border border-yellow-300/25 bg-yellow-300/10 p-4 text-sm text-yellow-50">
+              <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 text-sm text-amber-900 font-medium">
                 No exact service is attached yet. When online, select a live result and use “Select & save this train”.
               </div>
             )}
           </article>
 
-          <article className="glass rounded-3xl p-5">
-            <h2 className="flex items-center gap-2 text-2xl font-black text-white"><ShieldCheck className="text-cyan-300" /> Best practical backup</h2>
+          <article className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
+              <ShieldCheck className="text-sky-600" /> Best practical backup
+            </h2>
             {backup ? (
               <div className="mt-4 space-y-3">
-                <p className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 font-black text-cyan-100">{backup.label}</p>
+                <p className="rounded-xl border border-sky-200 bg-sky-50 px-3.5 py-2 font-bold text-sky-900 text-sm">{backup.label}</p>
                 {backup.legs.map((leg) => (
-                  <p key={`${backup.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300"><b className="text-white">{leg.mode}:</b> {leg.service} · {leg.depart} to {leg.arrive} · ₹{leg.fare}</p>
+                  <p key={`${backup.label}-${leg.leg}`} className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+                    <b className="text-slate-950 font-semibold">{leg.mode}:</b> {leg.service} · {leg.depart} to {leg.arrive} · ₹{leg.fare}
+                  </p>
                 ))}
               </div>
-            ) : <p className="mt-3 text-slate-300">No backup stored. Prepare the offline pack after saving an exact provider service.</p>}
+            ) : (
+              <p className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 font-medium">
+                Save a journey with a selected train, bus or flight to see local multi-modal backup legs here.
+              </p>
+            )}
           </article>
         </section>
       )}
-
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
-        {[
-          ['Emergency call', 'Use 112 for urgent danger. Browser opens the dialer; user confirms the call.'],
-          ['Location sharing', 'Share location by SMS opens the phone message app with GPS coordinates, route, exact saved service, PNR and the last saved PNR status when available.'],
-          ['Offline limitation', 'Live status, fresh fares, PNR refresh and new bookings need internet.']
-        ].map(([title, text]) => (
-          <div key={title} className="rounded-3xl border border-slate-700/70 bg-slate-950/70 p-5">
-            <MapPinned className="text-cyan-300" />
-            <h3 className="mt-3 font-black text-white">{title}</h3>
-            <p className="mt-2 text-sm text-slate-400">{text}</p>
-          </div>
-        ))}
-      </section>
     </main>
   )
 }

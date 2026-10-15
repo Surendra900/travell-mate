@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Sparkles, Clock, Ticket } from 'lucide-react'
+import { Sparkles, Clock, Ticket, WifiOff } from 'lucide-react'
 import NormalPlanner from '../planner/NormalPlanner'
 import EmergencyTatkalPlanner from '../planner/EmergencyTatkalPlanner'
 import LowNetworkPlanner from '../planner/LowNetworkPlanner'
@@ -87,6 +87,9 @@ export default function Planner({ status, toast, language = 'en' }) {
       if (p.get('mode') === 'tatkal' || p.get('mode') === 'emergency' || p.get('urgency') === 'Emergency') {
         return 'emergency'
       }
+      if (p.get('mode') === 'low-network') {
+        return 'low-network'
+      }
     } catch {}
     return 'normal'
   })
@@ -129,6 +132,8 @@ export default function Planner({ status, toast, language = 'en' }) {
       setManualMode('emergency')
     } else if (modeParam === 'pnr') {
       setShowPnrModal(true)
+    } else if (modeParam === 'low-network') {
+      setManualMode('low-network')
     } else {
       setManualMode('normal')
     }
@@ -600,9 +605,23 @@ export default function Planner({ status, toast, language = 'en' }) {
       )}
 
       {(forcedOffline || forcedLowSignal) && (
-        <div className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-5 text-red-900">
-          <h2 className="text-lg font-black">Automatic Offline Shift Enabled</h2>
-          <p className="mt-1 text-sm text-red-800">The connection is unavailable or too weak for reliable live results. TravelMate has automatically switched to its compact low-network experience using cached route data and local storage.</p>
+        <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/90 p-4 text-amber-950 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0">
+              <WifiOff size={20} />
+            </div>
+            <div>
+              <div className="text-sm font-black text-amber-950 flex items-center gap-2">
+                <span>Automatic Offline Shift Enabled</span>
+                <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">
+                  LOW-NETWORK ACTIVE
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                The connection is unavailable or weak for live results. TravelMate switched to local transit datasets and offline storage.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 

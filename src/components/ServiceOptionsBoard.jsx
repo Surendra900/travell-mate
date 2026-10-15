@@ -4,9 +4,9 @@ import { getServiceOptions } from '../data/transportData'
 import SourceBadge from './SourceBadge'
 
 const modeInfo = {
-  trains: { title: 'Train options', icon: Train, color: 'text-cyan-200', source: 'Local planning dataset' },
-  flights: { title: 'Flight options', icon: Plane, color: 'text-orange-200', source: 'Local planning dataset' },
-  buses: { title: 'Bus options', icon: Bus, color: 'text-lime-200', source: 'Local planning estimate' }
+  trains: { title: 'Train options', icon: Train, color: 'text-sky-700', source: 'Local planning dataset' },
+  flights: { title: 'Flight options', icon: Plane, color: 'text-amber-700', source: 'Local planning dataset' },
+  buses: { title: 'Bus options', icon: Bus, color: 'text-emerald-700', source: 'Local planning estimate' }
 }
 
 function normalizeLiveCard(item = {}, index = 0) {
@@ -40,46 +40,62 @@ function ServiceCard({ item, compact = false, onBookService, modeLabel = 'option
   const isLive = /live api/i.test(badge)
 
   return (
-    <article className={`rounded-2xl border p-4 ${isLive ? 'border-emerald-300/40 bg-emerald-400/10' : 'border-slate-700/70 bg-slate-950/70'}`}>
+    <article className={`rounded-2xl border p-4 sm:p-5 transition shadow-2xs ${isLive ? 'border-emerald-200 bg-emerald-50/40 hover:border-emerald-300' : 'border-slate-200 bg-white hover:border-sky-300 hover:shadow-md'}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="mb-2 flex flex-wrap gap-2">
             <SourceBadge label={badge} />
             {needsProvider && <SourceBadge label="Provider verification required" />}
           </div>
-          <h4 className="text-base font-black text-white">{item.service}</h4>
-          <p className="mt-1 text-xs text-slate-500">Service no/code: {item.code} · {item.status}</p>
+          <h4 className="text-base font-black text-slate-950 tracking-tight">{item.service}</h4>
+          <p className="mt-1 text-xs text-slate-500 font-medium">Service no/code: {item.code} · {item.status}</p>
         </div>
-        <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-slate-950">{typeof item.fare === 'number' || /^\d+$/.test(String(item.fare)) ? `₹${item.fare}` : item.fare}</span>
+        <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-black text-sky-900">
+          {typeof item.fare === 'number' || /^\d+$/.test(String(item.fare)) ? `₹${item.fare}` : item.fare}
+        </span>
       </div>
-      <div className="mt-3 grid gap-2 text-sm text-slate-300 sm:grid-cols-2">
-        <p><b className="text-slate-100">From:</b> {item.from}</p>
-        <p><b className="text-slate-100">To:</b> {item.to}</p>
-        <p><b className="text-slate-100">Depart:</b> {item.depart}</p>
-        <p><b className="text-slate-100">Arrive:</b> {item.arrive}</p>
-        <p><b className="text-slate-100">Duration:</b> {item.duration}</p>
-        <p><b className="text-slate-100">Reliability:</b> {item.reliability}/100</p>
+
+      <div className="mt-3.5 grid gap-2 text-xs sm:text-sm text-slate-600 sm:grid-cols-2">
+        <p><b className="text-slate-900 font-semibold">From:</b> {item.from}</p>
+        <p><b className="text-slate-900 font-semibold">To:</b> {item.to}</p>
+        <p><b className="text-slate-900 font-semibold">Depart:</b> {item.depart}</p>
+        <p><b className="text-slate-900 font-semibold">Arrive:</b> {item.arrive}</p>
+        <p><b className="text-slate-900 font-semibold">Duration:</b> {item.duration}</p>
+        <p><b className="text-slate-900 font-semibold">Reliability:</b> {item.reliability}/100</p>
       </div>
+
       {notPractical && (
-        <p className="mt-3 rounded-xl border border-red-400/25 bg-red-500/10 p-3 text-xs font-black text-red-100">This {modeLabel} may not be possible/practical for this route because availability or reliability is weak. Use the backup suggestion below.</p>
+        <p className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-900">
+          This {modeLabel} may not be possible/practical for this route because availability or reliability is weak. Use the backup suggestion below.
+        </p>
       )}
+
       {!compact && (
         <>
-          <p className="mt-2 text-sm text-slate-400">Available cabins/classes: {(item.classes || []).join(', ') || 'Check provider'}</p>
-          <p className="mt-2 text-sm text-cyan-100/80">{item.note}</p>
+          <p className="mt-2 text-xs sm:text-sm text-slate-500 font-medium">Available cabins/classes: {(item.classes || []).join(', ') || 'Check provider'}</p>
+          <p className="mt-2 text-xs sm:text-sm text-slate-600">{item.note}</p>
         </>
       )}
-      <p className="mt-3 rounded-xl border border-yellow-400/20 bg-yellow-400/10 p-3 text-xs font-bold text-yellow-100">
+
+      <p className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600 leading-relaxed font-normal">
         Source note: {badge}. Final fare, platform/gate, live seat status and ticket issue require official provider verification.
       </p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-xs font-black text-cyan-100 hover:bg-cyan-400/20" onClick={() => onBookService ? onBookService(item) : setShowComingSoon(true)}>
-          <TicketCheck className="mr-1 inline" size={14} />Start demo booking
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          className="rounded-xl border border-sky-300 bg-sky-50 hover:bg-sky-100 px-3.5 py-2 text-xs font-bold text-sky-800 transition"
+          onClick={() => onBookService ? onBookService(item) : setShowComingSoon(true)}
+        >
+          <TicketCheck className="mr-1 inline text-sky-700" size={14} /> Start demo booking
         </button>
-        <span className="rounded-xl border border-yellow-400/20 bg-yellow-400/10 px-3 py-2 text-xs font-black text-yellow-100">{isLive ? 'Schedule/status row · fare and seat still unverified' : 'Local planning data · not live inventory'}</span>
+        <span className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600">
+          {isLive ? 'Schedule/status row · fare and seat still unverified' : 'Local planning data · not live inventory'}
+        </span>
       </div>
+
       {showComingSoon && (
-        <p className="mt-3 rounded-xl border border-yellow-400/20 bg-yellow-400/10 p-3 text-xs font-bold text-yellow-100">
+        <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-medium text-amber-900">
           This opens the guided demo-booking flow. TravelMate asks for normal booking details and a payment type, but never processes a real payment or issues a ticket.
         </p>
       )}
@@ -98,35 +114,63 @@ function buildLiveRouteState({ plan, focusMode, liveResults = [], liveStatus = {
     return { loading: false, checked: false, mode: 'idle', message: '', results: [] }
   }
 
-  if (!routeReady) {
-    return { loading: false, checked: false, mode: 'idle', message: 'Enter From and To, then click Find ticket / check live API.', results: [] }
+  if (liveStatus.loading) {
+    return {
+      loading: true,
+      checked: true,
+      mode: 'loading',
+      message: `Checking live provider API for ${plan.from || 'source'} to ${plan.to || 'destination'}...`,
+      results: [],
+      sourceBadge: 'LIVE_PROVIDER_DATA'
+    }
   }
 
-  if (!checked && !liveStatus.loading) {
+  if (results.length > 0) {
     return {
       loading: false,
-      checked: false,
-      mode: 'idle',
-      sourceBadge: 'API-ready',
-      message: 'Click Find ticket / check live API to load live provider rows. Local planning examples below are not live inventory.',
-      results: []
+      checked: true,
+      mode: 'live',
+      message: `Loaded ${results.length} live ${plan.transportMode.toLowerCase()} row${results.length === 1 ? '' : 's'} directly from provider search.`,
+      results,
+      sourceBadge: 'LIVE_PROVIDER_DATA'
+    }
+  }
+
+  if (checked) {
+    return {
+      loading: false,
+      checked: true,
+      mode: liveStatus.mode,
+      message: liveStatus.message || `No live rows returned for this route. Review endpoint/key access or use the fallback cards.`,
+      results: [],
+      sourceBadge: liveStatus.mode === 'error' ? 'Live delay unavailable' : 'Local planning dataset'
     }
   }
 
   return {
-    loading: Boolean(liveStatus.loading),
-    checked: Boolean(checked || liveStatus.loading),
-    mode: liveStatus.mode || (results.length ? 'live' : 'fallback'),
-    message: liveStatus.message || (results.length ? 'Live provider rows loaded.' : 'No live rows returned.'),
-    sourceBadge: liveStatus.sourceBadge || (results.length ? 'Live API result' : 'Provider status'),
-    results
+    loading: false,
+    checked: false,
+    mode: 'idle',
+    message: routeReady
+      ? `Click "Find ticket / check live API" to query real provider seats/fares.`
+      : 'Select origin and destination to check live inventory.',
+    results: [],
+    sourceBadge: routeReady ? 'API-ready' : 'Input required'
   }
 }
 
-export default function ServiceOptionsBoard({ plan, compact = false, focusMode = 'all', onOpenLiveResults, onBookService, liveResults = [], liveStatus = {} }) {
-  const options = getServiceOptions(plan)
+export default function ServiceOptionsBoard({
+  plan,
+  compact = false,
+  focusMode = 'all',
+  liveResults = [],
+  liveStatus = {},
+  onOpenLiveResults,
+  onBookService
+}) {
   const [showFallback, setShowFallback] = useState(false)
-  const visibleModeInfo = focusMode === 'all' ? null : modeInfo[focusMode]
+  const options = useMemo(() => getServiceOptions(plan), [plan])
+  const visibleModeInfo = focusMode !== 'all' ? modeInfo[focusMode] : null
   const liveState = buildLiveRouteState({ plan, focusMode, liveResults, liveStatus })
   const liveModeActive = focusMode === 'trains' || focusMode === 'flights'
   const dedicatedResultsReady = liveModeActive && liveState.checked && liveState.results.length > 0
@@ -155,50 +199,52 @@ export default function ServiceOptionsBoard({ plan, compact = false, focusMode =
   }, [focusMode, liveModeActive, liveState.checked, dedicatedResultsReady, options, showFallback])
 
   return (
-    <section className={`glass rounded-3xl p-5 ${compact ? 'text-sm' : ''}`} aria-labelledby="service-options-title">
+    <section className={`bg-white rounded-3xl border border-slate-200 p-6 shadow-sm ${compact ? 'text-sm' : ''}`} aria-labelledby="service-options-title">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-bold text-cyan-200">Source-labeled route board</p>
-          <h3 id="service-options-title" className="text-2xl font-black text-white">{boardTitle}</h3>
-          <p className="mt-1 text-sm text-slate-400">{boardNote}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-sky-700">Source-labeled route board</p>
+          <h3 id="service-options-title" className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">{boardTitle}</h3>
+          <p className="mt-1 text-sm text-slate-600 font-normal">{boardNote}</p>
         </div>
-        <span className="badge"><RefreshCw size={14} /> Verify official source before booking</span>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-slate-200 bg-slate-50 text-slate-700">
+          <RefreshCw size={13} /> Verify official source before booking
+        </span>
       </div>
 
       {liveModeActive ? (
-        <div className={`mt-4 rounded-2xl border p-3 text-xs font-bold ${liveState.results.length ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-100' : 'border-yellow-400/20 bg-yellow-400/10 text-yellow-100'}`}>
+        <div className={`mt-4 rounded-2xl border p-3.5 text-xs font-medium ${liveState.results.length ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span>{liveState.loading ? 'Checking live provider API...' : liveState.message || 'Live provider check ready.'}</span>
             <SourceBadge label={liveState.results.length ? 'Live API result' : liveState.sourceBadge || 'Provider status'} />
           </div>
           {!liveState.loading && dedicatedResultsReady && (
             <div className="mt-3 flex flex-wrap items-center gap-3">
-              <button type="button" className="btn-primary" onClick={onOpenLiveResults}>
+              <button type="button" className="inline-flex items-center gap-2 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2 text-xs shadow-sm transition" onClick={onOpenLiveResults}>
                 Open {liveState.results.length} live result{liveState.results.length === 1 ? '' : 's'}
               </button>
-              <button type="button" className="rounded-xl border border-yellow-300/30 bg-yellow-300/10 px-3 py-2 font-black text-yellow-100" onClick={() => setShowFallback((value) => !value)}>
+              <button type="button" className="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 transition" onClick={() => setShowFallback((value) => !value)}>
                 {showFallback ? 'Hide local fallback' : 'Show local fallback'}
               </button>
             </div>
           )}
           {!liveState.loading && liveState.checked && liveState.results.length === 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2"><AlertTriangle size={14} /> No live provider rows are being shown for this route. The old demo candidates are hidden so they are not mistaken for accurate data.</span>
-              <button type="button" className="rounded-xl border border-yellow-300/30 bg-yellow-300/10 px-3 py-2 font-black text-yellow-100" onClick={() => setShowFallback((value) => !value)}>
+              <span className="inline-flex items-center gap-2"><AlertTriangle size={14} className="text-amber-600" /> No live provider rows are being shown for this route. The old demo candidates are hidden so they are not mistaken for accurate data.</span>
+              <button type="button" className="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition" onClick={() => setShowFallback((value) => !value)}>
                 {showFallback ? 'Hide static demo options' : 'Show static demo fallback'}
               </button>
             </div>
           )}
         </div>
       ) : (
-        <p className="mt-4 rounded-2xl border border-yellow-400/20 bg-yellow-400/10 p-3 text-xs font-bold text-yellow-100">{options.notice}</p>
+        <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-xs font-medium text-amber-900">{options.notice}</p>
       )}
 
       <div className="mt-5 grid gap-5">
         {dedicatedResultsReady && !showFallback && (
-          <div className="rounded-2xl border border-cyan-300/25 bg-cyan-300/10 p-4 text-sm text-cyan-50">
-            <p className="font-black">Live tickets were moved out of the long planner page.</p>
-            <p className="mt-1 text-cyan-100/80">Use the button above to open the dedicated results workspace. Backup suggestions are visible near the route form and inside that workspace.</p>
+          <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-4 text-sm text-sky-950">
+            <p className="font-bold">Live tickets were moved out of the long planner page.</p>
+            <p className="mt-1 text-sky-800 text-xs">Use the button above to open the dedicated results workspace. Backup suggestions are visible near the route form and inside that workspace.</p>
           </div>
         )}
         {groups.map(([key, services]) => {
@@ -207,15 +253,26 @@ export default function ServiceOptionsBoard({ plan, compact = false, focusMode =
           const countLabel = liveModeActive && (key === 'trains' || key === 'flights') && liveState.results.length ? `${services.length} live` : services.length
           return (
             <div key={key}>
-              <h4 className={`mb-3 flex items-center gap-2 text-lg font-black ${Info.color}`}><Icon size={20} />{Info.title} · {countLabel}</h4>
+              <h4 className={`mb-3 flex items-center gap-2 text-lg font-black tracking-tight ${Info.color}`}>
+                <Icon size={18} /> {Info.title} · {countLabel}
+              </h4>
               <div className="grid gap-3 lg:grid-cols-2">
                 {services.length === 0 ? (
-                  <p className="rounded-2xl border border-red-400/25 bg-red-500/10 p-4 text-sm font-bold text-red-100">
+                  <p className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs sm:text-sm font-medium text-slate-600">
                     {liveModeActive
                       ? `No live ${key} returned for this route yet. Check your API key, station/city codes, provider quota, and endpoint limits. Use the dedicated live station/PNR/status tools for direct checks.`
                       : `No ${key} found in the verified/local dataset for this route. Use the backup suggestion and verify official provider availability.`}
                   </p>
-                ) : services.map((item, index) => <ServiceCard key={`${key}-${item.id || item.code || index}`} item={item} compact={compact} source={item.sourceBadge || Info.source} modeLabel={key === 'trains' ? 'train' : key === 'flights' ? 'flight' : 'bus'} onBookService={(service) => onBookService?.(service, key)} />)}
+                ) : services.map((item, index) => (
+                  <ServiceCard
+                    key={`${key}-${item.id || item.code || index}`}
+                    item={item}
+                    compact={compact}
+                    source={item.sourceBadge || Info.source}
+                    modeLabel={key === 'trains' ? 'train' : key === 'flights' ? 'flight' : 'bus'}
+                    onBookService={(service) => onBookService?.(service, key)}
+                  />
+                ))}
               </div>
             </div>
           )
