@@ -259,7 +259,7 @@ export default function NormalPlanner({
                 onChange={(e) => update({ classType: e.target.value })}
               >
                 {classOptions(plan.transportMode).map((item) => (
-                  <option key={item}>{item}</option>
+                  <option key={item} value={item}>{item}</option>
                 ))}
               </select>
             </Field>
@@ -318,7 +318,7 @@ export default function NormalPlanner({
               className="w-full h-13 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition active:scale-[0.99]"
             >
               <Ticket size={18} />
-              <span>Search Available {plan.transportMode} Options</span>
+              <span>{plan.transportMode === 'Flight' ? 'Search Available Flight Options' : plan.transportMode === 'Bus' ? 'Search Available Bus Options' : 'Search Available Train Options'}</span>
               <ArrowRight size={18} />
             </button>
             <p className="mt-3 text-xs text-center text-slate-600">

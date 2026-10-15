@@ -375,6 +375,7 @@ export default function LiveResultsPanel({
   if (!open) return null
 
   const transport = plan.transportMode || 'Train'
+  const transportPlural = transport === 'Flight' ? 'flights' : transport === 'Bus' ? 'buses' : 'trains'
   const MetaIcon = transportMeta[transport]?.icon || Train
   const loading = Boolean(status.loading)
   const hasResults = results.length > 0
@@ -553,7 +554,7 @@ export default function LiveResultsPanel({
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-extrabold text-slate-900">
-                    Direct {transport} Services ({results.length})
+                    <span>{transport === 'Flight' ? 'Direct Flight Services' : transport === 'Bus' ? 'Direct Bus Services' : 'Direct Train Services'}</span> ({results.length})
                   </h3>
                   <SourceBadge label={hasResults ? 'Live Provider Result' : status.sourceBadge || 'Provider Status'} />
                 </div>
@@ -604,7 +605,7 @@ export default function LiveResultsPanel({
                       />
                     ))}
                   </div>
-                ) : (
+                ) : !status.error ? (
                   <div data-testid="empty-direct-results" className="rounded-2xl border border-sky-200 bg-sky-50/60 p-8 text-center">
                     <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 mx-auto flex items-center justify-center mb-3">
                       <Sparkles size={24} />
@@ -613,10 +614,10 @@ export default function LiveResultsPanel({
                       No direct {transport.toLowerCase()} seats available
                     </h4>
                     <p className="text-sm text-slate-600 max-w-lg mx-auto mt-1.5 leading-relaxed">
-                      No direct {transport.toLowerCase()}s found. {multimodalRoutes.length > 0 ? `TravelMate found ${multimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
+                      No direct {transportPlural} found. {displayedMultimodalRoutes.length > 0 ? `TravelMate found ${displayedMultimodalRoutes.length} alternative routes via regional transfer junctions above.` : "Try checking alternative travel dates or exploring the Tatkal emergency desk."}
                     </p>
                   </div>
-                )}
+                ) : null}
 
                 <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-xs text-slate-600">
                   <b className="text-slate-900">Demo-booking notice:</b> Choose one provider row and use "Start demo booking" to attach that exact provider result to the saved plan and offline view, then start the guided demo checkout when ready.
@@ -629,7 +630,7 @@ export default function LiveResultsPanel({
               data-testid="statutory-split-disclosure"
               className="rounded-2xl border border-slate-200 bg-slate-100/80 p-4 text-xs text-slate-600 leading-relaxed"
             >
-              <b className="text-slate-900">Statutory Booking Notice:</b> These are independent bookings. If one leg is delayed, other operators owe you nothing and TravelMate cannot guarantee refunds or compensation. Always maintain safe transfer buffers.
+              <b className="text-slate-900">Independent Booking Notice:</b> Treat each selected leg as a separate booking. A delay on one leg may cause you to miss the next leg. Refund, rebooking, and compensation rights depend on the provider, ticket terms, and applicable law; TravelMate does not guarantee those remedies. Maintain a safe transfer buffer and confirm each provider&apos;s terms.
             </div>
           </main>
 

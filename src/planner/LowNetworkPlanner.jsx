@@ -222,7 +222,7 @@ export default function LowNetworkPlanner({ plan, update, onBook, onBookService,
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Mode of transport">
                 <select className="input" value={selectedMode} onChange={(e) => handleTransportChange(e.target.value)}>
-                  {transportModes.map((mode) => <option key={mode}>{mode}</option>)}
+                  {transportModes.map((mode) => <option key={mode} value={mode}>{mode}</option>)}
                 </select>
               </Field>
               <Field label="Journey date">
@@ -240,7 +240,7 @@ export default function LowNetworkPlanner({ plan, update, onBook, onBookService,
               </Field>
               <Field label="Class / cabin">
                 <select className="input" value={lowPlan.classType} onChange={(e) => update({ classType: e.target.value })}>
-                  {getCabinOptions(selectedMode).map((item) => <option key={item}>{item}</option>)}
+                  {getCabinOptions(selectedMode).map((item) => <option key={item} value={item}>{item}</option>)}
                 </select>
               </Field>
             </div>
