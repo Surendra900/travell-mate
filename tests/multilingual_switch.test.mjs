@@ -88,10 +88,10 @@ test('Multilingual Switch Regression: From (Departure), Travel Date, and Travell
 
 test('Multilingual Switch: Navbar includes LanguageSelector in both desktop and mobile menus', () => {
   const navbarSource = fs.readFileSync(path.join(root, 'src/components/Navbar.jsx'), 'utf8')
-  
+
   // Desktop header LanguageSelector
   assert.match(navbarSource, /<LanguageSelector\s+language=\{language\}\s+onChange=\{onLanguageChange\}\s+compact\s*\/>/)
-  
+
   // Mobile drawer LanguageSelector
   assert.match(navbarSource, /tm-mobile-menu/)
   assert.match(navbarSource, /<LanguageSelector\s+language=\{language\}\s+onChange=\{\(lang\)\s*=>\s*\{\s*onLanguageChange\(lang\)/)
@@ -118,16 +118,16 @@ test('Multilingual Switch: App.jsx initializes and persists language in localSto
 
 test('Multilingual Switch: GlobalTranslationLayer renders cached translations immediately and avoids duplicates', () => {
   const layerSource = fs.readFileSync(path.join(root, 'src/components/GlobalTranslationLayer.jsx'), 'utf8')
-  
+
   // 1. Immediate offline/cache rendering before async fetch
   assert.match(layerSource, /renderTargets\(targets,\s*cache\)/, 'Must render cached and offline translations immediately')
-  
+
   // 2. Duplicate prevention tracking
   assert.match(layerSource, /inFlightStrings/, 'Must track inFlightStrings to prevent duplicate batch requests')
-  
+
   // 3. Fallback to English source when switching back or on missing translations
   assert.match(layerSource, /dictionary\[target\.source\]\s*\|\|\s*target\.source/, 'Must fall back cleanly to original English source')
-  
+
   // 4. Preserves English source in textMeta
   assert.match(layerSource, /sourceForText/, 'Must extract core English source')
   assert.match(layerSource, /textMeta\.set/, 'Must store source in textMeta')
@@ -379,7 +379,7 @@ test('Multilingual Switch: Flight and Bus UI translations exist across all 14 su
 
 test('Multilingual Switch: Regional transit phrases include Flight Gate and Bus Stand across all 14 languages', () => {
   const all14Langs = ['en', 'hi', 'te', 'ta', 'kn', 'ml', 'mr', 'bn', 'gu', 'pa', 'ur', 'es', 'fr', 'de']
-  
+
   const flightGateItem = phraseTranslations.find((item) => item.key === 'flightGate')
   const busStandItem = phraseTranslations.find((item) => item.key === 'busStand')
 
@@ -467,9 +467,33 @@ test('Multilingual Switch: Form select options preserve value attributes across 
 
   // NormalPlanner select option value preservation
   assert.match(normalSource, /<option key=\{item\} value=\{item\}>\{item\}<\/option>/, 'NormalPlanner must set value={item} on class options')
-  
+
   // LowNetworkPlanner select option value preservation
   assert.match(lowSource, /<option key=\{mode\} value=\{mode\}>\{mode\}<\/option>/, 'LowNetworkPlanner must set value={mode} on mode options')
   assert.match(lowSource, /<option key=\{item\} value=\{item\}>\{item\}<\/option>/, 'LowNetworkPlanner must set value={item} on class options')
 })
 
+test('Multilingual Switch: Script purity assertions for emergency phrases, Vegan, and 1-tap translations', () => {
+  const policePhrase = phraseTranslations.find((item) => item.key === 'police')
+  assert.ok(policePhrase, 'phraseTranslations must contain police item')
+
+  // 1. Malayalam police must not contain Kannada characters (U+0C80-U+0CFF)
+  assert.ok(!/[\u0C80-\u0CFF]/.test(policePhrase.ml), 'Malayalam police phrase must not contain Kannada characters')
+  assert.equal(policePhrase.ml, 'എനിക്ക് പോലീസ് സഹായം വേണം.')
+
+  // 2. Urdu police must use Arabic/Urdu script and not Devanagari (U+0900-U+097F)
+  assert.ok(!/[\u0900-\u097F]/.test(policePhrase.ur), 'Urdu police phrase must not contain Devanagari characters')
+  assert.equal(policePhrase.ur, 'مجھے پولیس کی مدد چاہیے۔')
+
+  // 3. Marathi Vegan must use Devanagari and not Gurmukhi (U+0A00-U+0A7F)
+  const mrVegan = OFFLINE_UI_TRANSLATIONS.mr?.['Vegan']
+  assert.ok(mrVegan, 'Marathi translation must contain Vegan key')
+  assert.ok(!/[\u0A00-\u0A7F]/.test(mrVegan), 'Marathi Vegan translation must not contain Gurmukhi characters')
+  assert.equal(mrVegan, 'वीगन')
+
+  // 4. Urdu 1-tap translation must not contain Gurmukhi characters (U+0A00-U+0A7F)
+  const urOneTap = OFFLINE_UI_TRANSLATIONS.ur?.['Search fastest emergency combinations and Tatkal quota countdowns with 1 tap.']
+  assert.ok(urOneTap, 'Urdu translation must contain 1-tap sentence key')
+  assert.ok(!/[\u0A00-\u0A7F]/.test(urOneTap), 'Urdu 1-tap translation must not contain Gurmukhi characters')
+  assert.ok(urOneTap.includes('ٹیپ'), 'Urdu 1-tap translation must contain correct Urdu spelling ٹیپ')
+})
