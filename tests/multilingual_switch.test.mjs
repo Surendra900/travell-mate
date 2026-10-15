@@ -497,3 +497,63 @@ test('Multilingual Switch: Script purity assertions for emergency phrases, Vegan
   assert.ok(!/[\u0A00-\u0A7F]/.test(urOneTap), 'Urdu 1-tap translation must not contain Gurmukhi characters')
   assert.ok(urOneTap.includes('ٹیپ'), 'Urdu 1-tap translation must contain correct Urdu spelling ٹیپ')
 })
+
+test('Multilingual Switch: Active Navbar, Hero, and Search Form strings translate accurately in Telugu and Hindi', () => {
+  const activeNavStrings = [
+    'Route Finder',
+    'Tatkal Desk',
+    'Passes & Safety',
+    'Saved Trips',
+    'See a Demo',
+    'Multimodal Disruption & Route Recovery Engine',
+    'Find a way forward when direct tickets are sold out.',
+    'All Combinations',
+    'Trains Only',
+    'Buses',
+    'Flights',
+    'From (Departure Station or City)',
+    'To (Destination Station or City)',
+    'Search Recovery Routes',
+    'Need to travel tonight? (12h)',
+    'Holding a Waitlisted (WL) Ticket?',
+    'Check PNR Status & Odds',
+    'Check PNR Status'
+  ]
+
+  for (const lang of ['te', 'hi', 'ta', 'kn']) {
+    const dict = OFFLINE_UI_TRANSLATIONS[lang]
+    assert.ok(dict, `Offline dictionary for ${lang} must exist`)
+    for (const key of activeNavStrings) {
+      assert.ok(dict[key], `Missing translation in ${lang} for active UI string: "${key}"`)
+      assert.notEqual(dict[key].trim(), '', `Empty translation in ${lang} for active UI string: "${key}"`)
+      assert.notEqual(dict[key], key, `Active UI string "${key}" in ${lang} must not be identical to English`)
+    }
+  }
+
+  // Exact Telugu translations verification
+  const te = OFFLINE_UI_TRANSLATIONS.te
+  assert.equal(te['Route Finder'], 'రూట్ ఫైండర్')
+  assert.equal(te['Tatkal Desk'], 'తత్కాల్ డెస్క్')
+  assert.equal(te['Passes & Safety'], 'పాస్‌లు మరియు భద్రత')
+  assert.equal(te['Saved Trips'], 'సేవ్ చేసిన ట్రిప్పులు')
+  assert.equal(te['Search Recovery Routes'], 'రికవరీ మార్గాలను శోధించండి')
+  assert.equal(te['See a Demo'], 'డెమో చూడండి')
+  assert.equal(te['All Combinations'], 'అన్ని కలయికలు')
+  assert.equal(te['Trains Only'], 'రైళ్లు మాత్రమే')
+  assert.equal(te['Buses'], 'బస్సులు')
+  assert.equal(te['Flights'], 'విమానాలు')
+
+  // Exact Hindi translations verification
+  const hi = OFFLINE_UI_TRANSLATIONS.hi
+  assert.equal(hi['Route Finder'], 'रूट खोजें')
+  assert.equal(hi['Tatkal Desk'], 'तत्काल डेस्क')
+  assert.equal(hi['Passes & Safety'], 'पास और सुरक्षा')
+  assert.equal(hi['Saved Trips'], 'सहेजी गई यात्राएं')
+  assert.equal(hi['Search Recovery Routes'], 'वैकल्पिक मार्ग खोजें')
+  assert.equal(hi['See a Demo'], 'डेमो देखें')
+  assert.equal(hi['All Combinations'], 'सभी संयोजन')
+  assert.equal(hi['Trains Only'], 'केवल ट्रेन')
+  assert.equal(hi['Buses'], 'बसें')
+  assert.equal(hi['Flights'], 'उड़ानें')
+})
+

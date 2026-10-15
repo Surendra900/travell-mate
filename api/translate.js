@@ -1,5 +1,6 @@
 import { createSambaNovaResponse } from './_sambanova.js'
 import { prepareApiRequest, readJsonBody, providerStatus, publicProviderError } from './_security.js'
+import { OFFLINE_UI_TRANSLATIONS } from '../src/data/languageData.js'
 
 const languageNames = {
   en: 'English', hi: 'Hindi', te: 'Telugu', ta: 'Tamil', kn: 'Kannada', ml: 'Malayalam',
@@ -76,6 +77,18 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store, max-age=0')
     return res.status(200).json({ ok: true, language: languageCode, translations })
   } catch (error) {
+    const offline = OFFLINE_UI_TRANSLATIONS?.[languageCode] || {}
+    const fallbackTranslations = {}
+    for (const s of unique) {
+      if (offline[s] && offline[s] !== s) {
+        fallbackTranslations[s] = offline[s]
+      }
+    }
+    if (Object.keys(fallbackTranslations).length > 0) {
+      res.setHeader('Cache-Control', 'no-store, max-age=0')
+      return res.status(200).json({ ok: true, language: languageCode, translations: fallbackTranslations })
+    }
+
     const status = Number(error.status || providerStatus(error))
     const safe = publicProviderError(error, 'Translation service could not respond.')
     return res.status(status).json({
