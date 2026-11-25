@@ -190,6 +190,17 @@ Copy `.env.example` to `.env.local`. All API keys are optional for running the l
 
 ---
 
+## Team Members & Contributions
+
+- **Surendra G** (Team Lead & Full-Stack Engineer)
+  - Multimodal graph routing algorithms and MCT (Minimum Connection Time) transfer buffer engine.
+  - Serverless API fusion layer with Upstash Redis caching and resilience wrappers.
+  - Complete UI/UX implementation matching the high-density flat utility design system.
+  - Accessibility audit (WCAG 2.1 AA compliance) and end-to-end empirical test suite (136 transport tests, 308+ unit tests).
+  - Production deployment, CI/CD pipeline, and Vercel cloud hosting.
+
+---
+
 ## AI Tooling Usage Disclosure
 
 In compliance with hackathon and academic integrity guidelines:

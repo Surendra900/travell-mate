@@ -27,3 +27,4 @@ scripts/validate-*
 data/raw/
 data/out/
 tools/railpull/data/
+outputs/
