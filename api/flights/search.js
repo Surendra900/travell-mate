@@ -1,5 +1,6 @@
 import { fetchJsonWithTimeout, prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
-import { withCache, CACHE_TTL } from '../_cache.js'
+import { CACHE_TTL } from '../_cache.js'
+import { withCache } from '../_resilience.js'
 
 const airlineAliases = {
   INDIGO: '6E', 'INDIGO AIRLINES': '6E',
@@ -209,7 +210,7 @@ function normalizeSkyscannerRows(payload, dep, arr, requestedAirline, airlineIat
       priceFormatted: item.price || (item.price_raw ? `₹${item.price_raw.toLocaleString('en-IN')}` : null),
       currency: currency,
       cabins: ['Economy'],
-      provider: 'Skyscanner Flights (RapidAPI)',
+      provider: 'Skyscanner Flights',
       sourceBadge: 'LIVE_PROVIDER_DATA',
       provenance: 'LIVE_PROVIDER_DATA',
       verification: 'Live airfare and schedule from Skyscanner Flights network. Fares subject to live seat inventory.'
@@ -392,7 +393,7 @@ export default async function handler(req, res) {
         return matchName || matchCode
       })
 
-  const providers = [skyscannerOk && 'Skyscanner', aviationstackOk && 'Aviationstack'].filter(Boolean).join(' + ')
+  const providers = [skyscannerOk && 'Skyscanner Flights', aviationstackOk && 'Aviationstack'].filter(Boolean).join(' + ')
   const worstProvenance = filtered.some(r => r.provenance === 'TIMETABLE') ? 'TIMETABLE' : 'LIVE_PROVIDER_DATA'
 
   let message = filtered.length
@@ -413,7 +414,7 @@ export default async function handler(req, res) {
     requestedAirline: wantsAllAirlines ? 'All airlines' : requestedAirline,
     airlineIata: airlineIata || null,
     airlineFilterApplied: Boolean(airlineIata),
-    dateFilterApplied: Boolean(date),
+    dateFilterApplied: Boolean(date) && !planRestrictionBypassed,
     planRestrictionBypassed,
     skyscannerUsed: skyscannerOk,
     aviationstackUsed: aviationstackOk,

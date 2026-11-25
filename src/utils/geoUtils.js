@@ -222,7 +222,8 @@ export function findNearestAirports(
     const lng = Number(airport.lng ?? airport.longitude)
     if (isNaN(lat) || isNaN(lng) || (lat === 0 && lng === 0)) continue
     const distKm = haversineKm(origin, { lat, lng })
-    if (distKm != null && distKm <= radiusKm && distKm > 0) {
+    // Include distKm === 0: the airport AT the origin city is a valid result
+    if (distKm != null && distKm <= radiusKm) {
       results.push({ airport, distKm })
     }
   }

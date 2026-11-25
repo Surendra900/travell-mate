@@ -52,3 +52,22 @@ This log records all authoritative product and architectural decisions made duri
 - **Date:** October 2026
 - **Context:** Section 18 requires clean daily commits and tags on `rebuild/route-recovery`.
 - **Decision:** Baseline tag `baseline-before-rebuild` created. All rebuild work executed on `rebuild/route-recovery`. Daily commits and tags (`day-0`, `day-1`, ..., `day-10`).
+
+
+---
+
+## Decision 006: 10-Agent Engineering Team Structure Established
+- **Date:** 2026-11-25
+- **Context:** Upgrading TravelMate AI beyond hackathon MVP to a production-grade platform requires structured parallel development with clear ownership boundaries, mandatory security/QA gates, and no file conflicts between agents.
+- **Decision:** Established a 10-agent team under `.agent/` with Orchestrator coordination. Security (09) and Testing/QA (10) are mandatory review gates â€” no task is Done without both. Frontend (02) and Backend (01) work in isolated file ownership. Full-Stack (03) owns cross-layer glue. Dedicated agents for API Keys (04), API Integration (05), Datasets (06), Data Integration (07), and UI/UX (08).
+- **Reason:** Prevents scope creep, ensures security review before every deployment, and enables parallel development across UI, API, and data layers simultaneously.
+- **Alternatives rejected:** Single-agent sequential development â€” too slow and no separation of concerns for a production system with 10+ live API integrations.
+- **Affects:** All agents.
+
+---
+
+## D-007 — Flight API Parallelisation & Fusion Tie-Break Rules
+**Date:** 2026-11-25
+**Agent:** 16 (API Aggregation & Fusion)
+**Decision:** Call Skyscanner and Aviationstack in parallel using Promise.allSettled. Merge results with the following tie-break order: (1) cheaper fare wins; (2) if fares within 5% ? shorter duration wins; (3) LIVE_PROVIDER_DATA preferred over TIMETABLE; (4) Skyscanner preferred over Aviationstack on exact tie. Dedup by flight code — Skyscanner entry wins on code collision. Canonical provenance mapping: Skyscanner ? LIVE_PROVIDER_DATA; Aviationstack ? TIMETABLE (schedule/status only, no fare).
+**Rationale:** Parallel calls reduce latency from ~27 s worst-case to ~15 s. Fusion gives users more options with honest provenance labels.

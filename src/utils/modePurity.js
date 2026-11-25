@@ -19,10 +19,11 @@ import { MODE_PURITY, isModePure } from '../config/routingConfig.js'
  * @returns {'train'|'bus'|'flight'|'combination'}
  */
 export function normaliseSearchType(searchType = '') {
-  const t = String(searchType).toLowerCase().replace(/s$/, '').trim()
-  if (t === 'train') return 'train'
-  if (t === 'bus')   return 'bus'
-  if (t === 'flight' || t === 'fly') return 'flight'
+  const raw = String(searchType).toLowerCase().trim()
+  if (raw === 'train' || raw === 'trains') return 'train'
+  if (raw === 'bus'   || raw === 'buses')  return 'bus'
+  if (raw === 'flight' || raw === 'flights' || raw === 'fly') return 'flight'
+  if (raw === 'combination' || raw === 'combo' || raw === 'combined') return 'combination'
   return 'combination'
 }
 
