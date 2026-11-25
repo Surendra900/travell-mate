@@ -77,12 +77,16 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
       {/* Top Header Row: Service Name, Code & Fare */}
       <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-slate-100">
         <div>
-          <div className="flex flex-wrap items-center gap-2 mb-1.5">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold">
+          <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
+              transport === 'Train' ? 'bg-sky-50 text-sky-700 border-sky-200' :
+              transport === 'Bus' ? 'bg-violet-50 text-violet-700 border-violet-200' :
+              transport === 'Flight' ? 'bg-cyan-50 text-cyan-700 border-cyan-200' :
+              'bg-teal-50 text-teal-700 border-teal-200'
+            }`}>
               {transport}
             </span>
-            <SourceBadge label={source} />
-            {item.provenance && <ProvenanceBadge provenance={item.provenance} />}
+            {item.provenance ? <ProvenanceBadge provenance={item.provenance} /> : <SourceBadge label={source} />}
           </div>
           <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">{name}</h3>
           {code && <p className="text-xs font-semibold text-slate-500">{code} · {item.provider || 'Official Transit Provider'}</p>}

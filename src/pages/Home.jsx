@@ -93,30 +93,39 @@ export default function Home({ toast }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-sky-50/70 via-white to-slate-50 pt-10 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-sky-950 to-slate-900 pt-12 pb-24 px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-4xl mx-auto text-center">
           {/* Top Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/90 border border-sky-200 text-sky-800 text-xs sm:text-sm font-bold tracking-wide mb-5 shadow-sm">
-            <Sparkles size={14} className="text-sky-600" />
-            <span>Multimodal Disruption & Route Recovery Engine</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-200 text-xs sm:text-sm font-semibold tracking-wide mb-5 shadow-sm">
+            <Sparkles size={14} className="text-sky-400" aria-hidden="true" /><span>Multimodal Disruption & Route Recovery Engine</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.12]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
             Find a way forward when direct tickets are sold out.
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="mt-4 text-base sm:text-lg text-sky-100/75 max-w-2xl mx-auto leading-relaxed">
             When direct trains are waitlisted, TravelMate calculates time-tested split-routes through India’s Top 25 junction hubs with verified layovers, delay simulations, and official booking links.
           </p>
 
           {/* Primary Dominant Search Card */}
-          <div className="mt-10 bg-white rounded-3xl border border-slate-200 shadow-xl p-5 sm:p-8 text-left transition-shadow hover:shadow-2xl">
-            {/* Mode Selector Tabs */}
-            <div className="flex flex-wrap items-center gap-2 pb-5 border-b border-slate-100" role="tablist" aria-label="Transport Mode">
+          <div className="mt-10 bg-white rounded-2xl border border-slate-200 shadow-2xl p-5 sm:p-7 text-left">
+            {/* Mode Selector Tabs — horizontal scroll on mobile, no wrap */}
+            <div
+              className="flex items-center gap-2 pb-5 border-b border-slate-100 overflow-x-auto scrollbar-hide -mx-1 px-1"
+              role="tablist"
+              aria-label="Transport mode"
+            >
               {modes.map(({ id, label, icon: Icon }) => {
                 const active = transportMode === id
+                const modeColour = {
+                  Multimodal: active ? 'bg-teal-700 text-white shadow-md shadow-teal-700/25' : 'text-slate-600 hover:text-teal-800 hover:border-teal-300 hover:bg-teal-50',
+                  Train: active ? 'bg-sky-700 text-white shadow-md shadow-sky-700/25' : 'text-slate-600 hover:text-sky-800 hover:border-sky-300 hover:bg-sky-50',
+                  Bus: active ? 'bg-violet-700 text-white shadow-md shadow-violet-700/25' : 'text-slate-600 hover:text-violet-800 hover:border-violet-300 hover:bg-violet-50',
+                  Flight: active ? 'bg-cyan-700 text-white shadow-md shadow-cyan-700/25' : 'text-slate-600 hover:text-cyan-800 hover:border-cyan-300 hover:bg-cyan-50',
+                }[id] || (active ? 'bg-sky-700 text-white' : 'text-slate-600')
                 return (
                   <button
                     key={id}
@@ -124,13 +133,13 @@ export default function Home({ toast }) {
                     role="tab"
                     aria-selected={active}
                     onClick={() => setTransportMode(id)}
-                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm transition-all ${
-                      active
-                        ? 'bg-sky-700 text-white shadow-md shadow-sky-700/25 scale-[1.01]'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80 hover:text-slate-950'
-                    }`}
+                    className={[
+                      'inline-flex items-center gap-1.5 px-3 py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all shrink-0',
+                      'border focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 min-h-[40px]',
+                      active ? `${modeColour} border-transparent` : `bg-white border-slate-200 ${modeColour}`
+                    ].join(' ')}
                   >
-                    <Icon size={16} />
+                    <Icon size={15} aria-hidden="true" />
                     <span>{label}</span>
                   </button>
                 )

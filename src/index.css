@@ -9,7 +9,7 @@
 
 :root {
   color-scheme: light;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Nirmala UI", "Noto Sans Devanagari", "Noto Sans Telugu", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Nirmala UI", "Noto Sans Devanagari", "Noto Sans Telugu", "Helvetica Neue", Arial, sans-serif;
   
   /* Core Brand & Travel Palette */
   --tm-bg: #f8fafc;            /* Slate 50: Clean, light, calm background */
@@ -973,3 +973,175 @@ textarea {
   }
 }
 
+
+/* =========================================================
+   TRAVELMATE UI REDESIGN ADDITIONS — Wave UI-1 through UI-7
+   ========================================================= */
+
+/* Inter font already loaded via index.html link tag */
+
+/* Update root font to prefer Inter */
+:root {
+  font-family: 'Inter', 'Noto Sans', 'Nirmala UI', system-ui, sans-serif;
+}
+
+/* Scrollbar hide utility (for horizontal mode tabs on mobile) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Global focus-visible ring — consistent, accessible */
+:focus-visible {
+  outline: 2px solid #0369a1;
+  outline-offset: 2px;
+}
+
+/* Remove default focus outline only when focus-visible is supported */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* tm-nav override — make it dark (bg-slate-900) */
+.tm-nav {
+  background-color: #0f172a !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  backdrop-filter: none !important;
+}
+
+.tm-brand {
+  color: #ffffff !important;
+}
+
+.tm-nav-link {
+  color: #cbd5e1 !important;
+}
+
+.tm-nav-link:hover,
+.tm-nav-link[aria-current="page"] {
+  color: #7dd3fc !important;
+  background-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Modal overlay improvements */
+.tm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+/* Result card improvements */
+.live-result-card {
+  border-radius: 12px !important;
+  transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.live-result-card:hover {
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.1), 0 2px 6px -1px rgba(15, 23, 42, 0.06) !important;
+  transform: translateY(-1px);
+}
+
+/* Combination route timeline improvements */
+.combination-route-timeline {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.combination-route-timeline::-webkit-scrollbar {
+  display: none;
+}
+
+/* Skeleton pulse override for better feel */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Page content fade-in */
+@media (prefers-reduced-motion: no-preference) {
+  .page-enter {
+    animation: slideUp 0.15s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Transport mode tab active state improvements */
+.mode-tab-train[aria-selected="true"]  { background-color: #0369a1 !important; color: #fff !important; }
+.mode-tab-bus[aria-selected="true"]    { background-color: #7c3aed !important; color: #fff !important; }
+.mode-tab-flight[aria-selected="true"] { background-color: #0891b2 !important; color: #fff !important; }
+.mode-tab-combo[aria-selected="true"]  { background-color: #0d9488 !important; color: #fff !important; }
+
+/* Search card floating below hero */
+.search-card-float {
+  margin-top: -3rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* Footer link hover improvements */
+.tm-footer a:hover,
+.tm-footer button:hover {
+  color: #7dd3fc !important;
+}
+
+/* Mobile menu slide-in animation */
+@media (prefers-reduced-motion: no-preference) {
+  #mobile-navigation {
+    animation: slideDown 0.15s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Better input focus styles */
+.input:focus-visible {
+  outline: 2px solid #0369a1;
+  outline-offset: 0;
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.15);
+}
+
+/* Improved dialog close button (not just text) */
+.dialog-close-button {
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.1s, color 0.1s !important;
+}
+
+.dialog-close-button:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* dialog-close-text override — hide old text style */
+.dialog-close-text {
+  font-size: 0 !important;  /* hide text, show as icon button */
+}
