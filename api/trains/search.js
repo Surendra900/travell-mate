@@ -1,6 +1,64 @@
 import { prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
 import { callRapidRail, dataRows, extractStationCode, getRapidConfig, stationCodes } from './_rapidapiRail.js'
 import { findDirectTrainRoutes } from '../../server/services/routeEngine.js'
+import { NEARBY_RADIUS_KM, MAX_NEARBY_NODES } from '../../src/config/routingConfig.js'
+
+/**
+ * Nearest-station fallback: searches nearby station codes when no direct result found.
+ * Returns labelled results with nearbyNote for UI display.
+ * Agent 12: Train Search Specialist — W2-01
+ */
+async function searchNearbyStationFallback(fromCodes, toCodes, date, isNewTrainApi) {
+  // Build candidate nearby station codes from the shared/data stations index
+  // We use the server-side routeEngine's cached station data via findDirectTrainRoutes
+  // For now we expand using known multi-code city groups from _rapidapiRail stationAliases
+  // A full geoUtils integration requires the stationsData on the server side
+  const nearbyResults = []
+  const tried = new Set(fromCodes.flatMap(f => toCodes.map(t => `${f}-${t}`)))
+
+  // Try expanding fromCodes × toCodes with extra codes from city resolution
+  // (stationCodes() already returns multi-code groups e.g. ['NDLS','DLI','NZM','ANVT'])
+  // If fromCodes already has multiple, also try offline timetable for each pair
+  for (const fromCode of fromCodes.slice(0, MAX_NEARBY_NODES)) {
+    for (const toCode of toCodes.slice(0, MAX_NEARBY_NODES)) {
+      if (fromCode === toCode) continue
+      const pairKey = `${fromCode}-${toCode}`
+      if (tried.has(pairKey)) continue
+      tried.add(pairKey)
+
+      const offlineResults = findDirectTrainRoutes(fromCode, toCode, date)
+      for (const t of offlineResults.slice(0, 5)) {
+        nearbyResults.push({
+          id: `${t.trainNumber}-nearby-${fromCode}-${toCode}`,
+          type: 'train',
+          serviceName: `${t.trainName} (${t.trainNumber})`,
+          service: `${t.trainName} (${t.trainNumber})`,
+          code: String(t.trainNumber),
+          fromStationCode: fromCode,
+          toStationCode: toCode,
+          from: fromCode,
+          to: toCode,
+          departure: t.departTime,
+          depart: t.departTime,
+          arrival: t.arriveTime,
+          arrive: t.arriveTime,
+          duration: t.durationFormatted,
+          runningDays: 'Running days unknown. Check before you travel',
+          price: t.estimatedFare,
+          currency: 'INR',
+          cabins: ['SL', '3A', '2A', '1A'],
+          provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+          sourceBadge: 'TIMETABLE (circa 2016)',
+          provenance: 'TIMETABLE',
+          nearbyNote: `Alternate station pair: ${fromCode} → ${toCode}`,
+          verification: 'Offline timetable (community snapshot circa 2016). Running days unknown. Verify before travel.'
+        })
+      }
+    }
+  }
+
+  return nearbyResults
+}
 
 function normalizeTrainRow(row, index, from, to, date) {
   const trainNo = row.trainNumber || row.train_number || row.trainNo || row.train_no || row.number || row.code || row.train_num || 'N/A'
@@ -155,6 +213,23 @@ export default async function handler(req, res) {
           message: `Timetable schedule loaded (${offlineResults.length} direct trains). Community snapshot circa 2016.`,
           count: offlineResults.length,
           results: offlineResults,
+          searchedStationPair: `${fromCodes[0]}-${toCodes[0]}`
+        })
+      }
+
+      // W2-01: Nearest-station fallback — try alternate station codes for the same cities
+      const nearbyResults = await searchNearbyStationFallback(fromCodes, toCodes, date, isNewTrainApi)
+      if (nearbyResults.length) {
+        return res.status(200).json({
+          ok: true,
+          mode: 'timetable-nearby',
+          provider: 'Datameet Railway Timetable (CC0, circa 2016)',
+          sourceBadge: 'TIMETABLE (circa 2016) — Nearby Stations',
+          message: `No direct trains found for ${fromCodes[0]}→${toCodes[0]}. Showing results via alternate station codes for the same city. Verify schedules before travel.`,
+          count: nearbyResults.length,
+          results: nearbyResults,
+          nearbyFallback: true,
+          radiusKm: NEARBY_RADIUS_KM.TRAIN,
           searchedStationPair: `${fromCodes[0]}-${toCodes[0]}`
         })
       }

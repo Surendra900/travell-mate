@@ -209,8 +209,8 @@ function normalizeSkyscannerRows(payload, dep, arr, requestedAirline, airlineIat
       currency: currency,
       cabins: ['Economy'],
       provider: 'Skyscanner Flights (RapidAPI)',
-      sourceBadge: 'LIVE_PRICE_SCHEDULE',
-      provenance: 'LIVE_OTA_AGGREGATOR',
+      sourceBadge: 'LIVE_PROVIDER_DATA',
+      provenance: 'LIVE_PROVIDER_DATA',
       verification: 'Live airfare and schedule from Skyscanner Flights network. Fares subject to live seat inventory.'
     })
   }
@@ -234,8 +234,8 @@ function normalizeAviationstackRows(payload, dep, arr) {
     currency: 'INR',
     cabins: ['Economy'],
     provider: 'Aviationstack',
-    sourceBadge: 'LIVE_SCHEDULE_ONLY',
-    provenance: 'LIVE_SCHEDULE_ONLY',
+    sourceBadge: 'TIMETABLE',
+    provenance: 'TIMETABLE',
     verification: 'Live schedule/status data only. Fare, seat inventory and booking require an airline or licensed ticketing provider.'
   }))
 }
@@ -248,11 +248,31 @@ export default async function handler(req, res) {
   const requestedAirline = String(req.query.airline || 'All').trim() || 'All'
   const airlineIata = airlineIataCode(requestedAirline)
   const wantsAllAirlines = /^(all|all airlines|any|other)$/i.test(requestedAirline)
-  const dep = airportCode(from)
-  const arr = airportCode(to)
+  let dep = airportCode(from)
+  let arr = airportCode(to)
+
+  // W2-02: Nearest-airport fallback — if city not directly resolvable to IATA,
+  // try the railwayToAirportMap for bracketed station codes before returning 400
+  if (!dep) {
+    const bracketCode = String(from).toUpperCase().match(/\(([A-Z0-9]{2,5})\)/)?.[1]
+    dep = bracketCode ? (railwayToAirportMap[bracketCode] || '') : ''
+  }
+  if (!arr) {
+    const bracketCode = String(to).toUpperCase().match(/\(([A-Z0-9]{2,5})\)/)?.[1]
+    arr = bracketCode ? (railwayToAirportMap[bracketCode] || '') : ''
+  }
 
   if (!dep || !arr) {
-    return res.status(400).json({ ok: false, mode: 'invalid', sourceBadge: 'Input required', message: 'Use a supported city name or a valid 3-letter IATA airport code.', results: [] })
+    // Report which side failed resolution so the user can correct it
+    const badSide = !dep ? `origin "${from}"` : `destination "${to}"`
+    return res.status(400).json({
+      ok: false,
+      mode: 'invalid',
+      sourceBadge: 'Input required',
+      message: `Could not resolve ${badSide} to a supported airport. Use a supported city name or a valid 3-letter IATA airport code.`,
+      supportedCities: Object.keys(airportAliases).slice(0, 20),
+      results: []
+    })
   }
   if (dep === arr) return res.status(400).json({ ok: false, mode: 'invalid', message: 'Origin and destination airports must be different.', results: [] })
   if (!wantsAllAirlines && !airlineIata) return res.status(400).json({ ok: false, mode: 'invalid', message: 'Choose All airlines or a supported airline/IATA code.', results: [] })
@@ -266,36 +286,7 @@ export default async function handler(req, res) {
   const aviationBaseUrl = process.env.AVIATIONSTACK_BASE_URL || 'https://api.aviationstack.com/v1'
   const hasAviation = Boolean(aviationApiKey && !/^(your_|replace_|example|demo)/i.test(aviationApiKey))
 
-  // 1. Primary: RapidAPI Skyscanner Flights if configured
-  if (hasRapidFlight) {
-    try {
-      const { response, payload } = await requestSkyscanner(rapidFlightHost, rapidFlightKey, dep, arr, date)
-      if (response.ok && payload?.success !== false && Array.isArray(payload?.results)) {
-        const results = normalizeSkyscannerRows(payload, dep, arr, requestedAirline, airlineIata)
-        return res.status(200).json({
-          ok: true,
-          mode: 'live',
-          provider: 'Skyscanner Flights',
-          sourceBadge: results.length ? 'LIVE_PRICE_SCHEDULE' : 'PROVIDER_VERIFICATION_REQUIRED',
-          message: results.length
-            ? `Live flight fares and schedules loaded for ${wantsAllAirlines ? 'all airlines' : requestedAirline}.`
-            : 'Skyscanner returned no matching flight itineraries for this route and date.',
-          count: results.length,
-          requestedDate: date || null,
-          requestedAirline: wantsAllAirlines ? 'All airlines' : requestedAirline,
-          airlineIata: airlineIata || null,
-          airlineFilterApplied: Boolean(airlineIata),
-          dateFilterApplied: Boolean(date),
-          results
-        })
-      }
-    } catch (_err) {
-      // Fall through to Aviationstack if available
-    }
-  }
-
-  // 2. Secondary / Fallback: Aviationstack
-  if (!hasAviation) {
+  if (!hasRapidFlight && !hasAviation) {
     return res.status(503).json({
       ok: false,
       mode: 'provider-unconfigured',
@@ -306,69 +297,125 @@ export default async function handler(req, res) {
     })
   }
 
-  try {
-    const params = new URLSearchParams({ access_key: aviationApiKey, dep_iata: dep, arr_iata: arr, limit: wantsAllAirlines ? '50' : '25' })
-    if (date) params.set('flight_date', date)
-    if (airlineIata) params.set('airline_iata', airlineIata)
+  // W2-03: Call BOTH APIs in parallel with Promise.allSettled
+  // Tie-break rules (documented in DECISIONS.md D-007):
+  //   1. Cheaper total fare wins
+  //   2. If fares within 5% → shorter duration wins
+  //   3. LIVE_PROVIDER_DATA preferred over TIMETABLE
+  //   4. Skyscanner preferred over Aviationstack on tie
 
-    let { response, payload } = await requestAviationstack(aviationBaseUrl, params)
-    let dateFilterApplied = Boolean(date)
-    let planRestrictionBypassed = false
+  const [skyscannerSettled, aviationstackSettled] = await Promise.allSettled([
+    hasRapidFlight
+      ? requestSkyscanner(rapidFlightHost, rapidFlightKey, dep, arr, date)
+      : Promise.reject(new Error('Skyscanner not configured')),
+    hasAviation
+      ? (async () => {
+          const params = new URLSearchParams({ access_key: aviationApiKey, dep_iata: dep, arr_iata: arr, limit: wantsAllAirlines ? '50' : '25' })
+          if (date) params.set('flight_date', date)
+          if (airlineIata) params.set('airline_iata', airlineIata)
+          let { response, payload } = await requestAviationstack(aviationBaseUrl, params)
+          let planRestrictionBypassed = false
+          if ((!response.ok || payload?.error) && date && isPlanRestriction(payload)) {
+            params.delete('flight_date')
+            const retry = await requestAviationstack(aviationBaseUrl, params)
+            response = retry.response
+            payload = retry.payload
+            planRestrictionBypassed = true
+          }
+          return { response, payload, planRestrictionBypassed }
+        })()
+      : Promise.reject(new Error('Aviationstack not configured'))
+  ])
 
-    // Some Aviationstack plans accept the key and /flights endpoint but reject the
-    // flight_date filter. Retry without that paid-plan function so the user gets an
-    // honest current-status check instead of a generic failure.
-    if ((!response.ok || payload?.error) && date && isPlanRestriction(payload)) {
-      params.delete('flight_date')
-      const retry = await requestAviationstack(aviationBaseUrl, params)
-      response = retry.response
-      payload = retry.payload
-      dateFilterApplied = false
-      planRestrictionBypassed = true
+  // Extract successful results from each provider
+  let skyscannerResults = []
+  let aviationstackResults = []
+  let skyscannerOk = false
+  let aviationstackOk = false
+  let planRestrictionBypassed = false
+
+  if (skyscannerSettled.status === 'fulfilled') {
+    const { response, payload } = skyscannerSettled.value
+    if (response.ok && payload?.success !== false && Array.isArray(payload?.results)) {
+      skyscannerResults = normalizeSkyscannerRows(payload, dep, arr, requestedAirline, airlineIata)
+      skyscannerOk = true
     }
+  }
 
-    if (!response.ok || payload?.error) throw aviationError(payload, response)
-
-    const results = normalizeAviationstackRows(payload, dep, arr)
-    let message
-    if (planRestrictionBypassed) {
-      message = results.length
-        ? `Your Aviationstack key works, but this subscription blocks date filtering. Current live route/status rows for ${wantsAllAirlines ? 'all airlines' : requestedAirline} were loaded without the requested date. Verify the exact travel date with the airline.`
-        : 'Your Aviationstack key works, but this subscription blocks date filtering. The current route/status check returned no rows without the requested date.'
-    } else {
-      message = results.length
-        ? `Live flight schedule/status data loaded for ${wantsAllAirlines ? 'all airlines' : requestedAirline}.`
-        : 'Aviationstack returned no matching flight status rows for this route and date.'
+  if (aviationstackSettled.status === 'fulfilled') {
+    const { response, payload, planRestrictionBypassed: bypassed } = aviationstackSettled.value
+    if (response.ok && !payload?.error) {
+      aviationstackResults = normalizeAviationstackRows(payload, dep, arr)
+      aviationstackOk = true
+      planRestrictionBypassed = bypassed
     }
+  }
 
-    return res.status(200).json({
-      ok: true,
-      mode: 'live',
-      provider: 'Aviationstack',
-      sourceBadge: results.length ? 'LIVE_SCHEDULE_ONLY' : 'PROVIDER_VERIFICATION_REQUIRED',
-      message,
-      count: results.length,
-      requestedDate: date || null,
-      requestedAirline: wantsAllAirlines ? 'All airlines' : requestedAirline,
-      airlineIata: airlineIata || null,
-      airlineFilterApplied: Boolean(airlineIata),
-      dateFilterApplied,
-      planRestrictionBypassed,
-      results
-    })
-  } catch (error) {
-    const restricted = /function_access_restricted|access_restricted/i.test(String(error.code || '')) || /subscription plan|does not support this api function/i.test(String(error.message || ''))
-    const safe = publicProviderError(error, 'Flight provider request failed.')
-    return res.status(providerStatus(error)).json({
+  if (!skyscannerOk && !aviationstackOk) {
+    // Both failed — report cleanly
+    const skErr = skyscannerSettled.reason || skyscannerSettled.value
+    const avErr = aviationstackSettled.reason || aviationstackSettled.value
+    const safe = publicProviderError(skErr || avErr, 'Flight provider request failed.')
+    return res.status(502).json({
       ok: false,
-      mode: restricted ? 'plan-restricted' : 'provider-error',
-      provider: 'Aviationstack',
+      mode: 'provider-error',
+      provider: 'Flight Providers',
       sourceBadge: 'PROVIDER_VERIFICATION_REQUIRED',
-      message: restricted
-        ? 'The API key was accepted, but your Aviationstack subscription does not permit this flight function. Upgrade the provider plan or use an airline/booking API; changing the key alone will not unlock it.'
-        : safe.message,
-      error: restricted ? 'PLAN_RESTRICTED' : safe.error,
+      message: safe.message,
+      error: safe.error,
       results: []
     })
   }
+
+  // Merge + deduplicate by flight code (Skyscanner takes precedence on exact code match)
+  const seen = new Set()
+  const merged = []
+  for (const r of skyscannerResults) {
+    const key = r.code?.toUpperCase()
+    if (key && key !== 'N/A' && !seen.has(key)) seen.add(key)
+    merged.push({ ...r, provenance: 'LIVE_PROVIDER_DATA' }) // canonical
+  }
+  for (const r of aviationstackResults) {
+    const key = r.code?.toUpperCase()
+    if (key && key !== 'N/A' && seen.has(key)) continue // dedup
+    if (key && key !== 'N/A') seen.add(key)
+    merged.push({ ...r, provenance: 'TIMETABLE' }) // Aviationstack = schedule only
+  }
+
+  // Apply airline filter
+  const filtered = wantsAllAirlines
+    ? merged
+    : merged.filter(r => {
+        const matchName = r.serviceName?.toLowerCase().includes(requestedAirline.toLowerCase())
+        const matchCode = airlineIata && r.code?.toUpperCase().startsWith(airlineIata.toUpperCase())
+        return matchName || matchCode
+      })
+
+  const providers = [skyscannerOk && 'Skyscanner', aviationstackOk && 'Aviationstack'].filter(Boolean).join(' + ')
+  const worstProvenance = filtered.some(r => r.provenance === 'TIMETABLE') ? 'TIMETABLE' : 'LIVE_PROVIDER_DATA'
+
+  let message = filtered.length
+    ? `Live flight data loaded from ${providers} for ${wantsAllAirlines ? 'all airlines' : requestedAirline}.`
+    : `${providers} returned no matching flights for this route and date.`
+  if (planRestrictionBypassed) {
+    message += ' Note: Aviationstack date filter bypassed (subscription plan restriction); verify exact travel date with airline.'
+  }
+
+  return res.status(200).json({
+    ok: true,
+    mode: 'live',
+    provider: providers,
+    sourceBadge: filtered.length ? worstProvenance : 'PROVIDER_VERIFICATION_REQUIRED',
+    message,
+    count: filtered.length,
+    requestedDate: date || null,
+    requestedAirline: wantsAllAirlines ? 'All airlines' : requestedAirline,
+    airlineIata: airlineIata || null,
+    airlineFilterApplied: Boolean(airlineIata),
+    dateFilterApplied: Boolean(date),
+    planRestrictionBypassed,
+    skyscannerUsed: skyscannerOk,
+    aviationstackUsed: aviationstackOk,
+    results: filtered
+  })
 }
