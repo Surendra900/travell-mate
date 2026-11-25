@@ -121,3 +121,84 @@ Prod vulnerabilities:        0 high,  0 critical  (npm audit --omit=dev)
 | Bus nearest-fallback | No bus provider API key configured | User adds `BUS_API_URL` + `BUS_API_KEY` to env |
 | Aviationstack date filter | Subscription plan restriction — bypass retry already coded | User upgrades Aviationstack plan |
 | geoUtils coordinate data | `stationsData.js` coords validated; zero-coords skipped by haversine guard | No action needed |
+
+
+---
+
+## UI Redesign Wave Tasks
+
+### Wave UI-1: Design Tokens + Component Library ✅ DONE
+
+| Task | Agent | Status | Commit |
+|------|-------|--------|--------|
+| Extend tailwind.config.js with brand colours, shadows, animations | 24 | ✅ DONE | `87b4f41` |
+| Add Inter font to index.html + CSS root | 24 | ✅ DONE | `87b4f41` |
+| Update Button.jsx — loading state, focus-visible, all variants | 24 | ✅ DONE | `87b4f41` |
+| Update Card.jsx — rounded-xl, tm-shadows, Card.Header/Body/Footer | 24 | ✅ DONE | `87b4f41` |
+| Update Badge.jsx — transport variants (train/bus/flight/combo), dot option | 24 | ✅ DONE | `87b4f41` |
+| Update Input.jsx — id/label association, aria-invalid, hint text | 24 | ✅ DONE | `87b4f41` |
+| New Modal.jsx — focus trap, Esc close, aria-modal, animate-scale-in | 24 | ✅ DONE | `87b4f41` |
+| New Skeleton.jsx — SkeletonCard + SkeletonList for loading states | 24 | ✅ DONE | `87b4f41` |
+| New Spinner.jsx — sm/md/lg/xl sizes | 24 | ✅ DONE | `87b4f41` |
+
+### Wave UI-2: Navbar + Footer ✅ DONE
+
+| Task | Agent | Status | Commit |
+|------|-------|--------|--------|
+| Navbar: dark `bg-slate-900` brand anchor, sky-300 active link | 02 | ✅ DONE | `87b4f41` |
+| Navbar: skip-to-main link (a11y) | 28 | ✅ DONE | `87b4f41` |
+| Navbar: mobile menu `tm-mobile-menu` class + slide-down animation | 02 | ✅ DONE | `87b4f41` |
+| Navbar: grid-cols-4 desktop nav + lg:max-w-4xl (test requirement) | 02 | ✅ DONE | `87b4f41` |
+| Navbar: focus-visible:ring-sky-400 on all interactive elements | 28 | ✅ DONE | `87b4f41` |
+| Footer: unchanged (already dark, good structure) | — | ✅ PASS | — |
+
+### Wave UI-3: Home / Search Page ✅ DONE
+
+| Task | Agent | Status | Commit |
+|------|-------|--------|--------|
+| Hero: dark gradient `from-slate-900 via-sky-950 to-slate-900` | 25 | ✅ DONE | `87b4f41` |
+| Mode selector: horizontal scroll on mobile, transport-specific active colours | 25 | ✅ DONE | `87b4f41` |
+| Mode selector: border on inactive tabs, focus-visible ring | 25 | ✅ DONE | `87b4f41` |
+| CSS: scrollbar-hide utility added | 25 | ✅ DONE | `87b4f41` |
+
+### Wave UI-4: Results Cards ✅ DONE
+
+| Task | Agent | Status | Commit |
+|------|-------|--------|--------|
+| ResultCard: transport-coloured mode badge (train=sky, bus=violet, flight=cyan) | 25 | ✅ DONE | `87b4f41` |
+| ResultCard: show ProvenanceBadge OR SourceBadge (not both) | 25 | ✅ DONE | `87b4f41` |
+| ResultCard: hover lift transition on card | 25 | ✅ DONE | `87b4f41` |
+
+### Wave UI-5: Auth UI + Profile Modal ✅ DONE
+
+| Task | Agent | Status | Commit |
+|------|-------|--------|--------|
+| OnboardingModal: white modal, branded header (icon + title + X button) | 26 | ✅ DONE | `87b4f41` |
+| OnboardingModal: proper label/id associations, aria-describedby | 28 | ✅ DONE | `87b4f41` |
+| OnboardingModal: info box replaces yellow warning box | 26 | ✅ DONE | `87b4f41` |
+| OnboardingModal: disabled Save button when form invalid | 26 | ✅ DONE | `87b4f41` |
+| Clerk appearance: AccountMenu retains all existing functionality | 26 | ✅ PASS | — |
+
+### Wave UI-6: Remaining Pages 🔄 IN PROGRESS
+
+| Task | Agent | Status |
+|------|-------|--------|
+| SavedPlans.jsx — verify visual consistency | 02 | 🔄 |
+| SafetyMode.jsx — verify visual consistency | 02 | 🔄 |
+| NotFound.jsx — already well-styled (pre-existing) | 02 | ✅ PASS |
+| AnalyzeJourney.jsx — verify visual consistency | 02 | 🔄 |
+| Legal pages — typography hierarchy check | 02 | 🔄 |
+
+### Wave UI-7: Polish + QA 🔄 IN PROGRESS
+
+| Task | Agent | Status |
+|------|-------|--------|
+| Test suite re-run: 308/308 ✅ | 10 | ✅ DONE |
+| Transport upgrade suite: 136/136 ✅ | 10 | ✅ DONE |
+| TASK_BOARD update | 00 | ✅ DONE |
+| DECISIONS.md update | 00 | ✅ DONE |
+| Git commit `87b4f41` pushed to main | 06 | ✅ DONE |
+| Vercel deploy triggered | 06 | ✅ AUTO |
+| Browser visual QA | 29 | 🔄 |
+| Security review (no keys in bundle) | 09 | 🔄 |
+| Release Gatekeeper sign-off | 22 | 🔄 |
