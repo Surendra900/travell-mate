@@ -25,6 +25,8 @@ import {
 } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
+import ProvenanceBadge from './ProvenanceBadge'
+import NearbyNodeLabel from './NearbyNodeLabel'
 import { getProviderDeepLink } from '../data/transportData'
 import { generateMultimodalRoutes } from '../utils/multimodalRouter'
 import { speakRouteTier, stopSpeaking } from '../utils/voiceIntent'
@@ -80,9 +82,11 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
               {transport}
             </span>
             <SourceBadge label={source} />
+            {item.provenance && <ProvenanceBadge provenance={item.provenance} />}
           </div>
           <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">{name}</h3>
           {code && <p className="text-xs font-semibold text-slate-500">{code} · {item.provider || 'Official Transit Provider'}</p>}
+          {item.nearbyNote && <NearbyNodeLabel note={item.nearbyNote} distKm={item.nearbyDistKm ?? 0} />}
         </div>
 
         <div className="text-right">
