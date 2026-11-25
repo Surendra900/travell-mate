@@ -101,7 +101,7 @@ export default function OfflinePassModal({ open, onClose, plan, toast }) {
         <div className="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-gray-50 shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#15803D]"></span>
-            <span className="text-[13px] font-bold text-gray-900">Offline Boarding Pass</span>
+            <span className="text-[13px] font-bold text-gray-900">100% Offline Boarding Pass</span>
             <span className="ml-2 px-2 py-0.5 text-[11px] font-bold rounded bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1]">
               CONFIRMED
             </span>

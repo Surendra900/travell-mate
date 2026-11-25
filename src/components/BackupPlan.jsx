@@ -112,7 +112,7 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
       {/* Contingency Trigger Banner */}
       {connectionRisk.contingencyTriggered && (
         <aside
-          data-testid="delay-contingency-alert"
+          data-testid="contingency-severe-delay-banner"
           className="mt-4 rounded-md border-l-4 border-l-red-600 border border-gray-200 bg-red-50/50 p-4 text-xs shadow-xs"
         >
           <div className="flex items-center gap-2 text-red-900 font-bold">
