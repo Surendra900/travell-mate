@@ -2,6 +2,8 @@ import { prepareApiRequest, providerStatus, publicProviderError } from '../_secu
 import { callRapidRail, dataRows, extractStationCode, getRapidConfig, stationCodes } from './_rapidapiRail.js'
 import { findDirectTrainRoutes } from '../../server/services/routeEngine.js'
 import { NEARBY_RADIUS_KM, MAX_NEARBY_NODES } from '../../src/config/routingConfig.js'
+import { withCache, gracefulError, withTimeout } from '../_resilience.js'
+import { CACHE_TTL } from '../_cache.js'
 
 /**
  * Nearest-station fallback: searches nearby station codes when no direct result found.
@@ -135,6 +137,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, mode: 'invalid', message: 'Origin and destination stations must be different.', results: [] })
   }
 
+  // W4-01: Check cache before making live API call
+  const cacheParams = { from: fromCodes[0] || from, to: toCodes[0] || to, date, q: searchText }
+  const { data: cachedResponse, fromCache } = await withCache('trains', cacheParams, async () => null, CACHE_TTL.TRAINS)
+  if (cachedResponse && fromCache) {
+    res.setHeader('X-Cache', 'HIT')
+    return res.status(200).json({ ...cachedResponse, fromCache: true })
+  }
+
   if ((from || to) && (!fromCodes.length || !toCodes.length)) {
     return res.status(400).json({
       ok: false,
@@ -238,7 +248,7 @@ export default async function handler(req, res) {
     const fromLabel = selectedPair?.[0] || from || ''
     const toLabel = selectedPair?.[1] || to || ''
     const results = rows.slice(0, 30).map((row, index) => normalizeTrainRow(row, index, fromLabel, toLabel, date))
-    return res.status(200).json({
+    const responseBody = {
       ok: true,
       mode: 'live',
       provider: 'RapidAPI IRCTC',
@@ -247,7 +257,14 @@ export default async function handler(req, res) {
       count: results.length,
       results,
       searchedStationPair: selectedPair ? `${selectedPair[0]}-${selectedPair[1]}` : null
-    })
+    }
+    // W4-01: Store successful live result in cache
+    if (results.length) {
+      const key = { from: fromCodes[0] || from, to: toCodes[0] || to, date, q: searchText }
+      await withCache('trains', key, async () => responseBody, CACHE_TTL.TRAINS)
+    }
+    res.setHeader('X-Cache', 'MISS')
+    return res.status(200).json(responseBody)
   } catch (error) {
     if (fromCodes.length && toCodes.length) {
       try {

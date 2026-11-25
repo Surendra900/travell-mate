@@ -1,4 +1,5 @@
 import { fetchJsonWithTimeout, prepareApiRequest, providerStatus, publicProviderError } from '../_security.js'
+import { withCache, CACHE_TTL } from '../_cache.js'
 
 const airlineAliases = {
   INDIGO: '6E', 'INDIGO AIRLINES': '6E',
