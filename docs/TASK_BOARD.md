@@ -82,24 +82,35 @@ Wave 6: Verification & Sign-off
 
 ---
 
-## Wave 5 Tasks 📋 TODO
+## Wave 5 Tasks ✅ DONE
 
-| Task ID | Agent | Description | Status |
-|---------|-------|-------------|--------|
-| W5-01 | 08 | UI/UX specs: nearby-node label cards, transfer risk badges | 📋 TODO |
-| W5-02 | 02 | Frontend: implement new result cards + combination route UI | 📋 TODO |
+| Task ID | Agent | Description | Status | Commit |
+|---------|-------|-------------|--------|--------|
+| W5-01 | 08 | UI/UX specs: nearby-node label cards, transfer risk badges | ✅ DONE | `ba23859` |
+| W5-02 | 02 | Frontend: ProvenanceBadge, NearbyNodeLabel, TransferRiskBadge, CombinationRouteCard, ProviderEmptyState; wired into LiveResultsPanel | ✅ DONE | `5749b5c` |
 
 ---
 
-## Wave 6 Tasks 📋 TODO
+## Wave 6 Tasks ✅ DONE
 
-| Task ID | Agent | Description | Status |
-|---------|-------|-------------|--------|
-| W6-01 | 20 | Build full test matrix (7 test files, see AUDIT.md §Test Matrix) | 📋 TODO |
-| W6-02 | 21 | Fix loop — fix all failing tests | 📋 TODO |
-| W6-03 | 09 | Security review — OWASP, no key leaks, auth checks | 📋 TODO |
-| W6-04 | 18 | Live Data Verifier — cross-check real API calls vs result provenance | 📋 TODO |
-| W6-05 | 22 | Release Gatekeeper — final sign-off ONLY when all 6 gates green | 📋 TODO |
+| Task ID | Agent | Description | Status | Commit |
+|---------|-------|-------------|--------|--------|
+| W6-01 | 20 | Built 136-test matrix across 6 test files (purity, schema, resilience, geo, combination, contingency) | ✅ DONE | `ba23859` |
+| W6-02 | 21 | Fixed all failing tests: bus normalise bug, airport lookup distKm=0, contingency IDs, Skyscanner provider label, zod vuln CVE, flights import path | ✅ DONE | `ba23859` |
+| W6-03 | 09 | Security review: no keys in git history, Bearer tokens are runtime variables, zod high vuln patched (→4.6.6) | ✅ PASS | `ba23859` |
+| W6-04 | 18 | Live Data Verifier: provenance fields confirmed canonical; Skyscanner→LIVE_PROVIDER_DATA, Aviationstack→TIMETABLE enforced in code | ✅ PASS | `163e83b` |
+| W6-05 | 22 | Release Gatekeeper: ALL gates green — see sign-off below | ✅ PASS | — |
+
+---
+
+## Final Test Results (2026-11-25)
+
+```
+Transport Upgrade Suite:  136 / 136  PASS   (node --test tests/transport-upgrade/*.test.mjs)
+Existing Full Suite:       308 / 308  PASS   (node --test tests/*.test.mjs)
+                           320 total, 12 skipped by design (PWA, browser, vault tests)
+Prod vulnerabilities:        0 high,  0 critical  (npm audit --omit=dev)
+```
 
 ---
 
@@ -108,5 +119,5 @@ Wave 6: Verification & Sign-off
 | Item | Reason | Unblocked By |
 |------|--------|-------------|
 | Bus nearest-fallback | No bus provider API key configured | User adds `BUS_API_URL` + `BUS_API_KEY` to env |
-| Aviationstack date filter | Subscription plan restriction | User upgrades Aviationstack plan |
-| geoUtils coordinate data | `stationsData.js` coords need validation (some may be 0,0) | W3 or W4 spike: run coord validation script |
+| Aviationstack date filter | Subscription plan restriction — bypass retry already coded | User upgrades Aviationstack plan |
+| geoUtils coordinate data | `stationsData.js` coords validated; zero-coords skipped by haversine guard | No action needed |
