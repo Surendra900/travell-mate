@@ -199,10 +199,10 @@ export default function ServiceOptionsBoard({
   }, [focusMode, liveModeActive, liveState.checked, dedicatedResultsReady, options, showFallback])
 
   return (
-    <section className={`bg-white rounded-3xl border border-slate-200 p-6 shadow-sm ${compact ? 'text-sm' : ''}`} aria-labelledby="service-options-title">
+    <section className={`bg-white rounded-lg border border-gray-200 p-6 shadow-xs ${compact ? 'text-sm' : ''}`} aria-labelledby="service-options-title">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-sky-700">Source-labeled route board</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-[#15803D]">Source-labeled route board</p>
           <h3 id="service-options-title" className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">{boardTitle}</h3>
           <p className="mt-1 text-sm text-slate-600 font-normal">{boardNote}</p>
         </div>
@@ -212,17 +212,17 @@ export default function ServiceOptionsBoard({
       </div>
 
       {liveModeActive ? (
-        <div className={`mt-4 rounded-2xl border p-3.5 text-xs font-medium ${liveState.results.length ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
+        <div className={`mt-4 rounded-md border p-3.5 text-xs font-medium ${liveState.results.length ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span>{liveState.loading ? 'Checking live provider API...' : liveState.message || 'Live provider check ready.'}</span>
             <SourceBadge label={liveState.results.length ? 'Live API result' : liveState.sourceBadge || 'Provider status'} />
           </div>
           {!liveState.loading && dedicatedResultsReady && (
             <div className="mt-3 flex flex-wrap items-center gap-3">
-              <button type="button" className="inline-flex items-center gap-2 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2 text-xs shadow-sm transition" onClick={onOpenLiveResults}>
+              <button type="button" className="inline-flex items-center gap-2 rounded-md bg-[#15803D] hover:bg-[#12733B] text-white font-bold px-4 py-2 text-xs shadow-xs transition" onClick={onOpenLiveResults}>
                 Open {liveState.results.length} live result{liveState.results.length === 1 ? '' : 's'}
               </button>
-              <button type="button" className="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 transition" onClick={() => setShowFallback((value) => !value)}>
+              <button type="button" className="rounded-md border border-slate-300 bg-white hover:bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 transition" onClick={() => setShowFallback((value) => !value)}>
                 {showFallback ? 'Hide local fallback' : 'Show local fallback'}
               </button>
             </div>
@@ -230,21 +230,21 @@ export default function ServiceOptionsBoard({
           {!liveState.loading && liveState.checked && liveState.results.length === 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-2"><AlertTriangle size={14} className="text-amber-600" /> No live provider rows are being shown for this route. The old demo candidates are hidden so they are not mistaken for accurate data.</span>
-              <button type="button" className="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition" onClick={() => setShowFallback((value) => !value)}>
+              <button type="button" className="rounded-md border border-slate-300 bg-white hover:bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition" onClick={() => setShowFallback((value) => !value)}>
                 {showFallback ? 'Hide static demo options' : 'Show static demo fallback'}
               </button>
             </div>
           )}
         </div>
       ) : (
-        <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-xs font-medium text-amber-900">{options.notice}</p>
+        <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3.5 text-xs font-medium text-amber-900">{options.notice}</p>
       )}
 
       <div className="mt-5 grid gap-5">
         {dedicatedResultsReady && !showFallback && (
-          <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-4 text-sm text-sky-950">
+          <div className="rounded-md border border-gray-200 bg-gray-50 p-4 text-sm text-gray-900">
             <p className="font-bold">Live tickets were moved out of the long planner page.</p>
-            <p className="mt-1 text-sky-800 text-xs">Use the button above to open the dedicated results workspace. Backup suggestions are visible near the route form and inside that workspace.</p>
+            <p className="mt-1 text-gray-600 text-xs">Use the button above to open the dedicated results workspace. Backup suggestions are visible near the route form and inside that workspace.</p>
           </div>
         )}
         {groups.map(([key, services]) => {

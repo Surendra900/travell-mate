@@ -148,19 +148,19 @@ export default function SavedPlans({ toast }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="min-h-screen bg-[#F4F5F7] text-gray-900 pb-16">
       {/* Top Hero */}
-      <section className="bg-white border-b border-slate-200 pt-10 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <section className="bg-white border-b border-gray-200 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-sky-700 text-xs font-bold mb-2">
-              <Bookmark size={14} className="text-sky-600" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#EDF7F0] border border-[#C6E8D1] text-[#137333] text-xs font-bold mb-1">
+              <Bookmark size={13} className="text-[#15803D]" />
               <span>Itinerary & Pass Manager</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
               My Trips & Boarding Passes
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-xs text-gray-500 mt-0.5">
               Access your upcoming departures, offline passes, and live PNR confirmation status.
             </p>
           </div>
@@ -168,50 +168,50 @@ export default function SavedPlans({ toast }) {
           <button
             type="button"
             onClick={() => navigate('/planner')}
-            className="btn-primary h-12 px-5 rounded-md text-sm font-bold flex items-center gap-2 shadow-md shadow-sky-600/20"
+            className="h-9 px-4 rounded bg-[#15803D] hover:bg-[#12733B] text-white text-xs font-semibold flex items-center gap-1.5 transition"
           >
             <span>Plan a New Trip</span>
           </button>
         </div>
       </section>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-6">
         {/* Upcoming Journeys Section */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-black text-slate-950 flex items-center gap-2">
-              <CalendarDays size={20} className="text-sky-600" />
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
+              <CalendarDays size={18} className="text-[#15803D]" />
               <span>Upcoming Journeys</span>
             </h2>
             <div className="flex items-center gap-2">
               {isSupabaseConfigured && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
-                  <CheckCircle2 size={12} className="text-emerald-600" />
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#EDF7F0] text-[#137333] text-xs font-bold border border-[#C6E8D1]">
+                  <CheckCircle2 size={12} className="text-[#137333]" />
                   <span>Cloud Synced</span>
                 </span>
               )}
-              <span className="text-xs font-semibold text-slate-500">{plans.length} total saved</span>
+              <span className="text-xs font-medium text-gray-600">{plans.length} total saved</span>
             </div>
           </div>
 
           {plans.length === 0 ? (
-            <div data-testid="empty-saved-plans" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center shadow-sm">
-              <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 mx-auto flex items-center justify-center mb-4">
-                <Bookmark size={26} />
+            <div data-testid="empty-saved-plans" className="bg-white rounded-lg border border-gray-200 p-8 sm:p-10 text-center shadow-xs">
+              <div className="w-12 h-12 rounded bg-gray-50 text-gray-400 mx-auto flex items-center justify-center mb-3 border border-gray-200">
+                <Bookmark size={22} />
               </div>
-              <h3 className="text-lg font-black text-slate-900">No saved journeys yet</h3>
-              <p className="text-sm text-slate-500 max-w-md mx-auto mt-1.5 leading-relaxed">
+              <h3 className="text-base font-bold text-gray-900">No saved journeys yet</h3>
+              <p className="text-xs text-gray-500 max-w-md mx-auto mt-1 leading-relaxed">
                 When you find an optimal route recovery option in the planner, save it here to access it instantly offline with 1-click boarding passes.
               </p>
-              <div className="mt-5 flex justify-center">
-                <Link to="/planner" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold shadow-md shadow-sky-600/20">
+              <div className="mt-4 flex justify-center">
+                <Link to="/planner" className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#15803D] hover:bg-[#12733B] text-white text-xs font-semibold transition">
                   <span>Explore Route Recovery</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={13} />
                 </Link>
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {plans.slice(0, 2).map((plan) => {
               const service = plan.selectedService || {}
               const ModeIcon = iconFor(plan.transportMode)
@@ -225,42 +225,42 @@ export default function SavedPlans({ toast }) {
               return (
                 <article
                   key={plan.id}
-                  className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between"
+                  className="bg-white rounded-lg border border-gray-200 p-4 shadow-xs hover:border-gray-300 transition flex flex-col justify-between"
                 >
                   <div>
                     {/* Date chip & mode */}
-                    <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-100">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-bold">
-                        <CalendarDays size={13} className="text-slate-500" />
+                    <div className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 text-xs font-medium">
+                        <CalendarDays size={12} className="text-gray-400" />
                         <span>{plan.date || 'Date not selected'}</span>
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
-                        <ModeIcon size={18} />
+                      <div className="w-8 h-8 rounded bg-gray-50 text-[#15803D] border border-gray-200 flex items-center justify-center">
+                        <ModeIcon size={16} />
                       </div>
                     </div>
 
                     {/* Title & Route */}
-                    <div className="mt-4">
-                      <span className="text-xs font-bold uppercase tracking-wider text-sky-700">
+                    <div className="mt-3">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#15803D]">
                         {plan.transportMode || 'Train'} · {plan.ticketType || 'Normal'}
                       </span>
-                      <h3 className="text-xl font-extrabold text-slate-950 mt-1">{name}</h3>
-                      <p className="text-sm font-semibold text-slate-600 flex items-center gap-1.5 mt-1">
+                      <h3 className="text-base font-bold text-gray-900 mt-0.5">{name}</h3>
+                      <p className="text-xs font-medium text-gray-600 flex items-center gap-1.5 mt-0.5">
                         <span>{plan.from || 'Origin'}</span>
-                        <ArrowRight size={14} className="text-slate-400" />
+                        <ArrowRight size={13} className="text-gray-400" />
                         <span>{plan.to || 'Destination'}</span>
                       </p>
                     </div>
 
                     {/* Meta details */}
-                    <div className="grid grid-cols-2 gap-3 mt-5 p-3 rounded-2xl bg-slate-50 border border-slate-100 text-xs">
+                    <div className="grid grid-cols-2 gap-2 mt-3.5 p-2.5 rounded border border-gray-200 bg-gray-50 text-xs">
                       <div>
-                        <span className="text-slate-400 block font-semibold mb-0.5">Service Code</span>
-                        <strong className="text-slate-900 font-bold">{code || 'Verified Provider'}</strong>
+                        <span className="text-gray-400 block text-[10px] uppercase font-semibold">Service Code</span>
+                        <strong className="text-gray-900 font-semibold">{code || 'Verified Provider'}</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block font-semibold mb-0.5">Timings</span>
-                        <strong className="text-slate-900 font-bold">
+                        <span className="text-gray-400 block text-[10px] uppercase font-semibold">Timings</span>
+                        <strong className="text-gray-900 font-semibold tabular">
                           {departure || 'Pending'} {arrival ? `to ${arrival}` : ''}
                         </strong>
                       </div>
@@ -268,33 +268,33 @@ export default function SavedPlans({ toast }) {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 mt-6 pt-4 border-t border-slate-100">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mt-4 pt-3 border-t border-gray-100">
                     <button
                       type="button"
                       onClick={() => openPlan(plan)}
-                      className="text-xs font-bold text-sky-700 hover:text-sky-800 inline-flex items-center gap-1"
+                      className="text-xs font-semibold text-[#15803D] hover:underline inline-flex items-center gap-1"
                     >
                       <span>View Details</span>
-                      <ArrowRight size={14} />
+                      <ArrowRight size={13} />
                     </button>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       <button
                         type="button"
                         data-testid={`view-pass-${plan.id}`}
                         onClick={() => setPassPlan(plan)}
-                        className="px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
+                        className="px-2.5 py-1 rounded border border-gray-300 hover:bg-gray-50 text-xs font-semibold text-gray-700 inline-flex items-center gap-1 transition"
                       >
-                        <ShieldCheck size={14} className="text-emerald-600" />
+                        <ShieldCheck size={13} className="text-[#137333]" />
                         <span>Boarding Pass</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setBookingPlan(plan)}
-                        className="px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-800 inline-flex items-center gap-1.5"
+                        className="px-2.5 py-1 rounded border border-gray-300 hover:bg-gray-50 text-xs font-semibold text-gray-700 inline-flex items-center gap-1 transition"
                       >
-                        <Ticket size={14} className="text-sky-600" />
+                        <Ticket size={13} className="text-gray-600" />
                         <span>Booking</span>
                       </button>
                     </div>
@@ -307,14 +307,14 @@ export default function SavedPlans({ toast }) {
         </section>
 
         {/* Offline Pack Generator */}
-        <section className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-100">
+        <section className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-gray-100">
             <div>
-              <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-emerald-700">
-                <ShieldCheck size={14} /> Zero-Network Ready
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#137333]">
+                <ShieldCheck size={13} /> Zero-Network Ready
               </span>
-              <h2 className="text-xl font-black text-slate-950 mt-1">Keep Your Journeys Available Offline</h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <h2 className="text-base font-bold text-gray-900 mt-0.5">Keep Your Journeys Available Offline</h2>
+              <p className="text-xs text-gray-500 mt-0.5">
                 Download route schedules, offline passes, and encrypted vault IDs directly into device storage.
               </p>
             </div>
@@ -324,34 +324,34 @@ export default function SavedPlans({ toast }) {
                 type="button"
                 disabled={!canGeneratePack}
                 onClick={makeOfflinePack}
-                className="btn-primary h-11 px-4 text-xs font-bold flex items-center gap-2"
+                className="h-9 px-3.5 rounded bg-[#15803D] hover:bg-[#12733B] text-white text-xs font-semibold flex items-center gap-1.5 transition disabled:opacity-50"
               >
-                <DownloadCloud size={16} />
+                <DownloadCloud size={14} />
                 <span>{packCurrent ? 'Pack Up To Date' : 'Generate Offline Pack'}</span>
               </button>
               <button
                 type="button"
                 onClick={refresh}
-                className="btn-soft h-11 px-3 text-xs font-bold flex items-center gap-1.5"
+                className="h-9 px-3 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs font-semibold flex items-center gap-1 transition"
               >
-                <RotateCw size={14} />
+                <RotateCw size={13} />
                 <span>Refresh</span>
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Saved Routes</span>
-              <strong className="text-lg font-black text-slate-900">{exactPlans.length}</strong>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+            <div className="p-3 rounded border border-gray-200 bg-gray-50/70 flex items-center justify-between">
+              <span className="text-xs font-medium text-gray-500">Saved Routes</span>
+              <strong className="text-base font-bold text-gray-900 tabular">{exactPlans.length}</strong>
             </div>
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Offline Cached</span>
-              <strong className="text-lg font-black text-slate-900">{packedExactRoutes}</strong>
+            <div className="p-3 rounded border border-gray-200 bg-gray-50/70 flex items-center justify-between">
+              <span className="text-xs font-medium text-gray-500">Offline Cached</span>
+              <strong className="text-base font-bold text-gray-900 tabular">{packedExactRoutes}</strong>
             </div>
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Offline Pack</span>
-              <strong className="text-lg font-black text-slate-900">{offline ? 'Ready' : 'Pending'}</strong>
+            <div className="p-3 rounded border border-gray-200 bg-gray-50/70 flex items-center justify-between">
+              <span className="text-xs font-medium text-gray-500">Offline Pack</span>
+              <strong className="text-base font-bold text-gray-900">{offline ? 'Ready' : 'Pending'}</strong>
             </div>
           </div>
         </section>

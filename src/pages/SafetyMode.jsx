@@ -178,24 +178,24 @@ export default function SafetyMode({ toast }) {
     : [SAMPLE_OFFLINE_ROUTE]
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="min-h-screen bg-[#F4F5F7] text-[#1F2937] pb-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-sky-50/70 via-white to-slate-50 border-b border-slate-200/80 pt-10 pb-12 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-gray-200 pt-8 pb-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           {/* Statutory Notice per Master Spec Section 15 */}
           <div
             data-testid="safety-statutory-notice"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100 border border-red-200 text-red-900 text-xs sm:text-sm font-bold tracking-wide mb-5 shadow-sm"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-900 text-xs sm:text-sm font-bold tracking-wide mb-4 shadow-xs"
           >
             <Siren size={15} className="text-red-600 shrink-0" />
             <span>TravelMate is not an emergency service. In an emergency call 112.</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
             Passes & Transit Safety
           </h1>
 
-          <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Offline digital boarding passes, 24/7 national transit helplines (112 & 139), live GPS telemetry sharing with explicit consent, and zero-network station guides.
           </p>
 
@@ -203,7 +203,7 @@ export default function SafetyMode({ toast }) {
             <button
               type="button"
               onClick={() => setActiveTab('passes')}
-              className="btn-primary min-h-12 px-6 rounded-md text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-sky-600/25 w-full sm:w-auto"
+              className="btn-primary min-h-11 px-6 rounded-md text-sm font-bold flex items-center justify-center gap-2 shadow-xs w-full sm:w-auto"
             >
               <Ticket size={18} />
               <span>Offline Boarding Passes</span>
@@ -212,7 +212,7 @@ export default function SafetyMode({ toast }) {
             <button
               type="button"
               onClick={openEmergencyActions}
-              className="btn-danger min-h-12 px-6 rounded-md text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-red-600/25 w-full sm:w-auto"
+              className="btn-danger min-h-11 px-6 rounded-md text-sm font-bold flex items-center justify-center gap-2 shadow-xs w-full sm:w-auto"
             >
               <Siren size={18} />
               <span>Transit Helplines (112 / 139)</span>
@@ -241,11 +241,11 @@ export default function SafetyMode({ toast }) {
                 onClick={() => setActiveTab(id)}
                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-md font-bold text-sm transition ${
                   active
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                    ? 'bg-[#15803D] text-white shadow-xs'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
-                <Icon size={16} className={active ? 'text-sky-400' : 'text-slate-400'} />
+                <Icon size={16} className={active ? 'text-white' : 'text-gray-400'} />
                 <span>{label}</span>
               </button>
             )
@@ -256,19 +256,19 @@ export default function SafetyMode({ toast }) {
         <div className={activeTab === 'passes' ? 'block mt-6' : 'hidden'}>
           <div className="space-y-6">
             {/* PWA & Offline Status Banner */}
-            <div data-testid="pwa-offline-status" className="bg-sky-50 border border-sky-200 rounded-3xl p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4">
+            <div data-testid="pwa-offline-status" className="bg-white border border-gray-200 rounded-lg p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4 shadow-xs">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-sky-600/30">
-                  <Smartphone size={24} />
+                <div className="w-10 h-10 rounded-md bg-[#EDF7F0] border border-[#C6E8D1] text-[#15803D] flex items-center justify-center shrink-0">
+                  <Smartphone size={20} />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-extrabold text-slate-900 text-base">Local-First PWA Offline Trip Pack</h3>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    <h3 className="font-extrabold text-gray-900 text-sm sm:text-base">Local-First PWA Offline Trip Pack</h3>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1]">
                       <ShieldCheck size={12} /> Ready
                     </span>
                   </div>
-                  <p className="text-xs text-slate-600 mt-0.5">
+                  <p className="text-xs text-gray-600 mt-0.5">
                     Cached locally in browser storage and Service Worker. Works completely offline in low-connectivity rail tunnels.
                   </p>
                 </div>
@@ -279,9 +279,9 @@ export default function SafetyMode({ toast }) {
                 data-testid="sync-offline-pack-btn"
                 onClick={handleSyncOfflinePack}
                 disabled={syncingOffline}
-                className="btn-soft inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-xs font-bold text-sky-800 bg-white border border-sky-300 hover:bg-sky-50 shadow-sm"
+                className="btn-soft inline-flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold text-gray-800 bg-white border border-gray-300 hover:bg-gray-50 shadow-xs"
               >
-                <RefreshCw size={14} className={syncingOffline ? 'animate-spin text-sky-600' : 'text-sky-600'} />
+                <RefreshCw size={14} className={syncingOffline ? 'animate-spin text-[#15803D]' : 'text-gray-600'} />
                 <span>{syncingOffline ? 'Caching Assets...' : 'Sync / Refresh Offline Cache'}</span>
               </button>
             </div>
@@ -290,8 +290,8 @@ export default function SafetyMode({ toast }) {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-black text-slate-950">Active Digital Boarding Passes</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <h2 className="text-xl font-bold text-gray-900">Active Digital Boarding Passes</h2>
+                  <p className="text-xs text-gray-600 mt-0.5">
                     Zero-network itinerary cards with leg-by-leg departure details and station transfer buffers.
                   </p>
                 </div>
@@ -401,10 +401,10 @@ export default function SafetyMode({ toast }) {
 
         {/* Tab 3: Station Layover Guides */}
         <div className={activeTab === 'guides' ? 'block mt-6' : 'hidden'}>
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+          <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 shadow-xs">
             <div className="mb-6">
-              <h2 className="text-xl font-black text-slate-950">Safety Information & Station Guides</h2>
-              <p className="text-xs text-slate-500 mt-1">Official guidance for Indian railway and road transit security.</p>
+              <h2 className="text-xl font-black text-gray-900">Safety Information & Station Guides</h2>
+              <p className="text-xs text-gray-500 mt-1">Official guidance for Indian railway and road transit security.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {emergencyCards.map((item) => (

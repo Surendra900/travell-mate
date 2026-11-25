@@ -63,28 +63,28 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
   }
 
   return (
-    <section className="rounded-3xl border border-slate-700/60 bg-slate-900 p-5 text-slate-100" aria-labelledby="backup-title">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <section className="rounded-lg border border-gray-200 bg-white p-5 text-gray-900 shadow-xs" aria-labelledby="backup-title">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
         <div>
-          <p className="text-sm font-bold text-cyan-300">Availability fallback & contingency</p>
-          <h3 id="backup-title" className="text-2xl font-black text-white">Backup options if selected transport fails</h3>
+          <p className="text-xs font-bold text-[#15803D] uppercase tracking-wider">Availability fallback & contingency</p>
+          <h3 id="backup-title" className="text-xl font-black text-gray-900">Backup options if selected transport fails</h3>
         </div>
         {!singleOnly && (
           <button
             type="button"
             data-testid="analyze-suggest-backup-btn"
-            className="btn-primary inline-flex items-center gap-2"
+            className="btn-primary inline-flex items-center gap-1.5 text-xs py-2 px-3 shadow-xs"
             onClick={suggestBest}
           >
-            <Trophy size={16} /> Analyze & suggest best
+            <Trophy size={14} /> Analyze & suggest best
           </button>
         )}
       </div>
 
       {/* Contingency Delay Simulator Controls */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-3 text-xs">
-        <span className="font-bold text-white inline-flex items-center gap-1.5">
-          <Clock size={14} className="text-cyan-400" /> Connecting Leg Delay Simulator:
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 bg-gray-50 p-3 text-xs">
+        <span className="font-bold text-gray-800 inline-flex items-center gap-1.5">
+          <Clock size={14} className="text-[#15803D]" /> Connecting Leg Delay Simulator:
         </span>
         <div className="flex gap-1.5">
           {[
@@ -97,10 +97,10 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
               type="button"
               data-testid={item.tid}
               onClick={() => setSimulatedDelay(item.val)}
-              className={`rounded-lg px-2.5 py-1 font-bold transition ${
+              className={`rounded-md px-2.5 py-1 text-xs font-bold transition border ${
                 simulatedDelay === item.val
-                  ? 'bg-cyan-500 text-slate-950 font-black'
-                  : 'bg-slate-800 text-slate-200 hover:text-white'
+                  ? 'border-[#15803D] bg-[#15803D] text-white shadow-xs'
+                  : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-100'
               }`}
             >
               {item.label}
@@ -109,54 +109,42 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
         </div>
       </div>
 
-      {/* Severe Delay (>45m) Contingency Alert Banner */}
+      {/* Contingency Trigger Banner */}
       {connectionRisk.contingencyTriggered && (
         <aside
-          data-testid="contingency-severe-delay-banner"
-          className="mt-4 rounded-2xl border border-red-500/50 bg-red-950/40 p-4 text-red-100"
-          role="alert"
+          data-testid="delay-contingency-alert"
+          className="mt-4 rounded-md border-l-4 border-l-red-600 border border-gray-200 bg-red-50/50 p-4 text-xs shadow-xs"
         >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start gap-2.5">
-              <ShieldAlert className="mt-0.5 text-red-400 shrink-0" size={20} />
-              <div>
-                <span className="inline-flex items-center gap-1 rounded-full border border-red-400/40 bg-red-900/60 px-2 py-0.5 text-[11px] font-black uppercase text-red-200">
-                  <span className="inline-block h-2 w-2 rounded-full bg-red-400 animate-ping mr-1" />
-                  Severe Connecting Delay (+{simulatedDelay}m)
-                </span>
-                <h4 className="mt-1.5 text-base font-black text-white">
-                  Junction Transfer at Critical Risk ({connectionRisk.missedTransferProbability}% Missed Odds)
-                </h4>
-                <p className="mt-1 text-xs text-red-200 leading-relaxed">
-                  Scheduled layover (60m) depleted by primary leg delay. TravelMate Contingency Engine calculated 3 zero-network viable alternatives:
-                </p>
-              </div>
-            </div>
+          <div className="flex items-center gap-2 text-red-900 font-bold">
+            <ShieldAlert size={16} className="text-red-600 shrink-0" />
+            <span className="text-sm font-black">Connection Missed Risk Detected ({simulatedDelay} min delay)</span>
           </div>
+          <p className="mt-1 text-xs text-red-800 leading-relaxed">
+            {connectionRisk.recommendation}
+          </p>
 
-          {/* Contingency Option Cards */}
-          <div className="mt-4 space-y-2.5">
+          <div className="mt-3 space-y-2">
             {contingencyOptions.map((opt) => (
               <div
                 key={opt.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-red-500/25 bg-slate-950/80 p-3 text-xs"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-md border border-red-200 bg-white p-3 text-xs shadow-xs"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white text-sm">{opt.title}</span>
-                    <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-bold text-cyan-300">{opt.transport}</span>
+                    <span className="font-bold text-gray-900 text-xs sm:text-sm">{opt.title}</span>
+                    <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-700">{opt.transport}</span>
                   </div>
-                  <p className="mt-0.5 text-slate-300">
-                    <strong className="text-white">{opt.carrier}</strong> ({opt.code}) · Depart: {opt.depart} · Fare: ₹{opt.fare}
+                  <p className="mt-0.5 text-gray-600">
+                    <strong className="text-gray-900">{opt.carrier}</strong> ({opt.code}) · Depart: <span className="tabular">{opt.depart}</span> · Fare: <span className="tabular">₹{opt.fare}</span>
                   </p>
-                  <p className="mt-0.5 text-[11px] text-emerald-300 font-medium"> {opt.riskReduction}</p>
+                  <p className="mt-0.5 text-[11px] text-[#137333] font-semibold">{opt.riskReduction}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     type="button"
                     data-testid={`activate-contingency-${opt.id}`}
                     onClick={() => activateContingency(opt)}
-                    className="rounded-lg bg-red-600 px-3 py-1.5 font-bold text-white hover:bg-red-500 transition inline-flex items-center gap-1"
+                    className="rounded-md bg-red-600 px-3 py-1.5 font-bold text-white hover:bg-red-700 transition inline-flex items-center gap-1 shadow-xs"
                   >
                     <Zap size={13} /> Activate Contingency
                   </button>
@@ -167,26 +155,26 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
         </aside>
       )}
 
-      <p className={`mt-4 rounded-2xl border p-3 text-sm font-bold ${selectedBlocked ? 'border-red-400/25 bg-red-500/10 text-red-100' : 'border-yellow-400/20 bg-yellow-400/10 text-yellow-100'}`}>
+      <p className={`mt-4 rounded-md border p-3 text-xs font-bold ${selectedBlocked ? 'border-red-200 bg-red-50 text-red-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
         {selectedBlocked
           ? `${plan.transportMode || 'Selected transport'} may not be practical because availability or reliability is weak. Click Analyze & suggest best for one recommended backup.`
           : singleOnly ? 'Low-network mode keeps only the selected transport visible.' : 'Click Analyze & suggest best to compare the fallback routes and show one clear recommendation.'}
       </p>
 
       {!best && !singleOnly && !connectionRisk.contingencyTriggered && (
-        <div className="mt-4 rounded-2xl border border-slate-700/70 bg-slate-950/70 p-4 text-sm text-slate-300">
-          <ShieldCheck className="mb-2 text-cyan-200" size={20} />
-          Backup options are hidden until you ask the app to analyze and suggest the best one. This keeps the planner simple for demo viewers.
+        <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 p-3.5 text-xs text-gray-600">
+          <ShieldCheck className="mb-1 text-[#15803D]" size={16} />
+          Backup options are hidden until you ask the app to analyze and suggest the best one.
         </div>
       )}
 
       {best && (
-        <article className="mt-4 rounded-2xl border border-yellow-300/40 bg-yellow-300/10 p-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h4 className="font-black text-white">Suggested best: {best.label}</h4>
-            <span className="rounded-full bg-yellow-300 px-3 py-1 text-xs font-black text-slate-950">{best.score}/100</span>
+        <article className="mt-4 rounded-md border border-[#C6E8D1] bg-[#EDF7F0] p-4 text-xs shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#C6E8D1] pb-2">
+            <h4 className="font-bold text-gray-900 text-sm">Suggested best: {best.label}</h4>
+            <span className="rounded bg-[#15803D] text-white px-2 py-0.5 text-[11px] font-bold">{best.score}/100</span>
           </div>
-          <p className="mt-2 text-sm text-yellow-100/90">{best.note}</p>
+          <p className="mt-2 text-xs text-gray-700">{best.note}</p>
           <div className="mt-3 space-y-2">
             {buildComboLegs(best, plan).map((leg) => {
               const legLink = getProviderDeepLink({
@@ -199,19 +187,19 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
               })
               const providerName = leg.mode === 'Bus' ? 'RedBus' : leg.mode === 'Flight' ? 'Google Flights' : 'ConfirmTkt'
               return (
-                <div key={`${best.label}-${leg.leg}`} className="rounded-xl bg-slate-950/70 p-3 text-sm text-slate-300">
-                  <p><b className="text-cyan-100">Leg {leg.leg} · {leg.mode}:</b> {leg.service} ({leg.code}) · {leg.depart} to {leg.arrive} · ₹{leg.fare}</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <button className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-xs font-black text-cyan-100 hover:bg-cyan-400/20" onClick={() => bookLeg(best, leg)}>
-                      <TicketCheck className="mr-1 inline" size={14} /> {legBookLabel(leg.mode)}
+                <div key={`${best.label}-${leg.leg}`} className="rounded-md border border-gray-200 bg-white p-3 text-xs text-gray-800 shadow-xs">
+                  <p><b className="text-gray-900">Leg {leg.leg} · {leg.mode}:</b> {leg.service} ({leg.code}) · <span className="tabular">{leg.depart}</span> to <span className="tabular">{leg.arrive}</span> · <span className="tabular">₹{leg.fare}</span></p>
+                  <div className="mt-2.5 flex flex-wrap gap-2">
+                    <button className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs" onClick={() => bookLeg(best, leg)}>
+                      <TicketCheck className="mr-1 inline text-gray-500" size={13} /> {legBookLabel(leg.mode)}
                     </button>
                     <a
                       href={legLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-xs font-black text-emerald-100 hover:bg-emerald-400/20"
+                      className="inline-flex items-center gap-1 rounded-md bg-[#EDF7F0] border border-[#C6E8D1] px-3 py-1.5 text-xs font-bold text-[#137333] hover:bg-green-100 shadow-xs"
                     >
-                      <ExternalLink size={13} /> Book on {providerName} ↗
+                      <ExternalLink size={12} /> Book on {providerName} ↗
                     </a>
                   </div>
                 </div>
@@ -222,7 +210,7 @@ export default function BackupPlan({ plan, compact = false, singleOnly = false, 
       )}
 
       {bookingNotice && (
-        <div className="mt-4 rounded-xl border border-cyan-400/30 bg-cyan-950/30 p-3 text-xs font-bold text-cyan-200">
+        <div className="mt-3 rounded-md border border-[#C6E8D1] bg-[#EDF7F0] p-3 text-xs font-bold text-[#137333]">
           {bookingNotice}
         </div>
       )}

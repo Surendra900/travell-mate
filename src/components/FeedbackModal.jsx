@@ -42,75 +42,75 @@ export default function FeedbackModal({ open, onClose, toast }) {
       aria-modal="true"
       aria-labelledby="feedback-modal-title"
       data-testid="feedback-modal"
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="relative w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-slate-700 bg-slate-900 p-6 text-slate-100 shadow-2xl">
+      <div className="relative w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border border-gray-300 bg-white p-5 text-gray-900 shadow-xl">
         <button
           type="button"
           onClick={onClose}
           aria-label="Close feedback modal"
           data-testid="feedback-close-btn"
-          className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+          className="absolute right-4 top-4 rounded p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-300">
-            <MessageSquare size={20} />
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded bg-[#15803D] text-white">
+            <MessageSquare size={17} />
           </div>
           <div>
-            <h2 id="feedback-modal-title" className="text-xl font-black text-white">
+            <h2 id="feedback-modal-title" className="text-base font-bold text-gray-900">
               Traveler Feedback
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-gray-500">
               Anonymous & zero-tracking. Help us refine India route recovery.
             </p>
           </div>
         </div>
 
         {submitted ? (
-          <div className="mt-8 py-8 text-center" role="status" aria-live="polite" data-testid="feedback-success-state">
-            <CheckCircle2 size={48} className="mx-auto text-emerald-400" />
-            <h3 className="mt-3 text-lg font-bold text-white">Feedback Received</h3>
-            <p className="mt-1 text-xs text-slate-300">Your insights help keep junction transfer slack realistic.</p>
+          <div className="mt-6 py-6 text-center" role="status" aria-live="polite" data-testid="feedback-success-state">
+            <CheckCircle2 size={40} className="mx-auto text-[#137333]" />
+            <h3 className="mt-2.5 text-base font-bold text-gray-900">Feedback Received</h3>
+            <p className="mt-1 text-xs text-gray-600">Your insights help keep junction transfer slack realistic.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
             {/* Rating */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Overall Experience Rating
               </label>
-              <div className="flex items-center gap-2" role="radiogroup" aria-label="Rating">
+              <div className="flex items-center gap-1.5" role="radiogroup" aria-label="Rating">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     type="button"
                     onClick={() => setRating(star)}
-                    className="p-1 text-amber-400 hover:scale-110 transition-transform focus:outline-none"
+                    className="p-1 text-amber-500 hover:scale-110 transition-transform focus:outline-none"
                     aria-label={`Score ${star} of 5`}
                   >
                     <Star
-                      size={24}
-                      className={star <= rating ? 'fill-amber-400 text-amber-400' : 'text-slate-600'}
+                      size={20}
+                      className={star <= rating ? 'fill-amber-400 text-amber-500' : 'text-gray-300'}
                     />
                   </button>
                 ))}
-                <span className="ml-2 text-xs font-bold text-slate-300">{rating} / 5</span>
+                <span className="ml-2 text-xs font-semibold text-gray-700">{rating} / 5</span>
               </div>
             </div>
 
             {/* Category */}
             <div>
-              <label htmlFor="feedback-category" className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+              <label htmlFor="feedback-category" className="block text-xs font-semibold text-gray-700 mb-1">
                 Topic Category
               </label>
               <select
                 id="feedback-category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-bold text-white focus:border-cyan-400 focus:outline-none"
+                className="w-full rounded border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-900 font-medium focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D] outline-none"
               >
                 <option value="route_accuracy">Route & Junction Accuracy</option>
                 <option value="timing">Transfer Buffer Slack</option>
@@ -121,7 +121,7 @@ export default function FeedbackModal({ open, onClose, toast }) {
 
             {/* Comments */}
             <div>
-              <label htmlFor="feedback-comments" className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+              <label htmlFor="feedback-comments" className="block text-xs font-semibold text-gray-700 mb-1">
                 Your Thoughts or Experience
               </label>
               <textarea
@@ -131,27 +131,27 @@ export default function FeedbackModal({ open, onClose, toast }) {
                 value={comments}
                 onChange={(e) => setComments(e.target.value)}
                 placeholder="Share how your route worked, or if any transfer buffer was too tight..."
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-xs text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+                className="w-full rounded border border-gray-300 bg-white p-2.5 text-xs text-gray-900 placeholder-gray-400 focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D] outline-none"
               />
             </div>
 
-            <div className="flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-950/20 p-2.5 text-[11px] text-emerald-300">
+            <div className="flex items-center gap-2 rounded border border-[#C6E8D1] bg-[#EDF7F0] p-2.5 text-xs text-[#137333]">
               <ShieldCheck size={14} className="shrink-0" />
               <span>DPDP 2023 Compliant: Strictly zero identity or phone numbers collected.</span>
             </div>
 
-            <div className="mt-4 flex items-center justify-end gap-3 pt-2">
+            <div className="mt-4 flex items-center justify-end gap-2 pt-2 border-t border-gray-200">
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-xl px-4 py-2 text-xs font-bold text-slate-400 hover:text-white"
+                className="rounded border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 data-testid="submit-feedback-btn"
-                className="rounded-xl bg-cyan-600 hover:bg-cyan-500 px-5 py-2.5 text-xs font-black text-white shadow-lg shadow-cyan-900/40 transition-colors"
+                className="rounded bg-[#15803D] hover:bg-[#12733B] px-4 py-1.5 text-xs font-semibold text-white transition"
               >
                 Submit Feedback
               </button>

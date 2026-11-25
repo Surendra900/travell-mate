@@ -43,10 +43,10 @@ export default function DelayContingencySimulator({
   // Validate itinerary parameters
   if (!itinerary || !itinerary.leg1) {
     return (
-      <div className={`rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center text-slate-600 ${className}`.trim()}>
-        <Clock className="mx-auto text-slate-400 mb-2" size={32} />
-        <h4 className="font-bold text-slate-800 text-sm">Select an Itinerary to Simulate Delay</h4>
-        <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+      <div className={`rounded-lg border border-gray-200 bg-gray-50 p-5 text-center text-gray-600 ${className}`.trim()}>
+        <Clock className="mx-auto text-gray-400 mb-2" size={28} />
+        <h4 className="font-bold text-gray-800 text-sm">Select an Itinerary to Simulate Delay</h4>
+        <p className="text-xs text-gray-500 mt-1 max-w-md mx-auto">
           Choose a recovered journey option with timetable arrival records to test junction slack and delay contingency alternatives.
         </p>
       </div>
@@ -60,9 +60,9 @@ export default function DelayContingencySimulator({
   // Check if leg 1 has a verified arrival time
   if (!leg1.arrive) {
     return (
-      <div className={`rounded-3xl border border-amber-200 bg-amber-50/70 p-6 text-center text-amber-900 ${className}`.trim()}>
-        <AlertTriangle className="mx-auto text-amber-600 mb-2" size={32} />
-        <h4 className="font-bold text-amber-950 text-sm">Timetable Arrival Time Required</h4>
+      <div className={`rounded-lg border border-amber-200 bg-[#FEF7E6] p-5 text-center text-[#A15C07] ${className}`.trim()}>
+        <AlertTriangle className="mx-auto text-amber-600 mb-2" size={28} />
+        <h4 className="font-bold text-gray-900 text-sm">Timetable Arrival Time Required</h4>
         <p className="text-xs text-amber-800 mt-1 max-w-md mx-auto">
           This route uses frequency estimates rather than a fixed timetable arrival time. Real-time delay contingency simulation requires verified scheduled times.
         </p>
@@ -148,7 +148,7 @@ export default function DelayContingencySimulator({
   return (
     <div
       data-testid="delay-contingency-simulator"
-      className={`rounded-3xl border border-slate-200 bg-white p-5 sm:p-7 shadow-sm ${className}`.trim()}
+      className={`rounded-lg border border-gray-200 bg-white p-5 shadow-xs ${className}`.trim()}
     >
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3 pb-5 border-b border-slate-100">

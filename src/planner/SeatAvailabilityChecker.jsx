@@ -99,12 +99,12 @@ export default function SeatAvailabilityChecker({ plan, selectedService = null, 
   }
 
   return (
-    <div className="glass rounded-3xl p-5 md:col-span-2">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs md:col-span-2 text-gray-900">
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 pb-3">
         <div>
-          <p className="text-sm font-bold text-cyan-200">{forceTatkal ? 'Live Tatkal seat availability' : 'Train seat availability'}</p>
-          <h3 className="text-xl font-black text-white">{forceTatkal ? 'Tatkal seat/WL checker' : 'Seat/WL checker'}</h3>
-          <p className="mt-1 text-sm text-slate-400">This is a second API check after the route-train search. A listed train is not confirmed as Tatkal-available until this TQ check returns seat or waitlist data.</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-[#15803D]">{forceTatkal ? 'Live Tatkal seat availability' : 'Train seat availability'}</p>
+          <h3 className="text-xl font-black text-gray-900">{forceTatkal ? 'Tatkal seat/WL checker' : 'Seat/WL checker'}</h3>
+          <p className="mt-1 text-xs text-gray-500">This is a second API check after the route-train search. A listed train is not confirmed as Tatkal-available until this TQ check returns seat or waitlist data.</p>
         </div>
         <SourceBadge label={mode === 'live' ? 'Live API result' : mode === 'idle' ? 'API-ready' : 'Provider verification required'} />
       </div>
@@ -122,30 +122,30 @@ export default function SeatAvailabilityChecker({ plan, selectedService = null, 
           <option value="PT">PT</option>
           <option value="LD">LD</option>
         </select>
-        {!hideTestButton && <button className="btn-soft inline-flex items-center justify-center gap-2 whitespace-nowrap" type="button" onClick={fillKnownWorkingExample}>Fill test</button>}
-        <button className="btn-primary inline-flex items-center justify-center gap-2 whitespace-nowrap" onClick={checkSeats} disabled={loading}>
-          {loading ? <Activity className="animate-spin" size={17} /> : <Search size={17} />}
+        {!hideTestButton && <button className="btn-soft inline-flex items-center justify-center gap-2 whitespace-nowrap text-xs" type="button" onClick={fillKnownWorkingExample}>Fill test</button>}
+        <button className="btn-primary inline-flex items-center justify-center gap-2 whitespace-nowrap text-xs" onClick={checkSeats} disabled={loading}>
+          {loading ? <Activity className="animate-spin" size={15} /> : <Search size={15} />}
           {loading ? 'Checking...' : forceTatkal ? 'Check Tatkal seats' : 'Check'}
         </button>
       </div>
 
-      <p className={`mt-3 rounded-xl border p-3 text-sm ${mode === 'live' ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-100' : 'border-yellow-400/20 bg-yellow-400/10 text-yellow-100'}`}>{message}</p>
+      <p className={`mt-3 rounded-md border p-3 text-xs ${mode === 'live' ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333]' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>{message}</p>
 
       {result && (
-        <div className="mt-4 rounded-2xl border border-slate-700/70 bg-slate-950/70 p-4 text-sm text-slate-300">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="font-black text-white"><TicketCheck className="mr-2 inline text-cyan-300" size={18} />{result.trainNo || trainNo} · {result.fromStationCode} to {result.toStationCode}</p>
+        <div className="mt-4 rounded-md border border-gray-200 bg-white p-4 text-xs text-gray-700 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-2">
+            <p className="font-bold text-gray-900"><TicketCheck className="mr-1.5 inline text-[#15803D]" size={16} />{result.trainNo || trainNo} · {result.fromStationCode} to {result.toStationCode}</p>
             <SourceBadge label={result.sourceBadge || (mode === 'live' ? 'Live API result' : 'Provider verification required')} />
           </div>
-          <p className="mt-2"><b className="text-cyan-100">Class/quota/date:</b> {result.classType || classType} · {forceTatkal ? 'TQ' : result.quota || quota} · {result.date || plan.date || 'Selected date'}</p>
+          <p className="mt-2 text-xs text-gray-600"><b className="text-gray-900">Class/quota/date:</b> {result.classType || classType} · {forceTatkal ? 'TQ' : result.quota || quota} · {result.date || plan.date || 'Selected date'}</p>
           {Array.isArray(result.availability) && result.availability.length > 0 ? (
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               {result.availability.slice(0, 8).map((row, index) => (
-                <p key={`${row.date}-${index}`} className="rounded-xl border border-slate-700 bg-slate-950/60 p-3"><b className="text-white">{row.date}</b><br />{row.status}</p>
+                <p key={`${row.date}-${index}`} className="rounded-md border border-gray-200 bg-gray-50 p-2.5 text-xs text-gray-800"><b className="text-gray-900">{row.date}</b><br />{row.status}</p>
               ))}
             </div>
           ) : (
-            <p className="mt-3 rounded-xl border border-yellow-400/20 bg-yellow-400/10 p-3 font-bold text-yellow-100">The provider returned no seat rows. Do not treat this as available; verify on IRCTC or an authorized provider.</p>
+            <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-2.5 text-xs font-semibold text-amber-900">The provider returned no seat rows. Do not treat this as available; verify on IRCTC or an authorized provider.</p>
           )}
         </div>
       )}

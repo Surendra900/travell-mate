@@ -37,8 +37,8 @@ import {
 
 function Field({ label, children }) {
   return (
-    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-      <span className="mb-1.5 block">{label}</span>
+    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500">
+      <span className="mb-1 block text-[11px]">{label}</span>
       {children}
     </label>
   )
@@ -90,36 +90,32 @@ export default function NormalPlanner({
   const icons = { Train: TrainFront, Bus: BusFront, Flight: Plane }
   const ModeIcon = icons[plan.transportMode] || TrainFront
 
-  // The old audit referred to this area as "Full route dashboard".
-  // <BackupPlan appears here conceptually; the real component is rendered in normal-backup-block.
-  // <TripComparison is intentionally not rendered in Normal Mode per product requirement.
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Primary Search Card + Side Assistant Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr,340px] gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-5 items-start">
         {/* Main Search Interface */}
-        <section className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <section className="bg-white rounded-lg border border-gray-200 p-5 sm:p-6 shadow-xs">
           {/* Header */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-gray-100">
             <div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-sky-700 text-xs font-bold tracking-wide uppercase">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#EDF7F0] border border-[#C6E8D1] text-[#137333] text-xs font-bold tracking-wide uppercase">
                 Journey Search
               </span>
-              <h2 className="text-2xl font-black text-slate-950 mt-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
                 Where would you like to travel?
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-gray-500 mt-0.5">
                 Compare verified schedules and availability across India.
               </p>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center">
-              <ModeIcon size={24} />
+            <div className="w-10 h-10 rounded-lg bg-gray-50 border border-gray-200 text-[#15803D] flex items-center justify-center shrink-0">
+              <ModeIcon size={20} />
             </div>
           </div>
 
           {/* Transport Mode Tabs */}
-          <div className="flex flex-wrap items-center gap-2 my-6" role="tablist" aria-label="Transport method">
+          <div className="flex flex-wrap items-center gap-2 my-4" role="tablist" aria-label="Transport method">
             {transportModes.map((item) => {
               const Icon = icons[item] || TrainFront
               const active = plan.transportMode === item
@@ -130,21 +126,21 @@ export default function NormalPlanner({
                   role="tab"
                   aria-selected={active}
                   onClick={() => handleTransportChange(item)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition ${
                     active
-                      ? 'bg-sky-700 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ? 'bg-[#15803D] text-white shadow-xs'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  <Icon size={16} />
+                  <Icon size={14} />
                   <span>{item}</span>
                 </button>
               )
             })}
           </div>
 
-          {/* Grounded Natural-Language Query Input (Master Spec Section 7.a) */}
-          <div className="mt-5">
+          {/* Grounded Natural-Language Query Input */}
+          <div className="mt-3">
             <NaturalLanguageQueryInput
               toast={toast}
               onApplyPlan={(parsed) => {
@@ -161,7 +157,7 @@ export default function NormalPlanner({
           </div>
 
           {/* Route Grid: From ⇄ To with StationAutocomplete */}
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-3 items-end">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-2.5 items-end mt-4">
             <div>
               <StationAutocomplete
                 id="planner-from-autocomplete"
@@ -181,14 +177,14 @@ export default function NormalPlanner({
               />
             </div>
 
-            <div className="flex justify-center pb-1">
+            <div className="flex justify-center pb-0.5">
               <button
                 type="button"
                 onClick={() => update({ from: plan.to, to: plan.from })}
                 aria-label="Swap route"
-                className="w-10 h-10 rounded-lg border border-slate-300 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 text-slate-600 flex items-center justify-center transition shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 bg-white hover:border-[#15803D] text-gray-600 hover:text-[#15803D] flex items-center justify-center transition shadow-xs"
               >
-                <ArrowLeftRight size={16} />
+                <ArrowLeftRight size={14} />
               </button>
             </div>
 
@@ -213,14 +209,14 @@ export default function NormalPlanner({
           </div>
 
           {/* Journey Meta Grid: Date, Passengers, Class, Airline */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-4">
             <Field label="Departure Date">
               <div className="relative">
-                <CalendarDays size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <CalendarDays size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="date"
                   min={localDateIso()}
-                  className="input pl-10"
+                  className="input pl-9"
                   data-testid="planner-date-input"
                   value={plan.date}
                   onChange={(e) =>
@@ -237,9 +233,9 @@ export default function NormalPlanner({
 
             <Field label="Passengers">
               <div className="relative">
-                <Users size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Users size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <select
-                  className="input pl-10"
+                  className="input pl-9"
                   value={Number(plan.passengers || 1)}
                   onChange={(e) => update({ passengers: Number(e.target.value) })}
                 >
@@ -288,9 +284,9 @@ export default function NormalPlanner({
             )}
           </div>
 
-          {/* Urgent Tonight Preset per Master Spec Section 8 */}
-          <div className="mt-4 flex items-center">
-            <label className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-sky-50/50 cursor-pointer transition select-none text-xs font-bold text-slate-800">
+          {/* Urgent Tonight Preset */}
+          <div className="mt-3.5 flex items-center">
+            <label className="flex items-center gap-2 px-3 py-2 rounded-md border border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer transition select-none text-xs font-medium text-gray-800">
               <input
                 type="checkbox"
                 data-testid="planner-urgent-tonight-checkbox"
@@ -302,41 +298,41 @@ export default function NormalPlanner({
                     ...(checked ? { date: localDateIso() } : {})
                   })
                 }}
-                className="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500"
+                className="w-3.5 h-3.5 accent-[#15803D] rounded"
               />
-              <Clock size={15} className="text-amber-600" />
+              <Clock size={14} className="text-amber-600" />
               <span>Need to travel tonight? (12h)</span>
             </label>
           </div>
 
           {/* Primary Search Button */}
-          <div className="mt-6">
+          <div className="mt-5">
             <button
               type="button"
               data-testid="planner-search-btn"
               onClick={() => (onFindTicket ? onFindTicket() : toast('Enter route details first.'))}
-              className="w-full h-13 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-sky-700/25 transition active:scale-[0.99]"
+              className="w-full h-11 rounded-md bg-[#15803D] hover:bg-[#12733B] text-white font-semibold text-sm flex items-center justify-center gap-2 transition active:scale-[0.99]"
             >
-              <Ticket size={18} />
+              <Ticket size={16} />
               <span>{plan.transportMode === 'Flight' ? 'Search Available Flight Options' : plan.transportMode === 'Bus' ? 'Search Available Bus Options' : 'Search Available Train Options'}</span>
-              <ArrowRight size={18} />
+              <ArrowRight size={16} />
             </button>
-            <p className="mt-3 text-xs text-center text-slate-600">
+            <p className="mt-2 text-[11px] text-center text-gray-500">
               TravelMate aggregates verified schedules across IRCTC, state bus transports, and domestic carriers.
             </p>
           </div>
         </section>
 
         {/* Side Summary & Backup Panel */}
-        <aside className="space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-            <span className="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-1">
+        <aside className="space-y-4">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-xs">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#15803D] block mb-1">
               Active Selection
             </span>
-            <h3 className="text-base font-extrabold text-slate-900">
+            <h3 className="text-sm font-bold text-gray-900">
               {plan.from || 'Origin'} to {plan.to || 'Destination'}
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-gray-500 mt-0.5">
               {plan.date} · {plan.transportMode}
             </p>
 
@@ -344,10 +340,10 @@ export default function NormalPlanner({
               <button
                 type="button"
                 onClick={onOpenLiveResults}
-                className="mt-4 w-full h-11 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition"
+                className="mt-3 w-full h-9 rounded bg-[#15803D] hover:bg-[#12733B] text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition"
               >
                 <span>View Latest Search Results</span>
-                <ArrowRight size={15} />
+                <ArrowRight size={13} />
               </button>
             )}
           </div>
@@ -359,18 +355,18 @@ export default function NormalPlanner({
       </div>
 
       {/* Contextual Journey Intelligence Tabs */}
-      <section className="mt-12 bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-8 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
+      <section className="bg-white rounded-lg border border-gray-200 p-4 sm:p-5 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-gray-200">
           <div>
-            <h3 className="text-xl font-black text-slate-950">
+            <h3 className="text-base font-bold text-gray-900">
               Journey Intelligence & Recovery Tools
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-gray-500 mt-0.5">
               Inspect interactive route topology, bypass alternatives, delay impact, and weather hazards.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-1 sm:flex-wrap w-full sm:w-auto" role="tablist" data-scroll-container="true">
+          <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:flex-wrap w-full sm:w-auto" role="tablist" data-scroll-container="true">
             {[
               { id: 'map', label: 'Route Map', icon: Compass },
               { id: 'contrast', label: 'Bypass Contrast', icon: Zap },
@@ -384,13 +380,13 @@ export default function NormalPlanner({
                 role="tab"
                 aria-selected={activeInsightTab === id}
                 onClick={() => setActiveInsightTab(id)}
-                className={`inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-bold shrink-0 transition ${
+                className={`inline-flex items-center gap-1.5 min-h-[36px] px-3 py-1.5 rounded text-xs font-semibold shrink-0 transition ${
                   activeInsightTab === id
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-[#15803D] text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <Icon size={14} />
+                <Icon size={13} />
                 <span>{label}</span>
               </button>
             ))}
@@ -398,9 +394,9 @@ export default function NormalPlanner({
         </div>
 
         {/* Tab Panels */}
-        <div className="mt-6">
+        <div className="mt-4">
           <div className={activeInsightTab === 'map' ? 'block' : 'hidden'}>
-            <Suspense fallback={<div className="h-[340px] rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 text-sm">Loading route visualizer...</div>}>
+            <Suspense fallback={<div className="h-[300px] rounded border border-gray-200 bg-gray-50 flex items-center justify-center text-gray-500 text-xs">Loading route visualizer...</div>}>
               <RouteMap plan={plan} />
             </Suspense>
           </div>

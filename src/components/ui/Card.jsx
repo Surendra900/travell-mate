@@ -1,16 +1,9 @@
 import React from 'react'
 
-export function Card({ children, className = '', elevation = 'sm', padding = true, ...props }) {
-  const shadowClass = {
-    none: '',
-    sm: 'shadow-tm-sm',
-    md: 'shadow-tm',
-    lg: 'shadow-tm-lg'
-  }[elevation] || 'shadow-tm-sm'
-
+export function Card({ children, className = '', padding = true, ...props }) {
   return (
     <div
-      className={`bg-white rounded-xl border border-slate-200 ${shadowClass} ${padding ? 'p-5 sm:p-6' : ''} ${className}`.trim()}
+      className={`bg-white rounded-lg border border-gray-200 ${padding ? 'p-4 sm:p-5' : ''} ${className}`.trim()}
       {...props}
     >
       {children}
@@ -20,7 +13,7 @@ export function Card({ children, className = '', elevation = 'sm', padding = tru
 
 export function CardHeader({ children, className = '', ...props }) {
   return (
-    <div className={`pb-4 mb-4 border-b border-slate-100 ${className}`.trim()} {...props}>
+    <div className={`pb-3 mb-3 border-b border-gray-100 ${className}`.trim()} {...props}>
       {children}
     </div>
   )
@@ -36,7 +29,7 @@ export function CardBody({ children, className = '', ...props }) {
 
 export function CardFooter({ children, className = '', ...props }) {
   return (
-    <div className={`pt-4 mt-4 border-t border-slate-100 bg-slate-50 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 px-5 sm:px-6 py-3 rounded-b-xl ${className}`.trim()} {...props}>
+    <div className={`pt-3 mt-3 border-t border-gray-100 bg-gray-50 -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-4 sm:px-5 py-2.5 rounded-b-lg ${className}`.trim()} {...props}>
       {children}
     </div>
   )

@@ -305,39 +305,39 @@ export default function EmergencyToolkit({ toast, compact = false }) {
   const isHighAccuracy = location?.accuracy != null && location.accuracy <= 35
 
   return (
-    <section className={`${compact ? '' : 'mt-10'} rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-red-500/40 bg-slate-950 text-white`} aria-label="SOS Emergency Alert">
+    <section className={`${compact ? '' : 'mt-8'} rounded-lg p-5 sm:p-6 shadow-xs border border-red-200 bg-white text-gray-900`} aria-label="SOS Emergency Alert">
       {/* Top Header & Fast 112 Action */}
-      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-red-500/20 pb-5">
+      <div className="flex flex-col sm:flex-row items-start justify-between gap-4 border-b border-gray-100 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="badge border-red-400/30 bg-red-500/20 text-red-100 font-bold tracking-wide">
-              <ShieldAlert size={14} className="text-red-400" /> SOS Emergency Alert & Crisis Desk
+            <span className="badge border-red-200 bg-red-50 text-red-700 font-bold tracking-wide">
+              <ShieldAlert size={14} className="text-red-600" /> SOS Emergency Alert & Crisis Desk
             </span>
-            <span className="badge border-emerald-400/30 bg-emerald-500/20 text-emerald-100 font-bold">
+            <span className="badge border-[#C6E8D1] bg-[#EDF7F0] text-[#137333] font-bold">
               India 24/7 Active
             </span>
           </div>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">One-Tap Crisis Panel</h2>
-          <p className="mt-2 max-w-3xl text-sm text-red-200 leading-relaxed">
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">One-Tap Crisis Panel</h2>
+          <p className="mt-1 max-w-3xl text-xs sm:text-sm text-gray-500 leading-relaxed">
             TravelMate refreshes your GPS coordinates when you tap any helpline, WhatsApp, or SMS, automatically copying your location to the clipboard for instant dispatch.
           </p>
         </div>
         <button
           data-testid="helpline-112"
-          className="btn-danger inline-flex items-center gap-2 text-lg px-6 py-3 font-black shadow-lg shadow-red-900/50 hover:scale-[1.02] transition-transform"
+          className="btn-danger inline-flex items-center gap-2 text-base px-5 py-2.5 rounded bg-red-600 hover:bg-red-700 text-white font-bold shadow-xs transition"
           onClick={handleCall112}
           aria-label="Call 112 National Emergency"
         >
-          <Phone size={22} /> Call 112 now
+          <Phone size={20} /> Call 112 now
         </button>
       </div>
 
       {/* Statutory Emergency Disclaimer (Master Spec Section 15) */}
       <div
         data-testid="safety-statutory-notice"
-        className="mt-4 rounded-xl border border-red-500/40 bg-red-950/40 p-3 text-xs text-red-200 font-bold flex items-center gap-2"
+        className="mt-3.5 rounded border border-red-200 bg-red-50/70 p-2.5 text-xs text-red-900 font-semibold flex items-center gap-2"
       >
-        <ShieldAlert size={16} className="text-red-400 shrink-0" />
+        <ShieldAlert size={15} className="text-red-600 shrink-0" />
         <span>TravelMate is not an emergency service. In an emergency call 112.</span>
       </div>
 
@@ -359,29 +359,29 @@ export default function EmergencyToolkit({ toast, compact = false }) {
             return (
               <div
                 key={hotline.id}
-                className="relative flex flex-col justify-between rounded-2xl border border-slate-700 bg-slate-950 p-4 transition-all hover:border-slate-600 text-white"
+                className="relative flex flex-col justify-between rounded border border-gray-200 bg-white p-3.5 transition-all hover:border-gray-300 shadow-xs text-gray-900"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${hotline.badgeColor}`}>
+                    <span className={`inline-flex items-center gap-1 rounded border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${hotline.badgeColor}`}>
                       {hotline.badge}
                     </span>
-                    <span className="font-mono text-xl font-black tracking-tight text-white">{hotline.number}</span>
+                    <span className="font-mono text-lg font-bold tracking-tight text-gray-900">{hotline.number}</span>
                   </div>
-                  <div className="mt-2 flex items-center gap-2">
-                    <Icon size={18} className="text-slate-200" />
-                    <h4 className="font-black text-sm text-white leading-tight">{hotline.title}</h4>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <Icon size={16} className="text-gray-700" />
+                    <h4 className="font-bold text-xs text-gray-900 leading-tight">{hotline.title}</h4>
                   </div>
-                  <p className="mt-1 text-xs text-slate-200 leading-relaxed">{hotline.desc}</p>
+                  <p className="mt-1 text-[11px] text-gray-500 leading-relaxed">{hotline.desc}</p>
                 </div>
                 <button
                   type="button"
                   data-testid={hotline.number === '139' ? 'helpline-139' : `hotline-call-${hotline.id}`}
                   onClick={() => handleHotlineCall(hotline)}
-                  className={`mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-black shadow transition-all ${hotline.btnColor}`}
+                  className={`mt-2.5 inline-flex w-full items-center justify-center gap-1.5 rounded py-1.5 px-3 text-xs font-semibold shadow-xs transition ${hotline.btnColor}`}
                   aria-label={`Call ${hotline.title} on ${hotline.number}`}
                 >
-                  <Phone size={14} /> Call {hotline.number}
+                  <Phone size={13} /> Call {hotline.number}
                 </button>
               </div>
             )
@@ -393,24 +393,24 @@ export default function EmergencyToolkit({ toast, compact = false }) {
       <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-5">
           {/* Live GPS Telemetry Card */}
-          <div className="rounded-2xl border border-cyan-500/40 bg-slate-950 p-4 shadow-inner text-white">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-cyan-500/20 pb-3">
+          <div className="rounded border border-gray-200 bg-gray-50/70 p-3.5 text-gray-900">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2.5">
               <div className="flex items-center gap-2">
-                <Navigation size={18} className="text-cyan-400" />
-                <h4 className="text-sm font-black uppercase tracking-wider text-cyan-200">
+                <Navigation size={16} className="text-[#15803D]" />
+                <h4 className="text-xs font-bold uppercase tracking-wider text-gray-700">
                   Live GPS Broadcast Engine
                 </h4>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-black ${
-                  isHighAccuracy ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40' :
-                  location ? 'bg-amber-950 text-amber-300 border border-amber-500/40' :
-                  'bg-red-950 text-red-300 border border-red-500/40'
+                <span className={`inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-bold ${
+                  isHighAccuracy ? 'bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1]' :
+                  location ? 'bg-[#FEF7E6] text-[#A15C07] border border-[#F6DFB1]' :
+                  'bg-red-50 text-red-800 border border-red-200'
                 }`}>
-                  <Radio size={12} className={locationBusy ? 'animate-spin' : ''} />
+                  <Radio size={11} className={locationBusy ? 'animate-spin' : ''} />
                   {isHighAccuracy ? 'Satellite Fix Locked' : location ? 'Approximate Fix' : 'GPS Offline'}
                 </span>
-                <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[11px] font-mono text-slate-300">
+                <span className="rounded bg-white border border-gray-200 px-2 py-0.5 text-[10px] font-mono text-gray-600">
                   Acc: {gpsAccuracyText}
                 </span>
               </div>

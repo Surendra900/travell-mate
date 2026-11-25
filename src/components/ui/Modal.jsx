@@ -16,44 +16,18 @@ export function Modal({
   const titleId = title ? 'modal-title' : undefined
   const descId = description ? 'modal-desc' : undefined
 
-  // Focus trap
   useEffect(() => {
     if (!open) return
     const panel = panelRef.current
     if (!panel) return
 
-    // Move focus into dialog
     const firstFocusable = panel.querySelector(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     )
     firstFocusable?.focus()
 
     function handleKeyDown(e) {
-      if (e.key === 'Escape') {
-        onClose?.()
-        return
-      }
-      if (e.key === 'Tab') {
-        const focusables = Array.from(
-          panel.querySelectorAll(
-            'button:not([disabled]), [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
-          )
-        )
-        if (!focusables.length) return
-        const first = focusables[0]
-        const last = focusables[focusables.length - 1]
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault()
-            last.focus()
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault()
-            first.focus()
-          }
-        }
-      }
+      if (e.key === 'Escape') onClose?.()
     }
 
     document.addEventListener('keydown', handleKeyDown)
@@ -78,7 +52,7 @@ export function Modal({
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[90] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
       role="dialog"
       aria-modal="true"
       aria-label={ariaLabel || title}
@@ -90,19 +64,19 @@ export function Modal({
     >
       <div
         ref={panelRef}
-        className={`bg-white rounded-xl shadow-tm-modal w-full ${sizeClass} max-h-[90dvh] flex flex-col overflow-hidden animate-scale-in ${className}`}
+        className={`bg-white rounded-lg border border-gray-300 shadow-lg w-full ${sizeClass} max-h-[92dvh] flex flex-col overflow-hidden ${className}`}
       >
         {/* Header */}
         {(title || onClose) && (
-          <div className="flex items-start justify-between gap-3 px-5 pt-5 pb-4 border-b border-slate-100 shrink-0">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200 bg-gray-50 shrink-0">
             <div>
               {title && (
-                <h2 id={titleId} className="text-base font-bold text-slate-900">
+                <h2 id={titleId} className="text-[14px] font-bold text-gray-900">
                   {title}
                 </h2>
               )}
               {description && (
-                <p id={descId} className="mt-0.5 text-sm text-slate-500">
+                <p id={descId} className="mt-0.5 text-[12px] text-gray-500">
                   {description}
                 </p>
               )}
@@ -111,7 +85,7 @@ export function Modal({
               <button
                 type="button"
                 onClick={onClose}
-                className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-1"
                 aria-label="Close dialog"
               >
                 <X size={18} />

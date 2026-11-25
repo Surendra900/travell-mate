@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { Menu, Search, TrainFront, ShieldAlert, Bookmark, X, Volume2, Sparkles, Clock } from 'lucide-react'
+import { Menu, Search, TrainFront, ShieldAlert, Bookmark, X, Volume2, Sparkles, Clock, Check } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import LanguageSelector from './LanguageSelector'
 import AccountMenu from './AccountMenu'
@@ -65,105 +65,115 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
 
   return (
     <>
-      {/* Skip to main */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-tm-primary focus:rounded-lg focus:shadow-tm-lg focus:font-semibold focus:text-sm"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-1.5 focus:bg-white focus:text-[#15803D] focus:border focus:border-gray-300 focus:rounded focus:font-semibold focus:text-xs"
       >
         Skip to main content
       </a>
 
-      <header className="bg-slate-900 sticky top-0 z-50 shadow-lg" role="banner">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3 sm:gap-6">
-          {/* Brand */}
-          <NavLink
-            to="/"
-            className="flex items-center gap-2.5 text-white font-black text-lg tracking-tight min-w-0 shrink focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg"
-          >
-            <span className="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-md shrink-0">
-              <TrainFront size={20} />
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40" role="banner">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
+          
+          {/* Brand + Navigation */}
+          <div className="flex items-center gap-6 lg:gap-8 min-w-0">
+            <NavLink
+              to="/"
+              className="flex items-center gap-2 text-gray-900 font-bold text-[17px] tracking-tight shrink-0 focus:outline-none"
+            >
+              <span className="w-7 h-7 rounded bg-[#15803D] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                TM
+              </span>
+              <span className="font-bold tracking-tight">TravelMate</span>
+            </NavLink>
+
+            {/* Desktop Tabs */}
+            <nav className="hidden lg:grid lg:grid-cols-4 items-center h-14 text-[13px] font-medium lg:max-w-4xl" aria-label="Primary navigation">
+              {nav.map(({ to, label, icon: Icon }) => {
+                const active = isItemActive(to)
+                return (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    aria-current={active ? 'page' : null}
+                    className={[
+                      'h-full px-3.5 border-b-2 flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap',
+                      active
+                        ? 'border-[#15803D] text-[#15803D] font-semibold'
+                        : 'border-transparent text-gray-600 hover:text-gray-900'
+                    ].join(' ')}
+                  >
+                    <Icon size={14} className={active ? 'text-[#15803D]' : 'text-gray-400'} />
+                    <span>{label}</span>
+                  </NavLink>
+                )
+              })}
+            </nav>
+          </div>
+
+          {/* Right Utility Actions */}
+          <div className="flex items-center gap-3 text-[13px]">
+            {/* Subtle Offline Ready Status */}
+            <span className="hidden sm:inline-flex items-center gap-1 text-gray-500 font-medium text-xs">
+              <Check size={14} className="text-[#15803D] stroke-[2.5]" />
+              <span>Offline Ready</span>
             </span>
-            <span className="font-extrabold tracking-tight shrink-0">TravelMate</span>
-          </NavLink>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:grid lg:grid-cols-4 items-center gap-1 lg:max-w-4xl" aria-label="Primary navigation">
-            {nav.map(({ to, label, icon: Icon }) => {
-              const active = isItemActive(to)
-              return (
-                <NavLink
-                  key={to}
-                  to={to}
-                  aria-current={active ? 'page' : null}
-                  className={[
-                    'flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400',
-                    active
-                      ? 'bg-sky-500/20 text-sky-300 font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-white/10'
-                  ].join(' ')}
-                >
-                  <Icon size={15} />
-                  <span>{label}</span>
-                </NavLink>
-              )
-            })}
-          </nav>
-
-          {/* Actions */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Demo Trigger */}
             <button
               type="button"
               onClick={onOpenDemoTour}
-              className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-sky-500/40 bg-sky-500/15 text-sky-300 hover:bg-sky-500/25 hover:text-sky-200 text-xs font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+              className="hidden xl:inline-flex items-center gap-1 px-2.5 py-1 rounded border border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700 text-xs font-medium transition"
               aria-label="See a Demo"
               data-testid="navbar-demo-tour-btn"
             >
-              <Sparkles size={13} />
+              <Sparkles size={12} className="text-[#15803D]" />
               <span>Demo</span>
             </button>
 
+            {/* Voice Accessibility Gate */}
             <button
               type="button"
               onClick={onOpenVoiceGate}
-              className="hidden sm:flex items-center justify-center w-9 h-9 rounded-lg border border-white/15 bg-white/10 text-slate-300 hover:text-sky-300 hover:border-sky-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 transition"
+              className="hidden sm:inline-flex items-center justify-center w-8 h-8 rounded border border-gray-200 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 transition"
               title="Voice Accessibility Mode (Alt+B)"
               aria-label="Voice Accessibility Mode (Alt+B)"
               data-testid="navbar-voice-gate-btn"
             >
-              <Volume2 size={16} />
+              <Volume2 size={15} />
             </button>
 
-            <div className="text-slate-300">
-              <LanguageSelector language={language} onChange={onLanguageChange} compact />
-            </div>
+            {/* Compact Language Selector */}
+            <LanguageSelector language={language} onChange={onLanguageChange} compact />
 
+            {/* Account / Login Button */}
             <div className="hidden lg:flex items-center">
               <AccountMenu authEnabled={authEnabled} onOpenProfile={onOpenProfile} />
             </div>
 
-            {/* Mobile hamburger */}
+            {/* Mobile Hamburger Toggle */}
             <button
-              className="lg:hidden flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-slate-300 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg transition"
+              className="lg:hidden flex items-center justify-center w-9 h-9 p-1.5 text-gray-600 hover:text-gray-900 rounded border border-gray-200 hover:bg-gray-50"
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={open}
               aria-controls="mobile-navigation"
               data-testid="navbar-mobile-toggle-btn"
             >
-              {open ? <X size={22} /> : <Menu size={22} />}
+              {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Navigation Drawer */}
         {open && (
           <div
             id="mobile-navigation"
             role="navigation"
             aria-label="Mobile navigation"
-            className="tm-mobile-menu lg:hidden bg-slate-800 border-t border-white/10 px-4 py-4 space-y-1 shadow-xl max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
+            className="tm-mobile-menu lg:hidden bg-white border-b border-gray-200 px-4 py-3 space-y-2 shadow-md max-h-[calc(100dvh-3.5rem)] overflow-y-auto safe-bottom"
           >
-            <div className="space-y-0.5">
+            <div className="space-y-1">
               {nav.map(({ to, label, icon: Icon }) => {
                 const active = isItemActive(to)
                 return (
@@ -173,49 +183,49 @@ export default function Navbar({ language, onLanguageChange, authEnabled, onOpen
                     onClick={() => setOpen(false)}
                     aria-current={active ? 'page' : null}
                     className={[
-                      'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium min-h-[44px] transition',
-                      active ? 'bg-sky-500/20 text-sky-300' : 'text-slate-200 hover:bg-white/10 hover:text-white'
+                      'flex items-center gap-3 px-3 py-2.5 rounded text-[13px] font-medium transition',
+                      active ? 'bg-[#EDF7F0] text-[#137333] font-semibold' : 'text-gray-700 hover:bg-gray-50'
                     ].join(' ')}
                   >
-                    <Icon size={18} className="shrink-0" />
+                    <Icon size={16} className={active ? 'text-[#15803D]' : 'text-gray-400'} />
                     <span>{label}</span>
                   </NavLink>
                 )
               })}
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 px-1 mb-1">Language</div>
+            <div className="pt-2 border-t border-gray-100 flex flex-col gap-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 px-1">Language</span>
               <LanguageSelector language={language} onChange={(lang) => { onLanguageChange(lang); setOpen(false) }} />
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 px-1 mb-1">Quick Tools</div>
+            <div className="pt-2 border-t border-gray-100 flex flex-col gap-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 px-1">Quick Tools</span>
               <button
                 type="button"
                 onClick={() => { setOpen(false); onOpenVoiceGate?.() }}
                 data-testid="mobile-navbar-voice-gate-btn"
-                className="flex items-center justify-between w-full min-h-[44px] px-4 py-2.5 rounded-lg border border-white/15 bg-white/5 text-slate-200 text-sm font-medium hover:bg-white/10 transition"
+                className="flex items-center justify-between w-full px-3 py-2 rounded border border-gray-200 bg-gray-50 text-gray-700 text-xs font-medium hover:bg-gray-100"
               >
-                <span className="flex items-center gap-2.5">
-                  <Volume2 size={18} className="text-sky-400" />
+                <span className="flex items-center gap-2">
+                  <Volume2 size={15} className="text-[#15803D]" />
                   <span>Voice Assistant</span>
                 </span>
-                <span className="text-xs text-slate-400">Alt+B</span>
+                <span className="text-[11px] text-gray-400">Alt+B</span>
               </button>
               <button
                 type="button"
                 onClick={() => { setOpen(false); onOpenDemoTour?.() }}
                 data-testid="mobile-navbar-demo-tour-btn"
-                className="flex items-center gap-2.5 w-full min-h-[44px] px-4 py-2.5 rounded-lg bg-sky-500/15 border border-sky-500/30 text-sky-300 text-sm font-medium hover:bg-sky-500/25 transition"
+                className="flex items-center gap-2 w-full px-3 py-2 rounded bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium hover:bg-gray-100"
               >
-                <Sparkles size={18} className="text-sky-400" />
+                <Sparkles size={14} className="text-[#15803D]" />
                 <span>Explore Demo</span>
               </button>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 px-1 mb-1">Account</div>
+            <div className="pt-2 border-t border-gray-100 flex flex-col gap-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 px-1">Account</span>
               <AccountMenu
                 authEnabled={authEnabled}
                 onOpenProfile={() => { setOpen(false); onOpenProfile?.() }}

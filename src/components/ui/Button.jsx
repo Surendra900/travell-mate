@@ -12,29 +12,29 @@ export function Button({
   ...props
 }) {
   const baseStyles =
-    'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none'
+    'inline-flex items-center justify-center font-semibold rounded-md transition-colors duration-150 focus:outline-none disabled:opacity-50 disabled:pointer-events-none select-none'
 
   const sizeStyles = {
-    xs: 'text-xs px-2.5 py-1.5 min-h-[32px] gap-1',
-    sm: 'text-xs px-3 py-2 min-h-[36px] gap-1.5',
-    md: 'text-sm px-4 py-2.5 min-h-[44px] gap-2',
-    lg: 'text-base px-6 py-3 min-h-[50px] gap-2.5'
-  }[size] || 'text-sm px-4 py-2.5 min-h-[44px] gap-2'
+    xs: 'text-xs px-2.5 py-1 min-h-[30px] gap-1',
+    sm: 'text-xs px-3 py-1.5 min-h-[34px] gap-1.5',
+    md: 'text-[13px] px-3.5 py-2 min-h-[38px] gap-2',
+    lg: 'text-sm px-5 py-2.5 min-h-[44px] gap-2'
+  }[size] || 'text-[13px] px-3.5 py-2 min-h-[38px] gap-2'
 
   const variantStyles = {
     primary:
-      'bg-tm-primary hover:bg-tm-primary-hover text-white shadow-sm focus-visible:ring-tm-primary',
+      'bg-[#15803D] hover:bg-[#12733B] text-white shadow-xs',
     secondary:
-      'bg-slate-100 hover:bg-slate-200 text-slate-800 focus-visible:ring-slate-400',
+      'bg-gray-100 hover:bg-gray-200 text-gray-800',
     outline:
-      'border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 focus-visible:ring-slate-400',
+      'border border-gray-300 bg-white hover:bg-gray-50 text-gray-800',
     ghost:
-      'bg-transparent hover:bg-slate-100 text-slate-700 focus-visible:ring-slate-400',
+      'bg-transparent hover:bg-gray-100 text-gray-700',
     danger:
-      'bg-tm-danger hover:bg-tm-danger-hover text-white shadow-sm focus-visible:ring-red-500',
+      'bg-red-600 hover:bg-red-700 text-white shadow-xs',
     success:
-      'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm focus-visible:ring-emerald-500'
-  }[variant] || 'bg-tm-primary hover:bg-tm-primary-hover text-white focus-visible:ring-tm-primary'
+      'bg-[#15803D] hover:bg-[#12733B] text-white shadow-xs'
+  }[variant] || 'bg-[#15803D] hover:bg-[#12733B] text-white'
 
   return (
     <button
@@ -48,8 +48,8 @@ export function Button({
       {loading && (
         <svg
           className="animate-spin shrink-0"
-          width="16"
-          height="16"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           aria-hidden="true"

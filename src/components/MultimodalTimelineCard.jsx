@@ -132,7 +132,7 @@ export default function MultimodalTimelineCard({ route, onSave }) {
     <>
       <article
         data-testid="multimodal-journey-card"
-        className={`rounded-3xl border ${tierColors.border} bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition text-slate-900`}
+        className={`rounded-lg border ${tierColors.border} bg-white p-5 shadow-xs hover:border-gray-300 transition text-gray-900`}
       >
         {/* Header */}
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">

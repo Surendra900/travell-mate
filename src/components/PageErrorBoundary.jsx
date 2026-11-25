@@ -22,13 +22,13 @@ export default class PageErrorBoundary extends React.Component {
 
     return (
       <section className="mx-auto max-w-3xl px-4 py-12 sm:py-20" role="alert">
-        <div className="rounded-3xl border border-red-400/30 bg-red-500/10 p-6 text-red-50 shadow-danger sm:p-8">
+        <div className="rounded-lg border border-red-200 bg-white p-6 text-gray-900 shadow-xs sm:p-8">
           <div className="flex items-start gap-4">
-            <AlertTriangle className="mt-1 shrink-0 text-red-300" size={28} />
+            <AlertTriangle className="mt-1 shrink-0 text-red-600" size={28} />
             <div className="min-w-0">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-red-200">Page recovery</p>
-              <h1 className="mt-2 text-2xl font-black text-white sm:text-3xl">This TravelMate page could not load</h1>
-              <p className="mt-3 text-sm leading-6 text-red-100/90">
+              <p className="text-xs font-bold uppercase tracking-wider text-red-700">Page recovery</p>
+              <h1 className="mt-2 text-2xl font-black text-gray-900 sm:text-3xl">This TravelMate page could not load</h1>
+              <p className="mt-3 text-sm leading-6 text-gray-600">
                 The rest of the website is still available. Reload this page once. If the problem remains after a new deployment, clear the old service-worker cache.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">

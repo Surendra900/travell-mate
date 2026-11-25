@@ -1,71 +1,68 @@
 import { NavLink } from 'react-router-dom'
-import { TrainFront } from 'lucide-react'
 
 export default function Footer({ onOpenPrivacy, onOpenFeedback }) {
   return (
-    <footer className="tm-footer bg-slate-900 text-slate-300 border-t border-slate-800 mt-auto" data-testid="app-footer">
-      <div className="tm-footer-rule bg-slate-800 h-px" />
-      <div className="tm-footer-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="tm-footer-brand md:col-span-2">
-          <NavLink to="/" className="tm-footer-logo inline-flex items-center gap-2 text-white font-bold text-lg">
-            <TrainFront size={20} className="text-sky-400" />
-            <span>TravelMate</span>
-          </NavLink>
-          <p className="mt-3 text-slate-300 text-sm leading-relaxed max-w-md">
-            The Multimodal Disruption & Route Recovery Engine. Navigating complex journeys with algorithmic precision.
+    <footer className="bg-white border-t border-gray-200 mt-auto text-gray-600 text-xs" data-testid="app-footer">
+      <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="md:col-span-2 space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-[#15803D] text-white flex items-center justify-center font-bold text-xs">TM</span>
+            <span className="font-bold text-[15px] text-gray-900 tracking-tight">TravelMate</span>
+          </div>
+          <p className="text-[12px] text-gray-500 leading-relaxed max-w-sm">
+            Multimodal transit recovery engine for Indian Railways disruptions, Tatkal countdown assistance, and offline digital travel passes.
           </p>
-          <small className="block mt-3 text-xs text-slate-400">
-            © {new Date().getFullYear()} TravelMate AI. Built for India transit recovery.
-          </small>
+          <p className="text-[11px] text-gray-500 pt-1">
+            © {new Date().getFullYear()} TravelMate. Built for Indian transit route recovery.
+          </p>
         </div>
-        <div className="tm-footer-col flex flex-col gap-1 text-sm">
-          <strong className="text-white font-bold mb-1">Compliance & Legal</strong>
-          <NavLink to="/privacy" data-testid="footer-privacy-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
+
+        <div className="flex flex-col gap-1.5">
+          <p className="font-semibold text-gray-900 uppercase tracking-wide text-[11px]">Compliance & Legal</p>
+          <NavLink to="/privacy" data-testid="footer-privacy-link" className="hover:text-gray-900 py-1">
             Privacy Policy (DPDP)
           </NavLink>
-          <NavLink to="/terms" data-testid="footer-terms-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
+          <NavLink to="/terms" data-testid="footer-terms-link" className="hover:text-gray-900 py-1">
             Terms of Service
           </NavLink>
-          <NavLink to="/disclaimer" data-testid="footer-disclaimer-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
+          <NavLink to="/disclaimer" data-testid="footer-disclaimer-link" className="hover:text-gray-900 py-1">
             Statutory Disclaimers
           </NavLink>
-          <NavLink to="/cookies" data-testid="footer-cookies-link" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
+          <NavLink to="/cookies" data-testid="footer-cookies-link" className="hover:text-gray-900 py-1">
             Cookie & Storage Policy
           </NavLink>
           <button
             type="button"
             data-testid="footer-dpdp-modal-btn"
-            className="text-left cursor-pointer hover:underline text-xs text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center"
+            className="text-left cursor-pointer hover:underline text-[11px] text-gray-500 hover:text-gray-900 py-1"
             onClick={onOpenPrivacy}
           >
             Manage DPDP Consent
           </button>
         </div>
-        <div className="tm-footer-col flex flex-col gap-1 text-sm">
-          <strong className="text-white font-bold mb-1">Resources & Support</strong>
-          <NavLink to="/safety" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
+
+        <div className="flex flex-col gap-1.5">
+          <p className="font-semibold text-gray-900 uppercase tracking-wide text-[11px]">Resources & Support</p>
+          <NavLink to="/safety" className="hover:text-gray-900 py-1">
             Passes & Safety Hub
           </NavLink>
-          <NavLink to="/planner?mode=tatkal" className="text-slate-300 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">
+          <NavLink to="/planner?mode=tatkal" className="hover:text-gray-900 py-1">
             Tatkal Desk
           </NavLink>
           <button
             type="button"
             data-testid="footer-feedback-btn"
-            className="text-left cursor-pointer hover:underline text-sky-400 hover:text-sky-300 font-bold text-sm transition-colors py-2 min-h-[44px] flex items-center"
+            className="text-left cursor-pointer hover:underline text-[#15803D] font-semibold py-1"
             onClick={onOpenFeedback}
           >
             Give Feedback
           </button>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 pt-4 pb-6 border-t border-slate-800 text-center text-xs text-slate-300">
-        <p>Timetable data: Indian Railways community snapshot (circa 2016, CC0) and live provider feeds. Map data © OpenStreetMap contributors under ODbL. Weather data by Open-Meteo.</p>
-        <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed max-w-3xl mx-auto">
-          TravelMate is an independent multimodal route discovery and recovery engine. Tickets are finalized directly on official operator portals. In an emergency, dial 112 or 139.
-        </p>
+
+      <div className="border-t border-gray-100 py-4 bg-gray-50 text-center text-[11px] text-gray-600 px-4">
+        <p>Timetable data: Indian Railways community snapshot & live provider feeds. Tickets are finalized directly on official operator portals.</p>
       </div>
     </footer>
   )
 }
-

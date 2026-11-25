@@ -94,50 +94,50 @@ export default function OfflineOnlyMode({ status, toast }) {
   const fare = serviceValue(service, 'fare', 'price', 'amount')
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-7 sm:py-10">
-      <section className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-sky-200 bg-sky-50 text-sky-800">
+    <main className="mx-auto max-w-6xl px-4 py-7 sm:py-10 bg-[#F4F5F7] min-h-screen text-[#1F2937]">
+      <section className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 shadow-xs">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-[#C6E8D1] bg-[#EDF7F0] text-[#137333]">
           <WifiOff size={13} /> Offline Mode Active
         </span>
-        <h1 className="mt-4 text-3xl font-black text-slate-950 sm:text-4xl tracking-tight">TravelMate Offline Pack</h1>
-        <p className="mt-2 max-w-3xl text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+        <h1 className="mt-4 text-3xl font-black text-gray-900 sm:text-4xl tracking-tight">TravelMate Offline Pack</h1>
+        <p className="mt-2 max-w-3xl text-sm sm:text-base text-gray-600 leading-relaxed font-normal">
           Internet is unavailable, so live search, booking checks, API refresh, maps and heavy comparison panels are hidden. Your newest saved route, exact selected service, PNR and the last successfully checked PNR status remain available.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-2.5 text-sm transition shadow-2xs" onClick={refreshPack}>
+          <button className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-bold px-4 py-2 text-sm transition shadow-xs" onClick={refreshPack}>
             <RefreshCw size={16} /> Refresh local pack
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2.5 text-sm shadow-sm transition" onClick={shareLocationBySms} disabled={sharingLocation}>
+          <button className="inline-flex items-center gap-2 rounded-md bg-[#15803D] hover:bg-[#12733B] text-white font-bold px-4 py-2 text-sm shadow-xs transition" onClick={shareLocationBySms} disabled={sharingLocation}>
             <MessageSquareText size={16} /> {sharingLocation ? 'Getting location…' : 'Share location by SMS'}
           </button>
-          <a className="inline-flex items-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2.5 text-sm shadow-sm transition" href="tel:112">
+          <a className="inline-flex items-center gap-2 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 text-sm shadow-xs transition" href="tel:112">
             <PhoneCall size={16} /> Call 112
           </a>
         </div>
-        <p className="mt-3 text-xs text-slate-500 font-normal">
+        <p className="mt-3 text-xs text-gray-500 font-normal">
           GPS can work without internet when device location is enabled. SMS requires cellular service, and you must review and send the message from your phone.
         </p>
       </section>
 
       {!plan ? (
-        <section className="mt-6 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <section className="mt-6 bg-white rounded-lg border border-gray-200 p-6 sm:p-8 shadow-xs">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-md bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0">
               <ShieldCheck size={20} />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-950">No saved journey found</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900">No saved journey found</h2>
           </div>
-          <p className="mt-2 text-sm text-slate-600 leading-relaxed font-normal">
+          <p className="mt-2 text-sm text-gray-600 leading-relaxed font-normal">
             When internet returns, open Planner, check live results, choose one exact provider service and use “Select & save this train” (or flight/bus). That exact service will then appear here during no-network situations.
           </p>
         </section>
       ) : (
         <section className="mt-6 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-          <article className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+          <article className="bg-white rounded-lg border border-gray-200 p-6 shadow-xs">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <span className="text-xs font-black uppercase tracking-wider text-sky-700">Saved Journey Snapshot</span>
-                <h2 className="mt-1 text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">{plan.from} to {plan.to}</h2>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#15803D]">Saved Journey Snapshot</span>
+                <h2 className="mt-1 text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">{plan.from} to {plan.to}</h2>
                 <p className="mt-1 text-sm text-slate-600">
                   Destination: {plan.to} · Mode: {plan.transportMode || 'Train'} · Date: {plan.date || 'Saved date'}
                 </p>
@@ -166,9 +166,9 @@ export default function OfflineOnlyMode({ status, toast }) {
             )}
           </article>
 
-          <article className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-            <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-              <ShieldCheck className="text-sky-600" /> Best practical backup
+          <article className="bg-white rounded-lg border border-gray-200 p-6 shadow-xs">
+            <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+              <ShieldCheck className="text-[#15803D]" /> Best practical backup
             </h2>
             {backup ? (
               <div className="mt-4 space-y-3">

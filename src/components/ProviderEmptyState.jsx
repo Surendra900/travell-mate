@@ -11,11 +11,13 @@
  * }} props
  */
 
+import { TrainFront, BusFront, Plane, MapPin } from 'lucide-react'
+
 const MODE_META = {
-  train: { icon: '🚂', label: 'Train Search' },
-  bus:   { icon: '🚌', label: 'Bus Search' },
-  flight:{ icon: '✈️',  label: 'Flight Search' },
-  combination: { icon: '🗺️', label: 'Combination Search' },
+  train: { icon: TrainFront, label: 'Train Search' },
+  bus:   { icon: BusFront, label: 'Bus Search' },
+  flight:{ icon: Plane, label: 'Flight Search' },
+  combination: { icon: MapPin, label: 'Combination Search' },
 }
 
 export default function ProviderEmptyState({
@@ -25,28 +27,31 @@ export default function ProviderEmptyState({
   onSwitchFlight,
 }) {
   const meta = MODE_META[mode] ?? MODE_META.bus
+  const Icon = meta.icon
 
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-slate-700/50 bg-slate-900 px-6 py-10 text-center text-sm text-slate-400">
-      <span className="text-4xl" aria-hidden="true">{meta.icon}</span>
-      <p className="font-semibold text-slate-300">{meta.label}</p>
-      <p>{reason}</p>
+    <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-gray-200 bg-white px-6 py-10 text-center text-sm text-gray-500 shadow-xs">
+      <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+        <Icon size={24} />
+      </div>
+      <p className="font-bold text-gray-900">{meta.label}</p>
+      <p className="text-xs text-gray-500 max-w-sm">{reason}</p>
       {(onSwitchTrain || onSwitchFlight) && (
-        <div className="mt-2 flex gap-3">
+        <div className="mt-2 flex gap-2">
           {onSwitchTrain && (
             <button
               onClick={onSwitchTrain}
-              className="rounded-md border border-slate-600 px-3 py-1 text-xs hover:bg-slate-800"
+              className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs"
             >
-              🚂 Try Train
+              <TrainFront size={14} /> Try Train
             </button>
           )}
           {onSwitchFlight && (
             <button
               onClick={onSwitchFlight}
-              className="rounded-md border border-slate-600 px-3 py-1 text-xs hover:bg-slate-800"
+              className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs"
             >
-              ✈️ Try Flight
+              <Plane size={14} /> Try Flight
             </button>
           )}
         </div>

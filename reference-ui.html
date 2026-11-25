@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TravelMate — Trains, Buses & Multimodal Booking</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F4F5F7;
+      color: #1F2937;
+      -webkit-font-smoothing: antialiased;
+    }
+    .tabular { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 1. FLAT, CRISP TOP NAVBAR (ConfirmTkt / redBus Style) -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      
+      <!-- Brand + Primary Tabs -->
+      <div class="flex items-center gap-8">
+        <a href="#" class="flex items-center gap-2">
+          <span class="w-7 h-7 rounded bg-[#168A47] text-white flex items-center justify-center font-bold text-sm">TM</span>
+          <span class="font-bold text-[17px] tracking-tight text-gray-900">TravelMate</span>
+        </a>
+
+        <nav class="hidden md:flex items-center h-14 text-[13px] font-medium">
+          <button onclick="setTab('all')" id="nav-all" class="h-full px-3.5 border-b-2 border-[#168A47] text-[#168A47] font-semibold">
+            Multimodal
+          </button>
+          <button onclick="setTab('train')" id="nav-train" class="h-full px-3.5 border-b-2 border-transparent text-gray-600 hover:text-gray-900">
+            Trains
+          </button>
+          <button onclick="setTab('bus')" id="nav-bus" class="h-full px-3.5 border-b-2 border-transparent text-gray-600 hover:text-gray-900">
+            Buses
+          </button>
+          <button onclick="toggleDisruption()" class="h-full px-3.5 border-b-2 border-transparent text-gray-600 hover:text-gray-900 flex items-center gap-1.5">
+            Route Recovery
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+          </button>
+          <button onclick="openPass(routes[0], routes[0].fares[0])" class="h-full px-3.5 border-b-2 border-transparent text-gray-600 hover:text-gray-900">
+            Offline Passes
+          </button>
+        </nav>
+      </div>
+
+      <!-- Right Utility Actions -->
+      <div class="flex items-center gap-4 text-[13px]">
+        <span class="hidden sm:inline-flex items-center gap-1.5 text-gray-500 font-medium">
+          <svg class="w-3.5 h-3.5 text-[#168A47]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Offline Ready
+        </span>
+        <button class="text-gray-700 hover:text-gray-900 font-medium">My Trips</button>
+        <button class="px-3.5 py-1.5 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 font-semibold">
+          Login
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. COMPACT SOLID SEARCH BAR (No Hero Banner, Straight to Action like ConfirmTkt) -->
+  <section class="bg-white border-b border-gray-200 py-4 px-4">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Connected Single-Row Search Box -->
+      <div class="flex flex-col md:flex-row border border-gray-300 rounded-lg bg-white divide-y md:divide-y-0 md:divide-x divide-gray-200 relative">
+        
+        <!-- From -->
+        <div class="flex-1 px-4 py-2.5">
+          <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wide">From</label>
+          <input id="from-input" type="text" value="SBC - Bengaluru"
+            class="w-full text-[15px] font-semibold text-gray-900 outline-none mt-0.5 bg-transparent" />
+        </div>
+
+        <!-- Swap Button -->
+        <button onclick="swapCities()" title="Swap Origin & Destination"
+          class="hidden md:flex items-center justify-center w-7 h-7 rounded-full bg-white border border-gray-300 text-gray-600 hover:text-[#168A47] hover:border-[#168A47] absolute top-1/2 -translate-y-1/2 z-10"
+          style="left: calc(29% - 14px);">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+        </button>
+
+        <!-- To -->
+        <div class="flex-1 px-4 py-2.5 md:pl-6">
+          <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wide">To</label>
+          <input id="to-input" type="text" value="SC - Secunderabad"
+            class="w-full text-[15px] font-semibold text-gray-900 outline-none mt-0.5 bg-transparent" />
+        </div>
+
+        <!-- Date + Quick Day Buttons -->
+        <div class="md:w-72 px-4 py-2.5 flex items-center justify-between gap-2">
+          <div>
+            <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wide">Departure</label>
+            <input id="date-input" type="date" class="text-[14px] font-semibold text-gray-900 outline-none mt-0.5 bg-transparent" />
+          </div>
+          <div class="flex gap-1">
+            <button onclick="setDateOffset(0)" class="px-2 py-1 text-[11px] font-medium border border-gray-200 rounded bg-gray-50 hover:bg-gray-100 text-gray-700">Today</button>
+            <button onclick="setDateOffset(1)" class="px-2 py-1 text-[11px] font-medium border border-gray-200 rounded bg-gray-50 hover:bg-gray-100 text-gray-700">Tmrw</button>
+          </div>
+        </div>
+
+        <!-- Solid Flat Primary Search Button -->
+        <button onclick="render()"
+          class="md:w-36 bg-[#168A47] hover:bg-[#12733B] text-white font-semibold text-[14px] tracking-wide py-3 md:py-0 rounded-b-lg md:rounded-b-none md:rounded-r-lg transition">
+          SEARCH
+        </button>
+      </div>
+
+      <!-- Subtle Secondary Strip (Route Recovery Trigger + Free Cancellation Checkbox) -->
+      <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-[12px] text-gray-600">
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-1.5 cursor-pointer select-none">
+            <input type="checkbox" id="chk-protection" checked onchange="render()" class="accent-[#168A47] w-3.5 h-3.5" />
+            <span>Include Free Missed-Connection Recovery</span>
+          </label>
+        </div>
+        <button onclick="toggleDisruption()" class="text-amber-700 hover:underline font-medium flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          Simulate Live Delay / Route Recovery
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. CLEAN DISRUPTION RECOVERY BAR (Flat Left-Border Alert, No Flashy Cards) -->
+  <div id="disruption-bar" class="hidden max-w-6xl w-full mx-auto px-4 mt-4">
+    <div class="bg-white border border-gray-200 border-l-4 border-l-amber-600 rounded-md p-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold uppercase tracking-wide text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+              Delay Alert • +95 min
+            </span>
+            <span class="text-[13px] font-semibold text-gray-900">
+              12786 Kacheguda Exp is running late — connecting bus at Kurnool will be missed.
+            </span>
+          </div>
+          <p class="text-[13px] text-gray-600">
+            <span class="font-semibold text-gray-800">Suggested Recovery:</span> Switch to <span class="font-semibold text-gray-900">Orange Volvo AC Sleeper</span> (Direct from Majestic at 21:15, arrives 05:30). No extra transfer fee.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="toggleDisruption()" class="px-3 py-2 text-[12px] font-medium text-gray-600 hover:text-gray-900">
+            Ignore
+          </button>
+          <button onclick="acceptRecovery()" class="px-4 py-2 rounded bg-[#168A47] hover:bg-[#12733B] text-white text-[13px] font-semibold">
+            Accept & Update Pass
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MAIN WORKSPACE: LEFT FILTER PANEL + RIGHT RESULTS LIST -->
+  <main class="max-w-6xl w-full mx-auto px-4 py-5 grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1">
+
+    <!-- LEFT SIDEBAR (Clean Flat Utility Filters like redBus) -->
+    <aside class="lg:col-span-3">
+      <div class="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100 sticky top-20">
+        
+        <div class="px-4 py-3 flex items-center justify-between">
+          <h2 class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Filters</h2>
+          <button onclick="resetFilters()" class="text-[12px] font-medium text-[#168A47] hover:underline">Clear All</button>
+        </div>
+
+        <!-- Mode Filter -->
+        <div class="p-4 space-y-2.5 text-[13px] text-gray-700">
+          <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Transport Mode</p>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <input type="checkbox" id="flt-multi" onchange="render()" class="accent-[#168A47] w-3.5 h-3.5" />
+              Train + Bus (Multimodal)
+            </span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <input type="checkbox" id="flt-direct" onchange="render()" class="accent-[#168A47] w-3.5 h-3.5" />
+              Direct Only (0 Transfers)
+            </span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <input type="checkbox" id="flt-ac" onchange="render()" class="accent-[#168A47] w-3.5 h-3.5" />
+              AC Coaches / Buses
+            </span>
+          </label>
+        </div>
+
+        <!-- Departure Time Grid -->
+        <div class="p-4 space-y-2.5">
+          <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Departure Time</p>
+          <div class="grid grid-cols-2 gap-2 text-[12px]">
+            <button onclick="toggleSlot('morning')" id="slot-morning" class="py-2 px-2 border border-gray-200 rounded text-gray-700 hover:border-gray-400 text-center">
+              06:00 - 12:00
+            </button>
+            <button onclick="toggleSlot('night')" id="slot-night" class="py-2 px-2 border border-gray-200 rounded text-gray-700 hover:border-gray-400 text-center">
+              18:00 - 24:00
+            </button>
+          </div>
+        </div>
+
+        <!-- Plain Info Note -->
+        <div class="p-4 bg-gray-50 rounded-b-lg">
+          <p class="text-[12px] font-semibold text-gray-800">Offline Pass Support</p>
+          <p class="text-[11px] text-gray-500 mt-1 leading-relaxed">
+            Tickets booked on TravelMate are cached locally with a verifiable QR pass for low-network stations.
+          </p>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- RIGHT COLUMN: SORT STRIP + CONFIRM-TKT STYLE CARDS -->
+    <section class="lg:col-span-9 space-y-3">
+
+      <!-- Sort Header Bar -->
+      <div class="bg-white border border-gray-200 rounded-lg px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-[13px]">
+        <div class="text-gray-600">
+          <span id="count-label" class="font-semibold text-gray-900">4 routes found</span>
+          <span class="mx-1.5 text-gray-300">|</span>
+          <span id="route-label">SBC - Bengaluru to SC - Secunderabad</span>
+        </div>
+
+        <div class="flex items-center gap-1 text-[12px]">
+          <span class="text-gray-400 mr-1">Sort:</span>
+          <button onclick="setSort('default')" id="sort-default" class="px-2.5 py-1 rounded bg-gray-100 text-gray-900 font-semibold">Recommended</button>
+          <button onclick="setSort('price')" id="sort-price" class="px-2.5 py-1 rounded text-gray-600 hover:bg-gray-50">Price</button>
+          <button onclick="setSort('duration')" id="sort-duration" class="px-2.5 py-1 rounded text-gray-600 hover:bg-gray-50">Duration</button>
+        </div>
+      </div>
+
+      <!-- Ticket Cards List -->
+      <div id="results-list" class="space-y-3"></div>
+
+    </section>
+  </main>
+
+  <!-- 5. AUTHENTIC OFFLINE TICKET / PASS MODAL (Plain White Paper Boarding Pass Style) -->
+  <div id="pass-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[#168A47]"></span>
+          <span class="text-[13px] font-bold text-gray-900">Offline Travel Pass</span>
+        </div>
+        <button onclick="closePass()" class="text-gray-500 hover:text-gray-900 text-sm font-semibold">Close</button>
+      </div>
+
+      <!-- Ticket Body -->
+      <div class="p-5 space-y-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <p id="p-name" class="font-bold text-[15px] text-gray-900">12786 Kacheguda Exp + Bus</p>
+            <p id="p-fare" class="text-[12px] text-gray-500 mt-0.5">3A + Volvo AC • ₹1,040</p>
+          </div>
+          <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1]">
+            CONFIRMED
+          </span>
+        </div>
+
+        <!-- Timing Grid -->
+        <div class="grid grid-cols-3 border border-gray-200 rounded-md p-3 bg-gray-50/50 text-center">
+          <div class="text-left">
+            <p class="text-[11px] text-gray-500">DEPARTS</p>
+            <p id="p-dep" class="font-bold text-[16px] text-gray-900 tabular">20:30</p>
+            <p id="p-from" class="text-[11px] text-gray-600 truncate">SBC</p>
+          </div>
+          <div class="flex flex-col justify-center">
+            <p id="p-dur" class="text-[11px] font-semibold text-gray-500">08h 45m</p>
+            <div class="h-px bg-gray-300 my-1"></div>
+          </div>
+          <div class="text-right">
+            <p class="text-[11px] text-gray-500">ARRIVES</p>
+            <p id="p-arr" class="font-bold text-[16px] text-gray-900 tabular">05:15</p>
+            <p id="p-to" class="text-[11px] text-gray-600 truncate">SC</p>
+          </div>
+        </div>
+
+        <!-- Leg Breakdown -->
+        <div id="p-legs" class="space-y-1.5 text-[12px] text-gray-700 border-t border-b border-dashed border-gray-200 py-3"></div>
+
+        <!-- PNR + Crisp Black QR -->
+        <div class="flex items-center justify-between pt-1">
+          <div class="space-y-1">
+            <p class="text-[11px] text-gray-500 uppercase">PNR / Pass Reference</p>
+            <p class="font-mono font-bold text-[15px] text-gray-900 tracking-wider">4521-889042</p>
+            <p class="text-[11px] text-[#168A47] font-medium">Saved locally • Works without internet</p>
+          </div>
+          <div class="p-1.5 border border-gray-200 rounded bg-white">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="#111827">
+              <path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm11-2h2v2h-2v-2zm3 0h2v2h-2v-2zm-5 3h2v4h-2v-4zm3 2h4v2h-4v-2zm2-2h2v1h-2v-1z"/>
+            </svg>
+          </div>
+        </div>
+
+        <button onclick="alert('Offline pass saved to device storage.')"
+          class="w-full py-2.5 rounded bg-[#168A47] hover:bg-[#12733B] text-white font-semibold text-[13px]">
+          Download / Print Offline Pass
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let activeTab = 'all';
+    let activeSlot = null;
+    let activeSort = 'default';
+
+    const routes = [
+      {
+        id: 1,
+        type: 'multimodal',
+        number: '12786 + BUS',
+        name: 'Kacheguda SF Exp + Kurnool Volvo',
+        sub: 'Multimodal • 1 Transfer (25m buffer at Kurnool)',
+        dep: '20:30', arr: '05:15', dur: '8h 45m', durMins: 525,
+        rating: '4.6', onTime: '96% On-Time',
+        slot: 'night', isDirect: false, isAC: true, protected: true,
+        minPrice: 1040,
+        fares: [
+          { cls: '3A + AC Bus', price: 1040, status: 'AVL 18', tone: 'green', note: 'Protected Transfer' },
+          { cls: 'SL + AC Bus', price: 690, status: 'WL 3 • 92%', tone: 'amber', note: 'High Confirm Chance' }
+        ],
+        legs: [
+          '1. Train 12786 Kacheguda Exp: 20:30 SBC → 02:10 KRNT (Coach B2)',
+          '2. KSRTC Volvo AC: 02:35 KRNT Bay 4 → 05:15 SC'
+        ]
+      },
+      {
+        id: 2,
+        type: 'bus',
+        number: 'VOLVO 9600',
+        name: 'Orange Tours & Travels',
+        sub: 'A/C Sleeper (2+1) • Direct Non-Stop',
+        dep: '21:30', arr: '05:45', dur: '8h 15m', durMins: 495,
+        rating: '4.5', onTime: '94% On-Time',
+        slot: 'night', isDirect: true, isAC: true, protected: true,
+        minPrice: 949,
+        fares: [
+          { cls: 'Upper Berth', price: 949, status: '9 Seats Left', tone: 'green', note: 'Live Tracking' },
+          { cls: 'Lower Berth', price: 1099, status: '4 Seats Left', tone: 'amber', note: 'Fast Filling' }
+        ],
+        legs: [
+          'Direct Bus: Orange Volvo AC Sleeper • 21:30 Majestic → 05:45 Lakdikapul'
+        ]
+      },
+      {
+        id: 3,
+        type: 'train',
+        number: '20704',
+        name: 'Vande Bharat Express',
+        sub: 'Runs Daily • Direct Superfast Train',
+        dep: '05:45', arr: '14:15', dur: '8h 30m', durMins: 510,
+        rating: '4.8', onTime: '99% On-Time',
+        slot: 'morning', isDirect: true, isAC: true, protected: true,
+        minPrice: 1540,
+        fares: [
+          { cls: 'CC (Chair Car)', price: 1540, status: 'AVL 32', tone: 'green', note: 'Free Cancellation' },
+          { cls: 'EC (Exec)', price: 2860, status: 'AVL 06', tone: 'green', note: 'Meal Included' }
+        ],
+        legs: [
+          'Direct Train: 20704 Vande Bharat Exp • 05:45 YPR → 14:15 SC'
+        ]
+      },
+      {
+        id: 4,
+        type: 'train',
+        number: '12649',
+        name: 'Sampark Kranti Express',
+        sub: 'Direct Overnight Train • Pantry Available',
+        dep: '19:20', arr: '06:30', dur: '11h 10m', durMins: 670,
+        rating: '4.2', onTime: '89% On-Time',
+        slot: 'night', isDirect: true, isAC: false, protected: false,
+        minPrice: 385,
+        fares: [
+          { cls: 'SL', price: 385, status: 'RAC 14 • 95%', tone: 'amber', note: 'Confirm Prediction' },
+          { cls: '3A', price: 985, status: 'WL 8 • 84%', tone: 'amber', note: 'Auto-Recovery Ready' },
+          { cls: '2A', price: 1410, status: 'AVL 05', tone: 'green', note: 'Confirmed' }
+        ],
+        legs: [
+          'Direct Train: 12649 Sampark Kranti • 19:20 SBC → 06:30 SC'
+        ]
+      }
+    ];
+
+    function setDateOffset(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      document.getElementById('date-input').value = d.toISOString().split('T')[0];
+    }
+
+    function swapCities() {
+      const a = document.getElementById('from-input');
+      const b = document.getElementById('to-input');
+      [a.value, b.value] = [b.value, a.value];
+      render();
+    }
+
+    function setTab(tab) {
+      activeTab = tab;
+      ['all', 'train', 'bus'].forEach(t => {
+        const el = document.getElementById('nav-' + t);
+        if (!el) return;
+        el.className = t === tab
+          ? 'h-full px-3.5 border-b-2 border-[#168A47] text-[#168A47] font-semibold'
+          : 'h-full px-3.5 border-b-2 border-transparent text-gray-600 hover:text-gray-900';
+      });
+      render();
+    }
+
+    function toggleSlot(slot) {
+      activeSlot = activeSlot === slot ? null : slot;
+      ['morning', 'night'].forEach(s => {
+        document.getElementById('slot-' + s).className = activeSlot === s
+          ? 'py-2 px-2 border border-[#168A47] bg-[#EDF7F0] text-[#137333] font-semibold rounded text-center'
+          : 'py-2 px-2 border border-gray-200 rounded text-gray-700 hover:border-gray-400 text-center';
+      });
+      render();
+    }
+
+    function setSort(sort) {
+      activeSort = sort;
+      ['default', 'price', 'duration'].forEach(s => {
+        document.getElementById('sort-' + s).className = s === sort
+          ? 'px-2.5 py-1 rounded bg-gray-100 text-gray-900 font-semibold'
+          : 'px-2.5 py-1 rounded text-gray-600 hover:bg-gray-50';
+      });
+      render();
+    }
+
+    function resetFilters() {
+      document.getElementById('flt-multi').checked = false;
+      document.getElementById('flt-direct').checked = false;
+      document.getElementById('flt-ac').checked = false;
+      activeSlot = null;
+      ['morning', 'night'].forEach(s => {
+        document.getElementById('slot-' + s).className = 'py-2 px-2 border border-gray-200 rounded text-gray-700 hover:border-gray-400 text-center';
+      });
+      setTab('all');
+    }
+
+    function toggleDisruption() {
+      document.getElementById('disruption-bar').classList.toggle('hidden');
+    }
+
+    function acceptRecovery() {
+      document.getElementById('disruption-bar').classList.add('hidden');
+      openPass(
+        {
+          name: 'Recovered: Orange Volvo AC Sleeper (Direct)',
+          dep: '21:15', arr: '05:30', dur: '8h 15m',
+          legs: ['Auto-Recovered Leg: Orange Volvo AC Sleeper • 21:15 Majestic → 05:30 Lakdikapul (₹0 Transfer Fee)']
+        },
+        { cls: 'Recovered Seat', price: 1040 }
+      );
+    }
+
+    function openPass(route, fare) {
+      document.getElementById('p-name').textContent = route.name;
+      document.getElementById('p-fare').textContent = `${fare.cls} • ₹${fare.price}`;
+      document.getElementById('p-dep').textContent = route.dep;
+      document.getElementById('p-arr').textContent = route.arr;
+      document.getElementById('p-dur').textContent = route.dur;
+      document.getElementById('p-from').textContent = document.getElementById('from-input').value;
+      document.getElementById('p-to').textContent = document.getElementById('to-input').value;
+      document.getElementById('p-legs').innerHTML = route.legs.map(l => `<p>${l}</p>`).join('');
+      document.getElementById('pass-modal').classList.remove('hidden');
+    }
+
+    function closePass() {
+      document.getElementById('pass-modal').classList.add('hidden');
+    }
+
+    function render() {
+      const from = document.getElementById('from-input').value;
+      const to = document.getElementById('to-input').value;
+      document.getElementById('route-label').textContent = `${from} to ${to}`;
+
+      const onlyMulti = document.getElementById('flt-multi').checked;
+      const onlyDirect = document.getElementById('flt-direct').checked;
+      const onlyAC = document.getElementById('flt-ac').checked;
+
+      let list = routes.filter(r => {
+        if (activeTab !== 'all' && r.type !== activeTab) return false;
+        if (onlyMulti && r.type !== 'multimodal') return false;
+        if (onlyDirect && !r.isDirect) return false;
+        if (onlyAC && !r.isAC) return false;
+        if (activeSlot && r.slot !== activeSlot) return false;
+        return true;
+      });
+
+      if (activeSort === 'price') list.sort((a, b) => a.minPrice - b.minPrice);
+      if (activeSort === 'duration') list.sort((a, b) => a.durMins - b.durMins);
+
+      document.getElementById('count-label').textContent = `${list.length} routes found`;
+
+      const container = document.getElementById('results-list');
+      if (!list.length) {
+        container.innerHTML = `
+          <div class="bg-white border border-gray-200 rounded-lg p-8 text-center text-[13px] text-gray-600">
+            No routes match your selected filters.
+            <button onclick="resetFilters()" class="ml-1 text-[#168A47] font-semibold hover:underline">Reset filters</button>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(r => `
+        <div class="bg-white border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition">
+          
+          <!-- Top Row: Name + Schedule -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3.5 border-b border-gray-100">
+            
+            <!-- Left: Operator / Train Identity -->
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-700 tabular">${r.number}</span>
+                <h3 class="text-[15px] font-bold text-gray-900 truncate">${r.name}</h3>
+                <span class="text-[11px] font-semibold px-1.5 py-0.5 rounded bg-[#168A47] text-white">★ ${r.rating}</span>
+              </div>
+              <p class="text-[12px] text-gray-500 mt-1">${r.sub} • ${r.onTime}</p>
+            </div>
+
+            <!-- Right: Clean Horizontal Time Display -->
+            <div class="flex items-center gap-4 shrink-0">
+              <div>
+                <p class="text-[16px] font-bold text-gray-900 tabular">${r.dep}</p>
+                <p class="text-[11px] text-gray-500">${from.split(' - ')[0]}</p>
+              </div>
+              <div class="text-center w-24">
+                <p class="text-[11px] text-gray-500 font-medium">${r.dur}</p>
+                <div class="h-px bg-gray-300 my-1 relative">
+                  ${!r.isDirect ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 absolute left-1/2 -translate-x-1/2 -top-[2.5px]"></span>' : ''}
+                </div>
+                <p class="text-[10px] text-gray-400">${r.isDirect ? 'Direct' : '1 Transfer'}</p>
+              </div>
+              <div class="text-right">
+                <p class="text-[16px] font-bold text-gray-900 tabular">${r.arr}</p>
+                <p class="text-[11px] text-gray-500">${to.split(' - ')[0]}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: ConfirmTkt-Style Horizontal Fare / Class Availability Tiles -->
+          <div class="pt-3.5 flex flex-wrap items-stretch gap-2.5">
+            ${r.fares.map(f => {
+              const boxStyle = f.tone === 'green'
+                ? 'bg-[#EDF7F0] border-[#C6E8D1] hover:border-[#168A47]'
+                : 'bg-[#FEF7E6] border-[#F6DFB1] hover:border-amber-600';
+              const statusColor = f.tone === 'green' ? 'text-[#137333]' : 'text-[#A15C07]';
+              return `
+                <button onclick='openPass(${JSON.stringify(r)}, ${JSON.stringify(f)})'
+                  class="text-left border rounded-md px-3.5 py-2 min-w-[155px] transition ${boxStyle}">
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="text-[13px] font-bold text-gray-900">${f.cls}</span>
+                    <span class="text-[13px] font-bold text-gray-900 tabular">₹${f.price}</span>
+                  </div>
+                  <p class="text-[12px] font-semibold mt-1 ${statusColor}">${f.status}</p>
+                  <p class="text-[10px] text-gray-500 mt-0.5">${f.note}</p>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+        </div>
+      `).join('');
+    }
+
+    setDateOffset(0);
+    render();
+  </script>
+</body>
+</html>

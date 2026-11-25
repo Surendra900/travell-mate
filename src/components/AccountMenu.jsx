@@ -18,55 +18,55 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
             <div className="grid grid-cols-2 gap-2 w-full">
               <button
                 type="button"
-                className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-800 text-sm font-bold opacity-90 shadow-xs"
+                className="w-full min-h-[38px] flex items-center justify-center gap-1.5 px-3 py-2 rounded border border-gray-300 bg-white text-gray-800 text-xs font-semibold"
                 aria-label="Sign in"
               >
-                <LogIn size={16} className="text-sky-600" />
+                <LogIn size={14} className="text-[#15803D]" />
                 <span>Sign In</span>
               </button>
               <button
                 type="button"
-                className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-sm font-bold opacity-90 shadow-xs"
+                className="w-full min-h-[38px] flex items-center justify-center gap-1.5 px-3 py-2 rounded border border-gray-300 bg-white text-gray-800 text-xs font-semibold"
                 aria-label="Sign up"
               >
-                <UserPlus size={16} className="text-slate-500" />
+                <UserPlus size={14} className="text-gray-500" />
                 <span>Sign Up</span>
               </button>
             </div>
             <button
               type="button"
               onClick={onOpenProfile}
-              className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm font-bold hover:bg-slate-50"
+              className="w-full min-h-[38px] flex items-center justify-center gap-2 px-3 py-2 rounded border border-gray-200 bg-gray-50 text-gray-800 text-xs font-medium hover:bg-gray-100"
             >
-              <UserRound size={16} className="text-sky-600" />
+              <UserRound size={14} className="text-[#15803D]" />
               <span>Local Travel Profile</span>
             </button>
           </ClerkLoading>
           <ClerkLoaded>
             <SignedIn>
               <div className="flex flex-col gap-2 w-full">
-                <div className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg border border-slate-200">
+                <div className="flex items-center gap-2.5 p-2 bg-gray-50 rounded border border-gray-200">
                   <UserButton
                     afterSignOutUrl="/"
                     appearance={{
                       elements: {
-                        avatarBox: 'w-9 h-9 rounded-full border border-sky-300 shadow-sm'
+                        avatarBox: 'w-8 h-8 rounded-full border border-gray-300'
                       }
                     }}
                   />
                   <div>
-                    <p className="text-xs font-bold text-slate-900">Signed In</p>
-                    <p className="text-[11px] text-slate-500 font-medium">Clerk Auth Active</p>
+                    <p className="text-xs font-semibold text-gray-900">Signed In</p>
+                    <p className="text-[11px] text-gray-500">Clerk Auth Active</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={onOpenProfile}
-                  className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm font-bold hover:bg-slate-50 transition"
+                  className="w-full min-h-[38px] flex items-center justify-center gap-2 px-3 py-2 rounded border border-gray-200 bg-white text-gray-800 text-xs font-medium hover:bg-gray-50"
                   aria-label="Open local travel profile"
                 >
-                  <UserRound size={16} className="text-sky-600" />
-                  <span>Local Profile & Emergency Contacts</span>
+                  <UserRound size={14} className="text-[#15803D]" />
+                  <span>Profile & Emergency Contacts</span>
                 </button>
               </div>
             </SignedIn>
@@ -76,22 +76,22 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
                   <SignInButton mode="modal">
                     <button
                       type="button"
-                      className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-800 text-sm font-bold hover:bg-sky-100 transition shadow-xs"
+                      className="w-full min-h-[38px] flex items-center justify-center gap-1.5 px-3 py-2 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-semibold"
                       aria-label="Sign in"
                       data-testid="navbar-signin-btn"
                     >
-                      <LogIn size={16} className="text-sky-600" />
+                      <LogIn size={14} className="text-[#15803D]" />
                       <span>Sign In</span>
                     </button>
                   </SignInButton>
                   <SignUpButton mode="modal">
                     <button
                       type="button"
-                      className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-sm font-bold transition shadow-xs"
+                      className="w-full min-h-[38px] flex items-center justify-center gap-1.5 px-3 py-2 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-semibold"
                       aria-label="Sign up"
                       data-testid="navbar-signup-btn"
                     >
-                      <UserPlus size={16} className="text-slate-500" />
+                      <UserPlus size={14} className="text-gray-500" />
                       <span>Sign Up</span>
                     </button>
                   </SignUpButton>
@@ -99,10 +99,10 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
                 <button
                   type="button"
                   onClick={onOpenProfile}
-                  className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm font-bold hover:bg-slate-50 transition"
+                  className="w-full min-h-[38px] flex items-center justify-center gap-2 px-3 py-2 rounded border border-gray-200 bg-gray-50 text-gray-800 text-xs font-medium hover:bg-gray-100"
                   aria-label="Open local travel profile"
                 >
-                  <UserRound size={16} className="text-sky-600" />
+                  <UserRound size={14} className="text-[#15803D]" />
                   <span>Local Travel Profile</span>
                 </button>
               </div>
@@ -115,33 +115,13 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
     return (
       <div className="flex items-center gap-2">
         <ClerkLoading>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-sky-300 bg-sky-50 text-sky-800 text-xs font-bold transition shadow-sm opacity-90"
-              aria-label="Sign in"
-            >
-              <LogIn size={14} className="text-sky-600" />
-              <span>Sign In</span>
-            </button>
-            <button
-              type="button"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-300 bg-white text-slate-700 text-xs font-bold transition shadow-sm opacity-90"
-              aria-label="Sign up"
-            >
-              <UserPlus size={14} className="text-slate-500" />
-              <span>Sign Up</span>
-            </button>
-            <button
-              type="button"
-              onClick={onOpenProfile}
-              className="p-1.5 text-slate-500 hover:text-sky-700 hover:bg-slate-100 rounded-md transition"
-              aria-label="Open local travel profile"
-              title="Open local travel profile"
-            >
-              <UserRound size={16} />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="px-3.5 py-1.5 rounded border border-gray-300 bg-white text-gray-800 text-xs font-semibold"
+            aria-label="Sign in"
+          >
+            <span>Login</span>
+          </button>
         </ClerkLoading>
         <ClerkLoaded>
           <SignedIn>
@@ -150,18 +130,17 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
                 afterSignOutUrl="/"
                 appearance={{
                   elements: {
-                    avatarBox: 'w-8 h-8 rounded-full border border-sky-300 shadow-sm'
+                    avatarBox: 'w-7 h-7 rounded-full border border-gray-300'
                   }
                 }}
               />
               <button
                 type="button"
                 onClick={onOpenProfile}
-                className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-sky-700 px-2 py-1 rounded-md hover:bg-slate-100 transition"
+                className="px-2.5 py-1 text-xs text-gray-600 hover:text-gray-900 border border-gray-200 rounded hover:bg-gray-50"
                 aria-label="Open local travel profile"
                 title="Travel profile & emergency contacts"
               >
-                <UserRound size={13} className="text-sky-600" />
                 <span>Profile</span>
               </button>
             </div>
@@ -171,33 +150,21 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
               <SignInButton mode="modal">
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
+                  className="px-3.5 py-1.5 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-semibold transition"
                   aria-label="Sign in"
                   data-testid="navbar-signin-btn"
                 >
-                  <LogIn size={14} className="text-sky-600" />
-                  <span>Sign In</span>
+                  <span>Login</span>
                 </button>
               </SignInButton>
-              <SignUpButton mode="modal">
-                <button
-                  type="button"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-xs font-bold transition shadow-sm"
-                  aria-label="Sign up"
-                  data-testid="navbar-signup-btn"
-                >
-                  <UserPlus size={14} className="text-slate-500" />
-                  <span>Sign Up</span>
-                </button>
-              </SignUpButton>
               <button
                 type="button"
                 onClick={onOpenProfile}
-                className="p-1.5 text-slate-500 hover:text-sky-700 hover:bg-slate-100 rounded-md transition"
+                className="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition"
                 aria-label="Open local travel profile"
                 title="Open local travel profile"
               >
-                <UserRound size={16} />
+                <UserRound size={15} />
               </button>
             </div>
           </SignedOut>
@@ -212,33 +179,32 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
         <div className="grid grid-cols-2 gap-2 w-full">
           <button
             type="button"
-            className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-800 text-sm font-bold hover:bg-sky-100 transition shadow-xs"
+            className="w-full min-h-[38px] flex items-center justify-center gap-1.5 px-3 py-2 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-semibold"
             onClick={onOpenProfile}
             aria-label="Sign in"
             data-testid="navbar-signin-btn"
           >
-            <LogIn size={16} className="text-sky-600" />
-            <span>Sign In</span>
+            <LogIn size={14} className="text-[#15803D]" />
+            <span>Login</span>
           </button>
           <button
             type="button"
-            className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-sm font-bold transition shadow-xs"
+            className="w-full min-h-[38px] flex items-center justify-center gap-1.5 px-3 py-2 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-semibold"
             onClick={onOpenProfile}
             aria-label="Sign up"
             data-testid="navbar-signup-btn"
           >
-            <UserPlus size={16} className="text-slate-500" />
+            <UserPlus size={14} className="text-gray-500" />
             <span>Sign Up</span>
           </button>
         </div>
         <button
           type="button"
           onClick={onOpenProfile}
-          className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm font-bold hover:bg-slate-50 transition"
+          className="w-full min-h-[38px] flex items-center justify-center gap-2 px-3 py-2 rounded border border-gray-200 bg-gray-50 text-gray-800 text-xs font-medium hover:bg-gray-100"
           aria-label="Open local travel profile"
-          title="Open local travel profile"
         >
-          <UserRound size={16} className="text-sky-600" />
+          <UserRound size={14} className="text-[#15803D]" />
           <span>Local Travel Profile</span>
         </button>
       </div>
@@ -249,32 +215,21 @@ export default function AccountMenu({ authEnabled = false, onOpenProfile, mobile
     <div className="flex items-center gap-2">
       <button
         type="button"
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs font-bold transition shadow-sm"
+        className="px-3.5 py-1.5 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-semibold transition"
         onClick={onOpenProfile}
         aria-label="Sign in"
         data-testid="navbar-signin-btn"
       >
-        <LogIn size={14} className="text-sky-600" />
-        <span>Sign In</span>
-      </button>
-      <button
-        type="button"
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-xs font-bold transition shadow-sm"
-        onClick={onOpenProfile}
-        aria-label="Sign up"
-        data-testid="navbar-signup-btn"
-      >
-        <UserPlus size={14} className="text-slate-500" />
-        <span>Sign Up</span>
+        <span>Login</span>
       </button>
       <button
         type="button"
         onClick={onOpenProfile}
-        className="p-1.5 text-slate-500 hover:text-sky-700 hover:bg-slate-100 rounded-md transition"
+        className="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition"
         aria-label="Open local travel profile"
         title="Open local travel profile"
       >
-        <UserRound size={16} />
+        <UserRound size={15} />
       </button>
     </div>
   )

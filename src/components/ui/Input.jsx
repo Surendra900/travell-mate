@@ -17,7 +17,7 @@ export function Input({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-xs font-semibold text-slate-600 mb-1.5"
+          className="block text-[11px] font-medium text-gray-500 uppercase tracking-wide mb-1"
         >
           {label}
           {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
@@ -27,7 +27,7 @@ export function Input({
         {Icon && (
           <Icon
             size={16}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
             aria-hidden="true"
           />
         )}
@@ -37,11 +37,11 @@ export function Input({
           aria-invalid={error ? 'true' : undefined}
           required={required}
           className={[
-            'w-full min-h-[44px] rounded-lg border bg-white text-slate-900 font-medium placeholder-slate-400',
-            'focus:outline-none focus:border-tm-primary focus:ring-2 focus:ring-tm-primary/20',
-            'text-sm transition-all duration-150',
-            Icon ? 'pl-10 pr-4' : 'px-4',
-            error ? 'border-red-400 ring-1 ring-red-200' : 'border-slate-300',
+            'w-full min-h-[38px] rounded border bg-white text-gray-900 font-medium placeholder-gray-400',
+            'focus:outline-none focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D]',
+            'text-[14px] transition-colors',
+            Icon ? 'pl-9 pr-3' : 'px-3',
+            error ? 'border-red-400' : 'border-gray-300',
             className
           ]
             .filter(Boolean)
@@ -50,12 +50,12 @@ export function Input({
         />
       </div>
       {hint && !error && (
-        <p id={`${inputId}-hint`} className="mt-1 text-xs text-slate-500">
+        <p id={`${inputId}-hint`} className="mt-1 text-[11px] text-gray-500">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${inputId}-error`} className="mt-1 text-xs text-red-600 font-medium" role="alert">
+        <p id={`${inputId}-error`} className="mt-1 text-[11px] text-red-600 font-medium" role="alert">
           {error}
         </p>
       )}

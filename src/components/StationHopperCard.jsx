@@ -7,28 +7,28 @@ export default function StationHopperCard({ hacks = [], from = '', to = '' }) {
   if (!hacks || hacks.length === 0) return null
 
   return (
-    <div className="station-hopper-container rounded-3xl border border-amber-200 bg-amber-50/50 p-5 sm:p-6 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200/80 pb-3">
+    <div className="station-hopper-container rounded-lg border border-gray-200 border-l-4 border-l-amber-500 bg-white p-5 sm:p-6 shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
         <div className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-800 shadow-sm">
-            <Sparkles size={18} />
+          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#FEF7E6] text-[#A15C07] border border-[#F6DFB1]">
+            <Train size={16} />
           </span>
           <div>
-            <span className="text-[11px] font-black uppercase tracking-wider text-amber-900 block">
-              IRCTC Quota Hack Engine
+            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">
+              IRCTC Quota Optimization Engine
             </span>
-            <h4 className="text-base font-black text-slate-950">
+            <h4 className="text-sm font-bold text-gray-900">
               Same Train, Higher-Quota Seat Bypass 
             </h4>
           </div>
         </div>
-        <span className="rounded-full bg-amber-100 border border-amber-300 px-3 py-1 text-xs font-bold text-amber-950 shadow-sm">
+        <span className="rounded-full bg-[#FEF7E6] border border-[#F6DFB1] px-2.5 py-0.5 text-xs font-bold text-[#A15C07]">
           {hacks.length} Quota Bypass Option{hacks.length > 1 ? 's' : ''}
         </span>
       </div>
 
-      <p className="mt-2.5 text-xs leading-relaxed text-slate-700">
-        Direct tickets between <b className="text-slate-950">{from || 'Origin'}</b> and <b className="text-slate-950">{to || 'Destination'}</b> are often waitlisted.
+      <p className="mt-2.5 text-xs leading-relaxed text-gray-600">
+        Direct tickets between <b className="text-gray-900">{from || 'Origin'}</b> and <b className="text-gray-900">{to || 'Destination'}</b> are often waitlisted.
         By booking from an originating junction or extending by 1 station, you tap into larger General Quotas with higher availability:
       </p>
 
@@ -38,10 +38,10 @@ export default function StationHopperCard({ hacks = [], from = '', to = '' }) {
           return (
             <div
               key={hack.id || index}
-              className={`rounded-2xl border p-4 transition ${
+              className={`rounded-md border p-3.5 transition ${
                 isSelected
-                  ? 'border-amber-300 bg-white shadow-md'
-                  : 'border-slate-200 bg-white hover:border-slate-300 shadow-sm'
+                  ? 'border-amber-300 bg-amber-50/30 shadow-xs'
+                  : 'border-gray-200 bg-white hover:border-gray-300'
               }`}
             >
               <div

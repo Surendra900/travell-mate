@@ -11,51 +11,54 @@
  * }} props
  */
 
+import { Check, Zap, AlertTriangle } from 'lucide-react'
+
 const RISK_CONFIG = {
   LOW: {
-    icon: '✓',
+    icon: Check,
     label: 'Safe Connection',
-    bg: 'bg-emerald-950/40',
-    border: 'border-emerald-500/40',
-    text: 'text-emerald-200',
+    bg: 'bg-[#EDF7F0]',
+    border: 'border-[#C6E8D1]',
+    text: 'text-[#137333]',
   },
   MEDIUM: {
-    icon: '⚡',
+    icon: Zap,
     label: 'Tight Connection',
-    bg: 'bg-amber-950/50',
-    border: 'border-amber-500/40',
-    text: 'text-amber-200',
+    bg: 'bg-[#FEF7E6]',
+    border: 'border-[#F6DFB1]',
+    text: 'text-[#A15C07]',
   },
   HIGH: {
-    icon: '⚠',
+    icon: AlertTriangle,
     label: 'High Risk',
-    bg: 'bg-red-950/60',
-    border: 'border-red-500/50',
-    text: 'text-red-200',
+    bg: 'bg-[#FDF2F2]',
+    border: 'border-[#F8B4B4]',
+    text: 'text-[#9B1C1C]',
   },
 }
 
 export default function TransferRiskBadge({ risk = 'LOW', bufferMinutes, mctMinutes, message }) {
   const cfg = RISK_CONFIG[risk] ?? RISK_CONFIG.LOW
+  const Icon = cfg.icon
   const ariaLabel = `${cfg.label}: ${bufferMinutes} min buffer, MCT ${mctMinutes} min`
 
   return (
     <div
-      className={`rounded-md border px-3 py-2 text-xs ${cfg.bg} ${cfg.border} ${cfg.text}`}
+      className={`rounded-md border px-3 py-2 text-xs font-medium ${cfg.bg} ${cfg.border} ${cfg.text}`}
       role="status"
       aria-label={ariaLabel}
     >
-      <div className="flex items-center gap-1 font-semibold">
-        <span>{cfg.icon}</span>
+      <div className="flex items-center gap-1.5 font-bold">
+        <Icon size={14} className="shrink-0" />
         <span>{cfg.label}</span>
       </div>
       {(bufferMinutes !== undefined && mctMinutes !== undefined) && (
-        <div className="mt-0.5 opacity-80">
+        <div className="mt-0.5 opacity-90 tabular-nums">
           {bufferMinutes} min buffer · MCT {mctMinutes} min
         </div>
       )}
       {message && (
-        <div className="mt-0.5 italic opacity-70">{message}</div>
+        <div className="mt-0.5 opacity-80">{message}</div>
       )}
     </div>
   )

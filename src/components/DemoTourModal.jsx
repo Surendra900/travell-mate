@@ -84,29 +84,29 @@ export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
       aria-modal="true"
       aria-labelledby="demo-tour-title"
       data-testid="demo-tour-modal"
-      className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-md transition-all"
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/50 p-4 transition-all"
     >
-      <div className="relative w-full max-w-2xl max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-slate-700/80 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+      <div className="relative w-full max-w-xl max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border border-gray-300 bg-white p-5 shadow-xl text-gray-900 sm:p-6">
         {/* Close Button */}
         <button
           onClick={onClose}
           aria-label="Close Judge Demo Tour"
-          className="dialog-close-button absolute right-5 top-5 text-slate-400 hover:text-white"
+          className="dialog-close-button absolute right-4 top-4 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded flex items-center justify-center transition"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
         {/* Progress Pill Bar */}
-        <div className="mb-6 flex items-center gap-1.5">
+        <div className="mb-4 flex items-center gap-1.5">
           {TOUR_STEPS.map((s, idx) => (
             <div
               key={s.step}
               className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
                 idx === currentStep
-                  ? 'bg-cyan-400'
+                  ? 'bg-[#15803D]'
                   : idx < currentStep
-                  ? 'bg-cyan-500/50'
-                  : 'bg-slate-800'
+                  ? 'bg-[#15803D]/40'
+                  : 'bg-gray-200'
               }`}
             />
           ))}
@@ -114,46 +114,46 @@ export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
 
         {/* Top Badges */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-cyan-500/40 bg-cyan-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-cyan-200">
-            <Award size={13} />
+          <span className="inline-flex items-center gap-1 rounded bg-[#EDF7F0] border border-[#C6E8D1] px-2.5 py-0.5 text-xs font-bold text-[#137333]">
+            <Award size={12} />
             {current.badge}
           </span>
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
             {current.kicker}
           </span>
-          <span className="ml-auto text-xs font-bold text-slate-400">
-            Innovation {currentStep + 1} of {TOUR_STEPS.length}
+          <span className="ml-auto text-xs font-semibold text-gray-400">
+            {currentStep + 1} of {TOUR_STEPS.length}
           </span>
         </div>
 
         {/* Icon & Title */}
-        <div className="mt-5 flex items-start gap-4">
-          <div className={`rounded-2xl border p-3.5 ${current.iconColor}`}>
-            <StepIcon size={28} />
+        <div className="mt-4 flex items-start gap-3.5">
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-[#15803D]">
+            <StepIcon size={24} />
           </div>
           <div>
             <h2
               id="demo-tour-title"
               data-testid="demo-tour-step-title"
-              className="text-2xl font-black text-white sm:text-3xl"
+              className="text-lg font-bold text-gray-900 sm:text-xl"
             >
               {current.title}
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-300">
+            <p className="mt-1 text-xs leading-relaxed text-gray-600">
               {current.summary}
             </p>
           </div>
         </div>
 
         {/* Technical Highlights */}
-        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+        <div className="mt-4 rounded border border-gray-200 bg-gray-50 p-3.5">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-700 block mb-2">
             Key Architectural Highlights:
           </span>
-          <ul className="mt-2 space-y-2 text-xs text-slate-200">
+          <ul className="space-y-1.5 text-xs text-gray-700">
             {current.highlights.map((h, i) => (
               <li key={i} className="flex items-start gap-2">
-                <CheckCircle2 size={15} className="shrink-0 text-cyan-400 mt-0.5" />
+                <CheckCircle2 size={14} className="shrink-0 text-[#15803D] mt-0.5" />
                 <span>{h}</span>
               </li>
             ))}
@@ -161,28 +161,28 @@ export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
         </div>
 
         {/* Navigation & Action Bar */}
-        <div className="mt-8 flex flex-col-reverse justify-between gap-3 sm:flex-row sm:items-center">
+        <div className="mt-5 flex flex-col-reverse justify-between gap-2.5 sm:flex-row sm:items-center pt-3 border-t border-gray-200">
           <div className="flex items-center gap-2">
             <button
               type="button"
               data-testid="demo-tour-prev-btn"
               onClick={handlePrev}
               disabled={isFirst}
-              className={`flex items-center gap-1 rounded-xl border border-slate-700 bg-slate-800 px-3.5 py-2 text-xs font-bold text-slate-200 hover:border-slate-500 hover:text-white ${
+              className={`flex items-center gap-1 rounded border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 ${
                 isFirst ? 'opacity-40 cursor-not-allowed' : ''
               }`}
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={15} />
               <span>Back</span>
             </button>
             <button
               type="button"
               data-testid="demo-tour-next-btn"
               onClick={handleNext}
-              className="flex items-center gap-1 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-4 py-2 text-xs font-bold text-cyan-200 hover:bg-cyan-500/30"
+              className="flex items-center gap-1 rounded bg-[#15803D] hover:bg-[#12733B] px-3.5 py-1.5 text-xs font-semibold text-white"
             >
               <span>{isLast ? 'Complete Tour' : 'Next Innovation'}</span>
-              {!isLast && <ChevronRight size={16} />}
+              {!isLast && <ChevronRight size={15} />}
             </button>
           </div>
 
@@ -190,10 +190,10 @@ export default function DemoTourModal({ open, onClose, onLaunchVoiceGate }) {
             type="button"
             data-testid="demo-tour-action-btn"
             onClick={handleActionClick}
-            className="flex items-center justify-center gap-2 rounded-md bg-cyan-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-950 hover:bg-cyan-400"
+            className="flex items-center justify-center gap-1.5 rounded border border-gray-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-800 hover:bg-gray-50 transition"
           >
             <span>{current.actionText}</span>
-            <ExternalLink size={14} />
+            <ExternalLink size={13} />
           </button>
         </div>
       </div>

@@ -11,35 +11,35 @@ export default function LegalDisclaimer() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-slate-900" data-testid="legal-disclaimer-page">
       <div className="mb-6">
-        <Link to="/" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors py-2 px-1">
+        <Link to="/" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-[#15803D] hover:text-[#12733B] transition-colors py-2 px-1">
           <ArrowLeft size={16} /> Back to TravelMate Home
         </Link>
       </div>
 
       {/* Draft Review Banner */}
-      <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 font-medium leading-relaxed">
+      <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 font-medium leading-relaxed">
         <p className="font-bold text-amber-900 mb-1">DRAFT DISCLOSURE (PRE-LAUNCH REVIEW)</p>
         <p>This draft disclosure outlines statutory safety limits and dataset sources. It requires owner review and qualification by legal counsel before public commercial deployment. Placeholders are marked in brackets.</p>
       </div>
 
       {/* Header */}
-      <div className="rounded-3xl border border-red-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="rounded-lg border border-red-200 bg-white p-6 sm:p-8 shadow-xs">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-red-300 bg-red-50 px-3 py-1 text-xs font-black uppercase tracking-wider text-red-800">
             <ShieldAlert size={14} /> Mandatory Statutory Disclosure
           </span>
           <span className="text-xs text-slate-600 font-semibold">Effective date: [PLACEHOLDER: effective date]</span>
         </div>
-        <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+        <h1 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
           Legal & Statutory Disclaimers
         </h1>
-        <p className="mt-3 text-base text-slate-700 leading-relaxed max-w-3xl">
+        <p className="mt-3 text-sm text-slate-700 leading-relaxed max-w-3xl">
           Important legal boundaries regarding emergency assistance, algorithmic predictions, and open data sources.
         </p>
       </div>
 
       {/* Disclaimers List */}
-      <div className="mt-8 space-y-6 text-sm text-slate-700 leading-relaxed rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="mt-8 space-y-6 text-sm text-slate-700 leading-relaxed rounded-lg border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
         {/* Emergency Services */}
         <section className="rounded-2xl border border-red-200 bg-red-50 p-5">
           <div className="flex items-center gap-2 text-red-800 font-black text-base">

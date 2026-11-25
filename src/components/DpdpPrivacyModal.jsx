@@ -49,71 +49,71 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
       aria-modal="true"
       aria-labelledby="dpdp-modal-title"
       data-testid="dpdp-privacy-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="relative max-h-[calc(100dvh-2rem)] w-full max-w-xl overflow-y-auto rounded-xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl">
+      <div className="relative max-h-[calc(100dvh-2rem)] w-full max-w-xl overflow-y-auto rounded-lg border border-gray-300 bg-white p-5 shadow-xl text-gray-900">
         <button
           type="button"
           aria-label="Close privacy modal"
           data-testid="dpdp-close-button"
           onClick={onClose}
-          className="absolute right-5 top-5 rounded-md p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+          className="absolute right-4 top-4 rounded p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
         {/* Header */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/20 text-cyan-400">
-            <ShieldCheck size={24} />
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded bg-[#15803D] text-white">
+            <ShieldCheck size={18} />
           </div>
           <div>
-            <span className="inline-flex items-center gap-1 rounded-md border border-cyan-500/40 bg-cyan-950 px-2.5 py-0.5 text-xs font-bold text-cyan-300">
+            <span className="inline-flex items-center gap-1 rounded bg-[#EDF7F0] border border-[#C6E8D1] px-2 py-0.5 text-[10px] font-bold text-[#137333]">
               India DPDP Act 2023 Compliant
             </span>
-            <h2 id="dpdp-modal-title" className="text-xl font-black text-white">
+            <h2 id="dpdp-modal-title" className="text-base font-bold text-gray-900 mt-0.5">
               Privacy & Consent Manager
             </h2>
           </div>
         </div>
 
         {/* Fiduciary Notice */}
-        <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-xs text-slate-300 leading-relaxed">
-          <p className="font-bold text-cyan-300">Data Fiduciary Transparency:</p>
+        <div className="mt-3.5 rounded border border-gray-200 bg-gray-50 p-3 text-xs text-gray-600 leading-relaxed">
+          <p className="font-bold text-gray-900">Data Fiduciary Transparency:</p>
           <p className="mt-1">
-            TravelMate AI operates on a <strong className="text-white">Zero-Knowledge Architecture</strong>. Your itineraries, Aadhaar/ID passes, and encryption keys are stored exclusively on your device in IndexedDB. No personal documents or location histories are uploaded or sold.
+            TravelMate AI operates on a <strong className="text-gray-900">Zero-Knowledge Architecture</strong>. Your itineraries, passes, and encryption keys are stored exclusively on your device in IndexedDB. No personal documents or location histories are uploaded or sold.
           </p>
         </div>
 
         {/* Consent Controls */}
-        <div className="mt-5 space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+        <div className="mt-4 space-y-2.5">
+          <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
             Granular Processing Consents
           </h3>
 
           {/* Essential Storage */}
-          <div className="flex items-start justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-3.5">
-            <div className="flex items-start gap-3">
-              <Database size={18} className="mt-0.5 text-cyan-400 shrink-0" />
+          <div className="flex items-start justify-between rounded border border-gray-200 bg-white p-3">
+            <div className="flex items-start gap-2.5">
+              <Database size={16} className="mt-0.5 text-[#15803D] shrink-0" />
               <div>
-                <p className="text-sm font-bold text-white">Essential Local Storage (Mandatory)</p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-bold text-gray-900">Essential Local Storage (Mandatory)</p>
+                <p className="text-[11px] text-gray-500">
                   AES-GCM encrypted document vault and cached offline app shell. Never leaves device.
                 </p>
               </div>
             </div>
-            <span className="rounded-md bg-slate-800 px-2.5 py-1 text-[11px] font-bold text-slate-300">
+            <span className="rounded bg-gray-100 px-2 py-0.5 text-[10px] font-bold text-gray-600">
               Required
             </span>
           </div>
 
           {/* Emergency GPS Telemetry */}
-          <div className="flex items-start justify-between rounded-xl border border-slate-800 bg-slate-900/60 p-3.5">
-            <div className="flex items-start gap-3">
-              <ShieldAlert size={18} className="mt-0.5 text-amber-400 shrink-0" />
+          <div className="flex items-start justify-between rounded border border-gray-200 bg-white p-3">
+            <div className="flex items-start gap-2.5">
+              <ShieldAlert size={16} className="mt-0.5 text-amber-600 shrink-0" />
               <div>
-                <p className="text-sm font-bold text-white">Emergency Location Telemetry</p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-bold text-gray-900">Emergency Location Telemetry</p>
+                <p className="text-[11px] text-gray-500">
                   Generates GPS coordinates for 112/139 SMS and WhatsApp SOS alerts when triggered by user.
                 </p>
               </div>
@@ -123,19 +123,19 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
               role="switch"
               aria-checked={consent.emergency_telemetry}
               onClick={() => handleToggle('emergency_telemetry')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${consent.emergency_telemetry ? 'bg-cyan-600' : 'bg-slate-700'}`}
+              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${consent.emergency_telemetry ? 'bg-[#15803D]' : 'bg-gray-300'}`}
             >
-              <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${consent.emergency_telemetry ? 'translate-x-5' : 'translate-x-0'}`} />
+              <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${consent.emergency_telemetry ? 'translate-x-4' : 'translate-x-0'}`} />
             </button>
           </div>
 
           {/* Multilingual AI */}
-          <div className="flex items-start justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-3.5">
-            <div className="flex items-start gap-3">
-              <Globe size={18} className="mt-0.5 text-cyan-400 shrink-0" />
+          <div className="flex items-start justify-between rounded border border-gray-200 bg-white p-3">
+            <div className="flex items-start gap-2.5">
+              <Globe size={16} className="mt-0.5 text-[#15803D] shrink-0" />
               <div>
-                <p className="text-sm font-bold text-white">SambaNova AI Translation</p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-bold text-gray-900">SambaNova AI Translation</p>
+                <p className="text-[11px] text-gray-500">
                   Processes user transit prompts for 10 regional Indian languages via SambaNova Cloud.
                 </p>
               </div>
@@ -145,19 +145,19 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
               role="switch"
               aria-checked={consent.ai_translation}
               onClick={() => handleToggle('ai_translation')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${consent.ai_translation ? 'bg-cyan-600' : 'bg-slate-700'}`}
+              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${consent.ai_translation ? 'bg-[#15803D]' : 'bg-gray-300'}`}
             >
-              <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${consent.ai_translation ? 'translate-x-5' : 'translate-x-0'}`} />
+              <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${consent.ai_translation ? 'translate-x-4' : 'translate-x-0'}`} />
             </button>
           </div>
 
           {/* Voice Processing */}
-          <div className="flex items-start justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-3.5">
-            <div className="flex items-start gap-3">
-              <Mic size={18} className="mt-0.5 text-cyan-400 shrink-0" />
+          <div className="flex items-start justify-between rounded border border-gray-200 bg-white p-3">
+            <div className="flex items-start gap-2.5">
+              <Mic size={16} className="mt-0.5 text-[#15803D] shrink-0" />
               <div>
-                <p className="text-sm font-bold text-white">In-Browser Speech Processing</p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-bold text-gray-900">In-Browser Speech Processing</p>
+                <p className="text-[11px] text-gray-500">
                   Web Speech API voice accessibility queries processed locally on browser runtime.
                 </p>
               </div>
@@ -167,19 +167,19 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
               role="switch"
               aria-checked={consent.voice_processing}
               onClick={() => handleToggle('voice_processing')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${consent.voice_processing ? 'bg-cyan-600' : 'bg-slate-700'}`}
+              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${consent.voice_processing ? 'bg-[#15803D]' : 'bg-gray-300'}`}
             >
-              <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${consent.voice_processing ? 'translate-x-5' : 'translate-x-0'}`} />
+              <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${consent.voice_processing ? 'translate-x-4' : 'translate-x-0'}`} />
             </button>
           </div>
         </div>
 
-        {/* Right to Erasure / Right to be Forgotten */}
-        <div className="mt-6 rounded-xl border border-red-500/30 bg-red-950/20 p-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-red-300">
-            <Trash2 size={16} /> Right to Erasure (DPDP Act Sec. 12)
+        {/* Right to Erasure */}
+        <div className="mt-4 rounded border border-red-200 bg-red-50 p-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-red-800">
+            <Trash2 size={14} /> Right to Erasure (DPDP Act Sec. 12)
           </div>
-          <p className="mt-1 text-xs text-slate-300">
+          <p className="mt-1 text-[11px] text-red-700 leading-relaxed">
             You hold the statutory right to delete all personal data at any moment. This permanently wipes your encrypted vault, offline boarding passes, and custom settings.
           </p>
           <button
@@ -187,19 +187,19 @@ export default function DpdpPrivacyModal({ open, onClose, toast }) {
             data-testid="dpdp-erase-all-button"
             disabled={purging}
             onClick={handleEraseAllData}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-red-500/50 bg-red-900/60 px-4 py-2 text-xs font-bold text-red-200 hover:bg-red-800 hover:text-white transition"
+            className="mt-2.5 inline-flex items-center gap-1.5 rounded border border-red-300 bg-white px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 transition"
           >
-            <Trash2 size={14} /> {purging ? 'Erasing...' : 'Erase All My Data & Reset App'}
+            <Trash2 size={13} /> {purging ? 'Erasing...' : 'Erase All My Data & Reset App'}
           </button>
         </div>
 
         {/* Footer actions */}
-        <div className="mt-5 flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+        <div className="mt-4 flex items-center justify-end gap-2 pt-3 border-t border-gray-200">
           <button
             type="button"
             data-testid="dpdp-done-button"
             onClick={onClose}
-            className="rounded-md bg-cyan-600 px-5 py-2 text-xs font-bold text-slate-950 hover:bg-cyan-500 transition"
+            className="rounded bg-[#15803D] hover:bg-[#12733B] px-4 py-1.5 text-xs font-semibold text-white transition"
           >
             Done
           </button>

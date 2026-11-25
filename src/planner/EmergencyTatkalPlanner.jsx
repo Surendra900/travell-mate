@@ -260,26 +260,26 @@ export default function EmergencyTatkalPlanner({
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         {/* Left Column: Route Search & Trains Selection */}
         <div className="space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-950 text-xs font-bold">
-                <Clock size={14} className="text-amber-700" /> Tatkal Desk · IRCTC Opening Window Assistant
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#FEF7E6] border border-[#F6DFB1] text-[#A15C07] text-xs font-bold">
+                <Clock size={14} className="text-[#A15C07]" /> Tatkal Desk · IRCTC Opening Window Assistant
               </span>
               <a
                 href="https://www.irctc.co.in/nget/train-search"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 rounded-full border border-sky-300 bg-sky-50 px-3.5 py-1 text-xs font-bold text-sky-800 hover:bg-sky-100 transition"
+                className="inline-flex items-center gap-1.5 rounded border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-800 hover:bg-gray-50 transition"
               >
                 <ExternalLink size={12} /> Open IRCTC Portal ↗
               </a>
             </div>
 
             {/* Statutory Assistive Disclaimer */}
-            <div data-testid="tatkal-assistive-notice" className="mt-4 rounded-2xl border border-sky-200 bg-sky-50/80 p-3.5 text-xs text-sky-950 flex items-start gap-2.5">
-              <Shield className="text-sky-700 shrink-0 mt-0.5" size={16} />
+            <div data-testid="tatkal-assistive-notice" className="mt-4 rounded-md border border-[#C6E8D1] bg-[#EDF7F0] p-3 text-xs text-[#137333] flex items-start gap-2.5">
+              <Shield className="text-[#137333] shrink-0 mt-0.5" size={16} />
               <div className="leading-relaxed">
-                <strong className="font-bold text-sky-900">Assistive Preparation Tool:</strong> TravelMate does not automate booking, bypass captchas, or store user credentials. All reservations and payments are completed directly by you on official Indian Railways portals (<a href="https://www.irctc.co.in" target="_blank" rel="noreferrer" className="underline font-bold text-sky-800">irctc.co.in</a>) per statutory regulations.
+                <strong className="font-bold text-[#137333]">Assistive Preparation Tool:</strong> TravelMate does not automate booking, bypass captchas, or store user credentials. All reservations and payments are completed directly by you on official Indian Railways portals (<a href="https://www.irctc.co.in" target="_blank" rel="noreferrer" className="underline font-bold text-[#137333]">irctc.co.in</a>) per statutory regulations.
               </div>
             </div>
 
@@ -392,18 +392,18 @@ export default function EmergencyTatkalPlanner({
           </div>
 
           {/* Trains Listing */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-100">
               <div>
-                <h3 className="text-xl font-black text-slate-900">{hasLiveRows ? 'Live trains for Tatkal preparation' : 'Tatkal corridor train options'}</h3>
-                <p className="mt-1 text-xs text-slate-500 font-medium">{hasLiveRows ? 'Select a train and check TQ seat/WL availability below.' : 'Corridor routes shown. Click Check live Tatkal trains above for real-time schedule.'}</p>
+                <h3 className="text-base font-bold text-gray-900">{hasLiveRows ? 'Live trains for Tatkal preparation' : 'Tatkal corridor train options'}</h3>
+                <p className="mt-0.5 text-xs text-gray-500 font-medium">{hasLiveRows ? 'Select a train and check TQ seat/WL availability below.' : 'Corridor routes shown. Click Check live Tatkal trains above for real-time schedule.'}</p>
               </div>
-              <span className="rounded-full bg-slate-100 border border-slate-200 px-3 py-1 text-xs font-bold text-slate-700">{displayTrains.length} trains</span>
+              <span className="rounded bg-gray-100 border border-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-700">{displayTrains.length} trains</span>
             </div>
 
             <div className="mt-4 max-h-[26rem] space-y-3 overflow-y-auto pr-1">
               {displayTrains.length === 0 && (
-                <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">
+                <p className="rounded border border-amber-200 bg-[#FEF7E6] p-3 text-xs font-semibold text-[#A15C07]">
                   No train rows are available. Check the route or refresh.
                 </p>
               )}
@@ -412,26 +412,26 @@ export default function EmergencyTatkalPlanner({
                 const selected = targetTrainKey === key
                 const cabins = normalizedCabins(item)
                 return (
-                  <article key={key} className={`rounded-2xl border p-4 text-sm transition ${selected ? 'border-sky-500 bg-sky-50/40 shadow-xs ring-1 ring-sky-500/30' : 'border-slate-200 bg-white hover:border-slate-300 shadow-2xs'}`}>
-                    <div className="flex flex-wrap items-start justify-between gap-3">
+                  <article key={key} className={`rounded border p-3.5 text-xs transition ${selected ? 'border-[#15803D] bg-[#EDF7F0]/40 ring-1 ring-[#15803D]/30' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                    <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
-                        <div className="mb-2 flex flex-wrap gap-2">
+                        <div className="mb-1.5 flex flex-wrap gap-1.5">
                           <SourceBadge label={hasLiveRows ? item.sourceBadge || 'Live API result' : item.sourceBadge || 'Local planning dataset'} />
-                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-amber-950 text-[10px] font-bold">TQ Eligible</span>
+                          <span className="inline-flex items-center gap-1 rounded border border-[#F6DFB1] bg-[#FEF7E6] px-2 py-0.5 text-[#A15C07] text-[10px] font-bold">TQ Eligible</span>
                         </div>
-                        <h4 className="font-extrabold text-slate-900">{item.service || item.serviceName || 'Train option'}</h4>
-                        <p className="mt-1 text-xs text-slate-500 font-medium">{item.from || plan.from} to {item.to || plan.to}</p>
+                        <h4 className="font-bold text-gray-900 text-sm">{item.service || item.serviceName || 'Train option'}</h4>
+                        <p className="mt-0.5 text-xs text-gray-500">{item.from || plan.from} to {item.to || plan.to}</p>
                       </div>
-                      <span className="rounded-full bg-sky-50 text-sky-900 border border-sky-200 px-3 py-1 text-xs font-black">{displayFare(item)}</span>
+                      <span className="rounded bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1] px-2.5 py-0.5 text-xs font-bold tabular">{displayFare(item)}</span>
                     </div>
-                    <div className="mt-3 grid gap-2 text-xs text-slate-600 sm:grid-cols-2">
-                      <p><b>Train number:</b> {item.code || 'N/A'}</p>
-                      <p><b>Depart:</b> {item.depart || item.departure || 'Check provider'}</p>
-                      <p><b>Arrive:</b> {item.arrive || item.arrival || 'Check provider'}</p>
+                    <div className="mt-2.5 grid gap-1.5 text-xs text-gray-600 sm:grid-cols-2">
+                      <p><b>Train number:</b> <span className="tabular font-medium text-gray-900">{item.code || 'N/A'}</span></p>
+                      <p><b>Depart:</b> <span className="tabular font-medium text-gray-900">{item.depart || item.departure || 'Check provider'}</span></p>
+                      <p><b>Arrive:</b> <span className="tabular font-medium text-gray-900">{item.arrive || item.arrival || 'Check provider'}</span></p>
                       <p><b>Classes:</b> {cabins.length ? cabins.join(', ') : 'Check provider'}</p>
                     </div>
                     <div className="mt-3 flex flex-wrap gap-2">
-                      <button className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${selected ? 'bg-sky-600 text-white' : 'border border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'}`} onClick={() => setTargetTrainKey(key)}>
+                      <button className={`rounded px-3 py-1 text-xs font-semibold transition ${selected ? 'bg-[#15803D] text-white' : 'border border-gray-300 bg-white text-gray-800 hover:bg-gray-50'}`} onClick={() => setTargetTrainKey(key)}>
                         {selected ? 'Selected Train' : 'Select Train'}
                       </button>
                       <a
@@ -462,21 +462,21 @@ export default function EmergencyTatkalPlanner({
         {/* Right Column: Tatkal Auto-Fill Master Data & Pre-Tatkal Checklist */}
         <div className="space-y-6">
           {/* 1-Click Master Data Passenger Auto-Fill Assistant (Local Device Only: Zero IDs) */}
-          <div className="rounded-3xl border border-sky-200 bg-white p-5 sm:p-6 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between border-b border-sky-100 pb-3 gap-2">
+          <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-xs">
+            <div className="flex flex-wrap items-center justify-between border-b border-gray-100 pb-3 gap-2">
               <div>
-                <span className="badge border-sky-200 bg-sky-50 text-sky-800 text-[10px] font-black tracking-wide">
+                <span className="badge border-[#C6E8D1] bg-[#EDF7F0] text-[#137333] text-[10px] font-bold tracking-wide">
                   LOCAL DEVICE STORAGE
                 </span>
-                <h3 className="mt-1 text-lg font-black text-slate-900">Passenger Master List</h3>
-                <p className="text-xs text-slate-500 font-medium">Tatkal Auto-Fill Master Data: Pre-fill passengers for 1-click clipboard copy into IRCTC.</p>
+                <h3 className="mt-1 text-base font-bold text-gray-900">Passenger Master List</h3>
+                <p className="text-xs text-gray-500 font-medium">Tatkal Auto-Fill Master Data: Pre-fill passengers for 1-click clipboard copy into IRCTC.</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   data-testid="clear-passengers-btn"
                   onClick={clearAllPassengers}
-                  className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-bold text-rose-700 hover:bg-rose-50"
+                  className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-semibold text-rose-700 hover:bg-rose-50"
                   title="Clear all saved passengers from this browser"
                 >
                   <Trash2 size={13} /> Clear
@@ -485,7 +485,7 @@ export default function EmergencyTatkalPlanner({
                   type="button"
                   data-testid="add-passenger-btn"
                   onClick={addPassenger}
-                  className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-bold text-sky-700 hover:bg-sky-50"
+                  className="btn-soft inline-flex items-center gap-1 py-1 px-2.5 text-xs font-semibold text-[#15803D] hover:bg-green-50"
                   disabled={passengers.length >= 4}
                   title="Add passenger (up to 4)"
                 >
@@ -591,13 +591,13 @@ export default function EmergencyTatkalPlanner({
           </div>
 
           {/* Pre-Tatkal Rapid Action Checklist */}
-          <div className="rounded-3xl border border-amber-200 bg-white p-5 sm:p-6 shadow-sm">
+          <div className="rounded-lg border border-amber-200 bg-white p-5 shadow-xs">
             <div className="border-b border-amber-100 pb-3">
-              <span className="badge border-amber-300 bg-amber-50 text-amber-900 text-[10px] font-black tracking-wide">
+              <span className="badge border-[#F6DFB1] bg-[#FEF7E6] text-[#A15C07] text-[10px] font-bold tracking-wide">
                 TACTICAL CHECKLIST
               </span>
-              <h3 className="mt-1 text-lg font-black text-slate-900">Pre-Tatkal Golden Hour Checklist</h3>
-              <p className="text-xs text-slate-500 font-medium">Complete these 5 actions before the clock strikes 10:00 or 11:00 AM.</p>
+              <h3 className="mt-1 text-base font-bold text-gray-900">Pre-Tatkal Golden Hour Checklist</h3>
+              <p className="text-xs text-gray-500 font-medium">Complete these 5 actions before the clock strikes 10:00 or 11:00 AM.</p>
             </div>
 
             <div className="mt-4 space-y-2 text-xs">
@@ -614,16 +614,16 @@ export default function EmergencyTatkalPlanner({
                     key={key}
                     type="button"
                     onClick={() => toggleChecklistItem(key)}
-                    className={`w-full text-left flex items-start gap-2.5 p-3 rounded-xl border transition ${
-                      checked ? 'border-emerald-300 bg-emerald-50 text-emerald-950 font-medium' : 'border-slate-200 bg-slate-50/70 hover:bg-slate-100 text-slate-700'
+                    className={`w-full text-left flex items-start gap-2.5 p-3 rounded-md border transition ${
+                      checked ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333] font-medium' : 'border-gray-200 bg-gray-50/70 hover:bg-gray-100 text-gray-700'
                     }`}
                   >
                     {checked ? (
-                      <CheckSquare size={16} className="text-emerald-700 flex-shrink-0 mt-0.5" />
+                      <CheckSquare size={16} className="text-[#137333] flex-shrink-0 mt-0.5" />
                     ) : (
-                      <Square size={16} className="text-slate-400 flex-shrink-0 mt-0.5" />
+                      <Square size={16} className="text-gray-400 flex-shrink-0 mt-0.5" />
                     )}
-                    <span className={`leading-relaxed text-xs ${checked ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}`}>
+                    <span className={`leading-relaxed text-xs ${checked ? 'line-through text-gray-400' : 'text-gray-700 font-medium'}`}>
                       {text}
                     </span>
                   </button>
@@ -633,9 +633,9 @@ export default function EmergencyTatkalPlanner({
           </div>
 
           {/* Official Tatkal Regulatory Guidance */}
-          <div className="rounded-3xl border border-amber-200 bg-amber-50/70 p-5 text-sm text-amber-950 shadow-sm">
-            <h3 className="text-base font-black flex items-center gap-2 text-amber-900">
-              <ShieldCheck size={18} className="text-amber-700" /> Tatkal Rules & Legal Protocol
+          <div className="rounded-lg border border-amber-200 bg-[#FEF7E6] p-4 text-xs text-amber-950 shadow-xs">
+            <h3 className="text-sm font-bold flex items-center gap-2 text-[#A15C07]">
+              <ShieldCheck size={16} className="text-[#A15C07]" /> Tatkal Rules & Legal Protocol
             </h3>
             <ul className="mt-3 list-disc space-y-1.5 pl-5 text-xs text-amber-900/90 leading-relaxed">
               {tatkalRules.filter((rule) => !rule.toLowerCase().includes('urgent flight') && !rule.toLowerCase().includes('urgent bus')).map((rule) => (

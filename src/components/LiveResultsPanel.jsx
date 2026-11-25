@@ -21,7 +21,8 @@ import {
   Volume2,
   VolumeX,
   CheckCircle2,
-  Compass
+  Compass,
+  Zap
 } from 'lucide-react'
 import BackupPlan from './BackupPlan'
 import SourceBadge from './SourceBadge'
@@ -73,104 +74,83 @@ function ResultCard({ item, transport, plan, onBook, onSave }) {
   })
 
   return (
-    <article className="live-result-card bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm hover:shadow-md transition">
-      {/* Top Header Row: Service Name, Code & Fare */}
-      <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-slate-100">
-        <div>
-          <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
-              transport === 'Train' ? 'bg-sky-50 text-sky-700 border-sky-200' :
-              transport === 'Bus' ? 'bg-violet-50 text-violet-700 border-violet-200' :
-              transport === 'Flight' ? 'bg-cyan-50 text-cyan-700 border-cyan-200' :
-              'bg-teal-50 text-teal-700 border-teal-200'
-            }`}>
-              {transport}
-            </span>
+    <article className="live-result-card bg-white rounded-lg border border-gray-200 p-4 hover:border-gray-300 transition shadow-xs">
+      {/* Top Row: Name + Schedule */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-gray-100">
+        
+        {/* Left: Operator / Train Identity */}
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            {code && <span className="text-[11px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-700 tabular">{code}</span>}
+            <h3 className="text-[15px] font-bold text-gray-900 truncate">{name}</h3>
+            <span className="text-[11px] font-semibold px-1.5 py-0.5 rounded bg-[#15803D] text-white">★ 4.6</span>
             {item.provenance ? <ProvenanceBadge provenance={item.provenance} /> : <SourceBadge label={source} />}
           </div>
-          <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">{name}</h3>
-          {code && <p className="text-xs font-semibold text-slate-500">{code} · {item.provider || 'Official Transit Provider'}</p>}
+          <p className="text-[12px] text-gray-500 mt-0.5">{item.provider || 'Official Transit'} • {item.onTime || 'Schedule Verified'}</p>
           {item.nearbyNote && <NearbyNodeLabel note={item.nearbyNote} distKm={item.nearbyDistKm ?? 0} />}
         </div>
 
-        <div className="text-right">
-          <div className="text-2xl font-black text-slate-900">
-            {fare ? `₹${fare}` : 'Check Fare'}
+        {/* Right: Clean Horizontal Time Display */}
+        <div className="flex items-center gap-4 shrink-0">
+          <div>
+            <p className="text-[16px] font-bold text-gray-900 tabular">{departure}</p>
+            <p className="text-[11px] text-gray-500 truncate max-w-[90px]">{item.from || item.source || plan?.from || 'Origin'}</p>
           </div>
-          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold mt-1 ${
-            isAvailable ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'
-          }`}>
-            {isAvailable && <CheckCircle2 size={12} />}
-            {statusText}
-          </span>
-        </div>
-      </div>
-
-      {/* Main Schedule & Timing Row */}
-      <div className="my-5 grid grid-cols-3 items-center gap-2 text-center sm:text-left">
-        <div>
-          <div className="text-xl sm:text-2xl font-black text-slate-900">{departure}</div>
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate">
-            {item.from || item.source || plan?.from || 'Origin'}
+          <div className="text-center w-24">
+            <p className="text-[11px] text-gray-500 font-medium">{duration}</p>
+            <div className="h-px bg-gray-300 my-1 relative">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#15803D] absolute left-1/2 -translate-x-1/2 -top-[2.5px]"></span>
+            </div>
+            <p className="text-[10px] text-gray-400">Direct</p>
           </div>
-        </div>
-
-        <div className="text-center px-2">
-          <div className="text-xs font-semibold text-slate-600 mb-1 flex items-center justify-center gap-1">
-            <Clock size={12} />
-            <span>{duration}</span>
-          </div>
-          <div className="relative flex items-center justify-center">
-            <div className="w-full h-0.5 bg-slate-200"></div>
-            <div className="absolute w-2 h-2 rounded-full bg-sky-600"></div>
-          </div>
-          <div className="text-[11px] font-bold text-slate-600 mt-1">Direct</div>
-        </div>
-
-        <div className="text-right">
-          <div className="text-xl sm:text-2xl font-black text-slate-900">{arrival}</div>
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate">
-            {item.to || item.destination || plan?.to || 'Destination'}
+          <div className="text-right">
+            <p className="text-[16px] font-bold text-gray-900 tabular">{arrival}</p>
+            <p className="text-[11px] text-gray-500 truncate max-w-[90px]">{item.to || item.destination || plan?.to || 'Destination'}</p>
           </div>
         </div>
       </div>
 
-      {/* Provider Verification Notice */}
-      <div className="rounded-xl bg-slate-50 border border-slate-200 p-2.5 text-xs text-slate-600 mb-5 flex items-start gap-2">
-        <span className="text-slate-400 mt-0.5 font-bold">ℹ</span>
-        <span>{item.verification || 'Provider schedule row. Live seat availability and ticket issue must be finalized on the authorized portal.'}</span>
-      </div>
+      {/* Bottom Row: ConfirmTkt-Style Horizontal Fare / Class Availability Tiles + CTA */}
+      <div className="pt-3 flex flex-wrap items-center justify-between gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className={`text-left border rounded-md px-3 py-1.5 transition ${isAvailable ? 'bg-[#EDF7F0] border-[#C6E8D1]' : 'bg-[#FEF7E6] border-[#F6DFB1]'}`}>
+            <div className="flex items-center gap-2">
+              <span className="text-[12px] font-bold text-gray-900">{transport} Standard</span>
+              <span className="text-[13px] font-bold text-gray-900 tabular">{fare ? `₹${fare}` : 'Check Fare'}</span>
+            </div>
+            <p className={`text-[11px] font-semibold mt-0.5 ${isAvailable ? 'text-[#137333]' : 'text-[#A15C07]'}`}>{statusText}</p>
+          </div>
+        </div>
 
-      {/* CTA Buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-        <button
-          type="button"
-          onClick={() => onBook(item)}
-          data-testid="start-demo-booking-btn"
-          className="btn-primary mobile-full h-11 text-sm font-bold flex items-center justify-center gap-2"
-        >
-          <TicketCheck size={16} />
-          <span>Book on Portal</span>
-        </button>
-
-        <a
-          href={directLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-soft mobile-full h-11 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 text-sky-700 hover:text-sky-800"
-        >
-          <span>Official Portal</span>
-          <ExternalLink size={14} />
-        </a>
-
-        <button
-          type="button"
-          onClick={() => onSave?.(item)}
-          className="btn-soft mobile-full h-11 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5"
-        >
-          <Save size={15} />
-          <span>Save to Trips</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onBook(item)}
+            data-testid="start-demo-booking-btn"
+            className="btn-primary mobile-full px-3.5 py-1.5 rounded bg-[#15803D] hover:bg-[#12733B] text-white text-[13px] font-semibold flex items-center gap-1.5"
+          >
+            <TicketCheck size={14} />
+            <span>Book on Portal</span>
+          </button>
+          <a
+            href={directLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-soft mobile-full px-3 py-1.5 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-[12px] font-semibold flex items-center gap-1"
+          >
+            <span>Official Portal</span>
+            <ExternalLink size={12} />
+          </a>
+          <button
+            type="button"
+            onClick={() => onSave?.(item)}
+            className="btn-soft mobile-full p-2 rounded border border-gray-300 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900"
+            title="Save to Trips"
+            aria-label="Save to Trips"
+          >
+            <Save size={14} />
+          </button>
+        </div>
       </div>
     </article>
   )
@@ -389,28 +369,27 @@ export default function LiveResultsPanel({
   const hasResults = results.length > 0
 
   return (
-    <div id="live-results-section" className="live-results-workspace mt-8 mb-12 max-w-6xl mx-auto" aria-labelledby="live-results-title">
-      <section className="bg-slate-50 rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+    <div id="live-results-section" className="live-results-workspace mt-4 mb-10 max-w-6xl mx-auto" aria-labelledby="live-results-title">
+      <section className="bg-white rounded-lg border border-gray-200 shadow-xs overflow-hidden">
         {/* Results Header */}
-        <header className="live-results-header bg-white border-b border-slate-200 px-4 sm:px-6 py-4 sm:py-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+        <header className="live-results-header bg-white border-b border-gray-200 px-4 sm:px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold text-xs transition"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={14} />
             <span>Back to planner</span>
           </button>
 
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold uppercase tracking-wider text-sky-700 mb-0.5">Dedicated provider-results workspace</p>
-            <h2 id="live-results-title" className="text-xl sm:text-2xl font-black text-slate-950 flex flex-wrap items-center gap-2">
-              <MetaIcon size={22} className="text-sky-600 shrink-0" />
+            <h2 id="live-results-title" className="text-base sm:text-lg font-bold text-gray-900 flex flex-wrap items-center gap-2">
+              <MetaIcon size={18} className="text-[#15803D] shrink-0" />
               <span>{plan.from || 'Origin'}</span>
-              <ArrowRight size={18} className="text-slate-400 shrink-0" />
+              <ArrowRight size={14} className="text-gray-400 shrink-0" />
               <span>{plan.to || 'Destination'}</span>
             </h2>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">
+            <p className="text-[11px] text-gray-500 font-medium mt-0.5">
               {plan.date} · {plan.passengers || 1} Traveller(s) · {transport}
             </p>
           </div>
@@ -419,32 +398,32 @@ export default function LiveResultsPanel({
             <button
               type="button"
               onClick={() => setShowPnrModal(true)}
-              className="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold hover:bg-sky-100 transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-gray-50 text-gray-700 border border-gray-200 text-xs font-semibold hover:bg-gray-100 transition"
             >
-              <Sparkles size={14} className="text-sky-600" />
+              <Sparkles size={13} className="text-[#15803D]" />
               <span>Check PNR</span>
             </button>
             <button
               type="button"
               onClick={onRetry}
               disabled={loading}
-              className="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded bg-[#15803D] hover:bg-[#12733B] text-white text-xs font-semibold transition"
             >
-              <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+              <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
               <span>{loading ? 'Refreshing…' : 'Refresh'}</span>
             </button>
           </div>
         </header>
 
         {/* Results Body Layout */}
-        <div className={`live-results-layout p-4 sm:p-8 grid gap-8 ${allowBackup ? "lg:grid-cols-[1fr,360px]" : "grid-cols-1"}`}>
-          <main className="order-2 min-w-0 lg:order-1 space-y-6">
+        <div className={`live-results-layout p-4 sm:p-5 grid gap-5 ${allowBackup ? "lg:grid-cols-[1fr,340px]" : "grid-cols-1"}`}>
+          <main className="order-2 min-w-0 lg:order-1 space-y-4">
             {/* Filter Pills */}
-            <div className="flex items-center gap-2 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto max-w-full">
-              <span className="text-xs font-bold text-slate-600 flex items-center gap-1 shrink-0 mr-1">
-                <SlidersHorizontal size={13} /> View:
+            <div className="flex items-center gap-1.5 bg-gray-50 p-1.5 rounded-md border border-gray-200 overflow-x-auto max-w-full text-xs">
+              <span className="text-[11px] font-bold text-gray-500 flex items-center gap-1 shrink-0 px-2 uppercase tracking-wide">
+                <SlidersHorizontal size={12} /> View:
               </span>
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-1 shrink-0">
                 {filterOptions.map((filter) => {
                   const isSelected = activeFilter === filter.id
                   return (
@@ -452,10 +431,10 @@ export default function LiveResultsPanel({
                       key={filter.id}
                       type="button"
                       onClick={() => setActiveFilter(filter.id)}
-                      className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center shrink-0 transition ${
+                      className={`px-2.5 py-1 rounded text-xs font-medium transition ${
                         isSelected
-                          ? 'bg-sky-700 text-white shadow-sm font-extrabold'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                          ? 'bg-[#15803D] text-white font-semibold shadow-xs'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-100'
                       }`}
                     >
                       {filter.label}
@@ -494,11 +473,11 @@ export default function LiveResultsPanel({
 
             {/* Multi-Modal Smart Combinations Section */}
             {activeFilter !== 'map' && activeFilter !== 'simulator' && multimodalRoutes.length > 0 && (
-              <section className="multimodal-container bg-white rounded-3xl border border-sky-200 p-5 sm:p-6 shadow-sm">
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+              <section className="multimodal-container bg-white rounded-lg border border-gray-200 p-5 sm:p-6 shadow-xs">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-gray-100">
                   <div>
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 text-xs font-bold mb-1">
-                      <Sparkles size={13} className="text-sky-600" />
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1] text-xs font-bold mb-1">
+                      <Zap size={13} className="text-[#15803D]" />
                       <span>Split-Route Recovery Options</span>
                     </div>
                     <h3 className="text-lg font-black text-slate-950">

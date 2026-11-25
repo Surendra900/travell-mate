@@ -87,51 +87,51 @@ export default function PNRTracker({ plan = {}, onPlanSaved, toast }) {
   }
 
   return (
-    <div className="glass rounded-3xl p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <RefreshCw className="text-cyan-300" />
-        <span className={`rounded-full px-3 py-1 text-xs font-black ${mode === 'live' || mode === 'saved' ? 'bg-emerald-300 text-slate-950' : 'border border-yellow-400/30 bg-yellow-400/10 text-yellow-100'}`}>
+    <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 pb-3">
+        <RefreshCw className="text-[#15803D]" size={20} />
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${mode === 'live' || mode === 'saved' ? 'bg-[#EDF7F0] text-[#137333] border border-[#C6E8D1]' : 'border border-amber-200 bg-amber-50 text-amber-900'}`}>
           {mode === 'live' ? 'Live PNR API' : mode === 'saved' ? 'Saved PNR status' : validPnr ? 'Automatic check ready' : 'Waiting for booking PNR'}
         </span>
       </div>
 
-      <h3 className="mt-3 text-xl font-black text-white">Automatic PNR Status</h3>
-      <p className="mt-1 text-sm text-slate-400">TravelMate does not ask you to enter the PNR again here. When an authorized booking provider returns one, it is linked to this journey, checked online and stored in the offline pack.</p>
+      <h3 className="mt-3 text-xl font-black text-gray-900">Automatic PNR Status</h3>
+      <p className="mt-1 text-xs text-gray-500">TravelMate does not ask you to enter the PNR again here. When an authorized booking provider returns one, it is linked to this journey, checked online and stored in the offline pack.</p>
 
-      <div className="mt-4 rounded-2xl border border-slate-700/70 bg-slate-950/70 p-4">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">PNR number</p>
-        <p className="mt-1 break-all text-lg font-black text-white">{validPnr ? pnr : 'Waiting for authorized booking provider'}</p>
+      <div className="mt-4 rounded-md border border-gray-200 bg-gray-50 p-4">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-gray-500">PNR number</p>
+        <p className="mt-1 break-all text-base font-bold font-mono text-gray-900">{validPnr ? pnr : 'Waiting for authorized booking provider'}</p>
         {validPnr && (
-          <button className="btn-soft mt-3 inline-flex items-center justify-center gap-2" onClick={() => checkPnr()} disabled={loading}>
-            {loading ? <Activity className="animate-spin" size={17} /> : <RefreshCw size={17} />}
+          <button className="btn-soft mt-3 inline-flex items-center justify-center gap-2 text-xs py-1.5" onClick={() => checkPnr()} disabled={loading}>
+            {loading ? <Activity className="animate-spin" size={15} /> : <RefreshCw size={15} />}
             {loading ? 'Refreshing...' : 'Refresh status'}
           </button>
         )}
       </div>
 
-      <p className={`mt-3 rounded-xl border p-3 text-sm ${mode === 'live' || mode === 'saved' ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-100' : 'border-slate-700 bg-slate-950/60 text-slate-400'}`}>{message}</p>
+      <p className={`mt-3 rounded-md border p-3 text-xs ${mode === 'live' || mode === 'saved' ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333]' : 'border-gray-200 bg-gray-50 text-gray-600'}`}>{message}</p>
 
       {result && (
-        <div className="mt-4 rounded-2xl border border-slate-700/70 bg-slate-950/70 p-4 text-sm text-slate-300">
-          <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="mt-4 rounded-md border border-gray-200 bg-white p-4 text-xs text-gray-700 shadow-xs">
+          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 pb-2">
             <div>
-              <b className="text-white">{result.trainName}</b>
-              <p className="mt-1 text-xs text-slate-500">PNR {result.pnrNumber} · Train {result.trainNumber}</p>
+              <b className="text-gray-900 text-sm">{result.trainName}</b>
+              <p className="mt-0.5 text-xs text-gray-500 font-mono">PNR {result.pnrNumber} · Train {result.trainNumber}</p>
             </div>
-            <span className="inline-flex items-center gap-1 rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-slate-950"><CheckCircle2 size={13} />{result.sourceBadge || (mode === 'live' ? 'Live API result' : 'Saved status')}</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#EDF7F0] border border-[#C6E8D1] px-2.5 py-0.5 text-xs font-bold text-[#137333]"><CheckCircle2 size={13} />{result.sourceBadge || (mode === 'live' ? 'Live API result' : 'Saved status')}</span>
           </div>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2">
-            <p><b className="text-cyan-100">From:</b> {result.from}</p>
-            <p><b className="text-cyan-100">To:</b> {result.to}</p>
-            <p><b className="text-cyan-100">Journey:</b> {result.journeyDate}</p>
-            <p><b className="text-cyan-100">Chart:</b> {String(result.chartStatus)}</p>
-            <p><b className="text-cyan-100">Booking:</b> {result.bookingStatus || 'Check passenger rows'}</p>
-            <p><b className="text-cyan-100">Current:</b> {result.currentStatus || 'Check passenger rows'}</p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 text-xs">
+            <p><b className="text-gray-900">From:</b> {result.from}</p>
+            <p><b className="text-gray-900">To:</b> {result.to}</p>
+            <p><b className="text-gray-900">Journey:</b> {result.journeyDate}</p>
+            <p><b className="text-gray-900">Chart:</b> {String(result.chartStatus)}</p>
+            <p><b className="text-gray-900">Booking:</b> {result.bookingStatus || 'Check passenger rows'}</p>
+            <p><b className="text-gray-900">Current:</b> {result.currentStatus || 'Check passenger rows'}</p>
           </div>
           {result.passengers?.length > 0 && (
             <div className="mt-3 space-y-2">
               {result.passengers.map((passenger) => (
-                <p key={passenger.serial} className="rounded-xl border border-slate-800 bg-slate-900/80 p-3 text-xs">
+                <p key={passenger.serial} className="rounded-md border border-gray-200 bg-gray-50 p-2.5 text-xs text-gray-800">
                   <b>Passenger {passenger.serial}:</b> booking {passenger.bookingStatus} to current {passenger.currentStatus}{passenger.coach ? ` · Coach ${passenger.coach}` : ''}{passenger.berth ? ` · Berth ${passenger.berth}` : ''}
                 </p>
               ))}

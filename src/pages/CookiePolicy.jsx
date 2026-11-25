@@ -19,37 +19,37 @@ export default function CookiePolicy({ toast }) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-slate-900" data-testid="cookie-policy-page">
       <div className="mb-6">
-        <Link to="/" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors py-2 px-1">
+        <Link to="/" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-[#15803D] hover:text-[#12733B] transition-colors py-2 px-1">
           <ArrowLeft size={16} /> Back to TravelMate Home
         </Link>
       </div>
 
       {/* Draft Review Banner */}
-      <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 font-medium leading-relaxed">
+      <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 font-medium leading-relaxed">
         <p className="font-bold text-amber-900 mb-1">DRAFT DOCUMENT (PRE-LAUNCH REVIEW)</p>
         <p>This draft policy outlines actual technical storage usage. It requires owner review and qualification by legal counsel before public commercial deployment. Placeholders are marked in brackets.</p>
       </div>
 
       {/* Header */}
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="rounded-lg border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-300 bg-sky-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sky-800">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-gray-800">
             <Cookie size={14} /> Storage & Cookie Disclosures
           </span>
           <span className="text-xs text-slate-600 font-semibold">Effective date: [PLACEHOLDER: effective date]</span>
         </div>
-        <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+        <h1 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight text-slate-950">
           Cookie & Local Storage Policy
         </h1>
-        <p className="mt-3 text-base text-slate-700 leading-relaxed max-w-3xl">
+        <p className="mt-3 text-sm text-slate-700 leading-relaxed max-w-3xl">
           [PLACEHOLDER: legal business name] operates TravelMate with a zero-tracking architecture. This document explains how client-side storage technologies are used.
         </p>
       </div>
 
       {/* Summary Grid */}
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2 text-sky-800 font-bold text-sm">
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-xs">
+          <div className="flex items-center gap-2 text-[#15803D] font-bold text-sm">
             <ShieldCheck size={18} /> Zero Tracking Cookies
           </div>
           <p className="mt-2 text-xs text-slate-600 leading-relaxed">
@@ -57,7 +57,7 @@ export default function CookiePolicy({ toast }) {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-xs">
           <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
             <Database size={18} /> Strictly Essential Storage
           </div>
@@ -66,7 +66,7 @@ export default function CookiePolicy({ toast }) {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-xs">
           <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
             <Lock size={18} /> Authentication Sessions
           </div>
@@ -77,7 +77,7 @@ export default function CookiePolicy({ toast }) {
       </div>
 
       {/* Detailed Provisions */}
-      <div className="mt-8 space-y-6 text-sm text-slate-700 leading-relaxed rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="mt-8 space-y-6 text-sm text-slate-700 leading-relaxed rounded-lg border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
         <section>
           <h2 className="text-lg font-bold text-slate-950">1. Client-Side Storage Keys & Purposes</h2>
           <p className="mt-2 text-xs">

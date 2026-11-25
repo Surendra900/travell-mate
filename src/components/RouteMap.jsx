@@ -247,7 +247,7 @@ export default function RouteMap({ plan = {} }) {
 
   return (
     <section
-      className="rounded-3xl border border-slate-700/60 bg-slate-900 p-5 shadow-2xl transition-all sm:p-6 text-slate-100"
+      className="rounded-lg border border-gray-200 bg-white p-5 shadow-xs transition-all sm:p-6 text-gray-900"
       data-testid="interactive-route-map"
       aria-label="Interactive Route Map"
     >
@@ -255,14 +255,14 @@ export default function RouteMap({ plan = {} }) {
       <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#15803D]">
               Interactive Route Map
             </span>
-            <span className="rounded-md border border-slate-700 bg-slate-800/80 px-2 py-0.5 text-[10px] text-slate-300">
+            <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-0.5 text-[10px] text-gray-600">
               Leaflet &middot; OpenStreetMap
             </span>
           </div>
-          <h3 className="text-xl font-black text-white sm:text-2xl">
+          <h3 className="text-xl font-black text-gray-900 sm:text-2xl">
             {route ? `${route.labels[0]} to ${route.labels.at(-1)}` : 'India Transit Corridor Visualizer'}
           </h3>
         </div>
@@ -273,7 +273,7 @@ export default function RouteMap({ plan = {} }) {
             type="button"
             data-testid="map-zoom-fit"
             onClick={handleZoomFit}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/90 px-3 py-1.5 text-xs font-bold text-slate-200 hover:border-slate-500 hover:text-white"
+            className="flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs"
             title="Zoom to Fit Full Route"
           >
             <Maximize2 size={13} />
@@ -284,7 +284,7 @@ export default function RouteMap({ plan = {} }) {
               type="button"
               data-testid="map-focus-junction"
               onClick={handleFocusJunction}
-              className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-300 hover:bg-amber-500/20"
+              className="flex items-center gap-1.5 rounded-md border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-900 hover:bg-amber-100 shadow-xs"
               title="Focus on Intermediate Junction"
             >
               <GitCommit size={13} />
@@ -296,11 +296,11 @@ export default function RouteMap({ plan = {} }) {
 
       {/* Map Canvas / Offline state */}
       {!route ? (
-        <div className="grid h-[280px] place-items-center rounded-2xl border border-yellow-400/20 bg-slate-950 p-6 text-center text-yellow-100">
+        <div className="grid h-[280px] place-items-center rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-600">
           <div>
-            <MapPinOff className="mx-auto mb-3 h-8 w-8 text-yellow-400" />
-            <b className="text-base">Select two supported transit cities to view route map.</b>
-            <p className="mt-1 text-xs text-slate-400">
+            <MapPinOff className="mx-auto mb-3 h-8 w-8 text-gray-400" />
+            <b className="text-base text-gray-800">Select two supported transit cities to view route map.</b>
+            <p className="mt-1 text-xs text-gray-500">
               TravelMate renders verified transit lines across Indian rail, air, and road trunk networks.
             </p>
           </div>
@@ -310,33 +310,33 @@ export default function RouteMap({ plan = {} }) {
           <div
             ref={mapContainerRef}
             style={{ touchAction: 'pan-y' }}
-            className="h-[340px] w-full overflow-hidden rounded-2xl border border-cyan-400/20 bg-slate-950 shadow-inner"
+            className="h-[340px] w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100 shadow-inner"
             aria-label="Interactive Leaflet route map"
             data-testid="leaflet-map-canvas"
           />
 
           {/* Quick Legend Overlay */}
-          <div className="absolute bottom-3 left-3 z-[400] max-w-[calc(100%-24px)] flex flex-wrap gap-1.5 rounded-xl border border-slate-800/90 bg-slate-950/85 p-2 backdrop-blur-md">
-            <span className="flex items-center gap-1 text-[11px] font-bold text-cyan-400">
-              <span className="h-2 w-2 rounded-full bg-cyan-400" /> Train Line
+          <div className="absolute bottom-3 left-3 z-[400] max-w-[calc(100%-24px)] flex flex-wrap gap-1.5 rounded-lg border border-gray-200 bg-white/95 p-2 shadow-xs backdrop-blur-xs">
+            <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700">
+              <span className="h-2 w-2 rounded-full bg-emerald-600" /> Train Line
             </span>
-            <span className="flex items-center gap-1 text-[11px] font-bold text-orange-400">
-              <span className="h-2 w-2 rounded-full bg-orange-400" /> Flight Path
+            <span className="flex items-center gap-1 text-[11px] font-bold text-orange-600">
+              <span className="h-2 w-2 rounded-full bg-orange-500" /> Flight Path
             </span>
-            <span className="flex items-center gap-1 text-[11px] font-bold text-lime-400">
-              <span className="h-2 w-2 rounded-full bg-lime-400" /> Bus / Highway
+            <span className="flex items-center gap-1 text-[11px] font-bold text-sky-700">
+              <span className="h-2 w-2 rounded-full bg-sky-600" /> Bus / Highway
             </span>
-            <span className="flex items-center gap-1 text-[11px] font-bold text-amber-300">
-              <span className="h-2 w-2 rounded-full bg-amber-400" /> Junction Transfer
+            <span className="flex items-center gap-1 text-[11px] font-bold text-amber-700">
+              <span className="h-2 w-2 rounded-full bg-amber-500" /> Junction Transfer
             </span>
           </div>
         </div>
       ) : (
-        <div className="grid h-[280px] place-items-center rounded-2xl border border-yellow-400/20 bg-slate-950 p-6 text-center text-yellow-100">
+        <div className="grid h-[280px] place-items-center rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-600">
           <div>
-            <WifiOff className="mx-auto mb-3 h-8 w-8 text-yellow-400" />
-            <b className="text-base">Map tiles require network access.</b>
-            <p className="mt-1 text-xs text-slate-400">
+            <WifiOff className="mx-auto mb-3 h-8 w-8 text-gray-400" />
+            <b className="text-base text-gray-800">Map tiles require network access.</b>
+            <p className="mt-1 text-xs text-gray-500">
               Your offline itinerary snapshot and timetable remain accessible without signal.
             </p>
           </div>
@@ -347,32 +347,32 @@ export default function RouteMap({ plan = {} }) {
       {route?.junctionHub && (
         <div
           data-testid="map-junction-card"
-          className="mt-4 rounded-2xl border border-amber-500/30 bg-amber-950/20 p-4 text-amber-100"
+          className="mt-4 rounded-lg border border-amber-200 bg-amber-50/60 p-4 text-amber-950 shadow-xs"
         >
           <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
-              <span className="rounded-lg bg-amber-500/20 px-2 py-0.5 text-xs font-black text-amber-300">
+              <span className="rounded-md bg-amber-100 border border-amber-200 px-2 py-0.5 text-xs font-bold text-amber-900">
                 TRANSIT HUB
               </span>
-              <h4 className="font-extrabold text-white text-sm sm:text-base">
+              <h4 className="font-extrabold text-gray-900 text-sm sm:text-base">
                 {route.junctionHub.stationName || `${route.junctionCity} Junction`}
               </h4>
             </div>
-            <span className="text-xs text-amber-300 font-semibold">
+            <span className="text-xs text-amber-800 font-semibold">
               Safety Score: {route.junctionHub.safetyScore || 98}/100 &middot; {route.junctionHub.platforms || 8} Platforms
             </span>
           </div>
-          <p className="mt-2 text-xs text-amber-200/90 leading-relaxed">
+          <p className="mt-2 text-xs text-amber-900 leading-relaxed">
             {route.junctionHub.trainTransferTip}
           </p>
-          <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-slate-300">
-            <span className="rounded-md border border-slate-700 bg-slate-900/80 px-2 py-1">
+          <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-gray-700">
+            <span className="rounded-md border border-gray-200 bg-white px-2 py-1">
               Terminal: {route.junctionHub.busTerminalName} ({route.junctionHub.busTerminalDistanceKm} km)
             </span>
-            <span className="rounded-md border border-slate-700 bg-slate-900/80 px-2 py-1">
+            <span className="rounded-md border border-gray-200 bg-white px-2 py-1">
               Auto Fare: {route.junctionHub.busAutoFare}
             </span>
-            <span className="rounded-md border border-slate-700 bg-slate-900/80 px-2 py-1">
+            <span className="rounded-md border border-gray-200 bg-white px-2 py-1">
               Airport: {route.junctionHub.airportDistanceKm} km ({route.junctionHub.airportTaxiFare})
             </span>
           </div>

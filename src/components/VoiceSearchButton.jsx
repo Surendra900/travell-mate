@@ -338,24 +338,24 @@ export default function VoiceSearchButton({ onSearch, language = 'en' }) {
         >
           <section
             id="travelmate-voice-search"
-            className="voice-panel w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-slate-700 bg-slate-900 p-5 sm:p-6 text-slate-100 shadow-2xl"
+            className="voice-panel w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border border-gray-200 bg-white p-5 sm:p-6 text-gray-900 shadow-xl"
             role="dialog"
             aria-modal="true"
             aria-label="Voice search panel"
           >
             <header className="dialog-panel-header">
               <div className="min-w-0 flex-1">
-                <p className="flex items-center gap-2 font-black text-cyan-100"><Search size={17} aria-hidden="true" /> Voice Search</p>
-                <p className="mt-1 text-xs text-slate-400">Speak naturally. Route requests fill the planner first; Tatkal requests open Tatkal mode; the demo booking opens only when you explicitly say “open demo booking”.</p>
+                <p className="flex items-center gap-2 font-bold text-gray-900"><Search size={17} aria-hidden="true" /> Voice Search</p>
+                <p className="mt-1 text-xs text-gray-500">Speak naturally. Route requests fill the planner first; Tatkal requests open Tatkal mode; the demo booking opens only when you explicitly say “open demo booking”.</p>
               </div>
               <button type="button" className="dialog-close-button" onClick={closePanel} aria-label="Close voice search" title="Close voice search">
                 <X size={22} aria-hidden="true" />
               </button>
             </header>
 
-            <div className="mt-3 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3" aria-live="polite">
-              <p className="text-xs font-bold text-cyan-100">{status}</p>
-              {transcript && <p className="mt-2 text-xs text-slate-200"><span>Heard:</span> <span data-no-translate>{transcript}</span></p>}
+            <div className="mt-3 rounded-md border border-[#C6E8D1] bg-[#EDF7F0] p-3" aria-live="polite">
+              <p className="text-xs font-bold text-[#137333]">{status}</p>
+              {transcript && <p className="mt-2 text-xs text-gray-800"><span>Heard:</span> <span data-no-translate>{transcript}</span></p>}
             </div>
 
             <button
@@ -369,7 +369,7 @@ export default function VoiceSearchButton({ onSearch, language = 'en' }) {
             </button>
 
             <div className="mt-3 grid gap-2">
-              <label className="text-xs font-black text-cyan-100" htmlFor="voice-search-fallback">Type route search</label>
+              <label className="text-xs font-bold text-gray-700" htmlFor="voice-search-fallback">Type route search</label>
               <input
                 id="voice-search-fallback"
                 className="input"
@@ -389,7 +389,7 @@ export default function VoiceSearchButton({ onSearch, language = 'en' }) {
                 'open demo booking',
                 'open safety'
               ].map((example) => (
-                <button key={example} type="button" className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-left font-bold text-slate-300 hover:bg-slate-800 min-h-[44px] flex items-center" onClick={() => submit(example)}>
+                <button key={example} type="button" className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2.5 text-left font-semibold text-gray-700 hover:bg-gray-100 min-h-[44px] flex items-center" onClick={() => submit(example)}>
                   {example}
                 </button>
               ))}

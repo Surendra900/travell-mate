@@ -87,30 +87,30 @@ export default function TrainRunningStatus({ plan, toast }) {
   const stationBoardTrains = SAMPLE_STATION_BOARDS[selectedStation] || SAMPLE_STATION_BOARDS.NDLS
 
   return (
-    <div className="train-telemetry-cockpit rounded-3xl p-5 sm:p-6 shadow-xl border border-cyan-500/30 bg-slate-950 text-white md:col-span-2">
+    <div className="train-telemetry-cockpit rounded-lg p-5 sm:p-6 shadow-xs border border-gray-200 bg-white text-gray-900 md:col-span-2">
       {/* Header and Mode Selector */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/50 bg-cyan-950 px-2.5 py-1 text-xs font-bold text-cyan-200">
-              <Radio size={14} className="text-cyan-400" /> Live Transit Telemetry
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#C6E8D1] bg-[#EDF7F0] px-2.5 py-1 text-xs font-bold text-[#137333]">
+              <Radio size={14} className="text-[#15803D]" /> Live Transit Telemetry
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-950 px-2.5 py-1 text-xs font-mono text-emerald-200">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-mono text-gray-600">
               GPS Verified
             </span>
           </div>
-          <h3 className="mt-2 text-2xl sm:text-3xl font-black text-white">Live Train Status & Station Boards</h3>
-          <p className="mt-1 text-xs text-slate-300">
+          <h3 className="mt-2 text-2xl font-black text-gray-900">Live Train Status & Station Boards</h3>
+          <p className="mt-1 text-xs text-gray-500">
             Real-time Indian Railways GPS location, station progress, platform prediction, and delay heuristics.
           </p>
         </div>
 
         {/* Tab switcher: Train Status vs Station Board */}
-        <div className="flex rounded-2xl bg-slate-900 p-1 border border-slate-700/60 text-xs font-bold">
+        <div className="flex rounded-md bg-gray-100 p-1 border border-gray-200 text-xs font-bold">
           <button
             type="button"
-            className={`rounded-xl px-4 py-2 transition ${
-              activeTab === 'train' ? 'bg-cyan-400 text-slate-950 font-black shadow' : 'text-slate-300 hover:text-white'
+            className={`rounded-md px-3.5 py-1.5 transition ${
+              activeTab === 'train' ? 'bg-[#15803D] text-white font-bold shadow-xs' : 'text-gray-600 hover:text-gray-900'
             }`}
             onClick={() => setActiveTab('train')}
           >
@@ -118,8 +118,8 @@ export default function TrainRunningStatus({ plan, toast }) {
           </button>
           <button
             type="button"
-            className={`rounded-xl px-4 py-2 transition ${
-              activeTab === 'station' ? 'bg-cyan-400 text-slate-950 font-black shadow' : 'text-slate-300 hover:text-white'
+            className={`rounded-md px-3.5 py-1.5 transition ${
+              activeTab === 'station' ? 'bg-[#15803D] text-white font-bold shadow-xs' : 'text-gray-600 hover:text-gray-900'
             }`}
             onClick={() => setActiveTab('station')}
           >
@@ -129,19 +129,19 @@ export default function TrainRunningStatus({ plan, toast }) {
       </div>
 
       {activeTab === 'train' ? (
-        <div className="mt-5 space-y-5">
+        <div className="mt-5 space-y-4">
           {/* Quick-Preset Train Buttons */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-slate-300">Popular Trains:</span>
+            <span className="text-xs font-bold text-gray-500">Popular Trains:</span>
             {POPULAR_TRAIN_PRESETS.map((p) => (
               <button
                 key={p.code}
                 type="button"
                 onClick={() => handlePresetClick(p.code)}
-                className={`rounded-lg px-2.5 py-1 text-xs font-bold transition border ${
+                className={`rounded-md px-2.5 py-1 text-xs font-bold transition border ${
                   trainNumber === p.code
-                    ? 'border-cyan-400 bg-cyan-400/20 text-cyan-200'
-                    : 'border-slate-700 bg-slate-900 text-slate-200 hover:border-slate-600'
+                    ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333]'
+                    : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 {p.code} ({p.name.split(' ')[0]})
@@ -159,7 +159,7 @@ export default function TrainRunningStatus({ plan, toast }) {
                 onChange={(event) => setTrainNumber(event.target.value.replace(/\D/g, '').slice(0, 5))}
                 aria-label="5-digit train number"
               />
-              <TrainFront size={16} className="absolute left-3 top-3.5 text-slate-400" />
+              <TrainFront size={16} className="absolute left-3 top-3 text-gray-400" />
             </div>
 
             <select
@@ -184,63 +184,63 @@ export default function TrainRunningStatus({ plan, toast }) {
           </div>
 
           {/* Status Message */}
-          <p className={`rounded-xl border p-3 text-xs ${
+          <p className={`rounded-md border p-3 text-xs ${
             mode === 'live'
-              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100'
+              ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333]'
               : mode === 'fallback'
-              ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-100'
-              : 'border-yellow-400/20 bg-yellow-400/10 text-yellow-100'
+              ? 'border-gray-200 bg-gray-50 text-gray-700'
+              : 'border-amber-200 bg-amber-50 text-amber-900'
           }`}>
             {message}
           </p>
 
           {/* Main Train Card */}
           {status && (
-            <div className="rounded-2xl border border-slate-700 bg-slate-900 p-5 text-sm shadow-xl space-y-4">
-              <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-3">
+            <div className="rounded-lg border border-gray-200 bg-white p-5 text-sm shadow-xs space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 pb-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xl font-black text-cyan-300">{status.trainNumber}</span>
-                    <h4 className="text-lg font-black text-white">{status.trainName}</h4>
+                    <span className="font-mono text-lg font-bold text-[#15803D]">{status.trainNumber}</span>
+                    <h4 className="text-base font-bold text-gray-900">{status.trainName}</h4>
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-200">{status.from} to {status.to}</p>
+                  <p className="mt-0.5 text-xs text-gray-500">{status.from} to {status.to}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {delayInfo && (
-                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-black ${delayInfo.badgeColor}`}>
+                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-bold ${delayInfo.badgeColor}`}>
                       <span className={`h-2 w-2 rounded-full ${delayInfo.dotColor}`} />
                       {delayInfo.label}
                     </span>
                   )}
-                  <span className="rounded-full bg-slate-800 border border-slate-700 px-3 py-1 text-xs font-bold text-slate-200">
-                    Platform: <strong className="text-white">{status.platform || 'Platform 1'}</strong>
+                  <span className="rounded-md bg-gray-50 border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-700">
+                    Platform: <strong className="text-gray-900">{status.platform || 'Platform 1'}</strong>
                   </span>
                 </div>
               </div>
 
               {/* Current Station & Live Alert */}
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-cyan-500/40 bg-slate-950 p-3">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-200">Current Position</span>
-                  <p className="mt-1 font-bold text-white text-base">{status.currentStation}</p>
-                  <p className="mt-0.5 text-xs text-slate-200">{status.status}</p>
+                <div className="rounded-md border border-[#C6E8D1] bg-[#EDF7F0]/40 p-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#15803D]">Current Position</span>
+                  <p className="mt-1 font-bold text-gray-900 text-sm">{status.currentStation}</p>
+                  <p className="mt-0.5 text-xs text-gray-600">{status.status}</p>
                 </div>
 
-                <div className={`rounded-xl border p-3 ${
+                <div className={`rounded-md border p-3 ${
                   delayInfo?.contingencyAlert
-                    ? 'border-red-500/40 bg-red-950 text-red-100'
-                    : 'border-slate-800 bg-slate-950 text-slate-200'
+                    ? 'border-red-200 bg-red-50 text-red-900'
+                    : 'border-gray-200 bg-gray-50 text-gray-700'
                 }`}>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">Delay Assessment</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Delay Assessment</span>
                   <p className="mt-1 text-xs leading-relaxed">{delayInfo?.advice || 'Monitoring schedule updates.'}</p>
-                  <p className="mt-1 text-[11px] text-slate-300">Updated: {status.updated}</p>
+                  <p className="mt-1 text-[11px] text-gray-400">Updated: {status.updated}</p>
                 </div>
               </div>
 
               {/* Station Progress Timeline */}
               {status.timeline && (
                 <div className="mt-4 pt-2">
-                  <h5 className="text-xs font-black uppercase tracking-wider text-slate-300 mb-3">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                     Station Progression Timeline
                   </h5>
                   <div className="grid gap-2">
@@ -250,31 +250,31 @@ export default function TrainRunningStatus({ plan, toast }) {
                       return (
                         <div
                           key={idx}
-                          className={`flex items-center justify-between rounded-xl p-2.5 text-xs transition border ${
+                          className={`flex items-center justify-between rounded-md p-2.5 text-xs transition border ${
                             isCurrent
-                              ? 'border-cyan-400 bg-cyan-500/20 text-white font-bold shadow'
+                              ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333] font-bold shadow-xs'
                               : isDeparted
-                              ? 'border-slate-800/80 bg-slate-900/40 text-slate-400'
-                              : 'border-slate-800 bg-slate-900/70 text-slate-200'
+                              ? 'border-gray-100 bg-gray-50/60 text-gray-400'
+                              : 'border-gray-200 bg-white text-gray-700'
                           }`}
                         >
                           <div className="flex items-center gap-2.5">
                             <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
-                              isCurrent ? 'bg-cyan-400 text-slate-950' : isDeparted ? 'bg-slate-700 text-slate-300' : 'bg-slate-800 text-slate-400'
+                              isCurrent ? 'bg-[#15803D] text-white' : isDeparted ? 'bg-gray-200 text-gray-500' : 'bg-gray-100 text-gray-600'
                             }`}>
                               {idx + 1}
                             </span>
                             <span>{stn.station}</span>
                           </div>
                           <div className="flex items-center gap-3">
-                            <span className="rounded bg-slate-800 px-2 py-0.5 font-mono text-[11px] text-slate-300">
+                            <span className="rounded bg-gray-100 px-2 py-0.5 font-mono text-[11px] text-gray-700">
                               {stn.platform}
                             </span>
-                            <span className="font-mono text-slate-300">
+                            <span className="font-mono text-gray-700">
                               Arr: {stn.actual || stn.scheduled}
                             </span>
-                            {isDeparted && <span className="text-emerald-400 font-bold">Passed</span>}
-                            {isCurrent && <span className="text-cyan-300 font-black">At Station</span>}
+                            {isDeparted && <span className="text-gray-500 font-semibold">Passed</span>}
+                            {isCurrent && <span className="text-[#137333] font-black">At Station</span>}
                           </div>
                         </div>
                       )
@@ -290,31 +290,31 @@ export default function TrainRunningStatus({ plan, toast }) {
         <div className="mt-5 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold text-slate-400">Select Station:</span>
+              <span className="text-xs font-bold text-gray-500">Select Station:</span>
               {POPULAR_STATION_PRESETS.map((stn) => (
                 <button
                   key={stn.code}
                   type="button"
                   onClick={() => setSelectedStation(stn.code)}
-                  className={`rounded-lg px-2.5 py-1 text-xs font-bold transition border ${
+                  className={`rounded-md px-2.5 py-1 text-xs font-bold transition border ${
                     selectedStation === stn.code
-                      ? 'border-cyan-400 bg-cyan-400/20 text-cyan-200'
-                      : 'border-slate-800 bg-slate-900/60 text-slate-300 hover:border-slate-700'
+                      ? 'border-[#C6E8D1] bg-[#EDF7F0] text-[#137333]'
+                      : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   {stn.code} ({stn.city})
                 </button>
               ))}
             </div>
-            <span className="text-xs text-slate-400 font-mono">Live Display Board</span>
+            <span className="text-xs text-gray-500 font-mono">Live Display Board</span>
           </div>
 
-          <div className="rounded-2xl border border-slate-700 bg-slate-950/80 p-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-              <h4 className="font-black text-white text-sm">
+          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-xs">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+              <h4 className="font-bold text-gray-900 text-sm">
                 Incoming & Outgoing Trains at {selectedStation}
               </h4>
-              <span className="rounded-full bg-cyan-500/20 text-cyan-300 text-[11px] font-bold px-2.5 py-0.5">
+              <span className="rounded-full bg-[#EDF7F0] border border-[#C6E8D1] text-[#137333] text-[11px] font-bold px-2.5 py-0.5">
                 Next 4 Hours
               </span>
             </div>
@@ -323,29 +323,29 @@ export default function TrainRunningStatus({ plan, toast }) {
               {stationBoardTrains.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-900/70 p-3 text-xs"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-gray-200 bg-gray-50 p-3 text-xs"
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-black text-cyan-300">{item.trainNumber}</span>
-                      <strong className="text-white">{item.trainName}</strong>
-                      <span className="rounded bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300 uppercase">
+                      <span className="font-mono font-bold text-[#15803D]">{item.trainNumber}</span>
+                      <strong className="text-gray-900">{item.trainName}</strong>
+                      <span className="rounded bg-white border border-gray-200 px-1.5 py-0.5 text-[10px] text-gray-600 uppercase">
                         {item.type}
                       </span>
                     </div>
-                    <p className="mt-0.5 text-[11px] text-slate-400">
+                    <p className="mt-0.5 text-[11px] text-gray-500">
                       {item.type === 'Departure' ? `To: ${item.destination}` : `From: ${item.origin}`}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="rounded-lg bg-slate-800 px-2.5 py-1 font-bold text-amber-200">
+                    <span className="rounded bg-white border border-gray-200 px-2 py-0.5 font-bold text-gray-800">
                       {item.platform}
                     </span>
-                    <span className="font-mono text-white text-sm font-bold">
+                    <span className="font-mono text-gray-900 text-sm font-bold">
                       {item.time}
                     </span>
-                    <span className={`text-[11px] font-bold ${item.delay === '0 mins' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <span className={`text-[11px] font-bold ${item.delay === '0 mins' ? 'text-[#137333]' : 'text-amber-700'}`}>
                       {item.delay === '0 mins' ? 'On Time' : `Late ${item.delay}`}
                     </span>
                   </div>

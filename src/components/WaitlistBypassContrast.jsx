@@ -78,7 +78,7 @@ export default function WaitlistBypassContrast({
   return (
     <section
       data-testid="waitlist-bypass-contrast"
-      className={`rounded-3xl border-2 border-sky-300 bg-white p-5 sm:p-7 shadow-lg ${className}`.trim()}
+      className={`rounded-lg border border-gray-200 bg-white p-5 sm:p-6 shadow-xs ${className}`.trim()}
     >
       {/* Top Banner */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-slate-100">

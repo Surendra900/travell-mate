@@ -10,31 +10,31 @@ const rows = [
 
 export default function MasterTrustPanel() {
   return (
-    <section className="stitch-trust-card bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-      <div className="stitch-trust-head flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+    <section className="stitch-trust-card bg-white rounded-lg border border-gray-200 p-5 sm:p-6 shadow-xs">
+      <div className="stitch-trust-head flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-gray-100">
         <div>
-          <p className="stitch-kicker inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sky-700 mb-1">
-            <ShieldCheck size={16} /> Transparent Data Layer
+          <p className="stitch-kicker inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#15803D] mb-0.5">
+            <ShieldCheck size={15} /> Transparent Data Layer
           </p>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-950">Every travel result is source-labeled</h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">Every travel result is source-labeled</h2>
+          <p className="text-xs text-gray-500 mt-0.5 max-w-2xl">
             TravelMate does not present local estimates as live inventory. Cards clearly show whether data is an authenticated live API, a curated timetable, or requires provider verification.
           </p>
         </div>
         <div className="stitch-trust-pills flex flex-wrap items-center gap-2">
-          <span className="stitch-meta-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
-            <DatabaseZap size={14} className="text-sky-600" /> API-ready backend
+          <span className="stitch-meta-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-gray-100 text-gray-700 text-xs font-semibold">
+            <DatabaseZap size={13} className="text-[#15803D]" /> API-ready backend
           </span>
-          <span className="stitch-meta-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
-            <WifiOff size={14} className="text-emerald-600" /> Offline planning examples
+          <span className="stitch-meta-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-gray-100 text-gray-700 text-xs font-semibold">
+            <WifiOff size={13} className="text-[#137333]" /> Offline planning examples
           </span>
         </div>
       </div>
-      <div className="stitch-trust-grid grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+      <div className="stitch-trust-grid grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
         {rows.map(([label, text]) => (
-          <div key={label} className="stitch-trust-item p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <div key={label} className="stitch-trust-item p-3.5 rounded border border-gray-200 bg-gray-50/70">
             <SourceBadge label={label} />
-            <p className="text-xs text-slate-600 font-medium mt-2 leading-relaxed">{text}</p>
+            <p className="text-xs text-gray-600 font-medium mt-1.5 leading-relaxed">{text}</p>
           </div>
         ))}
       </div>

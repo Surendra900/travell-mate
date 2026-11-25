@@ -79,38 +79,38 @@ export default function LocationPermissionGate({ toast }) {
   if (!open) return null
 
   return (
-    <div className="location-gate fixed inset-0 z-[130] grid place-items-center overflow-y-auto bg-slate-950/95 p-3 backdrop-blur-xl" role="dialog" aria-modal="true" aria-label="Location permission setup">
-      <div className="glass my-3 w-full max-w-xl rounded-3xl p-5 shadow-glow sm:p-7">
+    <div className="location-gate fixed inset-0 z-[130] grid place-items-center overflow-y-auto bg-slate-900/60 p-3 backdrop-blur-xs" role="dialog" aria-modal="true" aria-label="Location permission setup">
+      <div className="bg-white my-3 w-full max-w-xl rounded-lg border border-gray-200 p-6 sm:p-7 shadow-xl text-gray-900">
         <div className="flex items-start gap-4">
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-cyan-400 text-slate-950"><LocateFixed size={25} /></div>
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-[#EDF7F0] border border-[#C6E8D1] text-[#15803D]"><LocateFixed size={24} /></div>
           <div>
             <p className="badge"><ShieldCheck size={14} /> Emergency location setup</p>
-            <h1 className="mt-3 text-3xl font-black leading-tight text-white sm:text-4xl">Allow location before using TravelMate</h1>
-            <p className="mt-3 text-sm leading-6 text-slate-300">When you later tap WhatsApp or SMS in Safety Mode, TravelMate will refresh your GPS location and place it in the emergency message automatically.</p>
+            <h1 className="mt-2 text-2xl font-black leading-tight text-gray-900 sm:text-3xl">Allow location before using TravelMate</h1>
+            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-gray-600">When you later tap WhatsApp or SMS in Safety Mode, TravelMate will refresh your GPS location and place it in the emergency message automatically.</p>
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 text-sm">
-          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-cyan-50">
-            <p className="font-black"><MapPin size={16} className="mr-2 inline" />What is stored</p>
-            <p className="mt-1 text-cyan-100/85">Only the latest coordinates, accuracy and capture time are stored locally in this browser. They are not sent to TravelMate servers.</p>
+        <div className="mt-5 grid gap-3 text-xs text-gray-700">
+          <div className="rounded-md border border-gray-200 bg-gray-50 p-3.5">
+            <p className="font-bold text-gray-900"><MapPin size={15} className="mr-1.5 inline text-[#15803D]" />What is stored</p>
+            <p className="mt-1 text-gray-600">Only the latest coordinates, accuracy and capture time are stored locally in this browser. They are not sent to TravelMate servers.</p>
           </div>
-          <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/10 p-4 text-yellow-100">
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-amber-900 font-medium">
             WhatsApp and SMS will open with a prepared message. Your phone still requires you to review it and tap Send; a website cannot silently send messages on your behalf.
           </div>
           {location && (
-            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-xs text-emerald-100 break-all">
-              <CheckCircle2 size={16} className="mr-2 inline" />Saved location available: {formatEmergencyLocation(location)}
+            <div className="rounded-md border border-[#C6E8D1] bg-[#EDF7F0] p-3 text-xs text-[#137333] break-all font-semibold">
+              <CheckCircle2 size={15} className="mr-1.5 inline" />Saved location available: {formatEmergencyLocation(location)}
             </div>
           )}
           {status === 'denied' && (
-            <div className="rounded-2xl border border-red-400/25 bg-red-400/10 p-4 text-red-100">Location is blocked. Use the lock icon beside the website address to open Site settings, select Location, choose Allow, and reload.</div>
+            <div className="rounded-md border border-red-200 bg-red-50 p-3 text-red-900">Location is blocked. Use the lock icon beside the website address to open Site settings, select Location, choose Allow, and reload.</div>
           )}
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <button className="btn-primary mobile-full inline-flex items-center justify-center gap-2" type="button" onClick={enableLocation} disabled={busy}>
-            <MapPin size={18} /> {busy ? 'Requesting location…' : 'Allow and continue'}
+            <MapPin size={16} /> {busy ? 'Requesting location…' : 'Allow and continue'}
           </button>
           <button className="btn-soft mobile-full" type="button" onClick={continueWithoutLocation}>Continue without location</button>
         </div>

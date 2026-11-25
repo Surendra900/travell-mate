@@ -503,13 +503,13 @@ export default function Planner({ status, toast, language = 'en' }) {
             type="button"
             data-testid="planner-pnr-status-btn"
             onClick={() => setShowPnrModal(true)}
-            className="flex items-center justify-center gap-1.5 min-h-[44px] px-3.5 py-2.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-800 hover:bg-sky-100 text-xs sm:text-sm font-bold transition shadow-xs w-full sm:w-auto"
+            className="flex items-center justify-center gap-1.5 min-h-[40px] px-3.5 py-2 rounded border border-gray-300 bg-white text-gray-800 hover:bg-gray-50 text-xs sm:text-sm font-semibold transition w-full sm:w-auto"
           >
-            <Ticket size={16} className="text-sky-600" />
+            <Ticket size={16} className="text-[#15803D]" />
             <span>Check PNR Status</span>
           </button>
 
-          <div className="planner-mode-tabs bg-white border border-slate-200 shadow-sm grid grid-cols-2 gap-1.5 rounded-2xl p-1.5 w-full sm:w-auto">
+          <div className="planner-mode-tabs bg-white border border-gray-200 shadow-xs grid grid-cols-2 gap-1 rounded-md p-1 w-full sm:w-auto">
             {[
               ['normal', 'Route Finder'],
               ['tatkal', 'Tatkal Desk']
@@ -521,14 +521,14 @@ export default function Planner({ status, toast, language = 'en' }) {
                   key={value}
                   type="button"
                   data-testid={`planner-tab-${value}`}
-                  className={`min-h-[44px] rounded-lg px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm transition ${
+                  className={`min-h-[38px] rounded px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm transition ${
                     active
                       ? isTatkalTab
-                        ? 'bg-amber-600 text-white shadow-sm'
-                        : 'bg-sky-700 text-white shadow-sm'
+                        ? 'bg-amber-600 text-white'
+                        : 'bg-[#15803D] text-white'
                       : isTatkalTab
-                        ? 'border border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100'
-                        : 'text-slate-600 hover:bg-slate-100'
+                        ? 'border border-amber-200 bg-[#FEF7E6] text-[#A15C07] hover:bg-amber-100'
+                        : 'text-gray-600 hover:bg-gray-100'
                   }`}
                   onClick={() => !(forcedOffline || forcedLowSignal) && setManualMode(value)}
                   disabled={forcedOffline || forcedLowSignal}

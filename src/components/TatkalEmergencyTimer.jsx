@@ -96,14 +96,14 @@ export default function TatkalEmergencyTimer({ classType = 'Sleeper' }) {
   }
 
   return (
-    <div className="rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50/80 via-white to-orange-50/40 p-5 sm:p-6 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-amber-100 pb-4">
+    <div className="rounded-lg border border-gray-200 bg-white p-5 sm:p-6 shadow-xs">
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-gray-100 pb-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-amber-300 bg-amber-100/70 text-amber-950 text-xs font-bold tracking-wide">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-amber-200 bg-amber-50 text-amber-900 text-xs font-bold tracking-wide">
               <Clock size={13} className="text-amber-800" /> Tatkal Window Countdown (IST)
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-800 text-xs font-mono font-bold">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-[#C6E8D1] bg-[#EDF7F0] text-[#137333] text-xs font-mono font-bold">
               IST Sync (UTC+5:30)
             </span>
           </div>
