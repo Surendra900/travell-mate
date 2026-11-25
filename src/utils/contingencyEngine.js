@@ -1,11 +1,28 @@
 /**
- * TravelMate AI: Severe Delay Contingency & Backup Route Calculation Engine
- * Indian Multimodal Transit: Evaluates transfer risks and generates immediate
- * backup legs when primary transport faces delays > 45 minutes.
+ * TravelMate AI: Contingency Engine (client-side)
+ * Agent 15: Combination Mode Specialist
+ *
+ * REWRITE — 2026-11-25
+ * Previous version contained hardcoded fake trains/buses/flights for every route.
+ * This version computes route-aware contingency options using real city data
+ * and directs users to the live booking portals.
+ *
+ * generateContingencyOptions() now produces:
+ *   - A generic train bypass (book a different express on the same corridor)
+ *   - A bus connector (city bus stand, booked via RedBus)
+ *   - An air bypass (only shown when both cities have airports in transportData)
+ * All fares are labelled ESTIMATE and include a "verify on portal" note.
+ * No real vehicle numbers, flight codes, or carrier names are fabricated.
  */
 
+import { findTransportPlace, getProviderDeepLink } from '../data/transportData.js'
+
+/**
+ * calculateConnectionRisk — unchanged (math is correct).
+ * Returns risk level for a delayed first leg.
+ */
 export function calculateConnectionRisk(firstLegDelayMinutes = 0, scheduledLayoverMinutes = 60) {
-  const delay = Math.max(0, Number(firstLegDelayMinutes) || 0)
+  const delay  = Math.max(0, Number(firstLegDelayMinutes)   || 0)
   const layover = Math.max(15, Number(scheduledLayoverMinutes) || 60)
   const remainingBuffer = layover - delay
 
@@ -48,62 +65,100 @@ export function calculateConnectionRisk(firstLegDelayMinutes = 0, scheduledLayov
   }
 }
 
+/**
+ * Generates route-aware contingency options when primary transport is delayed.
+ *
+ * @param {{ from?: string, to?: string, transportMode?: string }} plan
+ * @param {number} delayMinutes
+ * @returns {Array<Object>}
+ */
 export function generateContingencyOptions(plan = {}, delayMinutes = 55) {
-  const from = plan.from || 'Current Station'
-  const to = plan.to || 'Destination'
-  const transport = plan.transportMode || 'Train'
+  const from = String(plan.from || 'your origin').trim()
+  const to   = String(plan.to   || 'your destination').trim()
 
-  return [
-    {
-      id: 'contingency-fast-express',
-      title: 'Alternative Express Bypass',
-      transport: 'Train',
-      mode: 'Train',
-      carrier: '12430 New Delhi–Lucknow AC SF',
-      code: '12430',
-      reason: 'Departing 45 mins later; bypasses congested transfer junction.',
-      depart: '+50m from schedule',
-      arrive: '+1h 10m',
-      duration: '6h 15m',
-      fare: 1250,
-      classes: ['3A', '2A', '1A'],
-      availability: 'Confirmed Tatkal / Quota Available',
-      provider: 'ConfirmTkt',
-      riskReduction: 'Eliminates missed junction connection entirely'
-    },
-    {
-      id: 'contingency-intercity-road',
-      title: 'Express Intercity Road Connector',
+  const fromPlace = findTransportPlace(from)
+  const toPlace   = findTransportPlace(to)
+
+  const hasAirport = Boolean(fromPlace?.airport && toPlace?.airport)
+  const hasBus     = Boolean(fromPlace?.bus     || fromPlace)
+
+  const trainLink  = getProviderDeepLink({ transport: 'Train',  from, to, date: '' })
+  const busLink    = getProviderDeepLink({ transport: 'Bus',    from, to, date: '' })
+  const flightLink = hasAirport
+    ? getProviderDeepLink({ transport: 'Flight', from, to, date: '' })
+    : 'https://www.google.com/flights'
+
+  const options = []
+
+  // --- Option 1: Alternative train (generic — no fake train numbers) ---
+  options.push({
+    id: 'contingency-alt-train',
+    title: 'Alternative Express Train',
+    transport: 'Train',
+    mode: 'Train',
+    carrier: `Express / Superfast service on ${from}–${to} corridor`,
+    code: null, // no fake train number
+    reason: `Multiple trains typically run on this corridor. Check for the next available departure.`,
+    depart: 'Next available departure',
+    arrive: 'Check live schedule',
+    duration: 'Varies by service',
+    fare: null,
+    fareNote: 'Check IRCTC / ConfirmTkt for current fares and availability.',
+    classes: ['SL', '3A', '2A'],
+    availability: 'Check live portal',
+    provider: 'IRCTC / ConfirmTkt',
+    provenance: 'ESTIMATE',
+    riskReduction: 'Direct rail corridor — no additional transfer required',
+    bookingLink: trainLink
+  })
+
+  // --- Option 2: Bus connector ---
+  if (hasBus) {
+    options.push({
+      id: 'contingency-bus-connector',
+      title: 'Express Intercity Bus',
       transport: 'Bus',
       mode: 'Bus',
-      carrier: 'Zingbus / Intrcity SmartBus AC Sleeper',
-      code: 'ZB-EXP-CONN',
-      reason: 'Immediate departures every 30 mins from station front terminal.',
-      depart: 'Within 25m',
-      arrive: '+35m vs original',
-      duration: '5h 40m',
-      fare: 890,
-      classes: ['AC Sleeper'],
-      availability: 'Live Seats Open',
-      provider: 'RedBus',
-      riskReduction: '100% immune to rail track signal blocks'
-    },
-    {
-      id: 'contingency-air-hop',
-      title: 'Priority Air Link',
+      carrier: `State / private AC bus on ${from}–${to} route`,
+      code: null,
+      reason: 'Intercity buses are immune to rail signal blocks and often depart from the station forecourt or nearby bus stand.',
+      depart: 'Frequent departures — check at bus stand or RedBus',
+      arrive: 'Check live schedule',
+      duration: 'Varies by route',
+      fare: null,
+      fareNote: 'Check RedBus / AbhiBus for current fares.',
+      classes: ['AC Sleeper', 'Non-AC Sleeper', 'Seater'],
+      availability: 'Check live portal',
+      provider: 'RedBus / AbhiBus',
+      provenance: 'ESTIMATE',
+      riskReduction: 'No rail dependency; departs from city bus stand independently of train status',
+      bookingLink: busLink
+    })
+  }
+
+  // --- Option 3: Flight (only shown when both cities have airports) ---
+  if (hasAirport) {
+    options.push({
+      id: 'contingency-air-link',
+      title: 'Direct Flight',
       transport: 'Flight',
       mode: 'Flight',
-      carrier: 'IndiGo 6E-2419',
-      code: '6E-2419',
-      reason: 'Direct flight option to reach destination in under 2 hours.',
-      depart: '19:15',
-      arrive: '21:05',
-      duration: '1h 50m',
-      fare: 4800,
-      classes: ['Economy'],
-      availability: 'Available',
-      provider: 'Google Flights',
-      riskReduction: 'Recovers 4+ hours of transit loss'
-    }
-  ]
+      carrier: `Domestic airlines on ${fromPlace.airport} → ${toPlace.airport}`,
+      code: null,
+      reason: `Flying recovers several hours of transit loss when severe delays occur.`,
+      depart: 'Check airline schedule',
+      arrive: 'Check airline schedule',
+      duration: 'Varies by airline',
+      fare: null,
+      fareNote: 'Check Google Flights / MakeMyTrip for current fares. Last-minute fares are higher.',
+      classes: ['Economy', 'Business'],
+      availability: 'Check live portal',
+      provider: 'Google Flights / MakeMyTrip',
+      provenance: 'ESTIMATE',
+      riskReduction: 'Fastest option when time is critical; bypasses all rail/road constraints',
+      bookingLink: flightLink
+    })
+  }
+
+  return options
 }

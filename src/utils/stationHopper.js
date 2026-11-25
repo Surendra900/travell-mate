@@ -154,7 +154,7 @@ export function generateStationHopperHacks({ from = '', to = '', date = '', trai
       alternateTo: nextStn.name,
       actualBoarding: origStn.city,
       actualDeboarding: destStn.city,
-      estimatedExtraFare: Math.floor(Math.random() * 80) + 140, // ₹140 to ₹220
+      estimatedExtraFare: 180, // flat estimate: extra segment ≈ ₹180 for typical corridor hop
       confirmedProbability: 89,
       legalRule: '100% Legal: Railway rules permit passengers to terminate their journey early at any intermediate stop without forfeiture of baggage or identity.',
       actionLabel: `Book to ${nextStn.code} on ConfirmTkt ↗`,
@@ -179,7 +179,7 @@ export function generateStationHopperHacks({ from = '', to = '', date = '', trai
       alternateTo: destStn.name,
       actualBoarding: origStn.city,
       actualDeboarding: destStn.city,
-      estimatedExtraFare: Math.floor(Math.random() * 60) + 120, // ₹120 to ₹180
+      estimatedExtraFare: 150, // flat estimate: boarding-point extension ≈ ₹150 for adjacent station
       confirmedProbability: 92,
       legalRule: 'Official IRCTC Feature: Boarding point can be chosen at checkout or updated online up to 4 hours before chart preparation.',
       actionLabel: `Book from ${prevStn.code} with Boarding Change ↗`,
