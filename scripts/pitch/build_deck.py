@@ -168,6 +168,12 @@ def create_deck():
     pt4.font.size = Pt(11.5)
     pt4.font.color.rgb = TEXT_BODY
 
+    pt5 = tft.add_paragraph()
+    pt5.text = "• Demo Video: drive.google.com/file/d/1TWO1Db1cw3mIHdOxiTsa2AfpixrPiexH/view"
+    pt5.font.name = FONT_NAME
+    pt5.font.size = Pt(11)
+    pt5.font.color.rgb = NAVY_PRIMARY
+
     # Live Deployment & Verification Card
     create_card(slide1, Inches(6.6), Inches(3.8), Inches(5.4), Inches(2.4), bg=RGBColor(249, 250, 251), border=BORDER_COLOR)
     tb_live = slide1.shapes.add_textbox(Inches(6.8), Inches(3.95), Inches(5.0), Inches(2.1))
@@ -633,8 +639,8 @@ def create_deck():
         ("136 / 136 Transport Tests Passing:", "Rigorous validation of MCT buffer formulas, Haversine geo radius, mode purity, and Upstash Redis resilience."),
         ("308+ Unit & E2E Tests Passing:", "Node native test runner verifies route parsing, date validation, and recovery algorithms."),
         ("0 WCAG 2.1 AA Violations:", "Automated Playwright Axe-core color contrast checks passed across all 7 routes."),
-        ("Clean Production Build:", "Vite 8 compiles client environment cleanly in 3.5s with zero syntax or import errors."),
-        ("Live & Verifiable:", "Production deployed on Vercel at travelmate-ai-flowzint.vercel.app.")
+        ("Live & Verifiable:", "Production deployed on Vercel at travelmate-ai-flowzint.vercel.app."),
+        ("Official Video Pitch:", "Full 5-minute walkthrough: drive.google.com/file/d/1TWO1Db1cw3mIHdOxiTsa2AfpixrPiexH/view")
     ]
     for title, desc in test_proofs:
         p_t = tf_tst.add_paragraph()

@@ -251,13 +251,13 @@ Verifies IST dates, raw fields, package-lock integrity, and PWA icon definitions
 > We have provided dedicated placeholders and links below for the evaluation committee.
 
 ### Primary Video Pitch (Live Walkthrough & Technical Demonstration)
-- 🔗 **Main Video Pitch URL:** `[PASTE_MAIN_VIDEO_PITCH_LINK_HERE]` *(YouTube / Loom / Google Drive link with public view access)*
+- 🔗 **Main Video Pitch URL:** [BuildX 2026 Official Video Pitch (Google Drive)](https://drive.google.com/file/d/1TWO1Db1cw3mIHdOxiTsa2AfpixrPiexH/view?usp=sharing)
 - ⏱️ **Duration:** ~4–5 minutes
 - 🎙️ **Presenters:** Surendra G & Rishitha
 - 📝 **Verbatim Demo Script:** [docs/BUILDX_DEMO_SCRIPT.md](docs/BUILDX_DEMO_SCRIPT.md) (Step-by-step narration covering problem, routing engine, and real-time fallback)
 
 ### Secondary Video Pitch / Audio Deep-Dive (Alternative / Extended)
-- 🔗 **Secondary Pitch URL:** `[PASTE_SECONDARY_VIDEO_PITCH_LINK_HERE]` *(Dedicated space for second video pitch / feature deep dive)*
+- 🔗 **Secondary Pitch URL:** `[Optional: Secondary video pitch / feature deep-dive link]`
 - 🎧 **Pre-Calibrated Master Audio:** 4m 20s voiceover track matching the exact demo script timeline.
 
 ### Slide Deck (.pptx)

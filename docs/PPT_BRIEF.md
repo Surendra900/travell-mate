@@ -32,7 +32,8 @@ This brief outlines the exact 7-slide presentation structure for the **BuildX 20
 - **One-line Purpose:** Eliminates travel dead-ends in India when direct trains are sold out by dynamically synthesizing verified Train + Flight and Train + Bus journeys with safety buffers.
 - **Track:** Open Innovation / Civictech
 - **Live URL:** `https://travelmate-ai-flowzint.vercel.app`
-- **Team:** [To be confirmed: Full Name(s) & College/Institution]
+- **Video Pitch (Google Drive):** `https://drive.google.com/file/d/1TWO1Db1cw3mIHdOxiTsa2AfpixrPiexH/view?usp=sharing`
+- **Team:** Surendra G (Team Lead & Full-Stack Architect) & Rishitha (Co-Developer & Frontend / UI-UX Lead)
 - **Speaker Notes:** "Good morning judges. We are presenting TravelMate, India's first multimodal transit disruption and route recovery engine, built to ensure no Indian traveler is stranded when direct train tickets sell out."
 
 ### Slide 2: The Problem

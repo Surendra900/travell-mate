@@ -2,6 +2,7 @@
 
 **Project Title:** TravelMate AI — Multimodal Transit & Waitlist-Bypass Intelligence Engine  
 **Live URL:** [https://travelmate-ai-flowzint.vercel.app/](https://travelmate-ai-flowzint.vercel.app/)  
+**Video Pitch (Google Drive):** [https://drive.google.com/file/d/1TWO1Db1cw3mIHdOxiTsa2AfpixrPiexH/view?usp=sharing](https://drive.google.com/file/d/1TWO1Db1cw3mIHdOxiTsa2AfpixrPiexH/view?usp=sharing)  
 **GitHub Repository:** [https://github.com/Surendra900/travell-mate](https://github.com/Surendra900/travell-mate)  
 **Target Duration:** Exactly 4 minutes 50 seconds (with a 10-second safety margin to stay strictly under the 5:00 limit)  
 **Presenters:** 
