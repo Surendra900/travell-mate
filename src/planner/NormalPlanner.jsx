@@ -323,7 +323,7 @@ export default function NormalPlanner({
           </div>
         </section>
 
-        {/* Side Summary & Backup Panel */}
+        {/* Side Summary & Backup Panel - Full route dashboard */}
         <aside className="space-y-4">
           <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-xs">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#15803D] block mb-1">
@@ -351,6 +351,7 @@ export default function NormalPlanner({
           <div className="normal-backup-block">
             <BackupPlan plan={plan} compact onBookBackup={onBookBackup} />
           </div>
+          {/* <TripComparison section */}
         </aside>
       </div>
 

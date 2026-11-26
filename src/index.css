@@ -322,7 +322,7 @@ body {
 
 /* Safe bottom inset for mobile navigation test */
 .safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Mobile Hardening Rules */
@@ -334,6 +334,6 @@ html, body, #root {
 
 .tm-mobile-menu a{min-height:48px;display:flex;align-items:center}
 .touch-target-min { min-height: 44px; }
-.assistant-launcher{right:16px;bottom:calc(96px + env(safe-area-inset-bottom, 0px));z-index:75}
-.floating-sos{right:12px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:70}
+.assistant-launcher{right:16px;bottom:calc(96px + env(safe-area-inset-bottom));z-index:75}
+.floating-sos{right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:70}
 

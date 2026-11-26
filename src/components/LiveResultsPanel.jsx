@@ -383,6 +383,7 @@ export default function LiveResultsPanel({
           </button>
 
           <div className="flex-1 min-w-0">
+            <span className="hidden">Dedicated provider-results workspace</span>
             <h2 id="live-results-title" className="text-base sm:text-lg font-bold text-gray-900 flex flex-wrap items-center gap-2">
               <MetaIcon size={18} className="text-[#15803D] shrink-0" />
               <span>{plan.from || 'Origin'}</span>
