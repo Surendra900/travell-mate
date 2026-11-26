@@ -151,7 +151,7 @@ def create_deck():
     pt1.font.color.rgb = TEXT_BODY
 
     pt2 = tft.add_paragraph()
-    pt2.text = "• Team Lead / Author: Surendra G [To be confirmed: Team Members]"
+    pt2.text = "• Team: Surendra G (Lead & Full-Stack Architect) & Rishitha (Co-Developer)"
     pt2.font.name = FONT_NAME
     pt2.font.size = Pt(11.5)
     pt2.font.color.rgb = TEXT_BODY
@@ -717,9 +717,8 @@ def create_deck():
     next_points = [
         ("ONDC Mobility Protocol Integration:", "Roadmap to integrate Open Network for Digital Commerce (ONDC) protocols for unified 1-click cart checkout across railways, state buses, and airlines."),
         ("Crowdsourced Telemetry & PWA Nodes:", "Enabling on-train passengers to report real-time junction delays to continuously refine transfer risk probabilities."),
-        ("Team Member 1 (Surendra G — Lead):", "Full-Stack React architecture, API fusion layer, Upstash Redis caching, and serverless edge functions."),
-        ("Team Member 2 [To be confirmed]:", "Multimodal graph routing combinator, Minimum Connection Time (MCT) safety algorithms, and automated test suites."),
-        ("Team Member 3 [To be confirmed]:", "14-language Indic localization, WCAG 2.1 AA accessibility hardening, and offline PWA boarding pass generator."),
+        ("Surendra G (Team Lead & Full-Stack Architect):", "Full-Stack React architecture, API fusion layer, Upstash Redis caching, serverless edge functions, and 459 automated test assertions."),
+        ("Rishitha (Co-Developer & Frontend / UI-UX Lead):", "Accessible UI/UX implementation (WCAG 2.1 AA), multimodal timeline components, offline traveler pass, and user workflow testing."),
         ("AI Tooling Disclosure (Rule 5):", "Generative AI was used transparently for code scaffolding, repetitive test assertions, and vocabulary maps. System architecture, graph heuristics, and safety formulas were authored and verified by the team.")
     ]
     for title, desc in next_points:

@@ -13,7 +13,7 @@
 ### Segment 1: Team Introductions (0:00 – 0:30)
 **Visual:** All team members on camera (or title screen with names, roles, and college).  
 **Voiceover (Speaker 1 - Lead):**
-> *"Hello judges, we are Team TravelMate presenting for BuildX 2026. My name is Surendra G, team lead and full-stack engineer. With me are [Team Member 2 Name], who built our graph routing and Minimum Connection Time algorithms, and [Team Member 3 Name], who led our vernacular localization and offline PWA engine. We represent [College / Institution Name]."*
+> *"Hello judges, we are Team TravelMate presenting for BuildX 2026. My name is Surendra G, team lead and full-stack architect. With me is Rishitha, co-developer and frontend UI/UX lead who engineered our accessible interfaces and offline traveler pass. We built TravelMate AI during the BuildX 2026 36-hour hackathon to solve India's multimodal transit and waitlist crisis."*
 
 ---
 
